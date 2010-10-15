@@ -1,6 +1,6 @@
 
 #include "MathInput.h"
-#include "MathRacer.h"
+#include "../breslinmathracer/MathRacer.h"
 #include "../questionfactory/OgreMathProblems.h"
 
 #include "Ogre.h"
