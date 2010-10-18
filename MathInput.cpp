@@ -1,10 +1,9 @@
 
 #include "MathInput.h"
 #include "../breslinmathracer/MathRacer.h"
-#include "../questionfactory/OgreMathProblems.h"
+#include "../questionfactory/AdditionFactory.h"
 
 #include "Ogre.h"
-
 
 MathInput::MathInput(MathRacer* mathRacer)
 {
@@ -15,15 +14,21 @@ MathInput::~MathInput()
 {
 }
 
+// a number is hit what should happen? append to var in question factory and display on screen....
 void MathInput::keyNumberHit(const OIS::KeyEvent &arg)
 {
     std::string number   = Ogre::StringConverter::toString(arg.key -1);
-    mMathRacer->getMathProblems()->keyNumberHit(number);
+
+    //this should update variable
+    mMathRacer->getAdditionFactory()->keyNumberHit(number);
+
+    //this should update display
+    mMathRacer->keyNumberHit(number);
+
 }
 
 void MathInput::injectKeyDown(const OIS::KeyEvent& evt)
 {
-
     if (evt.key == OIS::KC_M)
     {
         mMathRacer->startGame();
@@ -70,6 +75,6 @@ void MathInput::injectKeyDown(const OIS::KeyEvent& evt)
     }
     else if (evt.key == OIS::KC_RETURN)
     {
-        mMathRacer->getMathProblems()->checkAnswer();
+        mMathRacer->processAnswer();
     }
 }
