@@ -66,9 +66,8 @@ AnimID mTopAnimID;                    // current top (upper-body) animation
 bool mFadingIn[NUM_ANIMS];            // which animations are fading in
 bool mFadingOut[NUM_ANIMS];           // which animations are fading out
 Real mTimer;                // general timer to see how long animations have been playing
-Real mVerticalVelocity;     // for jumping
 Vector3 mKeyDirection;      // player's local intended direction based on WASD keys
-ClientSideClient* mClient;
+
 };
 
 #endif

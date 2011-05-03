@@ -2,6 +2,7 @@
 #define CLIENTSIDESHAPE_H
 
 #include "shape.h"
+#include "../client/clientSideClient.h"
 
 #include "Ogre.h"
 #include "OIS.h"
@@ -12,8 +13,10 @@ class ClientSideShape : public Shape
 {
 public:
 
-ClientSideShape(Ogre::SceneManager* mSceneMgr, std::string name, int xPos, int yPos, int zPos,std::string meshName); 
+ClientSideShape(ClientSideClient* client,Ogre::SceneManager* mSceneMgr, std::string name, int xPos, int yPos, int zPos,std::string meshName); 
 ~ClientSideShape();
+
+ClientSideClient* mClient;
 
 };
 

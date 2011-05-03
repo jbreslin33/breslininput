@@ -19,11 +19,15 @@ Shape::~Shape()
 
 void Shape::setupModel()
 {
-	// create scene nodes for the models at regular angular intervals
-	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
-		
-	// put character in starting spawn spot
-	mSceneNode->translate(xPos, yPos, zPos, Node::TS_LOCAL);
+    // create scene nodes for the models at regular angular intervals
+    mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode();
+                
+    // put character in starting spawn spot
+    mSceneNode->translate(xPos,yPos,zPos, Node::TS_LOCAL);
+
+	// create entity and attach mesh to it
+	mEntity = mSceneManager->createEntity(mShapeName, mMeshName);
+	mSceneNode->attachObject(mEntity);
 }
 
 void Shape::cleanupContent()

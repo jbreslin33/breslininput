@@ -5,9 +5,9 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-Sinbad::Sinbad(ClientSideClient* client, Ogre::SceneManager* sceneMgr, std::string shapeName,int x, int y, int z,std::string meshName) : ClientSideShape(sceneMgr,shapeName,x,y,z,meshName)
+Sinbad::Sinbad(ClientSideClient* client, Ogre::SceneManager* sceneMgr, std::string shapeName,int x, int y, int z,std::string meshName) : ClientSideShape(client, sceneMgr,shapeName,x,y,z,meshName)
 {
-	mClient = client;
+	setupModel();
 	setupAnimations();
 }
 
@@ -17,35 +17,35 @@ Sinbad::~Sinbad()
 
 void Sinbad::setupModel()
 {
-	ClientSideShape::setupModel();
-	mVerticalVelocity = 0;
+	Shape::setupModel();
 	mKeyDirection = Vector3::ZERO;
 }
 
 void Sinbad::setupAnimations()
+{
+		
+	// this is very important due to the nature of the exported animations
+	mSceneManager->getEntity(this->mShapeName)->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
+	String animNames[] =
+	{"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",
+	"SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
+
+	// populate our animation list
+	for (int i = 0; i < NUM_ANIMS; i++)
 	{
-		// this is very important due to the nature of the exported animations
-		mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
-		String animNames[] =
-		{"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",
-		"SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
-
-		// populate our animation list
-		for (int i = 0; i < NUM_ANIMS; i++)
-		{
-			mAnims[i] = mEntity->getAnimationState(animNames[i]);
-			mAnims[i]->setLoop(true);
-			mFadingIn[i] = false;
-			mFadingOut[i] = false;
-		}
-
-		// start off in the idle state (top and bottom together)
-		setBaseAnimation(ANIM_IDLE_BASE,false);
-		setTopAnimation(ANIM_IDLE_TOP,false);
-
-		// relax the hands since we're not holding anything
-		mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+		mAnims[i] = mSceneManager->getEntity(this->mShapeName)->getAnimationState(animNames[i]);
+		mAnims[i]->setLoop(true);
+		mFadingIn[i] = false;
+		mFadingOut[i] = false;
 	}
+
+	// start off in the idle state (top and bottom together)
+	setBaseAnimation(ANIM_IDLE_BASE,false);
+	setTopAnimation(ANIM_IDLE_TOP,false);
+
+	// relax the hands since we're not holding anything
+	mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+}
 
 void Sinbad::addTime(Real deltaTime)
 {

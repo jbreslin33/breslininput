@@ -15,17 +15,18 @@ Shape(Ogre::SceneManager* mSceneMgr, std::string name, int xPos, int yPos, int z
 
 SceneNode* getSceneNode() { return mSceneNode; }
 
-
 virtual void setupModel();
 void cleanupContent();
 
 //objects
 Ogre::SceneManager* mSceneManager;
+Ogre::Entity*       mEntity;
 SceneNode*          mSceneNode;
+
 std::string mMeshName;
+std::string mShapeName;
 
 //stats
-std::string mShapeName;
 int xPos;
 int yPos;
 int zPos;
