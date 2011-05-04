@@ -16,16 +16,12 @@ public:
 ServerSideClient();
 ~ServerSideClient();
 
-	ServerSideCommand  frame[COMMAND_HISTORY_SIZE];
-    ServerSideCommand  serverFrame;
-    ServerSideCommand  command;
-
 	long 		processedFrame;
 	struct sockaddr address;
 
 	dreamClient *netClient;
 
-	ServerSidePlayer* character;
+	ServerSidePlayer* mPlayer;
 
 
 

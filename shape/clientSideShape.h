@@ -12,7 +12,7 @@ class ClientSideShape : public Shape
 {
 
 public:
-ClientSideShape(Ogre::SceneManager* mSceneMgr, std::string name, int xPos, int yPos, int zPos, std::string mesh);
+ClientSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~ClientSideShape();
 
 virtual void setupModel();

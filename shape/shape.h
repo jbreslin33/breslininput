@@ -3,19 +3,19 @@
 
 #include <string>
 
+class Vector3D;
+
 class Shape
 {
 
 public:
 
-Shape(std::string name, int x, int y, int z);
+Shape(std::string name, Vector3D* position);
 ~Shape();
 
 //stats
 std::string mShapeName;
-int x;
-int y;
-int z;
+Vector3D* mPosition;
 
 };
 

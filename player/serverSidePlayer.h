@@ -11,13 +11,14 @@
 #define GRAVITY 90.0f          // gravity in downward units per squared second
 
 #include "../player/player.h"
+#include "../client/serverSideClient.h"
 
 class ServerSidePlayer : public Player
 {
 
 public:
 
-ServerSidePlayer(Client* client, Shape* shape, std::string name);
+ServerSidePlayer(ServerSideClient* client, Shape* shape, std::string name);
 ~ServerSidePlayer();
 
 //movement

@@ -99,8 +99,10 @@ set(HDRS
 	
 	#shape
 	../shape/shape.h
-	../shape/serverSideShape.h
-	../shape/serverSidePlayer.h
+	
+	#player
+	../player/player.h
+	../player/serverSidePlayer.h
 	
 	#math
 	../math/vector3D.h
@@ -131,8 +133,10 @@ set(SRCS
 	
 	#shape
 	../shape/shape.cpp
-	../shape/serverSideShape.cpp
-	../shape/serverSidePlayer.cpp
+	
+	#player
+	../player/player.cpp
+	../player/serverSidePlayer.cpp
 	
 	#math
 	../math/vector3D.cpp
@@ -163,8 +167,10 @@ set(HDRS
 	
 	#shape
 	../shape/shape.h
-	../shape/serverSideShape.h
-	../shape/serverSidePlayer.h
+	
+	#player
+	../player/player.h
+	../player/serverSidePlayer.h
 	
 	#math
 	../math/vector3D.h
@@ -195,8 +201,10 @@ set(SRCS
 	
 	#shape
 	../shape/shape.cpp
-	../shape/serverSideShape.cpp
-	../shape/serverSidePlayer.cpp
+	
+	#player
+	../player/player.cpp
+	../player/serverSidePlayer.cpp
 	
 	#math
 	../math/vector3D.cpp

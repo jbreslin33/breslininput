@@ -7,7 +7,7 @@
 
 class ServerSidePlayer;
 class ServerSideClient;
-class ServerSideCommand;
+class Command;
 
 #define COMMAND_HISTORY_SIZE		64
 

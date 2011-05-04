@@ -109,7 +109,10 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/clientSideShape.h
-	../shape/clientSidePlayer.h
+	
+	#player
+	../player/player.h
+	../player/clientSidePlayer.h
 	
 )
  
@@ -139,7 +142,10 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/clientSideShape.cpp
-	../shape/clientSidePlayer.cpp
+	
+	#player
+	../player/player.cpp
+	../player/clientSidePlayer.cpp
 
 )
 endif (WIN32)
@@ -169,7 +175,10 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/clientSideShape.h
-	../shape/clientSidePlayer.h
+	
+	#player
+	../player/player.h
+	../player/clientSidePlayer.h
 )
  
 set(SRCS
@@ -198,7 +207,10 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/clientSideShape.cpp
-	../shape/clientSidePlayer.cpp
+	
+	#player
+	../player/player.cpp
+	../player/clientSidePlayer.cpp
 )
 endif (UNIX)
 

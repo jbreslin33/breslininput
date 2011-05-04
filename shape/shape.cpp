@@ -1,14 +1,12 @@
 #include "shape.h"
 #include "../tdreamsock/dreamSock.h"
+#include "../math/vector3D.h"
 
-Shape::Shape(std::string shapeName, int xposition, int yposition, int zposition)
+Shape::Shape(std::string shapeName, Vector3D* position)
 {
    	mShapeName = shapeName;
+	mPosition = position;
 
-	//starting position
-   	x = xposition;
-   	y = yposition;
-   	z = zposition;
 }
 
 Shape::~Shape()

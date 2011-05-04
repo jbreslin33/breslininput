@@ -36,7 +36,7 @@ using namespace Ogre;
 		ANIM_NONE
 	};
 
-class ClientSidePlayer : public Player
+class ClientSidePlayer : public ClientSideShape
 {
 
 public:

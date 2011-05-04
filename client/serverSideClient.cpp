@@ -4,7 +4,7 @@ ServerSideClient::ServerSideClient()
 {
         processedFrame = 0;
         netClient      = 0;
-		character = NULL;
+		mPlayer = NULL;
 }
 
 ServerSideClient::~ServerSideClient()
