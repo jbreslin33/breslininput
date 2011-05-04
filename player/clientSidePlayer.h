@@ -3,32 +3,33 @@
 
 #include "player.h"
 
-#include "Ogre.h"
-#include "OIS.h"
+#define NUM_ANIMS 13           // number of animations the character has
+#define CHAR_HEIGHT 5          // height of character's center of mass above ground
+#define CAM_HEIGHT 2           // height of camera above character's center of mass
+#define RUN_SPEED 17           // character running speed in units per second
+#define TURN_SPEED 500.0f      // character turning in degrees per second
+#define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
 
-using namespace Ogre;
-
-class ClientSideClient;
-class ClientSideShape;
-class Command;
+#include "clientSideShape.h"
+#include "../client/clientSideClient.h"
 
 class ClientSidePlayer : public Player
 {
 
 public:
 
-ClientSidePlayer(std::string name, ClientSideClient* client, ClientSideShape* shape); 
+ClientSidePlayer(std::string name, ClientSideClient* client, ClientSideShape* shape);
 ~ClientSidePlayer();
 
 //movement
 void ProcessTick();
 void interpolateTick(float renderTime);
-void CalculateVelocity(Command *command, float frametime);
+void CalculateVelocity(ClientSideCommand *command, float frametime);
 
 //associated client
 ClientSideClient* mClient;
 
-//associated shape
+//associated Shape
 ClientSideShape* mShape;
 
 };
