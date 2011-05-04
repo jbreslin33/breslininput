@@ -20,9 +20,9 @@ class ClientSideClient : public Client
 public:
 ClientSideClient();
 ~ClientSideClient();
-	ClientSideCommand	frame[64];	// frame history
-	ClientSideCommand	serverFrame;					// the latest frame from server
-	ClientSideCommand	command;						// current frame's commands
+	Command	frame[64];	// frame history
+	Command	serverFrame;					// the latest frame from server
+	Command	command;						// current frame's commands
 
 	ClientSidePlayer* mPlayer;
 	ClientSidePlayer* mServerPlayer;

@@ -3,8 +3,7 @@
 
 #include "BaseApplication.h"
 #include "../tdreamsock/dreamSock.h"
-#include "../math/vector3D.h"
-#include "../command/clientSideCommand.h"
+
 #include "../client/clientSideClient.h"
 
 #define VK_ESCAPE 0x1B

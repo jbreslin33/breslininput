@@ -8,19 +8,11 @@
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-Player::Player(Client* client, Shape* shape, std::string name)
+Player::Player(std::string name)
 {
-	//commands
-	mServerFrame = NULL;
-	mCommand = NULL;
-
 	//id
 	mIndex  = 0;
    	mName = name;
-	
-	//associated objects
-	mClient = client;
-	mShape  = shape;
 }
 
 Player::~Player()

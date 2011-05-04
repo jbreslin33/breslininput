@@ -7,7 +7,7 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-ServerSidePlayer::ServerSidePlayer(ServerSideClient* client, Shape* shape, std::string name) : Player(client,shape,name)
+ServerSidePlayer::ServerSidePlayer(ServerSideClient* client, Shape* shape, std::string name) : Player(name)
 {
 	mClient = client;
 }
@@ -22,9 +22,9 @@ void ServerSidePlayer::processTick()
 
 	float multiplier = 100.0f;
 
-	clientFrametime = mCommand->mMilliseconds / 1000.0f;;
+	clientFrametime = mCommand.mMilliseconds / 1000.0f;;
 
-	calculateVelocity(mCommand, clientFrametime);
+	calculateVelocity(&mCommand, clientFrametime);
 
 	int f = mClient->netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
 

@@ -13,21 +13,17 @@ class Player
 
 public:
 
-Player(Client* client, Shape* shape, std::string name);
+Player(std::string name);
 ~Player();
 
 //commands
 Command*    mFrame[64];
-Command*	mServerFrame;					// the latest frame from server
-Command*	mCommand;						// current frame's commands
+Command	mServerFrame;					// the latest frame from server
+Command	mCommand;						// current frame's commands
 
 //id
 int			mIndex;
 std::string mName;
-
-//associated objects
-Client* mClient;
-Shape* mShape;
 
 };
 

@@ -23,7 +23,9 @@ GameClient::~GameClient()
 
 void GameClient::createPlayer(ClientSideClient* client, int index)
 {
-    ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
+	
+	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
+	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
 	clientSidePlayer->getSceneNode()->scale(30,30,30);
 	client->mPlayer = clientSidePlayer;
 	client->mIndex = index;
@@ -285,12 +287,12 @@ void GameClient::SendCommand(void)
 	mNetworkClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mInputClient.frame[i], &mInputClient.command, sizeof(ClientSideCommand));
+	memcpy(&mInputClient.frame[i], &mInputClient.command, sizeof(Command));
 
 	// Store the commands to the clients' history
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
-		memcpy(&mClientVector.at(i)->frame[i], &mClientVector.at(i)->command, sizeof(ClientSideCommand));
+		memcpy(&mClientVector.at(i)->frame[i], &mClientVector.at(i)->command, sizeof(Command));
 	}
 }
 
@@ -349,7 +351,7 @@ void GameClient::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
 	// Read time to run command
 	client->serverFrame.mMilliseconds = mes->ReadByte();
 
-	memcpy(&client->command, &client->serverFrame, sizeof(ClientSideCommand));
+	memcpy(&client->command, &client->serverFrame, sizeof(Command));
 
 	// Fill the history array with the position we got
 	for(int f = 0; f < COMMAND_HISTORY_SIZE; f++)

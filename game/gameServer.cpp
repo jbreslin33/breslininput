@@ -340,13 +340,13 @@ void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clien
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->mPlayer->mCommand->mKey = mes->ReadByte();
+		client->mPlayer->mCommand.mKey = mes->ReadByte();
 
-		LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mPlayer->mCommand->mKey);
+		LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mPlayer->mCommand.mKey);
 	}
 
 	// Read time to run command
-	client->mPlayer->mCommand->mMilliseconds = mes->ReadByte();
+	client->mPlayer->mCommand.mMilliseconds = mes->ReadByte();
 }
 
 //-----------------------------------------------------------------------------
@@ -355,7 +355,7 @@ void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clien
 //-----------------------------------------------------------------------------
 void GameServer::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
-	Command* command = client->mPlayer->mCommand;
+	Command* command = &client->mPlayer->mCommand;
 	// Add to the message
 	// Key
 	mes->WriteByte(command->mKey);
@@ -377,7 +377,7 @@ void GameServer::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clie
 {
 
 	ServerSidePlayer* player = client->mPlayer;
-	Command* command = player->mCommand;
+	Command* command = &player->mCommand;
 	int flags = 0;
 
 	int last = (client->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
