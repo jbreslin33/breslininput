@@ -63,7 +63,6 @@ void         fadeAnimations(Real deltaTime);
 void         setTopAnimation(AnimID id, bool reset);
 void         setBaseAnimation(AnimID id, bool reset);
 void         addTime(Real deltaTime);
-virtual void setupModel();
 
 //animation
 AnimationState* mAnims[NUM_ANIMS];    // master animation list

@@ -10,8 +10,9 @@
 #define TURN_SPEED 500.0f      // character turning in degrees per second
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
 
-#include "clientSideShape.h"
-#include "../client/clientSideClient.h"
+class ClientSideClient;
+class ClientSideShape;
+class Command;
 
 class ClientSidePlayer : public Player
 {
@@ -22,9 +23,9 @@ ClientSidePlayer(std::string name, ClientSideClient* client, ClientSideShape* sh
 ~ClientSidePlayer();
 
 //movement
-void ProcessTick();
+void processTick();
 void interpolateTick(float renderTime);
-void CalculateVelocity(ClientSideCommand *command, float frametime);
+void calculateVelocity(Command *command, float frametime);
 
 //associated client
 ClientSideClient* mClient;

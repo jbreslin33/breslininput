@@ -1,5 +1,8 @@
 #include "gameClient.h"
-#include "../shape/clientSidePlayer.h"
+#include "../player/clientSidePlayer.h"
+
+#include "../shape/clientSideShape.h"
+#include "../math/vector3D.h"
 
 GameClient* game;
 bool keys[256];
@@ -25,8 +28,10 @@ void GameClient::createPlayer(ClientSideClient* client, int index)
 {
 	
 	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
-	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
-	clientSidePlayer->getSceneNode()->scale(30,30,30);
+	ClientSideShape* shape = new ClientSideShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	
+	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("jay" + index,client,shape);
+	shape->getSceneNode()->scale(30,30,30);
 	client->mPlayer = clientSidePlayer;
 	client->mIndex = index;
 }
@@ -47,8 +52,9 @@ void GameClient::AddClient(int local, int ind, char *name)
 
 void GameClient::createServerPlayer(ClientSideClient* client, int index)
 {
-    ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"silentBob" + index,0,0,0,"sinbad.mesh");
-	clientSidePlayer->getSceneNode()->scale(30,30,30);
+	ClientSideShape* shape = new ClientSideShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("silentBob" + index,client,shape);
+  	shape->getSceneNode()->scale(30,30,30);
 	client->mServerPlayer = clientSidePlayer;
 }
 
@@ -159,7 +165,7 @@ void GameClient::MoveServerPlayer(void)
 	if (mLocalClient->mServerPlayer)
 	{
 		//LogString("try to move server player");
-			mLocalClient->mServerPlayer->getSceneNode()->setPosition(transVector);
+			mLocalClient->mServerPlayer->mShape->getSceneNode()->setPosition(transVector);
 	}
 }
 
@@ -232,7 +238,7 @@ void GameClient::ReadPackets(void)
 			for (int i = 0; i < mClientVector.size(); i++)
 			{
 				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-				mClientVector.at(i)->mPlayer->ProcessTick();
+				mClientVector.at(i)->mPlayer->processTick();
 				MoveServerPlayer();
 			}
 

@@ -19,7 +19,7 @@ ClientSidePlayer::~ClientSidePlayer()
 {
 }
 
-void ClientSidePlayer::ProcessTick()
+void ClientSidePlayer::processTick()
 {
 	float deltaX = mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
     float deltaZ = mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
@@ -129,7 +129,7 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 	mShape->updateAnimations(renderTime);
 }
 
-void ClientSidePlayer::CalculateVelocity(Command* command, float frametime)
+void ClientSidePlayer::calculateVelocity(Command* command, float frametime)
 {
 	float multiplier = 100.0f;
 

@@ -17,7 +17,7 @@ Player(std::string name);
 ~Player();
 
 //commands
-Command*    mFrame[64];
+Command mFrame[64];
 Command	mServerFrame;					// the latest frame from server
 Command	mCommand;						// current frame's commands
 

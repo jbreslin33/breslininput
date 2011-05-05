@@ -94,13 +94,15 @@ void GameServer::AddClient(void)
 	
 	if (mClientVector.size() == 0)
 	{
+		LogString("about to create player");
+
 		ServerSideClient* serverSideClient = new ServerSideClient();
 		serverSideClient->netClient = netList;
 		memcpy(&serverSideClient->address,serverSideClient->netClient->GetSocketAddress(), sizeof(struct sockaddr));
 
 		mClientVector.push_back(serverSideClient);
-		Shape* shape = new Shape("jay",new Vector3D);
-		serverSideClient->mPlayer = new ServerSidePlayer(serverSideClient,shape,"jay");
+	
+		serverSideClient->mPlayer = new ServerSidePlayer("jay",serverSideClient);
 		netList->next = NULL;
 	}
 	else
@@ -112,8 +114,8 @@ void GameServer::AddClient(void)
 		memcpy(&serverSideClient->address,serverSideClient->netClient->GetSocketAddress(), sizeof(struct sockaddr));
 
 		mClientVector.push_back(serverSideClient);
-		Shape* shape = new Shape("jay",new Vector3D);
-		serverSideClient->mPlayer = new ServerSidePlayer(serverSideClient,shape,"jay");
+
+		serverSideClient->mPlayer = new ServerSidePlayer("jay",serverSideClient);
 	}
 }
 
@@ -383,13 +385,13 @@ void GameServer::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clie
 	int last = (client->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(player->mFrame[last]->mKey != command->mKey)
+	if(player->mFrame[last].mKey != command->mKey)
 	{
 		flags |= CMD_KEY;
 	}
 
-	if(player->mFrame[last]->mOrigin.x != command->mOrigin.x ||
-		player->mFrame[last]->mOrigin.z != command->mOrigin.z)
+	if(player->mFrame[last].mOrigin.x != command->mOrigin.x ||
+		player->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
 		flags |= CMD_ORIGIN;
 	}

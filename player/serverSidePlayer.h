@@ -18,7 +18,7 @@ class ServerSidePlayer : public Player
 
 public:
 
-ServerSidePlayer(ServerSideClient* client, Shape* shape, std::string name);
+ServerSidePlayer(std::string name, ServerSideClient* client);
 ~ServerSidePlayer();
 
 //movement
@@ -27,6 +27,7 @@ void calculateVelocity(Command *command, float frametime);
 
 //associated client
 ServerSideClient* mClient;
+
 
 };
 

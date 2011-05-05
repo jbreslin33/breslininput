@@ -7,7 +7,7 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-ServerSidePlayer::ServerSidePlayer(ServerSideClient* client, Shape* shape, std::string name) : Player(name)
+ServerSidePlayer::ServerSidePlayer(std::string name, ServerSideClient* client) : Player(name)
 {
 	mClient = client;
 }
