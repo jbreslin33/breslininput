@@ -368,7 +368,7 @@ void ClientSideGame::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client
 
 void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client)
 {
-	int mProcessedFrame;
+	client->mProcessedFrame;
 	int flags = 0;
 
 	// Flags
@@ -383,15 +383,10 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
-	if(flags & CMD_ORIGIN)
-	{
-		mProcessedFrame = mes->ReadByte();
-	}
-
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
-
+		client->mProcessedFrame = mes->ReadByte();
 	}
 
 	// Read time to run command
@@ -402,11 +397,6 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 	client->mServerFrame.mVelocity.z = mes->ReadFloat();
 
 	client->mCommand.mMilliseconds = mes->ReadByte();
-
-
-
-	//LogString("mVelocity.x:%f",client->mServerFrame.mVelocity.x);
-	//LogString("mVelocity.z:%f",client->mServerFrame.mVelocity.z);
 }
 
 //-----------------------------------------------------------------------------

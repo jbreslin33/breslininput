@@ -11,8 +11,9 @@ Vector3D();
 void normalize();
 double length();
 
-	float x;
-	float y;
-	float z;
+float x;
+float y;
+float z;
+
 };
 #endif

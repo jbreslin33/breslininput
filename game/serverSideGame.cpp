@@ -38,20 +38,15 @@ Vector3D VectorSubstract(Vector3D *vec1, Vector3D *vec2)
 
 ServerSideGame::ServerSideGame()
 {
-	networkServer = new dreamServer;
-
-	realtime	= 0;
-	servertime	= 0;
-
-	index		= 0;
-	next		= NULL;
-
-	framenum	= 0;
+	mNetworkServer = new dreamServer;
+	mRealTime	= 0;
+	mServerTime	= 0;
+	mFramenum	= 0;
 }
 
 ServerSideGame::~ServerSideGame()
 {
-	delete networkServer;
+	delete mNetworkServer;
 }
 
 int ServerSideGame::InitNetwork()
@@ -65,17 +60,17 @@ int ServerSideGame::InitNetwork()
 	LogString("Initialising game");
 
 	// Create the game servers on new ports, starting from 30004
-	int ret = networkServer->Initialise("", 30004);
+	int ret = mNetworkServer->Initialise("", 30004);
 
 	if(ret == DREAMSOCK_SERVER_ERROR)
 	{
 #ifdef WIN32
 		char text[64];
-		sprintf(text, "Could not open server on port %d", networkServer->GetPort());
+		sprintf(text, "Could not open server on port %d", mNetworkServer->GetPort());
 
 		MessageBox(NULL, text, "Error", MB_OK);
 #else
-		LogString("Could not open server on port %d", networkServer->GetPort());
+		LogString("Could not open server on port %d", mNetworkServer->GetPort());
 #endif
 		return 1;
 	}
@@ -86,12 +81,12 @@ int ServerSideGame::InitNetwork()
 void ServerSideGame::ShutdownNetwork(void)
 {
 	RemoveClients();
-	networkServer->Uninitialise();
+	mNetworkServer->Uninitialise();
 }
 
 void ServerSideGame::AddClient(void)
 {
-	dreamClient *netList = networkServer->GetClientList();
+	dreamClient *netList = mNetworkServer->GetClientList();
 	
 	if (mClientVector.size() == 0)
 	{
@@ -144,30 +139,29 @@ void ServerSideGame::RemoveClients(void)
 //-----------------------------------------------------------------------------
 void ServerSideGame::Frame(int msec)
 {
-	realtime += msec;
-	frametime = msec / 1000.0f;
+	mRealTime += msec;
 
 	// Read packets from clients
 	ReadPackets();
 
 	// Wait full 100 ms before allowing to send
-	if(realtime < servertime)
+	if(mRealTime < mServerTime)
 	{
 		// never let the time get too far off
-		if(servertime - realtime > 32)
+		if(mServerTime - mRealTime > 32)
 		{
-			realtime = servertime - 32;
+			mRealTime = mServerTime - 32;
 		}
 
 		return;
 	}
 
-	// Bump frame number, and calculate new servertime
-	framenum++;
-	servertime = framenum * 32;
+	// Bump frame number, and calculate new mServerTime
+	mFramenum++;
+	mServerTime = mFramenum * 32;
 
-	if(servertime < realtime)
-		realtime = servertime;
+	if(mServerTime < mRealTime)
+		mRealTime = mServerTime;
 
 	SendCommand();
 }
@@ -189,7 +183,7 @@ void ServerSideGame::ReadPackets(void)
 	// Get the packet from the socket
 	try
 	{
-		while(ret = networkServer->GetPacket(mes.data, &address))
+		while(ret = mNetworkServer->GetPacket(mes.data, &address))
 		{
 			mes.SetSize(ret);
 			mes.BeginReading();
@@ -289,7 +283,7 @@ void ServerSideGame::SendCommand(void)
 	}
 
 	// Send messages to all clients
-	networkServer->SendPackets();
+	mNetworkServer->SendPackets();
 
 	// Store the sent command in history
 	for (int i = 0; i < mClientVector.size(); i++)
@@ -314,7 +308,7 @@ void ServerSideGame::SendExitNotification(void)
 		mClientVector.at(i)->netClient->message.AddSequences(mClientVector.at(i)->netClient);	// sequences
 	}
 
-	networkServer->SendPackets();
+	mNetworkServer->SendPackets();
 }
 
 void ServerSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
@@ -385,14 +379,10 @@ void ServerSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *
 		mes->WriteByte(command->mKey);
 	}
 
-	if(flags & CMD_ORIGIN)
-	{
-		mes->WriteByte(client->processedFrame & (COMMAND_HISTORY_SIZE-1));
-	}
-
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
+		mes->WriteByte(client->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
 	}
 
 	mes->WriteFloat(command->mOrigin.x);
@@ -401,7 +391,5 @@ void ServerSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
 
-	//LogString("buildDelta mVel.x:%f",command->mVelocity.x);
-	//LogString("buildDelta mVel.z:%f",command->mVelocity.z);
 	mes->WriteByte(command->mMilliseconds);
 }

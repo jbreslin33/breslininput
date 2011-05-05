@@ -23,29 +23,16 @@ class Command;
 #define USER_MES_NONDELTAFRAME		2
 #define USER_MES_SERVEREXIT			3
 
-
-typedef struct clientLoginData
-{
-	struct sockaddr		address;
-	dreamClient			*netClient;
-	clientLoginData		*next;
-} clientLoginData;
-
 class ServerSideGame
 {
 private:
-	dreamServer	*networkServer;
+	dreamServer	*mNetworkServer;
 
 	std::vector<ServerSideClient*> mClientVector;
 
-	int		realtime;				// Real server up-time in ms
-	int		servertime;				// Server frame * 100 ms
-	float	frametime;				// Frame time in seconds
-
-	char	gamename[32];
-	int		index;
-
-	long	framenum;
+	int		mRealTime;				// Real server up-time in ms
+	int		mServerTime;				// Server frame * 100 ms
+	long	mFramenum;
 
 public:
 	ServerSideGame();
@@ -67,13 +54,6 @@ public:
 	void	RemoveClients(void);
 	void	Frame(int msec);
 
-	void	SetName(char *n)		{ strcpy(gamename, n); }
-	char	*GetName(void)			{ return gamename; }
-
-	void	SetIndex(int ind)	{ index = ind; }
-	int		GetIndex(void)		{ return index; }
-
-	ServerSideGame *next;
 };
 
 #endif

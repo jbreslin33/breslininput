@@ -16,12 +16,11 @@ public:
 ServerSideClient();
 ~ServerSideClient();
 
-	long 		processedFrame;
-	struct sockaddr address;
+struct sockaddr  address;
 
-	dreamClient *netClient;
+dreamClient      *netClient;
 
-	ServerSidePlayer* mPlayer;
+ServerSidePlayer* mPlayer;
 };
 
 #endif
