@@ -2,13 +2,13 @@
 #include "../tdreamsock/dreamSock.h"
 
 #include "../client/clientSideClient.h"
-#include "../shape/clientSideShape.h"
+#include "../shape/ogreShape.h"
 
 #define KEY_UP					1
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, ClientSideShape* shape) : Player(name)
+ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape) : Player(name)
 {
 	mClient = client;
 	mShape  = shape;

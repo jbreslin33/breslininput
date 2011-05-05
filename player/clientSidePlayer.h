@@ -11,7 +11,7 @@
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
 
 class ClientSideClient;
-class ClientSideShape;
+class OgreShape;
 class Command;
 
 class ClientSidePlayer : public Player
@@ -19,7 +19,7 @@ class ClientSidePlayer : public Player
 
 public:
 
-ClientSidePlayer(std::string name, ClientSideClient* client, ClientSideShape* shape);
+ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape);
 ~ClientSidePlayer();
 
 //movement
@@ -31,7 +31,7 @@ void calculateVelocity(Command *command, float frametime);
 ClientSideClient* mClient;
 
 //associated Shape
-ClientSideShape* mShape;
+OgreShape* mShape;
 
 };
 

@@ -1,7 +1,7 @@
 #include "gameClient.h"
 #include "../player/clientSidePlayer.h"
 
-#include "../shape/clientSideShape.h"
+#include "../shape/ogreShape.h"
 #include "../math/vector3D.h"
 
 GameClient* game;
@@ -28,7 +28,7 @@ void GameClient::createPlayer(ClientSideClient* client, int index)
 {
 	
 	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
-	ClientSideShape* shape = new ClientSideShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	OgreShape* shape = new OgreShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("jay" + index,client,shape);
 	shape->getSceneNode()->scale(30,30,30);
@@ -52,7 +52,7 @@ void GameClient::AddClient(int local, int ind, char *name)
 
 void GameClient::createServerPlayer(ClientSideClient* client, int index)
 {
-	ClientSideShape* shape = new ClientSideShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	OgreShape* shape = new OgreShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("silentBob" + index,client,shape);
   	shape->getSceneNode()->scale(30,30,30);
 	client->mServerPlayer = clientSidePlayer;
