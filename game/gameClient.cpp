@@ -403,6 +403,11 @@ void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *clien
 	client->serverFrame.mVelocity.z = mes->ReadFloat();
 
 	client->command.mMilliseconds = mes->ReadByte();
+
+
+
+	LogString("mVelocity.x:%f",client->serverFrame.mVelocity.x);
+	LogString("mVelocity.z:%f",client->serverFrame.mVelocity.z);
 }
 
 //-----------------------------------------------------------------------------
@@ -444,7 +449,6 @@ void GameClient::RunNetwork(int msec)
 	
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
-		LogString("int");
 		mClientVector.at(i)->mPlayer->interpolateTick(mRendertime);
 	}
 

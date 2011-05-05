@@ -22,7 +22,6 @@ ClientSidePlayer::~ClientSidePlayer()
 void ClientSidePlayer::processTick()
 {
 
-	LogString("processTick toc");
 	float deltaX = mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
     float deltaZ = mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
 
