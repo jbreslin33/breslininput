@@ -44,15 +44,6 @@ OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, s
 
 SceneNode* getSceneNode() { return mSceneNode; }
 
-//mesh
-std::string mMeshName;
-
-Entity* mEntity;
-
-//scene
-Ogre::SceneManager* mSceneManager;
-SceneNode*          mSceneNode;
-
 //animation
 void         updateAnimations (Real renderTime, bool stop);
 void         setupAnimations  ();
@@ -70,6 +61,12 @@ bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
 Real            mTimer;                // general timer to see how long animations have been playing
 AnimationState  *mAnimationState;
 bool            mStop;
+
+//ogre scene stuff
+std::string         mMeshName;
+Entity*             mEntity;
+Ogre::SceneManager* mSceneManager;
+SceneNode*          mSceneNode;
 
 };
 
