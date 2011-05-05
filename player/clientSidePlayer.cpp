@@ -3,7 +3,7 @@
 
 #include "../client/clientSideClient.h"
 #include "../shape/ogreShape.h"
-#include "../shape/ogreAnimatedShape.h"
+#include "../animation/ogreAnimation.h"
 
 #define KEY_UP					1
 #define KEY_DOWN				2
@@ -129,7 +129,7 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 	mShape->getSceneNode()->yaw(Ogre::Degree(yawToGoal));
 
 	//run updateAnimations in Animation Class
-	mShape->mOgreAnimatedShape->updateAnimations(renderTime, mClient->mCommand.mStop);
+	mShape->mOgreAnimation->updateAnimations(renderTime, mClient->mCommand.mStop);
 }
 
 void ClientSidePlayer::calculateVelocity(Command* command, float frametime)

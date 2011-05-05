@@ -1,7 +1,7 @@
 #include "ogreShape.h"
 #include "../tdreamsock/dreamSock.h"
 
-#include "../shape/ogreAnimatedShape.h"
+#include "../animation/ogreAnimation.h"
 #include "../math/vector3D.h"
 
 
@@ -12,7 +12,6 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	mMeshName     = mesh;
     mSceneNode    = mSceneManager->getRootSceneNode()->createChildSceneNode();
 
-
 	// put character in starting spawn spot
     mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
 
@@ -20,8 +19,8 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mEntity = mSceneManager->createEntity(mShapeName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
-	//animation
-	mOgreAnimatedShape = new OgreAnimatedShape(mEntity);
+	//create an animation instance and pass our entity in
+	mOgreAnimation = new OgreAnimation(mEntity);
 }
 
 OgreShape::~OgreShape()

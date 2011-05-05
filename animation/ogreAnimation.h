@@ -1,5 +1,5 @@
-#ifndef OGREANIMATEDSHAPE_H
-#define OGREANIMATEDSHAPE_H
+#ifndef OGREANIMATION_H
+#define OGREANIMATION_H
 
 #define NUM_ANIMS 13           // number of animations the character has
 #define CHAR_HEIGHT 5          // height of character's center of mass above ground
@@ -32,12 +32,12 @@ enum AnimID
     ANIM_NONE
 };
 
-class OgreAnimatedShape
+class OgreAnimation
 {
 
 public:
-	OgreAnimatedShape(Entity* entity);
-~OgreAnimatedShape();
+	OgreAnimation(Entity* entity);
+~OgreAnimation();
 
 //animation
 void         updateAnimations (Real renderTime, bool stop);

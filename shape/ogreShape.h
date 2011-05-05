@@ -7,7 +7,7 @@
 #include "Ogre.h"
 using namespace Ogre;
 
-class OgreAnimatedShape;
+class OgreAnimation;
 
 class OgreShape : public Shape
 {
@@ -25,7 +25,7 @@ Ogre::SceneManager* mSceneManager;
 SceneNode*          mSceneNode;
 
 //animation
-OgreAnimatedShape* mOgreAnimatedShape;
+OgreAnimation* mOgreAnimation;
 
 };
 
