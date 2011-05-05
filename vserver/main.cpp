@@ -29,7 +29,7 @@
 #include <fcntl.h>
 #endif
 
-#include "../game/gameServer.h"
+#include "../game/serverSideGame.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@
 int runningDaemon;
 #endif
 
-GameServer* game;
+ServerSideGame* game;
 
 #ifdef WIN32
 
@@ -108,7 +108,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	StartLogConsole();
 
 
-	game = new GameServer;
+	game = new ServerSideGame;
 
 	if(game->InitNetwork() != 0)
 	{
@@ -235,7 +235,7 @@ int keyPress(void)
 int main(int argc, char **argv)
 {
 
-	game = new GameServer;
+	game = new ServerSideGame;
 
 	if(game->InitNetwork() != 0)
 	{

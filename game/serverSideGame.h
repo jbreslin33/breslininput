@@ -31,7 +31,7 @@ typedef struct clientLoginData
 	clientLoginData		*next;
 } clientLoginData;
 
-class GameServer
+class ServerSideGame
 {
 private:
 	dreamServer	*networkServer;
@@ -48,8 +48,8 @@ private:
 	long	framenum;
 
 public:
-	GameServer();
-	~GameServer();
+	ServerSideGame();
+	~ServerSideGame();
 
 	// Network.cpp
 	void	ReadPackets(void);
@@ -73,7 +73,7 @@ public:
 	void	SetIndex(int ind)	{ index = ind; }
 	int		GetIndex(void)		{ return index; }
 
-	GameServer *next;
+	ServerSideGame *next;
 };
 
 #endif

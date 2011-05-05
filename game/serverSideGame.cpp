@@ -35,7 +35,7 @@ Vector3D VectorSubstract(Vector3D *vec1, Vector3D *vec2)
 	return vec;
 }
 
-GameServer::GameServer()
+ServerSideGame::ServerSideGame()
 {
 	networkServer = new dreamServer;
 
@@ -48,12 +48,12 @@ GameServer::GameServer()
 	framenum	= 0;
 }
 
-GameServer::~GameServer()
+ServerSideGame::~ServerSideGame()
 {
 	delete networkServer;
 }
 
-int GameServer::InitNetwork()
+int ServerSideGame::InitNetwork()
 {
 	if(dreamSock_Initialize() != 0)
 	{
@@ -82,13 +82,13 @@ int GameServer::InitNetwork()
 	return 0;
 }
 
-void GameServer::ShutdownNetwork(void)
+void ServerSideGame::ShutdownNetwork(void)
 {
 	RemoveClients();
 	networkServer->Uninitialise();
 }
 
-void GameServer::AddClient(void)
+void ServerSideGame::AddClient(void)
 {
 	dreamClient *netList = networkServer->GetClientList();
 	
@@ -123,7 +123,7 @@ void GameServer::AddClient(void)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameServer::RemoveClient(ServerSideClient* client)
+void ServerSideGame::RemoveClient(ServerSideClient* client)
 {
 
 }
@@ -132,7 +132,7 @@ void GameServer::RemoveClient(ServerSideClient* client)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameServer::RemoveClients(void)
+void ServerSideGame::RemoveClients(void)
 {
 	mClientVector.empty();
 }
@@ -141,7 +141,7 @@ void GameServer::RemoveClients(void)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameServer::Frame(int msec)
+void ServerSideGame::Frame(int msec)
 {
 	realtime += msec;
 	frametime = msec / 1000.0f;
@@ -171,7 +171,7 @@ void GameServer::Frame(int msec)
 	SendCommand();
 }
 
-void GameServer::ReadPackets(void)
+void ServerSideGame::ReadPackets(void)
 {
 	char data[1400];
 
@@ -270,7 +270,7 @@ void GameServer::ReadPackets(void)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameServer::SendCommand(void)
+void ServerSideGame::SendCommand(void)
 {
 	// Fill messages
 	for (int i = 0; i < mClientVector.size(); i++)
@@ -302,7 +302,7 @@ void GameServer::SendCommand(void)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameServer::SendExitNotification(void)
+void ServerSideGame::SendExitNotification(void)
 {
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
@@ -316,7 +316,7 @@ void GameServer::SendExitNotification(void)
 	networkServer->SendPackets();
 }
 
-void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
 	int flags = 0;
 
@@ -335,7 +335,7 @@ void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clien
 	client->mCommand.mMilliseconds = mes->ReadByte();
 }
 
-void GameServer::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
 	Command* command = &client->mCommand;
 	// Add to the message
@@ -353,7 +353,7 @@ void GameServer::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
 	mes->WriteByte(command->mMilliseconds);
 }
 
-void GameServer::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
 
 	ServerSidePlayer* player = client->mPlayer;
