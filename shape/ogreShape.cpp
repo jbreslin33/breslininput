@@ -56,11 +56,13 @@ void OgreShape::setupAnimations()
 
 void OgreShape::addTime(Real deltaTime)
 {
-	updateAnimations(deltaTime);
+	updateAnimations(deltaTime,mStop);
 }
 
-void OgreShape::updateAnimations(Real deltaTime)
+void OgreShape::updateAnimations(Real deltaTime, bool stop)
 {
+	mStop = stop;
+
 	Real baseAnimSpeed = 1;
 	Real topAnimSpeed = 1;
 

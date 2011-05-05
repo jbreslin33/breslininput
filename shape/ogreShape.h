@@ -54,22 +54,22 @@ Ogre::SceneManager* mSceneManager;
 SceneNode*          mSceneNode;
 
 //animation
-void         updateAnimations(Real renderTime);
-void         setupAnimations();
-void         fadeAnimations(Real deltaTime);
-void         setTopAnimation(AnimID id, bool reset);
-void         setBaseAnimation(AnimID id, bool reset);
-void         addTime(Real deltaTime);
+void         updateAnimations (Real renderTime, bool stop);
+void         setupAnimations  ();
+void         fadeAnimations   (Real deltaTime);
+void         setTopAnimation  (AnimID id, bool reset);
+void         setBaseAnimation (AnimID id, bool reset);
+void         addTime          (Real deltaTime);
 
 //animation
-AnimationState* mAnims[NUM_ANIMS];    // master animation list
-AnimID mBaseAnimID;                   // current base (full- or lower-body) animation
-AnimID mTopAnimID;                    // current top (upper-body) animation
-bool mFadingIn[NUM_ANIMS];            // which animations are fading in
-bool mFadingOut[NUM_ANIMS];           // which animations are fading out
-Real mTimer;                // general timer to see how long animations have been playing
-AnimationState *mAnimationState;
-bool mStop;
+AnimationState* mAnims[NUM_ANIMS];     // master animation list
+AnimID          mBaseAnimID;           // current base (full- or lower-body) animation
+AnimID          mTopAnimID;            // current top (upper-body) animation
+bool            mFadingIn[NUM_ANIMS];  // which animations are fading in
+bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
+Real            mTimer;                // general timer to see how long animations have been playing
+AnimationState  *mAnimationState;
+bool            mStop;
 
 };
 

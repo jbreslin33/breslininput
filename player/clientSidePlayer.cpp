@@ -126,7 +126,7 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 
 	mShape->getSceneNode()->yaw(Ogre::Degree(yawToGoal));
 
-	mShape->updateAnimations(renderTime);
+	mShape->updateAnimations(renderTime, mClient->mCommand.mStop);
 }
 
 void ClientSidePlayer::calculateVelocity(Command* command, float frametime)
