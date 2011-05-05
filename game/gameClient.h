@@ -40,7 +40,6 @@ public:
 	//Players
 	void	MoveServerPlayer(void);
 
-
 	//Game
 	void	AddClient(int local, int index, char *name);
 	void	RemoveClient(int index);
@@ -84,8 +83,6 @@ public:
 
 	//initialize
 	bool mInit;
-
-
 };
 
 #endif
