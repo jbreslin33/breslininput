@@ -1,5 +1,5 @@
-#ifndef GAMECLIENT_H
-#define GAMECLIENT_H
+#ifndef CLIENTSIDEGAME_H
+#define CLIENTSIDEGAME_H
 
 #include "BaseApplication.h"
 #include "../tdreamsock/dreamSock.h"
