@@ -1,13 +1,13 @@
-#include "gameClient.h"
+#include "clientSideGame.h"
 #include "../player/clientSidePlayer.h"
 
 #include "../shape/ogreShape.h"
 #include "../math/vector3D.h"
 
-GameClient* game;
+ClientSideGame* game;
 bool keys[256];
 
-GameClient::GameClient(const char* serverIP)
+ClientSideGame::ClientSideGame(const char* serverIP)
 {
 	mServerIP = serverIP;
  	mNetworkClient	= new dreamClient;
@@ -19,12 +19,12 @@ GameClient::GameClient(const char* serverIP)
 	mOldTime = 0;
  }
 
-GameClient::~GameClient()
+ClientSideGame::~ClientSideGame()
 {
 	delete mNetworkClient;
 }
 
-void GameClient::createPlayer(ClientSideClient* client, int index)
+void ClientSideGame::createPlayer(ClientSideClient* client, int index)
 {
 	
 	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
@@ -36,7 +36,7 @@ void GameClient::createPlayer(ClientSideClient* client, int index)
 	client->mIndex = index;
 }
 
-void GameClient::AddClient(int local, int ind, char *name)
+void ClientSideGame::AddClient(int local, int ind, char *name)
 {
 	ClientSideClient* clientSideClient = new ClientSideClient();
 	mClientVector.push_back(clientSideClient);
@@ -50,7 +50,7 @@ void GameClient::AddClient(int local, int ind, char *name)
 	}
 }
 
-void GameClient::createServerPlayer(ClientSideClient* client, int index)
+void ClientSideGame::createServerPlayer(ClientSideClient* client, int index)
 {
 	OgreShape* shape = new OgreShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("silentBob" + index,client,shape);
@@ -58,7 +58,7 @@ void GameClient::createServerPlayer(ClientSideClient* client, int index)
 	client->mServerPlayer = clientSidePlayer;
 }
 
-void GameClient::createScene(void)
+void ClientSideGame::createScene(void)
 {
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
 
@@ -69,7 +69,7 @@ void GameClient::createScene(void)
     pointLight->setSpecularColour(Ogre::ColourValue::White);
 }
 
-bool GameClient::processUnbufferedInput(const Ogre::FrameEvent& evt)
+bool ClientSideGame::processUnbufferedInput(const Ogre::FrameEvent& evt)
 {
     if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
@@ -107,7 +107,7 @@ bool GameClient::processUnbufferedInput(const Ogre::FrameEvent& evt)
     return true;
 }
 
-bool GameClient::frameRenderingQueued(const Ogre::FrameEvent& evt)
+bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     bool ret = BaseApplication::frameRenderingQueued(evt);
 
@@ -123,12 +123,12 @@ bool GameClient::frameRenderingQueued(const Ogre::FrameEvent& evt)
     return ret;
 }
 
- void GameClient::Shutdown(void)
+ void ClientSideGame::Shutdown(void)
  {
  	Disconnect();
  }
 
-void GameClient::CheckKeys(void)
+void ClientSideGame::CheckKeys(void)
 {
 	mInputClient.mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
@@ -155,7 +155,7 @@ void GameClient::CheckKeys(void)
  	mInputClient.mCommand.mMilliseconds = (int) (mFrametime * 1000);
  }
 
-void GameClient::MoveServerPlayer(void)
+void ClientSideGame::MoveServerPlayer(void)
 {
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
@@ -169,7 +169,7 @@ void GameClient::MoveServerPlayer(void)
 	}
 }
 
-void GameClient::StartConnection()
+void ClientSideGame::StartConnection()
 {
 	int ret = mNetworkClient->Initialise("", mServerIP, 30004);
 
@@ -181,7 +181,7 @@ void GameClient::StartConnection()
 	Connect();
 }
 
-void GameClient::ReadPackets(void)
+void ClientSideGame::ReadPackets(void)
 {
 	char data[1400];
 	struct sockaddr address;
@@ -267,11 +267,11 @@ void GameClient::ReadPackets(void)
 }
 
 
-void GameClient::RemoveClient(int ind)
+void ClientSideGame::RemoveClient(int ind)
 {
 }
 
-void GameClient::SendCommand(void)
+void ClientSideGame::SendCommand(void)
 {
 	if(mNetworkClient->GetConnectionState() != DREAMSOCK_CONNECTED)
 		return;
@@ -301,7 +301,7 @@ void GameClient::SendCommand(void)
 	}
 }
 
-void GameClient::SendRequestNonDeltaFrame(void)
+void ClientSideGame::SendRequestNonDeltaFrame(void)
 {
 	char data[1400];
 	dreamMessage message;
@@ -313,7 +313,7 @@ void GameClient::SendRequestNonDeltaFrame(void)
 	mNetworkClient->SendPacket(&message);
 }
 
-void GameClient::Connect(void)
+void ClientSideGame::Connect(void)
 {
 	if(mInit)
 	{
@@ -321,19 +321,19 @@ void GameClient::Connect(void)
 		return;
 	}
 
-	LogString("GameClient::Connect");
+	LogString("ClientSideGame::Connect");
 
 	mInit = true;
 
 	mNetworkClient->SendConnect("myname");
 }
 
-void GameClient::Disconnect(void)
+void ClientSideGame::Disconnect(void)
 {
 	if(!mInit)
 		return;
 
-	LogString("GameClient::Disconnect");
+	LogString("ClientSideGame::Disconnect");
 
 	mInit = false;
 	mLocalClient = NULL;
@@ -342,7 +342,7 @@ void GameClient::Disconnect(void)
 	mNetworkClient->SendDisconnect();
 }
 
-void GameClient::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
+void ClientSideGame::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
 {
 	// Key
 	client->mServerFrame.mKey			= mes->ReadByte();
@@ -366,7 +366,7 @@ void GameClient::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
 	}
 }
 
-void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client)
+void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client)
 {
 	int mProcessedFrame;
 	int flags = 0;
@@ -413,7 +413,7 @@ void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *clien
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameClient::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theClient)
+void ClientSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theClient)
 {
 	int flags = 0;
 	int last = (mNetworkClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
@@ -439,7 +439,7 @@ void GameClient::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theC
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void GameClient::RunNetwork(int msec)
+void ClientSideGame::RunNetwork(int msec)
 {
 	static int time = 0;
 	time += msec;
@@ -478,12 +478,12 @@ extern "C" {
 
         //ClientSideBaseGame* mClientSideBaseGame;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-        game = new GameClient(strCmdLine);
+        game = new ClientSideGame(strCmdLine);
 #else
-        game = new GameClient(argv[1]);
+        game = new ClientSideGame(argv[1]);
 #endif
 
-		//game = new GameClient;
+		//game = new ClientSideGame;
 	    game->StartConnection();
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

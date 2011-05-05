@@ -31,11 +31,11 @@ extern bool keys[256];
 #define USER_MES_KEEPALIVE		12
 
 
-class GameClient : public BaseApplication
+class ClientSideGame : public BaseApplication
 {
 public:
-	GameClient(const char* serverIP);
-	~GameClient();
+	ClientSideGame(const char* serverIP);
+	~ClientSideGame();
 
 	//Players
 	void	MoveServerPlayer(void);
