@@ -3,9 +3,8 @@
 
 #include "shape.h"
 
+//Ogre headers
 #include "Ogre.h"
-#include "OIS.h"
-
 using namespace Ogre;
 
 class OgreShape : public Shape

@@ -10,9 +10,8 @@
 
 #include "ogreShape.h"
 
+//Ogre headers
 #include "Ogre.h"
-#include "OIS.h"
-
 using namespace Ogre;
 
 // all the animations our character has, and a null ID
