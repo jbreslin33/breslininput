@@ -8,7 +8,7 @@
 #define TURN_SPEED 500.0f      // character turning in degrees per second
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
 
-#include "shape.h"
+#include "ogreShape.h"
 
 #include "Ogre.h"
 #include "OIS.h"

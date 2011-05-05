@@ -4,7 +4,7 @@
 #include "player.h"
 
 class ClientSideClient;
-class OgreShape;
+class OgreAnimatedShape;
 class Command;
 
 class ClientSidePlayer : public Player
@@ -12,7 +12,7 @@ class ClientSidePlayer : public Player
 
 public:
 
-ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape);
+ClientSidePlayer(std::string name, ClientSideClient* client, OgreAnimatedShape* shape);
 ~ClientSidePlayer();
 
 //movement
@@ -24,7 +24,7 @@ void calculateVelocity(Command *command, float frametime);
 ClientSideClient* mClient;
 
 //associated Shape
-OgreShape* mShape;
+OgreAnimatedShape* mShape;
 
 };
 

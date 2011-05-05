@@ -5,7 +5,8 @@
 /* Teijo Hakala						      */
 /******************************************/
 
-#include "gameServer.h"
+#include "serverSideGame.h"
+
 #include "../shape/shape.h"
 #include "../client/serverSideClient.h"
 #include "../player/serverSidePlayer.h"
