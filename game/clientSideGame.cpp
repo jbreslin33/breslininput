@@ -1,7 +1,7 @@
 #include "clientSideGame.h"
 #include "../player/clientSidePlayer.h"
 
-#include "../shape/ogreAnimatedShape.h"
+#include "../shape/ogreShape.h"
 #include "../math/vector3D.h"
 
 ClientSideGame* game;
@@ -28,7 +28,7 @@ void ClientSideGame::createPlayer(ClientSideClient* client, int index)
 {
 	
 	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
-	OgreAnimatedShape* shape = new OgreAnimatedShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	OgreShape* shape = new OgreShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("jay" + index,client,shape);
 	shape->getSceneNode()->scale(30,30,30);
@@ -52,7 +52,7 @@ void ClientSideGame::AddClient(int local, int ind, char *name)
 
 void ClientSideGame::createServerPlayer(ClientSideClient* client, int index)
 {
-	OgreAnimatedShape* shape = new OgreAnimatedShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	OgreShape* shape = new OgreShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("silentBob" + index,client,shape);
   	shape->getSceneNode()->scale(30,30,30);
 	client->mServerPlayer = clientSidePlayer;
@@ -405,8 +405,8 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 
 
 
-	LogString("mVelocity.x:%f",client->mServerFrame.mVelocity.x);
-	LogString("mVelocity.z:%f",client->mServerFrame.mVelocity.z);
+	//LogString("mVelocity.x:%f",client->mServerFrame.mVelocity.x);
+	//LogString("mVelocity.z:%f",client->mServerFrame.mVelocity.z);
 }
 
 //-----------------------------------------------------------------------------

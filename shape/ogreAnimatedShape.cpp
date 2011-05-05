@@ -4,8 +4,9 @@
 #include "../math/vector3D.h"
 
 
-OgreAnimatedShape::OgreAnimatedShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : OgreShape(name,position,mSceneMgr,mesh)
+OgreAnimatedShape::OgreAnimatedShape(Entity* entity)
 {
+	mEntity = entity;
 	mStop = true;
 	setupAnimations();
 }

@@ -1,6 +1,7 @@
 #include "ogreShape.h"
 #include "../tdreamsock/dreamSock.h"
 
+#include "../shape/ogreAnimatedShape.h"
 #include "../math/vector3D.h"
 
 
@@ -18,6 +19,9 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	// create entity and attach mesh to it
     mEntity = mSceneManager->createEntity(mShapeName, mMeshName);
     mSceneNode->attachObject(mEntity);
+
+	//animation
+	mOgreAnimatedShape = new OgreAnimatedShape(mEntity);
 }
 
 OgreShape::~OgreShape()

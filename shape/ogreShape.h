@@ -7,6 +7,8 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+class OgreAnimatedShape;
+
 class OgreShape : public Shape
 {
 
@@ -21,6 +23,9 @@ std::string         mMeshName;
 Entity*             mEntity;
 Ogre::SceneManager* mSceneManager;
 SceneNode*          mSceneNode;
+
+//animation
+OgreAnimatedShape* mOgreAnimatedShape;
 
 };
 

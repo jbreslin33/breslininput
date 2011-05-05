@@ -62,6 +62,6 @@ void ServerSidePlayer::calculateVelocity(Command *command, float frametime)
 	   command->mVelocity.x = command->mVelocity.x/length * 0.1 * frametime * 1000;
 	   command->mVelocity.z = command->mVelocity.z/length * 0.1 * frametime * 1000;
 	}
-	LogString("calc vel.x:%f",command->mVelocity.x);
-	LogString("calc vel.z:%f",command->mVelocity.z);
+	//LogString("calc vel.x:%f",command->mVelocity.x);
+	//LogString("calc vel.z:%f",command->mVelocity.z);
 }

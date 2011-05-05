@@ -8,8 +8,6 @@
 #define TURN_SPEED 500.0f      // character turning in degrees per second
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
 
-#include "ogreShape.h"
-
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
@@ -34,11 +32,11 @@ enum AnimID
     ANIM_NONE
 };
 
-class OgreAnimatedShape : public OgreShape
+class OgreAnimatedShape
 {
 
 public:
-OgreAnimatedShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+	OgreAnimatedShape(Entity* entity);
 ~OgreAnimatedShape();
 
 //animation
@@ -58,6 +56,8 @@ bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
 Real            mTimer;                // general timer to see how long animations have been playing
 AnimationState  *mAnimationState;
 bool            mStop;
+
+Entity* mEntity;
 
 };
 

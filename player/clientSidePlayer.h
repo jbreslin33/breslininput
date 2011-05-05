@@ -3,8 +3,10 @@
 
 #include "player.h"
 
+#define TURN_SPEED 500.0f      // character turning in degrees per second
+
 class ClientSideClient;
-class OgreAnimatedShape;
+class OgreShape;
 class Command;
 
 class ClientSidePlayer : public Player
@@ -12,7 +14,7 @@ class ClientSidePlayer : public Player
 
 public:
 
-ClientSidePlayer(std::string name, ClientSideClient* client, OgreAnimatedShape* shape);
+ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape);
 ~ClientSidePlayer();
 
 //movement
@@ -24,7 +26,7 @@ void calculateVelocity(Command *command, float frametime);
 ClientSideClient* mClient;
 
 //associated Shape
-OgreAnimatedShape* mShape;
+OgreShape* mShape;
 
 };
 

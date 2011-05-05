@@ -2,13 +2,15 @@
 #include "../tdreamsock/dreamSock.h"
 
 #include "../client/clientSideClient.h"
+#include "../shape/ogreShape.h"
 #include "../shape/ogreAnimatedShape.h"
 
 #define KEY_UP					1
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, OgreAnimatedShape* shape) : Player(name)
+
+ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape) : Player(name)
 {
 	mClient = client;
 	mShape  = shape;
@@ -126,7 +128,8 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 
 	mShape->getSceneNode()->yaw(Ogre::Degree(yawToGoal));
 
-	mShape->updateAnimations(renderTime, mClient->mCommand.mStop);
+	//run updateAnimations in Animation Class
+	mShape->mOgreAnimatedShape->updateAnimations(renderTime, mClient->mCommand.mStop);
 }
 
 void ClientSidePlayer::calculateVelocity(Command* command, float frametime)
