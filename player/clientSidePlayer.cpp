@@ -22,42 +22,42 @@ ClientSidePlayer::~ClientSidePlayer()
 void ClientSidePlayer::processTick()
 {
 
-	float deltaX = mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
-    float deltaZ = mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
+	float deltaX = mClient->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
+    float deltaZ = mClient->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
 
 	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
 
 	if(dist > 8.0)
 	{
-		mCommand.mCatchup = true; 
+		mClient->mCommand.mCatchup = true; 
 	}
 
 	if(dist < 2.0)
 	{
-        mCommand.mCatchup = false;
+        mClient->mCommand.mCatchup = false;
 	}
-	if(mServerFrame.mVelocity.x == 0.0 && mServerFrame.mVelocity.z == 0.0)
+	if(mClient->mServerFrame.mVelocity.x == 0.0 && mClient->mServerFrame.mVelocity.z == 0.0)
 	{
-		mCommand.mStop = true;
+		mClient->mCommand.mStop = true;
 	}
 	else
 	{
-        mCommand.mStop = false;
+        mClient->mCommand.mStop = false;
 	}
 	     
-	if (mCommand.mCatchup == true && mCommand.mStop == false)
+	if (mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
 	{
 		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
 		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 		   
-		serverDest.x = mServerFrame.mVelocity.x;
-		serverDest.z = mServerFrame.mVelocity.z;
+		serverDest.x = mClient->mServerFrame.mVelocity.x;
+		serverDest.z = mClient->mServerFrame.mVelocity.z;
 		serverDest.normalise();
 
 		float multiplier = dist * 10.0;
 		serverDest = serverDest * multiplier;
-		serverDest.x = mServerFrame.mOrigin.x + serverDest.x;
-		serverDest.z = mServerFrame.mOrigin.z + serverDest.z;
+		serverDest.x = mClient->mServerFrame.mOrigin.x + serverDest.x;
+		serverDest.z = mClient->mServerFrame.mOrigin.z + serverDest.z;
 
 		myDest.x = serverDest.x - mShape->getSceneNode()->getPosition().x;
 		myDest.z = serverDest.z - mShape->getSceneNode()->getPosition().z;
@@ -67,26 +67,26 @@ void ClientSidePlayer::processTick()
 
 		myDest.normalise();
 
-		float vel = sqrt(pow(mServerFrame.mVelocity.x, 2) + pow(mServerFrame.mVelocity.z, 2))/mCommand.mMilliseconds;
+		float vel = sqrt(pow(mClient->mServerFrame.mVelocity.x, 2) + pow(mClient->mServerFrame.mVelocity.z, 2))/mClient->mCommand.mMilliseconds;
         float time = dist * 10.0/vel;
 
 		myDest = myDest * predictDist/time;
 
-		mCommand.mVelocity.x = myDest.x;
-	    mCommand.mVelocity.z = myDest.z;
+		mClient->mCommand.mVelocity.x = myDest.x;
+	    mClient->mCommand.mVelocity.z = myDest.z;
    }
    else
    {
         Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
 		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 		   
-	    serverDest.x = mServerFrame.mVelocity.x;
-		serverDest.z = mServerFrame.mVelocity.z;
+	    serverDest.x = mClient->mServerFrame.mVelocity.x;
+		serverDest.z = mClient->mServerFrame.mVelocity.z;
 		serverDest.normalise();
         serverDest = serverDest * 0.1;
 
-		mCommand.mVelocity.x = serverDest.x;
-	    mCommand.mVelocity.z = serverDest.z;
+		mClient->mCommand.mVelocity.x = serverDest.x;
+	    mClient->mCommand.mVelocity.z = serverDest.z;
 	}
 }
 
@@ -94,16 +94,16 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 {
 	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	if(mClient->command.mCatchup == true && mClient->command.mStop == false)
+	if(mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
 	{
-		transVector.x = mCommand.mVelocity.x;
-		transVector.z = mCommand.mVelocity.z;
+		transVector.x = mClient->mCommand.mVelocity.x;
+		transVector.z = mClient->mCommand.mVelocity.z;
 		mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 	}
     else
 	{
-		transVector.x = mCommand.mVelocity.x;
-		transVector.z = mCommand.mVelocity.z;
+		transVector.x = mClient->mCommand.mVelocity.x;
+		transVector.z = mClient->mCommand.mVelocity.z;
 		mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 	}
 

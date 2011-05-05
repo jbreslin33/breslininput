@@ -171,18 +171,6 @@ void GameServer::Frame(int msec)
 	SendCommand();
 }
 
-/**********************************************************************************
-*
-*                      NETWORK STUFF
-*
-************************************************************************************/
-
-
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void GameServer::ReadPackets(void)
 {
 	char data[1400];
@@ -306,7 +294,7 @@ void GameServer::SendCommand(void)
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
 		int num = (mClientVector.at(i)->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mClientVector.at(i)->mPlayer->mFrame[num], &mClientVector.at(i)->mPlayer->mCommand, sizeof(ServerSideCommand));
+		memcpy(&mClientVector.at(i)->mFrame[num], &mClientVector.at(i)->mCommand, sizeof(ServerSideCommand));
 	}
 }
 
@@ -328,10 +316,6 @@ void GameServer::SendExitNotification(void)
 	networkServer->SendPackets();
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
 	int flags = 0;
@@ -342,22 +326,18 @@ void GameServer::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clien
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->mPlayer->mCommand.mKey = mes->ReadByte();
+		client->mCommand.mKey = mes->ReadByte();
 
-		LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mPlayer->mCommand.mKey);
+		LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
 	}
 
 	// Read time to run command
-	client->mPlayer->mCommand.mMilliseconds = mes->ReadByte();
+	client->mCommand.mMilliseconds = mes->ReadByte();
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void GameServer::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
-	Command* command = &client->mPlayer->mCommand;
+	Command* command = &client->mCommand;
 	// Add to the message
 	// Key
 	mes->WriteByte(command->mKey);
@@ -368,30 +348,28 @@ void GameServer::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
 
+	
+
 	mes->WriteByte(command->mMilliseconds);
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void GameServer::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
 {
 
 	ServerSidePlayer* player = client->mPlayer;
-	Command* command = &player->mCommand;
+	Command* command = &client->mCommand;
 	int flags = 0;
 
 	int last = (client->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(player->mFrame[last].mKey != command->mKey)
+	if(client->mFrame[last].mKey != command->mKey)
 	{
 		flags |= CMD_KEY;
 	}
 
-	if(player->mFrame[last].mOrigin.x != command->mOrigin.x ||
-		player->mFrame[last].mOrigin.z != command->mOrigin.z)
+	if(client->mFrame[last].mOrigin.x != command->mOrigin.x ||
+		client->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
 		flags |= CMD_ORIGIN;
 	}
@@ -422,6 +400,7 @@ void GameServer::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *clie
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
 
-
+	//LogString("buildDelta mVel.x:%f",command->mVelocity.x);
+	//LogString("buildDelta mVel.z:%f",command->mVelocity.z);
 	mes->WriteByte(command->mMilliseconds);
 }

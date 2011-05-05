@@ -2,7 +2,7 @@
 
 Client::Client()
 {
-	processedFrame = 0;
+	mProcessedFrame = 0;
 }
 
 Client::~Client()

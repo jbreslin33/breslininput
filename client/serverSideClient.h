@@ -22,9 +22,6 @@ ServerSideClient();
 	dreamClient *netClient;
 
 	ServerSidePlayer* mPlayer;
-
-
-
 };
 
 #endif

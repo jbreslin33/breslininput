@@ -130,7 +130,7 @@ bool GameClient::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void GameClient::CheckKeys(void)
 {
-	mInputClient.command.mKey = 0;
+	mInputClient.mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
  	{
  		Shutdown();
@@ -138,29 +138,29 @@ void GameClient::CheckKeys(void)
  	}
  	if(keys[VK_DOWN])
  	{
- 		mInputClient.command.mKey |= KEY_DOWN;
+ 		mInputClient.mCommand.mKey |= KEY_DOWN;
  	}
  	if(keys[VK_UP])
  	{
- 		mInputClient.command.mKey |= KEY_UP;
+ 		mInputClient.mCommand.mKey |= KEY_UP;
  	}
  	if(keys[VK_LEFT])
  	{
- 		mInputClient.command.mKey |= KEY_LEFT;
+ 		mInputClient.mCommand.mKey |= KEY_LEFT;
  	}
  	if(keys[VK_RIGHT])
  	{
- 		mInputClient.command.mKey |= KEY_RIGHT;
+ 		mInputClient.mCommand.mKey |= KEY_RIGHT;
  	}
- 	mInputClient.command.mMilliseconds = (int) (mFrametime * 1000);
+ 	mInputClient.mCommand.mMilliseconds = (int) (mFrametime * 1000);
  }
 
 void GameClient::MoveServerPlayer(void)
 {
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	transVector.x = mLocalClient->serverFrame.mOrigin.x;
-	transVector.z = -mLocalClient->serverFrame.mOrigin.z;
+	transVector.x = mLocalClient->mServerFrame.mOrigin.x;
+	transVector.z = -mLocalClient->mServerFrame.mOrigin.z;
 
 	if (mLocalClient->mServerPlayer)
 	{
@@ -241,7 +241,6 @@ void GameClient::ReadPackets(void)
 				mClientVector.at(i)->mPlayer->processTick();
 				MoveServerPlayer();
 			}
-
 			break;
 
 		case USER_MES_NONDELTAFRAME:
@@ -293,12 +292,12 @@ void GameClient::SendCommand(void)
 	mNetworkClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mInputClient.frame[i], &mInputClient.command, sizeof(Command));
+	memcpy(&mInputClient.mFrame[i], &mInputClient.mCommand, sizeof(Command));
 
 	// Store the commands to the clients' history
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
-		memcpy(&mClientVector.at(i)->frame[i], &mClientVector.at(i)->command, sizeof(Command));
+		memcpy(&mClientVector.at(i)->mFrame[i], &mClientVector.at(i)->mCommand, sizeof(Command));
 	}
 }
 
@@ -346,30 +345,30 @@ void GameClient::Disconnect(void)
 void GameClient::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
 {
 	// Key
-	client->serverFrame.mKey			= mes->ReadByte();
+	client->mServerFrame.mKey			= mes->ReadByte();
 
 	// Origin
-	client->serverFrame.mOrigin.x		= mes->ReadFloat();
-	client->serverFrame.mOrigin.z		= mes->ReadFloat();
-	client->serverFrame.mVelocity.x		= mes->ReadFloat();
-	client->serverFrame.mVelocity.z		= mes->ReadFloat();
+	client->mServerFrame.mOrigin.x		= mes->ReadFloat();
+	client->mServerFrame.mOrigin.z		= mes->ReadFloat();
+	client->mServerFrame.mVelocity.x		= mes->ReadFloat();
+	client->mServerFrame.mVelocity.z		= mes->ReadFloat();
 
 	// Read time to run command
-	client->serverFrame.mMilliseconds = mes->ReadByte();
+	client->mServerFrame.mMilliseconds = mes->ReadByte();
 
-	memcpy(&client->command, &client->serverFrame, sizeof(Command));
+	memcpy(&client->mCommand, &client->mServerFrame, sizeof(Command));
 
 	// Fill the history array with the position we got
 	for(int f = 0; f < COMMAND_HISTORY_SIZE; f++)
 	{
-		client->frame[f].mPredictedOrigin.x = client->command.mOrigin.x;
-		client->frame[f].mPredictedOrigin.z = client->command.mOrigin.z;
+		client->mFrame[f].mPredictedOrigin.x = client->mCommand.mOrigin.x;
+		client->mFrame[f].mPredictedOrigin.z = client->mCommand.mOrigin.z;
 	}
 }
 
 void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client)
 {
-	int processedFrame;
+	int mProcessedFrame;
 	int flags = 0;
 
 	// Flags
@@ -378,15 +377,15 @@ void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *clien
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->serverFrame.mKey = mes->ReadByte();
+		client->mServerFrame.mKey = mes->ReadByte();
 
-		client->command.mKey = client->serverFrame.mKey;
-		LogString("Client %d: Read key %d", client->mIndex, client->command.mKey);
+		client->mCommand.mKey = client->mServerFrame.mKey;
+		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	if(flags & CMD_ORIGIN)
 	{
-		processedFrame = mes->ReadByte();
+		mProcessedFrame = mes->ReadByte();
 	}
 
 	// Origin
@@ -396,18 +395,18 @@ void GameClient::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *clien
 	}
 
 	// Read time to run command
-	client->serverFrame.mOrigin.x = mes->ReadFloat();
-	client->serverFrame.mOrigin.z = mes->ReadFloat();
+	client->mServerFrame.mOrigin.x = mes->ReadFloat();
+	client->mServerFrame.mOrigin.z = mes->ReadFloat();
 
-	client->serverFrame.mVelocity.x = mes->ReadFloat();
-	client->serverFrame.mVelocity.z = mes->ReadFloat();
+	client->mServerFrame.mVelocity.x = mes->ReadFloat();
+	client->mServerFrame.mVelocity.z = mes->ReadFloat();
 
-	client->command.mMilliseconds = mes->ReadByte();
+	client->mCommand.mMilliseconds = mes->ReadByte();
 
 
 
-	LogString("mVelocity.x:%f",client->serverFrame.mVelocity.x);
-	LogString("mVelocity.z:%f",client->serverFrame.mVelocity.z);
+	LogString("mVelocity.x:%f",client->mServerFrame.mVelocity.x);
+	LogString("mVelocity.z:%f",client->mServerFrame.mVelocity.z);
 }
 
 //-----------------------------------------------------------------------------
@@ -420,7 +419,7 @@ void GameClient::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theC
 	int last = (mNetworkClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(theClient->frame[last].mKey != theClient->command.mKey)
+	if(theClient->mFrame[last].mKey != theClient->mCommand.mKey)
 		flags |= CMD_KEY;
 
 	// Add to the message
@@ -430,10 +429,10 @@ void GameClient::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theC
 	// Key
 	if(flags & CMD_KEY)
 	{
-		mes->WriteByte(theClient->command.mKey);
+		mes->WriteByte(theClient->mCommand.mKey);
 	}
 
-	mes->WriteByte(theClient->command.mMilliseconds);
+	mes->WriteByte(theClient->mCommand.mMilliseconds);
 }
 
 //-----------------------------------------------------------------------------

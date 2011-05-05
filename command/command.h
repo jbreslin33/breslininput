@@ -19,7 +19,5 @@ Command();
 
 	bool        mCatchup;
 	bool        mStop;
-
-
 };
 #endif
