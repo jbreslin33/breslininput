@@ -3,7 +3,7 @@
 
 #define COMMAND_HISTORY_SIZE		64
 
-#include "../command/Command.h"
+#include "../command/command.h"
 
 class Client
 {
