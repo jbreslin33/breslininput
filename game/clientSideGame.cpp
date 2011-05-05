@@ -1,4 +1,4 @@
-#include "gameClient.h"
+#include "clientSideGame.h"
 #include "../player/clientSidePlayer.h"
 
 #include "../shape/ogreShape.h"
