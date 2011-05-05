@@ -13,10 +13,11 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mNetworkClient	= new dreamClient;
  	mLocalClient		= NULL;
  	memset(&mInputClient, 0, sizeof(ClientSideClient));
- 	mFrametime		= 0.0f;
- 	mRendertime		= 0.0f;
- 	mInit			= false;
+ 	mFrameTime		= 0.0f;
+ 	mRenderTime		= 0.0f;
 	mOldTime = 0;
+ 	mInit			= false;
+
  }
 
 ClientSideGame::~ClientSideGame()
@@ -117,7 +118,7 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	{
 		game->CheckKeys();
 		game->RunNetwork(evt.timeSinceLastFrame * 1000);
-		mRendertime = evt.timeSinceLastFrame;
+		mRenderTime = evt.timeSinceLastFrame;
 
 	}
     return ret;
@@ -152,7 +153,7 @@ void ClientSideGame::CheckKeys(void)
  	{
  		mInputClient.mCommand.mKey |= KEY_RIGHT;
  	}
- 	mInputClient.mCommand.mMilliseconds = (int) (mFrametime * 1000);
+ 	mInputClient.mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
 
 void ClientSideGame::MoveServerPlayer(void)
@@ -265,7 +266,6 @@ void ClientSideGame::ReadPackets(void)
 		}
 	}
 }
-
 
 void ClientSideGame::RemoveClient(int ind)
 {
@@ -425,10 +425,6 @@ void ClientSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *
 	mes->WriteByte(theClient->mCommand.mMilliseconds);
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ClientSideGame::RunNetwork(int msec)
 {
 	static int time = 0;
@@ -438,14 +434,14 @@ void ClientSideGame::RunNetwork(int msec)
 	
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
-		mClientVector.at(i)->mPlayer->interpolateTick(mRendertime);
+		mClientVector.at(i)->mPlayer->interpolateTick(mRenderTime);
 	}
 
 	// Framerate is too high
 	if(time > (1000 / 60)) {
 		
 		SendCommand();
-		mFrametime = time / 1000.0f;
+		mFrameTime = time / 1000.0f;
 	    time = 0;
 	}
 }

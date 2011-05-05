@@ -1,10 +1,3 @@
-/******************************************/
-/* MMOG programmer's guide                */
-/* Tutorial game server                   */
-/* Programming:						      */
-/* Teijo Hakala						      */
-/******************************************/
-
 #include "serverSideGame.h"
 
 #include "../shape/shape.h"
@@ -115,28 +108,15 @@ void ServerSideGame::AddClient(void)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ServerSideGame::RemoveClient(ServerSideClient* client)
 {
-
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ServerSideGame::RemoveClients(void)
 {
 	mClientVector.empty();
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ServerSideGame::Frame(int msec)
 {
 	mRealTime += msec;
@@ -261,10 +241,6 @@ void ServerSideGame::ReadPackets(void)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ServerSideGame::SendCommand(void)
 {
 	// Fill messages
@@ -293,10 +269,6 @@ void ServerSideGame::SendCommand(void)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
 void ServerSideGame::SendExitNotification(void)
 {
 	for (int i = 0; i < mClientVector.size(); i++)
@@ -342,8 +314,6 @@ void ServerSideGame::BuildMoveCommand(dreamMessage *mes, ServerSideClient *clien
 	mes->WriteFloat(command->mOrigin.z);
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
-
-	
 
 	mes->WriteByte(command->mMilliseconds);
 }

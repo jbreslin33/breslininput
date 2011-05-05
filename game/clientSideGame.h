@@ -34,6 +34,7 @@ extern bool keys[256];
 class ClientSideGame : public BaseApplication
 {
 public:
+	
 	ClientSideGame(const char* serverIP);
 	~ClientSideGame();
 
@@ -41,31 +42,31 @@ public:
 	void	MoveServerPlayer(void);
 
 	//Game
-	void	AddClient(int local, int index, char *name);
+	void	AddClient   (int local, int index, char *name);
 	void	RemoveClient(int index);
-	void	Shutdown(void);
-	void	CheckKeys(void);
-	void	Frame(void);
-	void	RunNetwork(int msec);
+	void	Shutdown    (void);
+	void	CheckKeys   (void);
+	void	Frame       (void);
+	void	RunNetwork  (int msec);
 
 	// Network
-	void	ReadPackets(void);
-	void	SendCommand(void);
+	void	ReadPackets             (void);
+	void	SendCommand             (void);
 	void	SendRequestNonDeltaFrame(void);
-	void	ReadMoveCommand(dreamMessage *mes, ClientSideClient *client);
-	void	ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client);
-	void	BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theClient);
-	void	StartConnection();
-	void	Connect(void);
-	void	Disconnect(void);
-	void	SendStartGame(void);
+	void	ReadMoveCommand         (dreamMessage *mes, ClientSideClient *client);
+	void	ReadDeltaMoveCommand    (dreamMessage *mes, ClientSideClient *client);
+	void	BuildDeltaMoveCommand   (dreamMessage *mes, ClientSideClient *theClient);
+	void	StartConnection         ();
+	void	Connect                 (void);
+	void	Disconnect              (void);
+	void	SendStartGame           (void);
 
 	//Ogre
-	bool processUnbufferedInput(const Ogre::FrameEvent& evt);
-    void createPlayer(ClientSideClient* client, int index);
-	void createServerPlayer(ClientSideClient* client, int index);
-    virtual void createScene(void);
-    virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+	bool         processUnbufferedInput(const Ogre::FrameEvent& evt);
+    void         createPlayer          (ClientSideClient* client, int index);
+	void         createServerPlayer    (ClientSideClient* client, int index);
+    virtual void createScene           (void);
+    virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 
 	// Network variables
 	dreamClient* mNetworkClient;
@@ -77,8 +78,8 @@ public:
 	std::vector<ClientSideClient*> mClientVector;	
 
 	//time
-	float mFrametime;
-	float mRendertime;
+	float mFrameTime;
+	float mRenderTime;
 	int   mOldTime;
 
 	//initialize
