@@ -4,7 +4,6 @@
 #define COMMAND_HISTORY_SIZE		64
 
 #include "../command/Command.h"
-#include "../math/vector3D.h"
 
 class Client
 {

@@ -12,7 +12,6 @@ ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, O
 {
 	mClient = client;
 	mShape  = shape;
-
 }
 
 ClientSidePlayer::~ClientSidePlayer()

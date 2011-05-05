@@ -2,12 +2,8 @@
 
 ClientSideCommand::ClientSideCommand()
 {
-
-
 }
-
 
 ClientSideCommand::~ClientSideCommand()
 {
-
 }
