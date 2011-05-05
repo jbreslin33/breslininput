@@ -1,5 +1,5 @@
-#ifndef SERVERSIDESINBAD_H
-#define SERVERSIDESINBAD_H
+#ifndef SERVERSIDEPLAYER_H
+#define SERVERSIDEPLAYER_H
 
 #define NUM_ANIMS 13           // number of animations the character has
 #define CHAR_HEIGHT 5          // height of character's center of mass above ground

@@ -18,6 +18,7 @@ ServerSidePlayer::~ServerSidePlayer()
 
 void ServerSidePlayer::processTick()
 {
+	LogString("processTickTokSer");
 	float clientFrametime;
 
 	float multiplier = 100.0f;

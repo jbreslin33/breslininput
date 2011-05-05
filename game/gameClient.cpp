@@ -444,6 +444,7 @@ void GameClient::RunNetwork(int msec)
 	
 	for (int i = 0; i < mClientVector.size(); i++)
 	{
+		LogString("int");
 		mClientVector.at(i)->mPlayer->interpolateTick(mRendertime);
 	}
 
