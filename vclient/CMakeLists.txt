@@ -108,7 +108,7 @@ set(HDRS
 	
 	#shape
 	../shape/shape.h
-	../shape/clientSideShape.h
+	../shape/ogreShape.h
 	
 	#player
 	../player/player.h
@@ -141,7 +141,7 @@ set(SRCS
 	
 	#shape
 	../shape/shape.cpp
-	../shape/clientSideShape.cpp
+	../shape/ogreShape.cpp
 	
 	#player
 	../player/player.cpp
@@ -174,7 +174,7 @@ set(HDRS
 	
 	#shape
 	../shape/shape.h
-	../shape/clientSideShape.h
+	../shape/ogreShape.h
 	
 	#player
 	../player/player.h
@@ -206,7 +206,7 @@ set(SRCS
 	
 	#shape
 	../shape/shape.cpp
-	../shape/clientSideShape.cpp
+	../shape/ogreShape.cpp
 	
 	#player
 	../player/player.cpp
