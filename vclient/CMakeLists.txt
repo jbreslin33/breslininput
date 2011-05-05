@@ -109,6 +109,7 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/ogreShape.h
+	../shape/ogreAnimatedShape.h
 	
 	#player
 	../player/player.h
@@ -142,6 +143,7 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/ogreShape.cpp
+	../shape/ogreAnimatedShape.cpp
 	
 	#player
 	../player/player.cpp
@@ -175,6 +177,7 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/ogreShape.h
+	../shape/ogreAnimatedShape.h
 	
 	#player
 	../player/player.h
@@ -207,6 +210,7 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/ogreShape.cpp
+	../shape/ogreAnimatedShape.cpp
 	
 	#player
 	../player/player.cpp

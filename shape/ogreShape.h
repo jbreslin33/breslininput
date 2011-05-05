@@ -1,5 +1,5 @@
-#ifndef CLIENTSIDESHAPE_H
-#define CLIENTSIDESHAPE_H
+#ifndef OGRESHAPE_H
+#define OGRESHAPE_H
 
 #define NUM_ANIMS 13           // number of animations the character has
 #define CHAR_HEIGHT 5          // height of character's center of mass above ground
@@ -15,26 +15,6 @@
 
 using namespace Ogre;
 
-// all the animations our character has, and a null ID
-// some of these affect separate body parts and will be blended together
-enum AnimID
-{
-	ANIM_IDLE_BASE,
-    ANIM_IDLE_TOP,
-    ANIM_RUN_BASE,
-    ANIM_RUN_TOP,
-    ANIM_HANDS_CLOSED,
-    ANIM_HANDS_RELAXED,
-    ANIM_DRAW_SWORDS,
-    ANIM_SLICE_VERTICAL,
-    ANIM_SLICE_HORIZONTAL,
-    ANIM_DANCE,
-    ANIM_JUMP_START,
-    ANIM_JUMP_LOOP,
-    ANIM_JUMP_END,
-    ANIM_NONE
-};
-
 class OgreShape : public Shape
 {
 
@@ -43,24 +23,6 @@ OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, s
 ~OgreShape();
 
 SceneNode* getSceneNode() { return mSceneNode; }
-
-//animation
-void         updateAnimations (Real renderTime, bool stop);
-void         setupAnimations  ();
-void         fadeAnimations   (Real deltaTime);
-void         setTopAnimation  (AnimID id, bool reset);
-void         setBaseAnimation (AnimID id, bool reset);
-void         addTime          (Real deltaTime);
-
-//animation
-AnimationState* mAnims[NUM_ANIMS];     // master animation list
-AnimID          mBaseAnimID;           // current base (full- or lower-body) animation
-AnimID          mTopAnimID;            // current top (upper-body) animation
-bool            mFadingIn[NUM_ANIMS];  // which animations are fading in
-bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
-Real            mTimer;                // general timer to see how long animations have been playing
-AnimationState  *mAnimationState;
-bool            mStop;
 
 //ogre scene stuff
 std::string         mMeshName;
