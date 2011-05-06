@@ -14,6 +14,7 @@ class OgreShape : public Shape
 
 public:
 OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+OgreShape(std::string name, Vector3D* position);
 ~OgreShape();
 
 SceneNode* getSceneNode() { return mSceneNode; }

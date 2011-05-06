@@ -18,8 +18,13 @@ ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape);
 ~ClientSidePlayer();
 
 //movement
-void processTick();
-void interpolateTick(float renderTime);
+void processTick    ();
+void processRotation();
+
+void interpolateTick    (float renderTime);
+void interpolateRotation(float renderTime);
+
+
 void calculateVelocity(Command *command, float frametime);
 
 //associated client

@@ -22,119 +22,205 @@ ClientSidePlayer::~ClientSidePlayer()
 
 void ClientSidePlayer::processTick()
 {
-
 	float deltaX = mClient->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
     float deltaZ = mClient->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
 
 	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
 
-	if(dist > 8.0)
-	{
-		mClient->mCommand.mCatchup = true; 
-	}
+	  if(dist > 8.0)
+	   {
+          mClient->mCommand.mCatchup = true;
+	   }
 
-	if(dist < 2.0)
-	{
-        mClient->mCommand.mCatchup = false;
-	}
-	if(mClient->mServerFrame.mVelocity.x == 0.0 && mClient->mServerFrame.mVelocity.z == 0.0)
-	{
-		mClient->mCommand.mStop = true;
-	}
-	else
-	{
-        mClient->mCommand.mStop = false;
-	}
-	     
-	if (mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
-	{
-		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
-		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
-		   
-		serverDest.x = mClient->mServerFrame.mVelocity.x;
-		serverDest.z = mClient->mServerFrame.mVelocity.z;
-		serverDest.normalise();
+	   if(dist < 2.0)
+          mClient->mCommand.mCatchup = false;
 
-		float multiplier = dist * 10.0;
-		serverDest = serverDest * multiplier;
-		serverDest.x = mClient->mServerFrame.mOrigin.x + serverDest.x;
-		serverDest.z = mClient->mServerFrame.mOrigin.z + serverDest.z;
+	   if(mClient->mServerFrame.mVelocity.x == 0.0 && mClient->mServerFrame.mVelocity.z == 0.0)
+	   {
+		   mClient->mCommand.mStop = true;
+	   }
+	   else
+	   {
+          mClient->mCommand.mStop = false;
+	   }
 
-		myDest.x = serverDest.x - mShape->getSceneNode()->getPosition().x;
-		myDest.z = serverDest.z - mShape->getSceneNode()->getPosition().z;
+	   if(mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
+	   {
+		    Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
+		    Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 
-		float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2);
-		predictDist = sqrt(predictDist);
+			serverDest.x = mClient->mServerFrame.mVelocity.x;
+			serverDest.z = mClient->mServerFrame.mVelocity.z;
+			serverDest.normalise();
 
-		myDest.normalise();
+			float multiplier = dist * 10.0;
+			serverDest = serverDest * multiplier;
+			serverDest.x = mClient->mServerFrame.mOrigin.x + serverDest.x;
+			serverDest.z = mClient->mServerFrame.mOrigin.z + serverDest.z;
 
-		float vel = sqrt(pow(mClient->mServerFrame.mVelocity.x, 2) + pow(mClient->mServerFrame.mVelocity.z, 2))/mClient->mCommand.mMilliseconds;
-        float time = dist * 10.0/vel;
+			myDest.x = serverDest.x - mShape->getSceneNode()->getPosition().x;
+			myDest.z = serverDest.z - mShape->getSceneNode()->getPosition().z;
 
-		myDest = myDest * predictDist/time;
 
-		mClient->mCommand.mVelocity.x = myDest.x;
-	    mClient->mCommand.mVelocity.z = myDest.z;
-   }
-   else
-   {
-        Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
-		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
-		   
-	    serverDest.x = mClient->mServerFrame.mVelocity.x;
-		serverDest.z = mClient->mServerFrame.mVelocity.z;
-		serverDest.normalise();
-        serverDest = serverDest * 0.1;
+			float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2);
+			predictDist = sqrt(predictDist);
 
-		mClient->mCommand.mVelocity.x = serverDest.x;
-	    mClient->mCommand.mVelocity.z = serverDest.z;
-	}
+			myDest.normalise();
+
+			float vel = sqrt(pow(mClient->mServerFrame.mVelocity.x, 2) + pow(mClient->mServerFrame.mVelocity.z, 2))/mClient->mCommand.mMilliseconds;
+            //float time = dist * 10.0/vel;
+			float time = dist * 10.0/0.2;
+
+			myDest = myDest * predictDist/time;
+
+			mClient->mCommand.mVelocity.x = myDest.x;
+	        mClient->mCommand.mVelocity.z = myDest.z;
+	   }
+	   else
+	   {
+          Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
+		  Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
+
+	      serverDest.x = mClient->mServerFrame.mVelocity.x;
+		  serverDest.z = mClient->mServerFrame.mVelocity.z;
+		  serverDest.normalise();
+          serverDest = serverDest * 0.2;
+
+		  mClient->mCommand.mVelocity.x = serverDest.x;
+	      mClient->mCommand.mVelocity.z = serverDest.z;
+
+	   }
+
+	processRotation();
 }
 
 void ClientSidePlayer::interpolateTick(float renderTime)
 {
-	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+  Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	if(mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
-	{
-		transVector.x = mClient->mCommand.mVelocity.x;
-		transVector.z = mClient->mCommand.mVelocity.z;
-		mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
-	}
-    else
-	{
-		transVector.x = mClient->mCommand.mVelocity.x;
-		transVector.z = mClient->mCommand.mVelocity.z;
-		mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
-	}
+   if(mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
+   {
+	   transVector.x = mClient->mCommand.mVelocity.x;
+	   transVector.z = mClient->mCommand.mVelocity.z;
+	   mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+   }
+   else
+   {
+	  transVector.x = mClient->mCommand.mVelocity.x;
+	  transVector.z = mClient->mCommand.mVelocity.z;
+	  mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+   }
 
-	transVector.normalise();
+   mShape->mOgreAnimation->updateAnimations(renderTime,mClient->mCommand->mStop);
 
-	Ogre::Quaternion toGoal = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(transVector);
-	Ogre::Real yawToGoal = toGoal.getYaw().valueDegrees();
-
-	// this is how much the character CAN turn this frame
-	Real yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * renderTime * TURN_SPEED;
-
-	// turn as much as we can, but not more than we need to
-	if (yawToGoal < 0)
-	{
-		yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
-	}
-	else if (yawToGoal > 0) 
-	{
-		yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
-	}	
-
-	mShape->getSceneNode()->yaw(Ogre::Degree(yawToGoal));
-
-	//run updateAnimations in Animation Class
-	mShape->mOgreAnimation->updateAnimations(renderTime, mClient->mCommand.mStop);
+   interpolateRotation(renderTime);
 }
+
+
+void ClientSidePlayer::processRotation()
+{
+
+	Ogre::Vector3 serverRotOld  = Ogre::Vector3::ZERO;
+	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+
+	serverRotOld.x = mClient->mServerFrame.mVelocityOld.x;
+	serverRotOld.z = mClient->mServerFrame.mVelocityOld.z;
+
+	serverRotNew.x = mClient->mServerFrame.mVelocity.x;
+	serverRotNew.z = mClient->mServerFrame.mVelocity.z;
+
+	serverRotNew.normalise();
+	serverRotOld.normalise();
+
+	//calculate how far off we are from server
+    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+
+	// convert to degrees
+	Real degreesToServer = toServer.getYaw().valueDegrees();
+
+	// are we too far off
+	if(abs(degreesToServer) > 6.0)
+       mClient->mCommand.mCatchupRot = true;
+
+	//calculate server rotation from last tick to new one
+    Quaternion serverRot = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew, Vector3::UNIT_Y);
+
+    // convert to degrees
+    Real serverRotSpeed = serverRot.getYaw().valueDegrees();
+
+	//LogString("serverRotSpeed %f", serverRotSpeed);
+
+	// yaw server guy to new rot
+	mShape->getSceneNode()->yaw(Degree(serverRotSpeed));
+
+
+	//if(mClient->command.mCatchupRot == true && mClient->command.mStop == false)
+	if(serverRotSpeed != 0.0 && mClient->mCommand.mCatchupRot == true)
+	{
+       // if server rot counter-clockwise hardcode server rot to +500
+	    if(serverRotSpeed > 0.0)
+          serverRotSpeed = 250.0;
+	    else //clockwise - set to -500
+          serverRotSpeed = -250.0;
+
+		if(degreesToServer/serverRotSpeed > 0.0)
+           serverRotSpeed = serverRotSpeed * 1.20;
+		else
+           serverRotSpeed = serverRotSpeed * 0.8;
+	}
+	else if(serverRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == true)
+	{
+       if (degreesToServer > 0.0)
+		  serverRotSpeed = 250.0;
+	   else //clockwise - set to -500
+          serverRotSpeed = -250.0;
+	}
+	else if (serverRotSpeed == 0.0)
+       serverRotSpeed = 0.0;
+	else
+	{
+       // if server rot counter-clockwise hardcode server rot to +500
+	    if(serverRotSpeed > 0.0)
+          serverRotSpeed = 250.0;
+	   else //clockwise - set to -500
+          serverRotSpeed = -250.0;
+	}
+
+	mClient->mCommand.mRotSpeed = serverRotSpeed;
+
+	//Real rotSpeed;
+
+}
+
+void ClientSidePlayer::interpolateRotation(float renderTime)
+{
+    float rotSpeed = mClient->mCommand.mRotSpeed * renderTime;
+	mShape->getSceneNode()->yaw(Degree(rotSpeed));
+
+    //LogString("rotSpeed %f", rotSpeed);
+
+	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+
+	serverRotNew.x = mClient->mServerFrame.mVelocity.x;
+	serverRotNew.z = mClient->mServerFrame.mVelocity.z;
+
+	serverRotNew.normalise();
+
+	//calculate how far off we are from server
+    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+
+	// convert to degrees
+	Real degreesToServer = toServer.getYaw().valueDegrees();
+
+	// are we back in sync
+	if(abs(degreesToServer) < 4.0)
+       mClient->mCommand.mCatchupRot = false;
+}
+
 
 void ClientSidePlayer::calculateVelocity(Command* command, float frametime)
 {
-	float multiplier = 100.0f;
+ 	float multiplier = 200.0f;
 
  	command->mVelocity.x = 0.0f;
  	command->mVelocity.z = 0.0f;
@@ -160,10 +246,10 @@ void ClientSidePlayer::calculateVelocity(Command* command, float frametime)
 	}
 
 	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
-
 	if(length != 0.0)
 	{
-		command->mVelocity.x = command->mVelocity.x/length * 0.1 * frametime * 1000;
-		command->mVelocity.z = command->mVelocity.z/length * 0.1 * frametime * 1000;
+	   command->mVelocity.x = command->mVelocity.x/length * 0.2 * frametime * 1000;
+	   command->mVelocity.z = command->mVelocity.z/length * 0.2 * frametime * 1000;
 	}
 }
+

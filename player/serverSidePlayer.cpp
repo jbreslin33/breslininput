@@ -11,6 +11,7 @@
 ServerSidePlayer::ServerSidePlayer(std::string name, ServerSideClient* client) : Player(name)
 {
 	mClient = client;
+	//mKeyDirection = Vector3::ZERO;
 }
 
 ServerSidePlayer::~ServerSidePlayer()
@@ -64,3 +65,29 @@ void ServerSidePlayer::calculateVelocity(Command *command, float frametime)
 	   command->mVelocity.z = command->mVelocity.z/length * 0.1 * frametime * 1000;
 	}
 }
+
+/*
+
+void ServerSidePlayer::setKeyDirection()
+{
+	if(mClient->character) 
+	{
+		mClient->character->mKeyDirection.x = 0;
+		mClient->character->mKeyDirection.z = 0;
+		mClient->character->mKeyDirection.y = 0;
+		
+		// keep track of the player's intended direction
+		if(mClient->command.key & KEY_UP) 
+			mClient->character->mKeyDirection.z += -1;
+
+		if(mClient->command.key & KEY_LEFT) 
+			mClient->character->mKeyDirection.x += -1;
+		
+		if(mClient->command.key & KEY_DOWN) 
+           mClient->character->mKeyDirection.z += 1;
+
+		if(mClient->command.key & KEY_RIGHT) 
+			mClient->character->mKeyDirection.x += 1;
+	}
+}
+*/
