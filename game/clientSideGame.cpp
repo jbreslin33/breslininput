@@ -161,7 +161,7 @@ void ClientSideGame::MoveServerPlayer(void)
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
 	transVector.x = mLocalClient->mServerFrame.mOrigin.x;
-	transVector.z = -mLocalClient->mServerFrame.mOrigin.z;
+	transVector.z = mLocalClient->mServerFrame.mOrigin.z;
 
 	if (mLocalClient->mServerPlayer)
 	{
@@ -240,7 +240,7 @@ void ClientSideGame::ReadPackets(void)
 			{
 				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
 				mClientVector.at(i)->mPlayer->processTick();
-				MoveServerPlayer();
+				//MoveServerPlayer();
 			}
 			break;
 

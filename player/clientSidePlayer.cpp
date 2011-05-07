@@ -14,6 +14,7 @@ ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, O
 {
 	mClient = client;
 	mShape  = shape;
+	serverRotSpeed = 0.0;
 }
 
 ClientSidePlayer::~ClientSidePlayer()
@@ -146,7 +147,7 @@ void ClientSidePlayer::processRotation()
     Quaternion serverRot = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
-    Real serverRotSpeed = serverRot.getYaw().valueDegrees();
+    serverRotSpeed = serverRot.getYaw().valueDegrees();
 
 	//LogString("serverRotSpeed %f", serverRotSpeed);
 
@@ -159,34 +160,34 @@ void ClientSidePlayer::processRotation()
 	{
        // if server rot counter-clockwise hardcode server rot to +500
 	    if(serverRotSpeed > 0.0)
-          serverRotSpeed = 250.0;
+          mClient->mCommand.mRotSpeed = 250.0;
 	    else //clockwise - set to -500
-          serverRotSpeed = -250.0;
+          mClient->mCommand.mRotSpeed = -250.0;
 
 		if(degreesToServer/serverRotSpeed > 0.0)
-           serverRotSpeed = serverRotSpeed * 1.20;
+           mClient->mCommand.mRotSpeed = serverRotSpeed * 1.20;
 		else
-           serverRotSpeed = serverRotSpeed * 0.8;
+           mClient->mCommand.mRotSpeed = serverRotSpeed * 0.8;
 	}
 	else if(serverRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == true)
 	{
        if (degreesToServer > 0.0)
-		  serverRotSpeed = 250.0;
+		  mClient->mCommand.mRotSpeed = 250.0;
 	   else //clockwise - set to -500
-          serverRotSpeed = -250.0;
+          mClient->mCommand.mRotSpeed = -250.0;
 	}
 	else if (serverRotSpeed == 0.0)
-       serverRotSpeed = 0.0;
+       mClient->mCommand.mRotSpeed = 0.0;
 	else
 	{
        // if server rot counter-clockwise hardcode server rot to +500
 	    if(serverRotSpeed > 0.0)
-          serverRotSpeed = 250.0;
+          mClient->mCommand.mRotSpeed = 250.0;
 	   else //clockwise - set to -500
-          serverRotSpeed = -250.0;
+          mClient->mCommand.mRotSpeed = -250.0;
 	}
 
-	mClient->mCommand.mRotSpeed = serverRotSpeed;
+	//mClient->mCommand.mRotSpeed = serverRotSpeed;
 
 	//Real rotSpeed;
 
@@ -215,6 +216,10 @@ void ClientSidePlayer::interpolateRotation(float renderTime)
 	// are we back in sync
 	if(abs(degreesToServer) < 4.0)
        mClient->mCommand.mCatchupRot = false;
+
+	if (serverRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == false)
+       mClient->mCommand.mRotSpeed = 0.0;
+
 }
 
 

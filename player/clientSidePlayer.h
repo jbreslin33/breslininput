@@ -33,6 +33,8 @@ ClientSideClient* mClient;
 //associated Shape
 OgreShape* mShape;
 
+float serverRotSpeed;
+
 };
 
 #endif
