@@ -146,15 +146,11 @@ void ClientSidePlayer::processRotation()
 	//calculate server rotation from last tick to new one
 	Quaternion serverRot = mClient->mServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew, Vector3::UNIT_Y);
 
-
     // convert to degrees
     serverRotSpeed = serverRot.getYaw().valueDegrees();
 
-	//LogString("serverRotSpeed %f", serverRotSpeed);
-
 	// yaw server guy to new rot
 	mClient->mServerPlayer->mShape->getSceneNode()->yaw(Degree(serverRotSpeed));
-
 
 	//if(mClient->command.mCatchupRot == true && mClient->command.mStop == false)
 	if(serverRotSpeed != 0.0 && mClient->mCommand.mCatchupRot == true)
@@ -187,11 +183,6 @@ void ClientSidePlayer::processRotation()
 	   else //clockwise - set to -500
           mClient->mCommand.mRotSpeed = -250.0;
 	}
-
-	//mClient->mCommand.mRotSpeed = serverRotSpeed;
-
-	//Real rotSpeed;
-
 }
 
 void ClientSidePlayer::interpolateRotation(float renderTime)

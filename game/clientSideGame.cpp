@@ -40,11 +40,12 @@ void ClientSideGame::AddClient(int local, int ind, char *name)
 	ClientSideClient* clientSideClient = new ClientSideClient();
 	mClientVector.push_back(clientSideClient);
 	createPlayer(clientSideClient, ind);
-
+	createServerPlayer(clientSideClient,ind);
+	
 	if(local)
 	{
 		mLocalClient = clientSideClient;
-		createServerPlayer(clientSideClient,ind);
+		
 		SendRequestNonDeltaFrame();
 	}
 }
