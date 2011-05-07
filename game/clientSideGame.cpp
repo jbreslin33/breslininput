@@ -253,7 +253,7 @@ void ClientSideGame::ReadPackets(void)
 
 			for (int i = 0; i < mClientVector.size(); i++)
 			{
-				LogString("Reading NONDELTAFRAME for client %d", mClientVector.at(i)->mIndex);
+				//LogString("Reading NONDELTAFRAME for client %d", mClientVector.at(i)->mIndex);
 				ReadMoveCommand(&mes, mClientVector.at(i));
 			}
 
@@ -380,7 +380,7 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 		client->mServerFrame.mKey = mes->ReadByte();
 
 		client->mCommand.mKey = client->mServerFrame.mKey;
-		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	// Origin

@@ -5,6 +5,10 @@
 #include <vector>
 #include "../tdreamsock/dreamSock.h"
 
+//Ogre headers
+#include "Ogre.h"
+using namespace Ogre;
+
 class ServerSidePlayer;
 class ServerSideClient;
 class Command;
@@ -26,6 +30,9 @@ class Command;
 class ServerSideGame
 {
 private:
+
+	Ogre::Root* mRoot;
+	
 	dreamServer	*mNetworkServer;
 
 	std::vector<ServerSideClient*> mClientVector;

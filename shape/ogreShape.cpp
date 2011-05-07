@@ -25,17 +25,10 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	mOgreAnimation = new OgreAnimation(mEntity);
 }
 //this is the contructor for server side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position) : Shape(name,position)
+OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : Shape(name,position)
 {
-	Ogre::Root* mRoot;
-
-#ifdef _DEBUG
-	mRoot = new Ogre::Root("plugins_d.cfg");
-#else
-	mRoot = new Ogre::Root("plugins.cfg");
-#endif
-
-	mSceneManager = mRoot->createSceneManager(Ogre::ST_GENERIC);
+	
+	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 	
 	// create main model
 	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::UNIT_Y * CHAR_HEIGHT);

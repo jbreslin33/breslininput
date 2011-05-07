@@ -33,10 +33,19 @@ Vector3D VectorSubstract(Vector3D *vec1, Vector3D *vec2)
 
 ServerSideGame::ServerSideGame()
 {
+
+#ifdef _DEBUG
+	mRoot = new Ogre::Root("plugins_d.cfg");
+#else
+	mRoot = new Ogre::Root("plugins.cfg");
+#endif
+
 	mNetworkServer = new dreamServer;
 	mRealTime	= 0;
 	mServerTime	= 0;
 	mFramenum	= 0;
+
+
 }
 
 ServerSideGame::~ServerSideGame()
@@ -93,7 +102,7 @@ void ServerSideGame::AddClient(void)
 
 		mClientVector.push_back(serverSideClient);
 	
-		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D());
+		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mRoot);
 		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
 		netList->next = NULL;
 	}
@@ -107,7 +116,7 @@ void ServerSideGame::AddClient(void)
 
 		mClientVector.push_back(serverSideClient);
 
-		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D());
+		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mRoot);
 		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
 	}
 }
@@ -299,7 +308,7 @@ void ServerSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *c
 	{
 		client->mCommand.mKey = mes->ReadByte();
 
-		LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
+		//LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
 	}
 
 	// Read time to run command
