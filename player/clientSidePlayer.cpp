@@ -166,9 +166,9 @@ void ClientSidePlayer::processRotation()
           mClient->mCommand.mRotSpeed = -250.0;
 
 		if(degreesToServer/serverRotSpeed > 0.0)
-           mClient->mCommand.mRotSpeed = serverRotSpeed * 1.20;
+           mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * 1.20;
 		else
-           mClient->mCommand.mRotSpeed = serverRotSpeed * 0.8;
+           mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * 0.8;
 	}
 	else if(serverRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == true)
 	{
