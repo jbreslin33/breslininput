@@ -27,8 +27,6 @@ ClientSideGame::~ClientSideGame()
 
 void ClientSideGame::createPlayer(ClientSideClient* client, int index)
 {
-	
-	//ClientSidePlayer* clientSidePlayer = new ClientSidePlayer(client,mSceneMgr,"jay" + index,0,0,0,"sinbad.mesh");
 	OgreShape* shape = new OgreShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	
 	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("jay" + index,client,shape);
