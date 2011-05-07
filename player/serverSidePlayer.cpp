@@ -1,17 +1,26 @@
 #include "serverSidePlayer.h"
 #include "../tdreamsock/dreamSock.h"
+
+#include "../shape/ogreShape.h"
+
 #include "../math/vector3D.h"
 #include <math.h>
+
+#define RUN_SPEED 200           // character running speed in units per second
+#define TURN_SPEED 250.0f      // character turning in degrees per second
 
 #define KEY_UP					1
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-ServerSidePlayer::ServerSidePlayer(std::string name, ServerSideClient* client) : Player(name)
+ServerSidePlayer::ServerSidePlayer(std::string name, ServerSideClient* client, OgreShape* shape) : Player(name)
 {
 	mClient = client;
-	//mKeyDirection = Vector3::ZERO;
+	mShape  = shape;
+
+	mKeyDirection = Vector3::ZERO;
+    mGoalDirection = Vector3::ZERO;
 }
 
 ServerSidePlayer::~ServerSidePlayer()
@@ -22,18 +31,67 @@ void ServerSidePlayer::processTick()
 {
 	float clientFrametime;
 
-	float multiplier = 100.0f;
+	float multiplier = 200.0f;
 
 	clientFrametime = mClient->mCommand.mMilliseconds / 1000.0f;;
 
 	calculateVelocity(&mClient->mCommand, clientFrametime);
 
-	int f = mClient->netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+	setKeyDirection();
 
+	mGoalDirection = Vector3::ZERO;   // we will calculate this
+	Real yawAtSpeed;
+
+	if (!mKeyDirection.isZeroLength())
+	{
+		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
+		mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
+
+
+		mGoalDirection.y = 0;
+		mGoalDirection.normalise();
+
+		Quaternion toGoal = mShape->mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
+
+		// calculate how much the character has to turn to face goal direction
+		Real yawToGoal = toGoal.getYaw().valueDegrees();
+
+		// this is how much the character CAN turn this frame
+		if(yawToGoal == 0.0)
+			yawAtSpeed = 0.0;
+		else
+		   yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
+	
+		// turn as much as we can, but not more than we need to
+		if (yawToGoal < 0) 
+			yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
+		else if (yawToGoal > 0)
+			yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
+			
+		mShape->mSceneNode->yaw(Degree(yawToGoal));
+
+		// move in current body direction (not the goal direction)
+		mShape->mSceneNode->translate(0, 0, clientFrametime * RUN_SPEED,
+			Node::TS_LOCAL);
+
+	}
+
+	mClient->mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
+	mClient->mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+
+	if(mClient->mCommand.mVelocity.x != 0.0 || mClient->mCommand.mVelocity.z != 0.0)
+	{
+	   mClient->mCommand.mVelocity.x = mShape->mSceneNode->getOrientation().zAxis().x;
+	   mClient->mCommand.mVelocity.z = mShape->mSceneNode->getOrientation().zAxis().z;
+	}
+
+	int f = mClient->netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+	mClient->mProcessedFrame = f;
 }
-void ServerSidePlayer::calculateVelocity(Command *command, float frametime)
+void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 {
-	float multiplier = 100.0f;
+
+	float multiplier = 200.0f;
 
 	command->mVelocity.x = 0.0f;
 	command->mVelocity.z = 0.0f;
@@ -61,33 +119,31 @@ void ServerSidePlayer::calculateVelocity(Command *command, float frametime)
 	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
 	if(length != 0.0)
 	{
-	   command->mVelocity.x = command->mVelocity.x/length * 0.1 * frametime * 1000;
-	   command->mVelocity.z = command->mVelocity.z/length * 0.1 * frametime * 1000;
+	   command->mVelocity.x = command->mVelocity.x/length * 0.2 * frametime * 1000;
+	   command->mVelocity.z = command->mVelocity.z/length * 0.2 * frametime * 1000;
 	}
 }
 
-/*
 
 void ServerSidePlayer::setKeyDirection()
 {
-	if(mClient->character) 
+	if(mShape) 
 	{
-		mClient->character->mKeyDirection.x = 0;
-		mClient->character->mKeyDirection.z = 0;
-		mClient->character->mKeyDirection.y = 0;
+		mKeyDirection.x = 0;
+		mKeyDirection.z = 0;
+		mKeyDirection.y = 0;
 		
 		// keep track of the player's intended direction
-		if(mClient->command.key & KEY_UP) 
-			mClient->character->mKeyDirection.z += -1;
+		if(mClient->mCommand.mKey & KEY_UP) 
+			mKeyDirection.z += -1;
 
-		if(mClient->command.key & KEY_LEFT) 
-			mClient->character->mKeyDirection.x += -1;
+		if(mClient->mCommand.mKey & KEY_LEFT) 
+			mKeyDirection.x += -1;
 		
-		if(mClient->command.key & KEY_DOWN) 
-           mClient->character->mKeyDirection.z += 1;
+		if(mClient->mCommand.mKey & KEY_DOWN) 
+           mKeyDirection.z += 1;
 
-		if(mClient->command.key & KEY_RIGHT) 
-			mClient->character->mKeyDirection.x += 1;
+		if(mClient->mCommand.mKey & KEY_RIGHT) 
+			mKeyDirection.x += 1;
 	}
 }
-*/

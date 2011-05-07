@@ -8,24 +8,31 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+class OgreShape;
+
 class ServerSidePlayer : public Player
 {
 
 public:
 
-ServerSidePlayer(std::string name, ServerSideClient* client);
+ServerSidePlayer(std::string name, ServerSideClient* client, OgreShape* shape);
 ~ServerSidePlayer();
 
 //movement
 void processTick();
 void calculateVelocity(Command *command, float frametime);
-//void setKeyDirection();
+void setKeyDirection();
 
 //associated client
 ServerSideClient* mClient;
 
+//associated shape
+OgreShape* mShape;
+
 //keys
 Vector3 mKeyDirection;
+
+Vector3 mGoalDirection;
 
 };
 

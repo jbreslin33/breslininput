@@ -12,11 +12,15 @@ Command();
 Vector3D mOrigin;            //finish origin of frame/tick
 Vector3D mVelocity;	         //velocity during frame/tick
 Vector3D mPredictedOrigin;
+Vector3D mVelocityOld;	//velocity during last frame/tick
 
-int      mKey;               //key pressed
-int      mMilliseconds;      //not used
+float mRotSpeed;
 
-bool     mCatchup;
-bool     mStop;
+int mKey;               //key pressed
+int mMilliseconds;      //not used
+
+bool mCatchup;
+bool mCatchupRot;
+bool mStop;
 };
 #endif

@@ -111,7 +111,7 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 	  mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
    }
 
-   mShape->mOgreAnimation->updateAnimations(renderTime,mClient->mCommand->mStop);
+   mShape->mOgreAnimation->updateAnimations(renderTime,mClient->mCommand.mStop);
 
    interpolateRotation(renderTime);
 }

@@ -1,8 +1,10 @@
 #include "serverSideGame.h"
 
-#include "../shape/shape.h"
+#include "../shape/ogreShape.h"
 #include "../client/serverSideClient.h"
 #include "../player/serverSidePlayer.h"
+
+
 #include <fstream>
 #include <math.h>
 #include <malloc.h>
@@ -91,7 +93,8 @@ void ServerSideGame::AddClient(void)
 
 		mClientVector.push_back(serverSideClient);
 	
-		serverSideClient->mPlayer = new ServerSidePlayer("jay",serverSideClient);
+		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D());
+		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
 		netList->next = NULL;
 	}
 	else
@@ -104,7 +107,8 @@ void ServerSideGame::AddClient(void)
 
 		mClientVector.push_back(serverSideClient);
 
-		serverSideClient->mPlayer = new ServerSidePlayer("jay",serverSideClient);
+		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D());
+		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
 	}
 }
 
