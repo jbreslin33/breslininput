@@ -267,11 +267,6 @@ if(WIN32)
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
  
-	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/Media
-		DESTINATION ./
-		CONFIGURATIONS Release RelWithDebInfo Debug
-	)
- 
 	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
 		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
 		DESTINATION bin
