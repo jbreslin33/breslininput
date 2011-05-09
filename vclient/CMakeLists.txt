@@ -289,6 +289,7 @@ if(WIN32)
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_Direct3D9_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/RenderSystem_GL_d.dll
 		${OGRE_PLUGIN_DIR_DBG}/libOIS_d.dll
+		${OGRE_PLUGIN_DIR_DBG}/OIS_d.dll
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)
