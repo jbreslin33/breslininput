@@ -267,14 +267,14 @@ if(WIN32)
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/win32/plugins.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/win32/resources.cfg
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins_d.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources_d.cfg
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/win32/plugins_d.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/win32/resources_d.cfg
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)
@@ -317,14 +317,9 @@ if(UNIX)
 	install(TARGETS Server
 		RUNTIME DESTINATION bin
 		CONFIGURATIONS All)
- 
-	install(DIRECTORY ${CMAKE_SOURCE_DIR}/dist/media
-		DESTINATION ./
-		CONFIGURATIONS Release RelWithDebInfo Debug
-	)
- 
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
+  
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/linux/plugins.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/linux/resources.cfg
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo Debug
 	)
