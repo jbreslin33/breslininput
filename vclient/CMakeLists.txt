@@ -320,8 +320,8 @@ if(UNIX)
 		CONFIGURATIONS Release RelWithDebInfo Debug
 	)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/linux/plugins.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/linux/resources.cfg
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo Debug
 	)
