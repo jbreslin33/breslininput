@@ -263,14 +263,14 @@ if(WIN32)
 		CONFIGURATIONS Release RelWithDebInfo Debug
 	)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources.cfg
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/win32/plugins.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/win32/resources.cfg
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
  
-	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/plugins_d.cfg
-		${CMAKE_SOURCE_DIR}/dist/bin/resources_d.cfg
+	install(FILES ${CMAKE_SOURCE_DIR}/dist/bin/win32/plugins_d.cfg
+		${CMAKE_SOURCE_DIR}/dist/bin/win32/resources_d.cfg
 		DESTINATION bin
 		CONFIGURATIONS Debug
 	)
@@ -281,6 +281,7 @@ if(WIN32)
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_Direct3D9.dll
 		${OGRE_PLUGIN_DIR_REL}/RenderSystem_GL.dll
 		${OGRE_PLUGIN_DIR_REL}/libOIS.dll
+		${OGRE_PLUGIN_DIR_REL}/OIS.dll
 		DESTINATION bin
 		CONFIGURATIONS Release RelWithDebInfo
 	)
