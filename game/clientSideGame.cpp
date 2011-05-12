@@ -379,7 +379,7 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 		client->mServerFrame.mKey = mes->ReadByte();
 
 		client->mCommand.mKey = client->mServerFrame.mKey;
-		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	// Origin
@@ -392,11 +392,17 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 	client->mServerFrame.mOrigin.x = mes->ReadFloat();
 	client->mServerFrame.mOrigin.z = mes->ReadFloat();
 
-	client->mServerFrame.mVelocityOld.x = client->mServerFrame.mVelocity.x;
-	client->mServerFrame.mVelocityOld.z = client->mServerFrame.mVelocity.z;
-
 	client->mServerFrame.mVelocity.x = mes->ReadFloat();
 	client->mServerFrame.mVelocity.z = mes->ReadFloat();
+
+	client->mServerFrame.mRotOld.x = client->mServerFrame.mRot.x;
+	client->mServerFrame.mRotOld.z = client->mServerFrame.mRot.z;
+
+	client->mServerFrame.mRot.x = mes->ReadFloat();
+	client->mServerFrame.mRot.z = mes->ReadFloat();
+
+	LogString("client->mServerFrame.mVelocity.x %f", client->mServerFrame.mVelocity.x);
+	LogString("client->mServerFrame.mVelocity.z %f", client->mServerFrame.mVelocity.z);
 
 	client->mCommand.mMilliseconds = mes->ReadByte();
 }

@@ -374,5 +374,9 @@ void ServerSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
 
+    mes->WriteFloat(command->mRot.x);
+	mes->WriteFloat(command->mRot.z);
+
+
 	mes->WriteByte(command->mMilliseconds);
 }

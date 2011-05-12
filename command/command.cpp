@@ -14,9 +14,9 @@ Command::Command()
 	mPredictedOrigin.y = 0.0;
 	mPredictedOrigin.z = 0.0;
 
-	mVelocityOld.x = 0.0;
-	mVelocityOld.y = 0.0;
-	mVelocityOld.z = 0.0;
+	mRotOld.x = 0.0;
+	mRotOld.y = 0.0;
+	mRotOld.z = 0.0;
 
 	mKey = 0;
 

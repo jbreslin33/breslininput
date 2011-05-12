@@ -124,11 +124,11 @@ void ClientSidePlayer::processRotation()
 	Ogre::Vector3 serverRotOld  = Ogre::Vector3::ZERO;
 	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
 
-	serverRotOld.x = mClient->mServerFrame.mVelocityOld.x;
-	serverRotOld.z = mClient->mServerFrame.mVelocityOld.z;
+	serverRotOld.x = mClient->mServerFrame.mRotOld.x;
+	serverRotOld.z = mClient->mServerFrame.mRotOld.z;
 
-	serverRotNew.x = mClient->mServerFrame.mVelocity.x;
-	serverRotNew.z = mClient->mServerFrame.mVelocity.z;
+	serverRotNew.x = mClient->mServerFrame.mRot.x;
+	serverRotNew.z = mClient->mServerFrame.mRot.z;
 
 	serverRotNew.normalise();
 	serverRotOld.normalise();
@@ -190,12 +190,34 @@ void ClientSidePlayer::interpolateRotation(float renderTime)
     float rotSpeed = mClient->mCommand.mRotSpeed * renderTime;
 	mShape->getSceneNode()->yaw(Degree(rotSpeed));
 
-    //LogString("rotSpeed %f", rotSpeed);
+
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+LogString("ghjhgjkjhkhjkhjkhjkhjkhjkhjkjhkgfhgfhfgh");
+
+
+
+
+LogString("rotSpeed %f", rotSpeed);
+
 
 	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
 
-	serverRotNew.x = mClient->mServerFrame.mVelocity.x;
-	serverRotNew.z = mClient->mServerFrame.mVelocity.z;
+	serverRotNew.x = mClient->mServerFrame.mRot.x;
+	serverRotNew.z = mClient->mServerFrame.mRot.z;
 
 	serverRotNew.normalise();
 
@@ -211,6 +233,9 @@ void ClientSidePlayer::interpolateRotation(float renderTime)
 
 	if (serverRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == false)
        mClient->mCommand.mRotSpeed = 0.0;
+
+	LogString("degreesToServer %f", degreesToServer);
+
 
 }
 

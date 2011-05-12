@@ -12,15 +12,16 @@ Command();
 Vector3D mOrigin;            //finish origin of frame/tick
 Vector3D mVelocity;	         //velocity during frame/tick
 Vector3D mPredictedOrigin;
-Vector3D mVelocityOld;	//velocity during last frame/tick
+Vector3D mRot; //rotation during frame/tick
+Vector3D mRotOld;	//velocity during last frame/tick
 
 float mRotSpeed;
 
 int mKey;               //key pressed
 int mMilliseconds;      //not used
 
-bool mCatchup;
-bool mCatchupRot;
-bool mStop;
+bool mCatchup;          //true = pos needs to catchup
+bool mCatchupRot;       //true = rot needs to catchup
+bool mStop;             //true = server is not moving
 };
 #endif
