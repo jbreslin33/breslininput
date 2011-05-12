@@ -35,6 +35,17 @@ OgreShape* mShape;
 
 float serverRotSpeed;
 
+float runSpeed;
+float turnSpeed;
+float posInterpLimitHigh;
+float posInterpLimitLow;
+float posInterpFactor;
+
+float rotInterpLimitHigh;
+float rotInterpLimitLow;
+float rotInterpIncrease; 
+float rotInterpDecrease;
+
 };
 
 #endif

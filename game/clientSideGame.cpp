@@ -401,9 +401,6 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 	client->mServerFrame.mRot.x = mes->ReadFloat();
 	client->mServerFrame.mRot.z = mes->ReadFloat();
 
-	LogString("client->mServerFrame.mVelocity.x %f", client->mServerFrame.mVelocity.x);
-	LogString("client->mServerFrame.mVelocity.z %f", client->mServerFrame.mVelocity.z);
-
 	client->mCommand.mMilliseconds = mes->ReadByte();
 }
 
