@@ -35,20 +35,25 @@ ClientSideClient* mClient;
 OgreShape* mShape;
 
 //state machines
-MoveStateMachine*   moveStateMachine;
+MoveStateMachine*   mMoveStateMachine;
 
-float serverRotSpeed;
+float mServerRotSpeed;
 
-float runSpeed;
-float turnSpeed;
-float posInterpLimitHigh;
-float posInterpLimitLow;
-float posInterpFactor;
+float mRunSpeed;
+float mTurnSpeed;
+float mPosInterpLimitHigh;
+float mPosInterpLimitLow;
+float mPosInterpFactor;
 
-float rotInterpLimitHigh;
-float rotInterpLimitLow;
-float rotInterpIncrease; 
-float rotInterpDecrease;
+float mRotInterpLimitHigh;
+float mRotInterpLimitLow;
+float mRotInterpIncrease; 
+float mRotInterpDecrease;
+
+//deltas
+float mDeltaX;
+float mDeltaZ;
+float mDeltaPosition;
 
 };
 

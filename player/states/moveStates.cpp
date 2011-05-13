@@ -20,14 +20,8 @@ void Normal_Move::enter(ClientSidePlayer* player)
 }
 void Normal_Move::execute(ClientSidePlayer* player)
 {
-	float deltaX = player->mClient->mServerFrame.mOrigin.x - player->mShape->getSceneNode()->getPosition().x;
-    float deltaZ = player->mClient->mServerFrame.mOrigin.z - player->mShape->getSceneNode()->getPosition().z;
-
-	//distance we are off from server
-	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
-
 	// if distance exceeds threshold
-	if(dist > player->posInterpLimitHigh)
+	if(player->mDeltaPosition > player->mPosInterpLimitHigh)
 	{
 		player->mClient->mCommand.mCatchup = true;
 	}
@@ -35,7 +29,7 @@ void Normal_Move::execute(ClientSidePlayer* player)
 	//if server moving and client needs to catchup change to catchup state
 	if(player->mClient->mCommand.mCatchup == true && player->mClient->mCommand.mStop == false)
 	{
-		player->moveStateMachine->changeState(Catchup_Move::Instance());
+		player->mMoveStateMachine->changeState(Catchup_Move::Instance());
 	}
 	else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
 	{
@@ -45,7 +39,7 @@ void Normal_Move::execute(ClientSidePlayer* player)
 	    serverDest.x = player->mClient->mServerFrame.mVelocity.x;
 		serverDest.z = player->mClient->mServerFrame.mVelocity.z;
 		serverDest.normalise();
-        serverDest = serverDest * player->runSpeed/1000.0;
+        serverDest = serverDest * player->mRunSpeed/1000.0;
 
 		player->mClient->mCommand.mVelocity.x = serverDest.x;
 	    player->mClient->mCommand.mVelocity.z = serverDest.z;
@@ -66,14 +60,8 @@ void Catchup_Move::enter(ClientSidePlayer* player)
 }
 void Catchup_Move::execute(ClientSidePlayer* player)
 {
-	float deltaX = player->mClient->mServerFrame.mOrigin.x - player->mShape->getSceneNode()->getPosition().x;
-    float deltaZ = player->mClient->mServerFrame.mOrigin.z - player->mShape->getSceneNode()->getPosition().z;
-
-	//distance we are off from server
-	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
-
 	//if we are back in sync
-	if(dist < player->posInterpLimitLow)
+	if(player->mDeltaPosition < player->mPosInterpLimitLow)
 	{
 		player->mClient->mCommand.mCatchup = false;
 	}
@@ -88,7 +76,7 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 		serverDest.z = player->mClient->mServerFrame.mVelocity.z;
 		serverDest.normalise();
 
-		float multiplier = dist * player->posInterpFactor;
+		float multiplier = player->mDeltaPosition * player->mPosInterpFactor;
 		serverDest = serverDest * multiplier;
 		serverDest.x = player->mClient->mServerFrame.mOrigin.x + serverDest.x;
 		serverDest.z = player->mClient->mServerFrame.mOrigin.z + serverDest.z;
@@ -103,7 +91,7 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 		//server velocity
 		float vel = sqrt(pow(player->mClient->mServerFrame.mVelocity.x, 2) + pow(player->mClient->mServerFrame.mVelocity.z, 2))/player->mClient->mCommand.mMilliseconds;
 		//time needed to get to future server pos
-		float time = dist * player->posInterpFactor/(player->runSpeed/1000.0);
+		float time = player->mDeltaPosition * player->mPosInterpFactor/(player->mRunSpeed/1000.0);
 
 		myDest.normalise();
 
@@ -116,7 +104,7 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 	else //server stopped or we are in sync so just use server vel as is
 	{
 		//this is normal state...
-		player->moveStateMachine->changeState(Normal_Move::Instance());
+		player->mMoveStateMachine->changeState(Normal_Move::Instance());
 	}
 }
 void Catchup_Move::exit(ClientSidePlayer* player)
