@@ -21,16 +21,11 @@ void Normal_Move::enter(ClientSidePlayer* player)
 void Normal_Move::execute(ClientSidePlayer* player)
 {
 	// if distance exceeds threshold
-	if(player->mDeltaPosition > player->mPosInterpLimitHigh)
-	{
-		player->mClient->mCommand.mCatchup = true;
-	}
-    
-	//if server moving and client needs to catchup change to catchup state
-	if(player->mClient->mCommand.mCatchup == true && player->mClient->mCommand.mStop == false)
+	if(player->mDeltaPosition > player->mPosInterpLimitHigh && player->mClient->mCommand.mStop == false)
 	{
 		player->mMoveStateMachine->changeState(Catchup_Move::Instance());
 	}
+    
 	else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
 	{
 		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
@@ -61,13 +56,13 @@ void Catchup_Move::enter(ClientSidePlayer* player)
 void Catchup_Move::execute(ClientSidePlayer* player)
 {
 	//if we are back in sync
-	if(player->mDeltaPosition < player->mPosInterpLimitLow)
+	if(player->mDeltaPosition < player->mPosInterpLimitHigh)
 	{
-		player->mClient->mCommand.mCatchup = false;
+		player->mMoveStateMachine->changeState(Normal_Move::Instance());
 	}
 
 	//if server moving and client needs to catchup
-	if(player->mClient->mCommand.mCatchup == true && player->mClient->mCommand.mStop == false)
+	else if(player->mClient->mCommand.mStop == false)
 	{
 		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO; //vector to future server pos
 		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO; //vector from clienr pos to future server pos
@@ -101,11 +96,7 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 		player->mClient->mCommand.mVelocity.x = myDest.x;
 	    player->mClient->mCommand.mVelocity.z = myDest.z;
 	}
-	else //server stopped or we are in sync so just use server vel as is
-	{
-		//this is normal state...
-		player->mMoveStateMachine->changeState(Normal_Move::Instance());
-	}
+
 }
 void Catchup_Move::exit(ClientSidePlayer* player)
 {
