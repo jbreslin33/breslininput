@@ -3,6 +3,10 @@
 
 #include "player.h"
 
+//Ogre headers
+#include "Ogre.h"
+using namespace Ogre;
+
 #define TURN_SPEED 500.0f      // character turning in degrees per second
 
 class ClientSideClient;
@@ -58,6 +62,11 @@ float mRotInterpDecrease;
 float mDeltaX;
 float mDeltaZ;
 float mDeltaPosition;
+
+//rotation
+Ogre::Vector3 mServerRotOld;
+Ogre::Vector3 mServerRotNew;
+Ogre::Real mDegreesToServer;
 
 };
 

@@ -42,6 +42,11 @@ ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, O
 	mDeltaZ		   = 0.0;
 	mDeltaPosition = 0.0;
 
+	//rotation
+	mServerRotOld  = Ogre::Vector3::ZERO;
+	mServerRotNew  = Ogre::Vector3::ZERO;
+	mDegreesToServer = 0.0;
+
 	//move states
 	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
@@ -99,6 +104,24 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 
 void ClientSidePlayer::processRotation()
 {
+	mServerRotOld  = Ogre::Vector3::ZERO;
+	mServerRotNew  = Ogre::Vector3::ZERO;
+
+	mServerRotOld.x = mClient->mServerFrame.mRotOld.x;
+	mServerRotOld.z = mClient->mServerFrame.mRotOld.z;
+
+	mServerRotNew.x = mClient->mServerFrame.mRot.x;
+	mServerRotNew.z = mClient->mServerFrame.mRot.z;
+
+	mServerRotNew.normalise();
+	mServerRotOld.normalise();
+
+	//calculate how far off we are from server
+ 	Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
+
+	// convert to degrees
+	Real mDegreesToServer = toServer.getYaw().valueDegrees();
+
 	mRotationStateMachine->update();
 }
 
