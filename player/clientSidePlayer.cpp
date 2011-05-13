@@ -99,77 +99,7 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 
 void ClientSidePlayer::processRotation()
 {
-
-	Ogre::Vector3 serverRotOld  = Ogre::Vector3::ZERO;
-	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
-
-	serverRotOld.x = mClient->mServerFrame.mRotOld.x;
-	serverRotOld.z = mClient->mServerFrame.mRotOld.z;
-
-	serverRotNew.x = mClient->mServerFrame.mRot.x;
-	serverRotNew.z = mClient->mServerFrame.mRot.z;
-
-	serverRotNew.normalise();
-	serverRotOld.normalise();
-
-	//calculate how far off we are from server
-    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
-	// convert to degrees
-	Real degreesToServer = toServer.getYaw().valueDegrees();
-
-	// are we too far off
-	if(abs(degreesToServer) > mRotInterpLimitHigh)
-       mClient->mCommand.mCatchupRot = true;
-
-	//calculate server rotation from last tick to new one
-	Quaternion serverRot = mClient->mServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew, Vector3::UNIT_Y);
-
-    // convert to degrees
-    mServerRotSpeed = serverRot.getYaw().valueDegrees();
-
-	// yaw server guy to new rot
-	mClient->mServerPlayer->mShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
-
-	//if we're rotating and need to catch up to server
-	if(mServerRotSpeed != 0.0 && mClient->mCommand.mCatchupRot == true)
-	{
-       // if server rot counter-clockwise
-	    if(mServerRotSpeed > 0.0)
-          mClient->mCommand.mRotSpeed = mTurnSpeed;
-	    else //clockwise
-          mClient->mCommand.mRotSpeed = -mTurnSpeed;
-
-		// if we are rotating counter-clockwise to catch up
-		if(degreesToServer/mServerRotSpeed > 0.0)
-           mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * mRotInterpIncrease;
-		// if we are rotating clockwise to catch up
-		else
-           mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * mRotInterpDecrease;
-	}
-	// if server is not rotating but we still need to catchup
-	else if(mServerRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == true)
-	{
-	   //counter clockwise
-       if (degreesToServer > 0.0)
-		  mClient->mCommand.mRotSpeed = mTurnSpeed;
-	   else //clockwise
-          mClient->mCommand.mRotSpeed = -mTurnSpeed;
-	}
-	// if server is not rotating and we don't need to catch up
-	else if (mServerRotSpeed == 0.0)
-	{
-       mClient->mCommand.mRotSpeed = 0.0;
-	}
-	// just rotating at same speed as server
-	else
-	{
-       // if server rot counter-clockwise
-	    if(mServerRotSpeed > 0.0)
-          mClient->mCommand.mRotSpeed = mTurnSpeed;
-	   else //clockwise
-          mClient->mCommand.mRotSpeed = -mTurnSpeed;
-	}
+	mRotationStateMachine->update();
 }
 
 void ClientSidePlayer::interpolateRotation(float renderTime)
