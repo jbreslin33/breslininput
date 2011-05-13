@@ -26,15 +26,4 @@ public:
   void exit   (ClientSidePlayer* player);
 };
 
-class Stop_Move : public MoveState
-{
-private:
-  Stop_Move(){}
-public:
-  static Stop_Move* Instance();
-  void enter  (ClientSidePlayer* player);
-  void execute(ClientSidePlayer* player);
-  void exit   (ClientSidePlayer* player);
-};
-
 #endif
