@@ -32,21 +32,16 @@ void Normal_Move::execute(ClientSidePlayer* player)
 		player->mClient->mCommand.mCatchup = true;
 	}
 
+	
+	//don't think we need this here becuase if it's true we are not leaving state
 	//if we are back in sync
+	/*
 	if(dist < player->posInterpLimitLow)
 	{
 		player->mClient->mCommand.mCatchup = false;
 	}
-	   
-	// if server has come to a stop
-	if(player->mClient->mServerFrame.mVelocity.x == 0.0 && player->mClient->mServerFrame.mVelocity.z == 0.0)
-	{
-		player->mClient->mCommand.mStop = true;
-	}
-	else //server still moving
-	{
-		player->mClient->mCommand.mStop = false;
-	}
+	  */
+
     
 	//if server moving and client needs to catchup change to catchup state
 	if(player->mClient->mCommand.mCatchup == true && player->mClient->mCommand.mStop == false)
@@ -88,28 +83,26 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 	//distance we are off from server
 	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
 
+
+    //don't think we need this becuase it would keep us in same state..
 	// if distance exceeds threshold
+	/*
 	if(dist > player->posInterpLimitHigh)
 	{
 		player->mClient->mCommand.mCatchup = true;
 	}
-
+*/
 	//if we are back in sync
 	if(dist < player->posInterpLimitLow)
 	{
 		player->mClient->mCommand.mCatchup = false;
 	}
-	   
-	// if server has come to a stop
-	if(player->mClient->mServerFrame.mVelocity.x == 0.0 && player->mClient->mServerFrame.mVelocity.z == 0.0)
-	{
-		player->mClient->mCommand.mStop = true;
-	}
-	else //server still moving
-	{
-		player->mClient->mCommand.mStop = false;
-	}
+
+
     
+
+
+
 	//if server moving and client needs to catchup
 	if(player->mClient->mCommand.mCatchup == true && player->mClient->mCommand.mStop == false)
 	{

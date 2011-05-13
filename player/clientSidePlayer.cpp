@@ -48,6 +48,16 @@ ClientSidePlayer::~ClientSidePlayer()
 
 void ClientSidePlayer::processTick()
 {
+	// if server has come to a stop
+	if(mClient->mServerFrame.mVelocity.x == 0.0 && mClient->mServerFrame.mVelocity.z == 0.0)
+	{
+		mClient->mCommand.mStop = true;
+	}
+	else //server still moving
+	{
+		mClient->mCommand.mStop = false;
+	}
+
 	moveStateMachine->update();
 	processRotation();
 }
