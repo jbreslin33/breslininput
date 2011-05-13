@@ -239,7 +239,7 @@ void ClientSideGame::ReadPackets(void)
 			{
 				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
 				mClientVector.at(i)->mPlayer->processTick();
-				//MoveServerPlayer();
+				MoveServerPlayer();
 			}
 			break;
 
@@ -379,7 +379,7 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 		client->mServerFrame.mKey = mes->ReadByte();
 
 		client->mCommand.mKey = client->mServerFrame.mKey;
-		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	// Origin

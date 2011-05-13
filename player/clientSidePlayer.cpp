@@ -1,10 +1,18 @@
 #include "clientSidePlayer.h"
+
+//just using this for logstring need to fix that
 #include "../tdreamsock/dreamSock.h"
 
+//client,shape,animation combo
 #include "../client/clientSideClient.h"
 #include "../shape/ogreShape.h"
 #include "../animation/ogreAnimation.h"
 
+//states
+#include "states/moveStateMachine.h"
+#include "states/moveStates.h"
+
+//key defines prob should be changed to a variable if possible
 #define KEY_UP					1
 #define KEY_DOWN				2
 #define KEY_LEFT				4
@@ -24,6 +32,14 @@ ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, O
 	rotInterpLimitLow  = 4.0; //how close to server till we are in sync
 	rotInterpIncrease  = 1.20; //rot factor used to catchup to server
     rotInterpDecrease  = 0.80; //rot factor used to allow server to catchup to client
+
+	//states
+	moveStateMachine = new MoveStateMachine(this);    //setup the state machine
+	moveStateMachine->setCurrentState      (Normal_Move::Instance());
+	moveStateMachine->setPreviousState     (Normal_Move::Instance());
+	moveStateMachine->setGlobalState       (NULL);
+	//moveStateMachine->changeState        (Normal_Move::Instance());
+
 }
 
 ClientSidePlayer::~ClientSidePlayer()
@@ -32,96 +48,20 @@ ClientSidePlayer::~ClientSidePlayer()
 
 void ClientSidePlayer::processTick()
 {
-	float deltaX = mClient->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
-    float deltaZ = mClient->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
-
-	//distance we are off from server
-	float dist = sqrt(pow(deltaX, 2) + pow(deltaZ, 2));
-
-	  // if distance exceeds threshold
-	  if(dist > posInterpLimitHigh)
-	   {
-          mClient->mCommand.mCatchup = true;
-	   }
-
-	   //if we are back in sync
-	   if(dist < posInterpLimitLow)
-          mClient->mCommand.mCatchup = false;
-
-	   // if server has come to a stop
-	   if(mClient->mServerFrame.mVelocity.x == 0.0 && mClient->mServerFrame.mVelocity.z == 0.0)
-	   {
-		   mClient->mCommand.mStop = true;
-	   }
-	   else //server still moving
-	   {
-          mClient->mCommand.mStop = false;
-	   }
-    
-	   //if server moving and client needs to catchup
-	   if(mClient->mCommand.mCatchup == true && mClient->mCommand.mStop == false)
-	   {
-		    Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO; //vector to future server pos
-		    Ogre::Vector3 myDest      = Ogre::Vector3::ZERO; //vector from clienr pos to future server pos
-
-			serverDest.x = mClient->mServerFrame.mVelocity.x;
-			serverDest.z = mClient->mServerFrame.mVelocity.z;
-			serverDest.normalise();
-
-			float multiplier = dist * posInterpFactor;
-			serverDest = serverDest * multiplier;
-			serverDest.x = mClient->mServerFrame.mOrigin.x + serverDest.x;
-			serverDest.z = mClient->mServerFrame.mOrigin.z + serverDest.z;
-
-			myDest.x = serverDest.x - mShape->getSceneNode()->getPosition().x;
-			myDest.z = serverDest.z - mShape->getSceneNode()->getPosition().z;
-
-            //dist from clienr pos to future server pos
-			float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2);
-			predictDist = sqrt(predictDist);
-
-			//server velocity
-			float vel = sqrt(pow(mClient->mServerFrame.mVelocity.x, 2) + pow(mClient->mServerFrame.mVelocity.z, 2))/mClient->mCommand.mMilliseconds;
-			//time needed to get to future server pos
-			float time = dist * posInterpFactor/(runSpeed/1000.0);
-
-			myDest.normalise();
-
-			//client vel needed to get to future server pos in time
-			myDest = myDest * predictDist/time;
-
-			mClient->mCommand.mVelocity.x = myDest.x;
-	        mClient->mCommand.mVelocity.z = myDest.z;
-	   }
-	   else //server stopped or we are in sync so just use server vel as is
-	   {
-          Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
-		  Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
-
-	      serverDest.x = mClient->mServerFrame.mVelocity.x;
-		  serverDest.z = mClient->mServerFrame.mVelocity.z;
-		  serverDest.normalise();
-          serverDest = serverDest * runSpeed/1000.0;
-
-		  mClient->mCommand.mVelocity.x = serverDest.x;
-	      mClient->mCommand.mVelocity.z = serverDest.z;
-
-	   }
-
+	moveStateMachine->update();
 	processRotation();
 }
 
 void ClientSidePlayer::interpolateTick(float renderTime)
 {
-  Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-   transVector.x = mClient->mCommand.mVelocity.x;
-   transVector.z = mClient->mCommand.mVelocity.z;
-   mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+	transVector.x = mClient->mCommand.mVelocity.x;
+	transVector.z = mClient->mCommand.mVelocity.z;
+	mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-   mShape->mOgreAnimation->updateAnimations(renderTime,mClient->mCommand.mStop);
-
-   interpolateRotation(renderTime);
+	mShape->mOgreAnimation->updateAnimations(renderTime,mClient->mCommand.mStop);
+	interpolateRotation(renderTime);
 }
 
 
