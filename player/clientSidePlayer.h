@@ -9,6 +9,7 @@ class ClientSideClient;
 class OgreShape;
 class Command;
 class MoveStateMachine;
+class RotationStateMachine;
 
 class ClientSidePlayer : public Player
 {
@@ -34,8 +35,11 @@ ClientSideClient* mClient;
 //associated Shape
 OgreShape* mShape;
 
-//state machines
+//move state machine
 MoveStateMachine*   mMoveStateMachine;
+
+//rotation state machine
+RotationStateMachine* mRotationStateMachine;
 
 float mServerRotSpeed;
 

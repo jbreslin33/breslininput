@@ -1,5 +1,5 @@
-#include "moveStates.h"
-#include "moveStateMachine.h"
+#include "rotationStates.h"
+#include "rotationStateMachine.h"
 
 //player,client,shape combo
 #include "../clientSidePlayer.h"
@@ -9,96 +9,37 @@
 //only using for logstring this needs to be remedied.
 #include "../../tdreamsock/dreamSock.h"
 
-Normal_Move* Normal_Move::Instance()
+Normal_Rotation* Normal_Rotation::Instance()
 {
-  static Normal_Move instance;
+  static Normal_Rotation instance;
   return &instance;
 }
-void Normal_Move::enter(ClientSidePlayer* player)
+void Normal_Rotation::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Normal_Move");
+	LogString("STATE: Normal_Rotation");
 }
-void Normal_Move::execute(ClientSidePlayer* player)
+void Normal_Rotation::execute(ClientSidePlayer* player)
 {
-	// if distance exceeds threshold
-	if(player->mDeltaPosition > player->mPosInterpLimitHigh && player->mClient->mCommand.mStop == false)
-	{
-		player->mMoveStateMachine->changeState(Catchup_Move::Instance());
-	}
-    
-	else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
-	{
-		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO;
-		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 
-	    serverDest.x = player->mClient->mServerFrame.mVelocity.x;
-		serverDest.z = player->mClient->mServerFrame.mVelocity.z;
-		serverDest.normalise();
-        serverDest = serverDest * player->mRunSpeed/1000.0;
-
-		player->mClient->mCommand.mVelocity.x = serverDest.x;
-	    player->mClient->mCommand.mVelocity.z = serverDest.z;
-	}
 }
-void Normal_Move::exit(ClientSidePlayer* player)
+void Normal_Rotation::exit(ClientSidePlayer* player)
 {
 }
 
-Catchup_Move* Catchup_Move::Instance()
+Catchup_Rotation* Catchup_Rotation::Instance()
 {
-  static Catchup_Move instance;
+  static Catchup_Rotation instance;
   return &instance;
 }
-void Catchup_Move::enter(ClientSidePlayer* player)
+void Catchup_Rotation::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Catchup_Move");
+	LogString("STATE: Catchup_Rotation");
 }
-void Catchup_Move::execute(ClientSidePlayer* player)
+void Catchup_Rotation::execute(ClientSidePlayer* player)
 {
-	//if we are back in sync
-	if(player->mDeltaPosition < player->mPosInterpLimitHigh)
-	{
-		player->mMoveStateMachine->changeState(Normal_Move::Instance());
-	}
-
-	//if server moving and client needs to catchup
-	else if(player->mClient->mCommand.mStop == false)
-	{
-		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO; //vector to future server pos
-		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO; //vector from clienr pos to future server pos
-
-		serverDest.x = player->mClient->mServerFrame.mVelocity.x;
-		serverDest.z = player->mClient->mServerFrame.mVelocity.z;
-		serverDest.normalise();
-
-		float multiplier = player->mDeltaPosition * player->mPosInterpFactor;
-		serverDest = serverDest * multiplier;
-		serverDest.x = player->mClient->mServerFrame.mOrigin.x + serverDest.x;
-		serverDest.z = player->mClient->mServerFrame.mOrigin.z + serverDest.z;
-
-		myDest.x = serverDest.x - player->mShape->getSceneNode()->getPosition().x;
-		myDest.z = serverDest.z - player->mShape->getSceneNode()->getPosition().z;
-
-        //dist from clienr pos to future server pos
-		float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2);
-		predictDist = sqrt(predictDist);
-
-		//server velocity
-		float vel = sqrt(pow(player->mClient->mServerFrame.mVelocity.x, 2) + pow(player->mClient->mServerFrame.mVelocity.z, 2))/player->mClient->mCommand.mMilliseconds;
-		//time needed to get to future server pos
-		float time = player->mDeltaPosition * player->mPosInterpFactor/(player->mRunSpeed/1000.0);
-
-		myDest.normalise();
-
-		//client vel needed to get to future server pos in time
-		myDest = myDest * predictDist/time;
-
-		player->mClient->mCommand.mVelocity.x = myDest.x;
-	    player->mClient->mCommand.mVelocity.z = myDest.z;
-	}
 
 }
-void Catchup_Move::exit(ClientSidePlayer* player)
+void Catchup_Rotation::exit(ClientSidePlayer* player)
 {
 }
 

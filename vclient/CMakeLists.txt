@@ -117,11 +117,15 @@ set(HDRS
 	../player/player.h
 	../player/clientSidePlayer.h
 	
-	#player states
+	#player move states
 	../player/states/moveStateMachine.h
 	../player/states/moveState.h
 	../player/states/moveStates.h
 	
+	#player rotation states
+	../player/states/rotationStateMachine.h
+	../player/states/rotationState.h
+	../player/states/rotationStates.h	
 )
  
 set(SRCS
@@ -158,8 +162,11 @@ set(SRCS
 	../player/player.cpp
 	../player/clientSidePlayer.cpp
 	
-	#player states
+	#player move states
 	../player/states/moveStates.cpp
+	
+	#player rotation states
+	../player/states/rotationStates.cpp
 
 )
 endif (WIN32)
@@ -197,10 +204,15 @@ set(HDRS
 	../player/player.h
 	../player/clientSidePlayer.h
 	
-	#player states
+	#player move states
 	../player/states/moveStateMachine.h
 	../player/states/moveState.h
 	../player/states/moveStates.h
+	
+	#player rotation states
+	../player/states/rotationStateMachine.h
+	../player/states/rotationState.h
+	../player/states/rotationStates.h	
 )
  
 set(SRCS
@@ -237,8 +249,11 @@ set(SRCS
 	../player/player.cpp
 	../player/clientSidePlayer.cpp
 	
-	#player states
+	#player move states
 	../player/states/moveStates.cpp
+	
+	#player rotation states
+	../player/states/rotationStates.cpp
 )
 endif (UNIX)
 

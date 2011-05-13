@@ -1,13 +1,13 @@
-#ifndef MOVESTATE_H
-#define MOVESTATE_H
+#ifndef ROTATIONSTATE_H
+#define ROTATIONSTATE_H
 
 class ClientSidePlayer;
 
-class MoveState
+class RotationState
 {
 public:
 
-  virtual ~MoveState(){}
+  virtual ~RotationState(){}
 
   //this will execute when the state is entered
   virtual void enter(ClientSidePlayer*)=0;

@@ -8,9 +8,13 @@
 #include "../shape/ogreShape.h"
 #include "../animation/ogreAnimation.h"
 
-//states
+//move states
 #include "states/moveStateMachine.h"
 #include "states/moveStates.h"
+
+//rotation states
+#include "states/rotationStateMachine.h"
+#include "states/rotationStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -38,12 +42,19 @@ ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, O
 	mDeltaZ		   = 0.0;
 	mDeltaPosition = 0.0;
 
-	//states
+	//move states
 	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
 	mMoveStateMachine->setGlobalState       (NULL);
 	//mMoveStateMachine->changeState        (Normal_Move::Instance());
+
+	//rotation states
+	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
+	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
+	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
+	mRotationStateMachine->setGlobalState       (NULL);
+	//mRotationStateMachine->changeState        (Normal_Rotation::Instance());
 
 }
 
