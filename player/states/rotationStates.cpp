@@ -62,16 +62,16 @@ void Catchup_Rotation::execute(ClientSidePlayer* player)
 {
 	ClientSideClient* mClient = player->mClient;
         // are we back on track
-        if(abs(player->mDegreesToServer) <= 6.0)
+        if(abs(player->mDegreesToServer) < 4.0)
 		{
 			mClient->mCommand.mCatchupRot = false;
-		player->mRotationStateMachine->changeState(Normal_Rotation::Instance());
+		    player->mRotationStateMachine->changeState(Normal_Rotation::Instance());
 
 		}
 
 
         //if(mClient->command.mCatchupRot == true && mClient->command.mStop == false)
-        if(player->mServerRotSpeed != 0.0 && mClient->mCommand.mCatchupRot == true)
+        if(player->mServerRotSpeed != 0.0)
         {
 			LogString("catchup1");
        // if server rot counter-clockwise hardcode server rot to +500
@@ -85,7 +85,7 @@ void Catchup_Rotation::execute(ClientSidePlayer* player)
                 else
            mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * 0.8;
         }
-        else if(player->mServerRotSpeed == 0.0 && mClient->mCommand.mCatchupRot == true)
+        else if(player->mServerRotSpeed == 0.0)
         {
 			LogString("catchup2");
        if (player->mDegreesToServer > 0.0)

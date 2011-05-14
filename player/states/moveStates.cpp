@@ -56,14 +56,14 @@ void Catchup_Move::enter(ClientSidePlayer* player)
 void Catchup_Move::execute(ClientSidePlayer* player)
 {
 	//if we are back in sync
-	if(player->mDeltaPosition < player->mPosInterpLimitHigh)
+	if(player->mDeltaPosition < player->mPosInterpLimitHigh || player->mClient->mCommand.mStop == true)
 	{
 		player->mMoveStateMachine->changeState(Normal_Move::Instance());
 	}
 
 	//if server moving and client needs to catchup
-	else if(player->mClient->mCommand.mStop == false)
-	{
+	//else if(player->mClient->mCommand.mStop == false)
+	//{
 		Ogre::Vector3 serverDest  = Ogre::Vector3::ZERO; //vector to future server pos
 		Ogre::Vector3 myDest      = Ogre::Vector3::ZERO; //vector from clienr pos to future server pos
 
@@ -95,7 +95,7 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 
 		player->mClient->mCommand.mVelocity.x = myDest.x;
 	    player->mClient->mCommand.mVelocity.z = myDest.z;
-	}
+	//}
 
 }
 void Catchup_Move::exit(ClientSidePlayer* player)
