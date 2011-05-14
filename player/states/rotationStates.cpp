@@ -31,14 +31,20 @@ void Normal_Rotation::execute(ClientSidePlayer* player)
 	else
 	{
 		if (player->mServerRotSpeed == 0.0)
+		{
 			mClient->mCommand.mRotSpeed = 0.0;
+		}
 		else
 		{
 			// if server rot counter-clockwise hardcode server rot to +500
 			if(player->mServerRotSpeed > 0.0)
+			{
 				mClient->mCommand.mRotSpeed = 250.0;
+			}
 			else //clockwise - set to -500
+			{
 				mClient->mCommand.mRotSpeed = -250.0;
+			}
 		}
 	}
 }
@@ -73,22 +79,34 @@ void Catchup_Rotation::execute(ClientSidePlayer* player)
 			LogString("catchup1");
 			// if server rot counter-clockwise hardcode server rot to +500
 			if(player->mServerRotSpeed > 0.0)
+			{
 				mClient->mCommand.mRotSpeed = 250.0;
+			}
 			else //clockwise - set to -500
+			{
 				mClient->mCommand.mRotSpeed = -250.0;
+			}
 
 			if(player->mDegreesToServer/player->mServerRotSpeed > 0.0)
+			{
 				mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * 1.20;
+			}
 			else
+			{
 				mClient->mCommand.mRotSpeed = mClient->mCommand.mRotSpeed * 0.8;
+			}
 		}
 		else if(player->mServerRotSpeed == 0.0)
 		{
 			LogString("catchup2");
 			if (player->mDegreesToServer > 0.0)
+			{
 				mClient->mCommand.mRotSpeed = 250.0;
+			}
 			else //clockwise - set to -500
+			{
 				mClient->mCommand.mRotSpeed = -250.0;
+			}
 		}
 	}
 }
