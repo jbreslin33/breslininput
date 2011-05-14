@@ -16,7 +16,7 @@ Normal_Move* Normal_Move::Instance()
 }
 void Normal_Move::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Normal_Move");
+	//LogString("STATE: Normal_Move");
 }
 void Normal_Move::execute(ClientSidePlayer* player)
 {
@@ -51,7 +51,7 @@ Catchup_Move* Catchup_Move::Instance()
 }
 void Catchup_Move::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Catchup_Move");
+	//LogString("STATE: Catchup_Move");
 }
 void Catchup_Move::execute(ClientSidePlayer* player)
 {

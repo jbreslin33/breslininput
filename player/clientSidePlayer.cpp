@@ -104,20 +104,20 @@ void ClientSidePlayer::interpolateTick(float renderTime)
 
 void ClientSidePlayer::processRotation()
 {
-       Ogre::Vector3 serverRotOld  = Ogre::Vector3::ZERO;
-        Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+       mServerRotOld  = Ogre::Vector3::ZERO;
+        mServerRotNew  = Ogre::Vector3::ZERO;
 
-        serverRotOld.x = mClient->mServerFrame.mRotOld.x;
-        serverRotOld.z = mClient->mServerFrame.mRotOld.z;
+        mServerRotOld.x = mClient->mServerFrame.mRotOld.x;
+        mServerRotOld.z = mClient->mServerFrame.mRotOld.z;
 
-        serverRotNew.x = mClient->mServerFrame.mRot.x;
-        serverRotNew.z = mClient->mServerFrame.mRot.z;
+        mServerRotNew.x = mClient->mServerFrame.mRot.x;
+        mServerRotNew.z = mClient->mServerFrame.mRot.z;
 
-        serverRotNew.normalise();
-        serverRotOld.normalise();
+        mServerRotNew.normalise();
+        mServerRotOld.normalise();
 
         //calculate how far off we are from server
-    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
 
         // convert to degrees
         mDegreesToServer = toServer.getYaw().valueDegrees();
@@ -125,7 +125,7 @@ void ClientSidePlayer::processRotation()
 
 
         //calculate server rotation from last tick to new one
-        Quaternion serverRot = mClient->mServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew, Vector3::UNIT_Y);
+        Quaternion serverRot = mClient->mServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
     mServerRotSpeed = serverRot.getYaw().valueDegrees();
