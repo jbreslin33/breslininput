@@ -16,7 +16,7 @@ Normal_Rotation* Normal_Rotation::Instance()
 }
 void Normal_Rotation::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Normal_Rotation");
+	//LogString("STATE: Normal_Rotation");
 }
 void Normal_Rotation::execute(ClientSidePlayer* player)
 {
@@ -59,7 +59,7 @@ Catchup_Rotation* Catchup_Rotation::Instance()
 }
 void Catchup_Rotation::enter(ClientSidePlayer* player)
 {
-	LogString("STATE: Catchup_Rotation");
+	//LogString("STATE: Catchup_Rotation");
 }
 void Catchup_Rotation::execute(ClientSidePlayer* player)
 {
@@ -76,7 +76,6 @@ void Catchup_Rotation::execute(ClientSidePlayer* player)
 		//if(mClient->command.mCatchupRot == true && mClient->command.mStop == false)
 		if(player->mServerRotSpeed != 0.0)
 		{
-			LogString("catchup1");
 			// if server rot counter-clockwise hardcode server rot to +500
 			if(player->mServerRotSpeed > 0.0)
 			{

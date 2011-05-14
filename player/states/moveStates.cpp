@@ -59,7 +59,6 @@ void Catchup_Move::execute(ClientSidePlayer* player)
 	if(player->mDeltaPosition <= player->mPosInterpLimitHigh || player->mClient->mCommand.mStop == true)
 	{
 		player->mMoveStateMachine->changeState(Normal_Move::Instance());
-		LogString("did this run");
 	}
 	else
 	{
