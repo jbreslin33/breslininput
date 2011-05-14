@@ -26,8 +26,49 @@ void Normal_Rotation::execute(ClientSidePlayer* player)
         if(abs(player->mDegreesToServer) > 6.0)
 		{
 			mClient->mCommand.mCatchupRot = true;
+		player->mRotationStateMachine->changeState(Catchup_Rotation::Instance());
 
 		}
+
+        if (player->mServerRotSpeed == 0.0)
+       mClient->mCommand.mRotSpeed = 0.0;
+        else
+        {
+       // if server rot counter-clockwise hardcode server rot to +500
+            if(player->mServerRotSpeed > 0.0)
+          mClient->mCommand.mRotSpeed = 250.0;
+           else //clockwise - set to -500
+          mClient->mCommand.mRotSpeed = -250.0;
+        }
+
+}
+void Normal_Rotation::exit(ClientSidePlayer* player)
+{
+}
+
+Catchup_Rotation* Catchup_Rotation::Instance()
+{
+  static Catchup_Rotation instance;
+  return &instance;
+}
+void Catchup_Rotation::enter(ClientSidePlayer* player)
+{
+	LogString("STATE: Catchup_Rotation");
+
+
+
+}
+void Catchup_Rotation::execute(ClientSidePlayer* player)
+{
+	ClientSideClient* mClient = player->mClient;
+        // are we back on track
+        if(abs(player->mDegreesToServer) <= 6.0)
+		{
+			mClient->mCommand.mCatchupRot = false;
+		player->mRotationStateMachine->changeState(Normal_Rotation::Instance());
+
+		}
+
 
         //if(mClient->command.mCatchupRot == true && mClient->command.mStop == false)
         if(player->mServerRotSpeed != 0.0 && mClient->mCommand.mCatchupRot == true)
@@ -52,38 +93,6 @@ void Normal_Rotation::execute(ClientSidePlayer* player)
            else //clockwise - set to -500
           mClient->mCommand.mRotSpeed = -250.0;
         }
-
-
-
-
-        else if (player->mServerRotSpeed == 0.0)
-       mClient->mCommand.mRotSpeed = 0.0;
-        else
-        {
-       // if server rot counter-clockwise hardcode server rot to +500
-            if(player->mServerRotSpeed > 0.0)
-          mClient->mCommand.mRotSpeed = 250.0;
-           else //clockwise - set to -500
-          mClient->mCommand.mRotSpeed = -250.0;
-        }
-
-}
-void Normal_Rotation::exit(ClientSidePlayer* player)
-{
-}
-
-Catchup_Rotation* Catchup_Rotation::Instance()
-{
-  static Catchup_Rotation instance;
-  return &instance;
-}
-void Catchup_Rotation::enter(ClientSidePlayer* player)
-{
-	LogString("STATE: Catchup_Rotation");
-}
-void Catchup_Rotation::execute(ClientSidePlayer* player)
-{
-
 
 }
 void Catchup_Rotation::exit(ClientSidePlayer* player)
