@@ -56,7 +56,7 @@ void Catchup_Move::enter(ClientSidePlayer* player)
 void Catchup_Move::execute(ClientSidePlayer* player)
 {
 	//if we are back in sync
-	if(player->mDeltaPosition < player->mPosInterpLimitHigh || player->mClient->mCommand.mStop == true)
+	if(player->mDeltaPosition <= player->mPosInterpLimitHigh || player->mClient->mCommand.mStop == true)
 	{
 		player->mMoveStateMachine->changeState(Normal_Move::Instance());
 	}
