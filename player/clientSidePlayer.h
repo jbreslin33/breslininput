@@ -66,7 +66,7 @@ float mDeltaPosition;
 //rotation
 Ogre::Vector3 mServerRotOld;
 Ogre::Vector3 mServerRotNew;
-Ogre::Real mDegreesToServer;
+Ogre::Real    mDegreesToServer;
 
 };
 
