@@ -22,6 +22,6 @@ void StartLogConsole(void);
 // Function prototypes
 void StartLog(void);
 void StopLog(void);
-void LogString(char *string, ...);
+void LogString(const char *string, ...);
 
 #endif

@@ -57,7 +57,7 @@ void StopLog(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void LogString(char *string, ...)
+void LogString(const char *string, ...)
 {
 	char buf[1024];
 	va_list ap;
