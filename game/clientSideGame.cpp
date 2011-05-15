@@ -186,8 +186,6 @@ void ClientSideGame::ReadPackets(void)
 	char data[1400];
 	struct sockaddr address;
 
-	ClientSideClient *clList;
-
 	int type;
 	int ind;
 	int local;
@@ -235,7 +233,7 @@ void ClientSideGame::ReadPackets(void)
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
-			for (int i = 0; i < mClientVector.size(); i++)
+			for (unsigned int i = 0; i < mClientVector.size(); i++)
 			{
 				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
 				mClientVector.at(i)->mPlayer->processTick();
@@ -250,7 +248,7 @@ void ClientSideGame::ReadPackets(void)
 
 			mOldTime = dreamSock_GetCurrentSystemTime();
 
-			for (int i = 0; i < mClientVector.size(); i++)
+			for (unsigned int i = 0; i < mClientVector.size(); i++)
 			{
 				//LogString("Reading NONDELTAFRAME for client %d", mClientVector.at(i)->mIndex);
 				ReadMoveCommand(&mes, mClientVector.at(i));
@@ -294,7 +292,7 @@ void ClientSideGame::SendCommand(void)
 	memcpy(&mInputClient.mFrame[i], &mInputClient.mCommand, sizeof(Command));
 
 	// Store the commands to the clients' history
-	for (int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		memcpy(&mClientVector.at(i)->mFrame[i], &mClientVector.at(i)->mCommand, sizeof(Command));
 	}
@@ -437,7 +435,7 @@ void ClientSideGame::RunNetwork(int msec)
 
 	ReadPackets();
 	
-	for (int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		mClientVector.at(i)->mPlayer->interpolateTick(mRenderTime);
 	}

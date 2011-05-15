@@ -87,7 +87,7 @@ void Catchup_Move::execute(Move* move)
 		//server velocity
 		float vel = sqrt(pow(move->mPlayer->mClient->mServerFrame.mVelocity.x, 2) + pow(move->mPlayer->mClient->mServerFrame.mVelocity.z, 2))/move->mPlayer->mClient->mCommand.mMilliseconds;
 		//time needed to get to future server pos
-		float time = move->mDeltaPosition * move->mPosInterpFactor/(move->mRunSpeed/1000.0);
+		float time = move->mDeltaPosition * move->mPosInterpFactor/(move->mRunSpeed/1000.0f);
 
 		myDest.normalise();
 

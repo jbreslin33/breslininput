@@ -87,11 +87,11 @@ void Catchup_Rotation::execute(Rotation* rotation)
 
 			if(rotation->mDegreesToServer/rotation->mServerRotSpeed > 0.0)
 			{
-				rotation->mPlayer->mClient->mCommand.mRotSpeed = rotation->mPlayer->mClient->mCommand.mRotSpeed * 1.20;
+				rotation->mPlayer->mClient->mCommand.mRotSpeed = rotation->mPlayer->mClient->mCommand.mRotSpeed * 1.20f;
 			}
 			else
 			{
-				rotation->mPlayer->mClient->mCommand.mRotSpeed = rotation->mPlayer->mClient->mCommand.mRotSpeed * 0.8;
+				rotation->mPlayer->mClient->mCommand.mRotSpeed = rotation->mPlayer->mClient->mCommand.mRotSpeed * 0.8f;
 			}
 		}
 		else if(rotation->mServerRotSpeed == 0.0)

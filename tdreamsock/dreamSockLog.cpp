@@ -23,7 +23,7 @@ dreamConsole *console = NULL;
 void StartLog(void)
 {
 	time_t current = time(NULL);
-
+	
 	if((LogFile = fopen("dreamSock.log", "w")) != NULL)
 	{
 		fprintf(LogFile, "Log file started %s", ctime(&current));
