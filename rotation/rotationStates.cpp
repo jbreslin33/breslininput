@@ -1,15 +1,15 @@
 #include "rotationStates.h"
 #include "rotationStateMachine.h"
 
-#include "../../rotation/rotation.h"
+#include "rotation.h"
 
 //player,client,shape combo
-#include "../clientSidePlayer.h"
-#include "../../client/clientSideClient.h"
-#include "../../shape/ogreShape.h"
+#include "../player/clientSidePlayer.h"
+#include "../client/clientSideClient.h"
+#include "../shape/ogreShape.h"
 
 //only using for logstring this needs to be remedied.
-#include "../../tdreamsock/dreamSock.h"
+#include "../tdreamsock/dreamSock.h"
 
 Normal_Rotation* Normal_Rotation::Instance()
 {

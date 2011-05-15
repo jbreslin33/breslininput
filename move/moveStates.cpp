@@ -1,15 +1,15 @@
 #include "moveStates.h"
 #include "moveStateMachine.h"
 
-#include "../../move/move.h"
+#include "move.h"
 
 //player,client,shape combo
-#include "../clientSidePlayer.h"
-#include "../../client/clientSideClient.h"
-#include "../../shape/ogreShape.h"
+#include "../player/clientSidePlayer.h"
+#include "../client/clientSideClient.h"
+#include "../shape/ogreShape.h"
 
 //only using for logstring this needs to be remedied.
-#include "../../tdreamsock/dreamSock.h"
+#include "../tdreamsock/dreamSock.h"
 
 Normal_Move* Normal_Move::Instance()
 {

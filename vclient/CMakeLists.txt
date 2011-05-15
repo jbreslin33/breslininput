@@ -117,21 +117,21 @@ set(HDRS
 	../player/player.h
 	../player/clientSidePlayer.h
 	
-	#player move states
-	../player/states/moveStateMachine.h
-	../player/states/moveState.h
-	../player/states/moveStates.h
-	
-	#player rotation states
-	../player/states/rotationStateMachine.h
-	../player/states/rotationState.h
-	../player/states/rotationStates.h	
-	
 	#move
 	../move/move.h
 	
+	#player move states
+	../move/moveStateMachine.h
+	../move/moveState.h
+	../move/moveStates.h
+	
 	#rotation
 	../rotation/rotation.h
+	
+	#player rotation states
+	../rotation/rotationStateMachine.h
+	../rotation/rotationState.h
+	../rotation/rotationStates.h	
 	
 	
 )
@@ -170,17 +170,17 @@ set(SRCS
 	../player/player.cpp
 	../player/clientSidePlayer.cpp
 	
-	#player move states
-	../player/states/moveStates.cpp
-	
-	#player rotation states
-	../player/states/rotationStates.cpp
-	
 	#move
 	../move/move.cpp
 	
+	#player move states
+	../move/moveStates.cpp
+	
 	#rotation
 	../rotation/rotation.cpp
+	
+	#player rotation states
+	../rotation/rotationStates.cpp
 
 )
 endif (WIN32)
@@ -218,21 +218,21 @@ set(HDRS
 	../player/player.h
 	../player/clientSidePlayer.h
 	
-	#player move states
-	../player/states/moveStateMachine.h
-	../player/states/moveState.h
-	../player/states/moveStates.h
-	
-	#player rotation states
-	../player/states/rotationStateMachine.h
-	../player/states/rotationState.h
-	../player/states/rotationStates.h	
-	
 	#move
 	../move/move.h
 	
+	#player move states
+	../move/moveStateMachine.h
+	../move/moveState.h
+	../move/moveStates.h
+	
 	#rotation
 	../rotation/rotation.h
+	
+	#player rotation states
+	../rotation/rotationStateMachine.h
+	../rotation/rotationState.h
+	../rotation/rotationStates.h
 )
  
 set(SRCS
@@ -269,17 +269,17 @@ set(SRCS
 	../player/player.cpp
 	../player/clientSidePlayer.cpp
 	
-	#player move states
-	../player/states/moveStates.cpp
-	
-	#player rotation states
-	../player/states/rotationStates.cpp
-	
 	#move
 	../move/move.cpp
 	
+	#player move states
+	../move/moveStates.cpp
+	
 	#rotation
 	../rotation/rotation.cpp
+	
+	#player rotation states
+	../rotation/rotationStates.cpp
 	
 )
 endif (UNIX)
