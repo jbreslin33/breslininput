@@ -8,7 +8,6 @@ public:
 Vector3D();
 ~Vector3D();
 
-void normalize();
 double length();
 
 float x;

@@ -122,8 +122,8 @@ void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
 	if(length != 0.0)
 	{
-	   command->mVelocity.x = command->mVelocity.x/length * 0.2 * frametime * 1000;
-	   command->mVelocity.z = command->mVelocity.z/length * 0.2 * frametime * 1000;
+	   command->mVelocity.x = command->mVelocity.x/length * 0.2f * frametime * 1000;
+	   command->mVelocity.z = command->mVelocity.z/length * 0.2f * frametime * 1000;
 	}
 }
 

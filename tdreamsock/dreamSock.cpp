@@ -638,7 +638,8 @@ int dreamClient::Initialise(char *localIP, const char *remoteIP, int port)
 
 	// Save server's address information for later use
 	serverPort = port;
-	strcpy(serverIP, remoteIP);
+	size_t t = 256;
+	strcpy_s(serverIP,t, remoteIP);
 
 	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
 
