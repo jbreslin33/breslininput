@@ -638,9 +638,13 @@ int dreamClient::Initialise(char *localIP, const char *remoteIP, int port)
 
 	// Save server's address information for later use
 	serverPort = port;
+	
+	#ifdef WIN32
 	size_t t = 256;
 	strcpy_s(serverIP,t, remoteIP);
-
+#else
+	strcpy(serverIP,remoteIP);
+#endif
 	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
 
 	// Create client socket

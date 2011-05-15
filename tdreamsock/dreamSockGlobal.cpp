@@ -119,10 +119,12 @@ int dreamSock_StringToSockaddr(char *addressString, struct sockaddr *sadr)
 
 	addressPtr->sin_family = AF_INET;
 	addressPtr->sin_port = htons(0);
-
+#ifdef WIN32
 	size_t t = 256;
 	strcpy_s(copy,t, addressString);
-
+#else
+	strcpy(copy,addressString);
+#endif
 	// If the address string begins with a number, assume an IP address
 	if(copy[0] >= '0' && copy[0] <= '9')
 	{
