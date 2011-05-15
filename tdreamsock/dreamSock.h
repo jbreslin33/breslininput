@@ -171,7 +171,12 @@ public:
 	void			SetIndex(int ind)		{ index = ind; }
 
 	char			*GetName(void)			{ return name; }
+
+#ifdef WIN32
+	void			SetName(char *n)		{ strcpy_s(name, n); }
+#else
 	void			SetName(char *n)		{ strcpy(name, n); }
+#endif
 
 	SOCKET			GetSocket(void)			{ return socket; }
 	void			SetSocket(SOCKET sock)	{ socket = sock; }
