@@ -2,13 +2,13 @@
 #define ROTATIONSTATEMACHINE_H
 #include "rotationState.h"
 
-class ClientSidePlayer;
+class Rotation;
 
 class RotationStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ClientSidePlayer*   m_pOwner;
+  Rotation*   m_pOwner;
   RotationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
@@ -19,7 +19,7 @@ private:
 
 public:
 
-  RotationStateMachine(ClientSidePlayer* owner):m_pOwner(owner),
+  RotationStateMachine(Rotation* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
