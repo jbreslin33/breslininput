@@ -103,7 +103,7 @@ ctime(&current);
 sprintf_s(timedate, tt,(const char*)&buf2);
 #else
 	
-	sprintf(timedate, ctime(&current));
+	sprintf(timedate,"%s", ctime(&current));
 #endif 
 	// Remove linefeed from time / date string
 	int i = 0;
