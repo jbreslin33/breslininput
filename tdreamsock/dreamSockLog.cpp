@@ -24,6 +24,7 @@ void StartLog(void)
 {
 	time_t current = time(NULL);
 
+	/*
 	if((LogFile = fopen("dreamSock.log", "w")) != NULL)
 	{
 		fprintf(LogFile, "Log file started %s", ctime(&current));
@@ -34,6 +35,15 @@ void StartLog(void)
 	if((LogFile = fopen("dreamSock.log", "a")) != NULL)
 	{
 	}
+	*/
+	fopen_s(&LogFile,"dreamSock.log", "w");
+	fprintf(LogFile, "Log file started %s", ctime(&current));
+	fclose(LogFile);
+	
+
+	fopen_s(&LogFile,"dreamSock.log", "a");
+	
+
 }
 
 #ifdef WIN32
