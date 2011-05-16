@@ -62,14 +62,16 @@ void LogString(const char *string, ...)
 	char buf[1024];
 	va_list ap;
 	va_start(ap, string);
-	vsprintf(buf, string, ap);
+	size_t t = 1024;
+	vsprintf_s(buf, t, string, ap);
 	va_end(ap);
 
 	// Get current time and date
 	time_t current = time(NULL);
 
 	char timedate[64];
-	sprintf(timedate, ctime(&current));
+	size_t tt = 64;
+	sprintf_s(timedate, tt,ctime(&current));
 
 	// Remove linefeed from time / date string
 	int i = 0;
@@ -118,10 +120,11 @@ void dreamConsole::println(char *string, int type, ...)
 	char buf2[1024];
 	va_list ap;
 	va_start(ap, string);
-	vsprintf(buf, string, ap);
+	size_t t = 1024;
+	vsprintf_s(buf, t, string, ap);
 	va_end(ap);
 
-	sprintf(buf2, "-> %s\n", buf);
+	sprintf_s(buf2,t, "-> %s\n", buf);
 
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 
