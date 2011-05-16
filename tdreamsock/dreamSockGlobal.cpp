@@ -109,7 +109,7 @@ int dreamSock_SetBroadcasting(SOCKET sock, int mode)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-int dreamSock_StringToSockaddr(char *addressString, struct sockaddr *sadr)
+int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
 {
 	char copy[128];
 
@@ -138,7 +138,7 @@ int dreamSock_StringToSockaddr(char *addressString, struct sockaddr *sadr)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-SOCKET dreamSock_OpenUDPSocket(char *netInterface, int port)
+SOCKET dreamSock_OpenUDPSocket(const char *netInterface, int port)
 {
 	SOCKET sock;
 

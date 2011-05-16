@@ -216,7 +216,7 @@ public:
 					dreamServer();
 					~dreamServer();
 
-	int				Initialise(char *localIP, int serverPort);
+	int				Initialise(const char *localIP, int serverPort);
 	void			Uninitialise(void);
 	void			SendPing(void);
 	int				GetPacket(char *data, struct sockaddr *from);
@@ -242,8 +242,8 @@ void dreamSock_Shutdown(void);
 SOCKET dreamSock_Socket(int protocol);
 int dreamSock_SetNonBlocking(SOCKET sock, u_long setMode);
 int dreamSock_SetBroadcasting(SOCKET sock, int mode);
-int dreamSock_StringToSockaddr(char *addressString, struct sockaddr *sadr);
-SOCKET dreamSock_OpenUDPSocket(char netInterface[32], int port);
+int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr);
+SOCKET dreamSock_OpenUDPSocket(const char netInterface[32], int port);
 void dreamSock_CloseSocket(SOCKET sock);
 
 int dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from);

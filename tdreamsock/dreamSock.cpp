@@ -128,7 +128,7 @@ dreamServer::~dreamServer()
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-int dreamServer::Initialise(char *localIP, int serverPort)
+int dreamServer::Initialise(const char *localIP, int serverPort)
 {
 	// Initialise dreamSock if it is not already initialised
 	dreamSock_Initialize();
