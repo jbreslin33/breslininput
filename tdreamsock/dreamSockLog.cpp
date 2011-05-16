@@ -102,7 +102,7 @@ ctime(&current);
 #ifdef WIN32
 sprintf_s(timedate, tt,(const char*)&buf2);
 #else
-
+	
 	sprintf(timedate, ctime(&current));
 #endif 
 	// Remove linefeed from time / date string
