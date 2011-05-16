@@ -84,14 +84,14 @@ private:
 public:
 	void			Init(char *d, int length);
 	void			Clear(void);
-	void			Write(void *d, int length);
+	void			Write(const void *d, int length);
 	void			AddSequences(dreamClient *client);
 
 	void			WriteByte(char c);
 	void			WriteShort(short c);
 	void			WriteLong(long c);
 	void			WriteFloat(float c);
-	void			WriteString(char *s);
+	void			WriteString(const char *s);
 	void			BeginReading(void);
 	void			BeginReading(int s);
 	char			*Read(int s);
@@ -144,7 +144,7 @@ public:
 	int				Initialise(const char *localIP, const char *remoteIP, int port);
 	void			Uninitialise(void);
 	void			Reset(void);
-	void			SendConnect(char *name);
+	void			SendConnect(const char *name);
 	void			SendDisconnect(void);
 	void			SendPing(void);
 

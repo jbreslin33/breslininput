@@ -720,7 +720,7 @@ void dreamClient::DumpBuffer(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamClient::SendConnect(char *name)
+void dreamClient::SendConnect(const char *name)
 {
 	// Dump buffer so there won't be any old packets to process
 	DumpBuffer();
@@ -1015,7 +1015,7 @@ void dreamMessage::AddSequences(dreamClient *client)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamMessage::Write(void *d, int length)
+void dreamMessage::Write(const void *d, int length)
 {
 	memcpy(GetNewPoint(length), d, length);		
 }
@@ -1076,7 +1076,7 @@ void dreamMessage::WriteFloat(float c)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamMessage::WriteString(char *s)
+void dreamMessage::WriteString(const char *s)
 {
 	if(!s)
 	{
