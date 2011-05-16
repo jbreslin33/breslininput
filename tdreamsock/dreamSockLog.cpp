@@ -37,7 +37,10 @@ void StartLog(void)
 	}
 	*/
 	fopen_s(&LogFile,"dreamSock.log", "w");
-	fprintf(LogFile, "Log file started %s", ctime(&current));
+	size_t t = 64;
+wchar_t buf[64];
+
+	fprintf(LogFile, "Log file started %s", _wctime_s(buf,t,&current));
 	fclose(LogFile);
 	
 
