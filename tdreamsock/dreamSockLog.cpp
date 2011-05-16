@@ -92,7 +92,7 @@ vsprintf(buf,string,ap);
 	char timedate[64];
 	size_t tt = 64;
 char buf2[64];
-char* buf3;
+
 #ifdef WIN32
 ctime_s(buf2,tt,&current);
 #else
