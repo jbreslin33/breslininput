@@ -40,7 +40,7 @@ void StartLog(void)
 	size_t t = 64;
 wchar_t buf[64];
 
-	fprintf(LogFile, "Log file started %s", _wctime_s(buf,t,&current));
+	fprintf(LogFile, "Log file started %s", _wctime_s( buf, t, &current ));
 	fclose(LogFile);
 	
 
@@ -84,7 +84,9 @@ void LogString(const char *string, ...)
 
 	char timedate[64];
 	size_t tt = 64;
-	sprintf_s(timedate, tt,ctime(&current));
+char buf2[64];
+ctime_s(buf2,tt,&current);
+	sprintf_s(timedate, tt,(const char*)&buf2);
 
 	// Remove linefeed from time / date string
 	int i = 0;
