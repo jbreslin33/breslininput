@@ -24,7 +24,19 @@ void StartLog(void)
 {
 	time_t current = time(NULL);
 
-	/*
+#ifdef WIN32	
+	fopen_s(&LogFile,"dreamSock.log", "w");
+	size_t t = 64;
+wchar_t buf[64];
+
+	fprintf(LogFile, "Log file started %s", _wctime_s( buf, t, &current ));
+	fclose(LogFile);
+	
+
+	fopen_s(&LogFile,"dreamSock.log", "a");
+#else
+
+	
 	if((LogFile = fopen("dreamSock.log", "w")) != NULL)
 	{
 		fprintf(LogFile, "Log file started %s", ctime(&current));
@@ -35,17 +47,7 @@ void StartLog(void)
 	if((LogFile = fopen("dreamSock.log", "a")) != NULL)
 	{
 	}
-	*/
-	fopen_s(&LogFile,"dreamSock.log", "w");
-	size_t t = 64;
-wchar_t buf[64];
-
-	fprintf(LogFile, "Log file started %s", _wctime_s( buf, t, &current ));
-	fclose(LogFile);
-	
-
-	fopen_s(&LogFile,"dreamSock.log", "a");
-	
+#endif	
 
 }
 
@@ -76,7 +78,12 @@ void LogString(const char *string, ...)
 	va_list ap;
 	va_start(ap, string);
 	size_t t = 1024;
-	vsprintf_s(buf, t, string, ap);
+	
+#ifdef WIN32
+vsprintf_s(buf, t, string, ap);
+#else
+vsprintf(buf,string,ap);
+#endif
 	va_end(ap);
 
 	// Get current time and date
@@ -85,9 +92,19 @@ void LogString(const char *string, ...)
 	char timedate[64];
 	size_t tt = 64;
 char buf2[64];
+char* buf3;
+#ifdef WIN32
 ctime_s(buf2,tt,&current);
-	sprintf_s(timedate, tt,(const char*)&buf2);
+#else
+ctime(&current);
+#endif	
 
+#ifdef WIN32
+sprintf_s(timedate, tt,(const char*)&buf2);
+#else
+
+	sprintf(timedate, ctime(&current));
+#endif 
 	// Remove linefeed from time / date string
 	int i = 0;
 
