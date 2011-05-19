@@ -161,7 +161,6 @@ public:
 	dreamClient		*next;
 
 ClientSidePlayer* mClientSidePlayer;
-ClientSidePlayer* mServerPlayer;
 ServerSidePlayer* mServerSidePlayer;
 
 };

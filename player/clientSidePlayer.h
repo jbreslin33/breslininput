@@ -7,7 +7,6 @@
 #include "Ogre.h"
 using namespace Ogre;
 
-class ClientSideClient;
 class OgreShape;
 class Move;
 class Rotation;
@@ -17,15 +16,12 @@ class ClientSidePlayer : public Player
 
 public:
 
-ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape);
+ClientSidePlayer(std::string name, OgreShape* shape);
 ~ClientSidePlayer();
 
 //ticks
 void processTick    ();
 void interpolateTick    (float renderTime);
-
-//associated client
-ClientSideClient* mClient;
 
 //associated Shape
 OgreShape* mShape;
@@ -37,6 +33,8 @@ Move* mMove;
 Rotation* mRotation;
 
 int			mIndex;
+
+ClientSidePlayer* mClientSideServerPlayer;
 
 };
 

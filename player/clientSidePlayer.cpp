@@ -4,7 +4,6 @@
 #include "../tdreamsock/dreamSock.h"
 
 //client,shape,animation combo
-#include "../client/clientSideClient.h"
 #include "../shape/ogreShape.h"
 
 //move states
@@ -17,11 +16,9 @@
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape) : Player(name)
+ClientSidePlayer::ClientSidePlayer(std::string name, OgreShape* shape) : Player(name)
 {
 	mIndex  = 0;
-
-	mClient   = client;
 	mShape    = shape;
 	mMove     = new Move(this);
 	mRotation = new Rotation(this);

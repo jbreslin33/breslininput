@@ -86,7 +86,6 @@ dreamClient::dreamClient()
 {
 
 	mServerSidePlayer = NULL;
-	mServerPlayer = NULL;
 	mClientSidePlayer = NULL;
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
@@ -104,8 +103,6 @@ dreamClient::dreamClient()
 	ping					= 0;
 
 	lastMessageTime			= 0;
-
-	next = NULL;
 }
 
 dreamClient::~dreamClient()
@@ -188,6 +185,7 @@ void dreamClient::DumpBuffer(void)
 
 void dreamClient::SendConnect(const char *name)
 {
+	LogString("sending connect...");
 	// Dump buffer so there won't be any old packets to process
 	DumpBuffer();
 
@@ -297,6 +295,7 @@ int dreamClient::GetPacket(char *data, struct sockaddr *from)
 	// Parse system messages
 	ParsePacket(&mes);
 
+	LogString("still good");
 	return ret;
 }
 

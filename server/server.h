@@ -76,7 +76,7 @@ class dreamSock;
 
 class Server
 {
-private:
+public:
 	void			SendAddClient(dreamClient *newClient);
 	void			SendRemoveClient(dreamClient *client);
 	void			AddClient(struct sockaddr *address, char *name);

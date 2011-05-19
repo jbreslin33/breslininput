@@ -4,7 +4,7 @@
 #include "BaseApplication.h"
 #include "../tdreamsock/dreamSock.h"
 
-#include "../client/clientSideClient.h"
+#include "../player/clientSidePlayer.h"
 
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
@@ -43,7 +43,7 @@ public:
 	void	MoveServerPlayer(void);
 
 	//Game
-	void	AddClient   (int local, int index, char *name);
+	//void	AddClient   (int local, int index, char *name);
 	void	RemoveClient(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
@@ -54,9 +54,9 @@ public:
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
 	void	SendRequestNonDeltaFrame(void);
-	void	ReadMoveCommand         (Message *mes, ClientSideClient *client);
-	void	ReadDeltaMoveCommand    (Message *mes, ClientSideClient *client);
-	void	BuildDeltaMoveCommand   (Message *mes, ClientSideClient *theClient);
+	void	ReadMoveCommand         (Message *mes, ClientSidePlayer *player);
+	void	ReadDeltaMoveCommand    (Message *mes, ClientSidePlayer *player);
+	void	BuildDeltaMoveCommand   (Message *mes, ClientSidePlayer *player);
 	void	StartConnection         ();
 	void	Connect                 (void);
 	void	Disconnect              (void);
@@ -64,8 +64,8 @@ public:
 
 	//Ogre
 	bool         processUnbufferedInput(const Ogre::FrameEvent& evt);
-    void         createPlayer          (ClientSideClient* client, int index);
-	void         createServerPlayer    (ClientSideClient* client, int index);
+   // void         createPlayer          (ClientSideClient* client, int index);
+	//void         createServerPlayer    (ClientSideClient* client, int index);
     virtual void createScene           (void);
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 
@@ -74,9 +74,9 @@ public:
 	const char*  mServerIP;
 
 	//client Variables
-	ClientSideClient* mLocalClient;		// Pointer to the local client in the client list
-	ClientSideClient  mInputClient;			// Handles all keyboard input
-	std::vector<ClientSideClient*> mClientVector;	
+	ClientSidePlayer* mLocalClient;		// Pointer to the local client in the client list
+	ClientSidePlayer*  mInputClient;			// Handles all keyboard input
+	std::vector<ClientSidePlayer*> mClientVector;	
 
 	//time
 	float mFrameTime;

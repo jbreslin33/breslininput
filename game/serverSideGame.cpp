@@ -73,6 +73,7 @@ void ServerSideGame::ShutdownNetwork(void)
 
 void ServerSideGame::AddClient(void)
 {
+	/*
 	dreamClient *netList = mNetworkServer->GetClientList();
 	
 	if (mClientVector.size() == 0)
@@ -102,15 +103,16 @@ void ServerSideGame::AddClient(void)
 		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mRoot);
 		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
 	}
+	*/
 }
 
-void ServerSideGame::RemoveClient(ServerSideClient* client)
+void ServerSideGame::RemoveClient(dreamClient* client)
 {
 }
 
 void ServerSideGame::RemoveClients(void)
 {
-	mClientVector.empty();
+
 }
 
 void ServerSideGame::Frame(int msec)
@@ -144,6 +146,8 @@ void ServerSideGame::Frame(int msec)
 
 void ServerSideGame::ReadPackets(void)
 {
+
+	//LogString("REading packetsdfdfdfdd");
 	char data[1400];
 
 	int type;
@@ -157,13 +161,14 @@ void ServerSideGame::ReadPackets(void)
 	// Get the packet from the socket
 	try
 	{
+		LogString("trying.....");
 		while(ret = mNetworkServer->GetPacket(mes.data, &address))
 		{
 			mes.SetSize(ret);
 			mes.BeginReading();
 
 			type = mes.ReadByte();
-
+			LogString("type:%s",type);
 			// Check the type of the message
 			switch(type)
 			{
@@ -173,9 +178,9 @@ void ServerSideGame::ReadPackets(void)
 
 			case DREAMSOCK_MES_DISCONNECT:
 
-				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 				{
-					if(memcmp(&mClientVector.at(i)->address, &address, sizeof(address)) == 0)
+					if(memcmp(&mNetworkServer->mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
 					{
 						//mClientVector.erase(
 					}
@@ -189,12 +194,12 @@ void ServerSideGame::ReadPackets(void)
 				mes.ReadShort();
 				mes.ReadShort();
 
-				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 				{
-					if(memcmp(&mClientVector.at(i)->address, &address, sizeof(address)) == 0)
+					if(memcmp(&mNetworkServer->mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
 					{
-						ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-						mClientVector.at(i)->mPlayer->processTick();
+						ReadDeltaMoveCommand(&mes, mNetworkServer->mClientVector.at(i));
+						mNetworkServer->mClientVector.at(i)->mServerSidePlayer->processTick();
 
 						break;
 					}
@@ -204,20 +209,20 @@ void ServerSideGame::ReadPackets(void)
 
 			case USER_MES_NONDELTAFRAME:
 
-				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 				{
-					mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
-						sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
+					mNetworkServer->mClientVector.at(i)->mMessage.Init(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData,
+						sizeof(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData));
 
-					mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
-					mClientVector.at(i)->netClient->mMessage.WriteShort(mClientVector.at(i)->netClient->GetOutgoingSequence());
-					mClientVector.at(i)->netClient->mMessage.WriteShort(mClientVector.at(i)->netClient->GetIncomingSequence());
+					mNetworkServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
+					mNetworkServer->mClientVector.at(i)->mMessage.WriteShort(mNetworkServer->mClientVector.at(i)->GetOutgoingSequence());
+					mNetworkServer->mClientVector.at(i)->mMessage.WriteShort(mNetworkServer->mClientVector.at(i)->GetIncomingSequence());
 
-					for (unsigned int j = 0; j < mClientVector.size(); j++)
+					for (unsigned int j = 0; j < mNetworkServer->mClientVector.size(); j++)
 					{
-						BuildMoveCommand(&mClientVector.at(i)->netClient->mMessage, mClientVector.at(j));
+						BuildMoveCommand(&mNetworkServer->mClientVector.at(i)->mMessage, mNetworkServer->mClientVector.at(j));
 					}
-					mClientVector.at(i)->netClient->SendPacket();
+					mNetworkServer->mClientVector.at(i)->SendPacket();
 				}
 
 				break;
@@ -238,17 +243,17 @@ void ServerSideGame::ReadPackets(void)
 void ServerSideGame::SendCommand(void)
 {
 	// Fill messages
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 	{
-		mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
-			sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
+		mNetworkServer->mClientVector.at(i)->mMessage.Init(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData,
+			sizeof(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData));
 
-		mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_FRAME);			// type
-		mClientVector.at(i)->netClient->mMessage.AddSequences(mClientVector.at(i)->netClient);	// sequences
+		mNetworkServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_FRAME);			// type
+		mNetworkServer->mClientVector.at(i)->mMessage.AddSequences(mNetworkServer->mClientVector.at(i));	// sequences
 
-		for (unsigned int j = 0; j < mClientVector.size(); j++)
+		for (unsigned int j = 0; j < mNetworkServer->mClientVector.size(); j++)
 		{
-			BuildDeltaMoveCommand(&mClientVector.at(i)->netClient->mMessage, mClientVector.at(j));
+			BuildDeltaMoveCommand(&mNetworkServer->mClientVector.at(i)->mMessage, mNetworkServer->mClientVector.at(j));
 		}
 	}
 
@@ -256,28 +261,28 @@ void ServerSideGame::SendCommand(void)
 	mNetworkServer->SendPackets();
 
 	// Store the sent command in history
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 	{
-		int num = (mClientVector.at(i)->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mClientVector.at(i)->mFrame[num], &mClientVector.at(i)->mCommand, sizeof(ServerSideCommand));
+		int num = (mNetworkServer->mClientVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+		memcpy(&mNetworkServer->mClientVector.at(i)->mServerSidePlayer->mFrame[num], &mNetworkServer->mClientVector.at(i)->mServerSidePlayer->mCommand, sizeof(ServerSideCommand));
 	}
 }
 
 void ServerSideGame::SendExitNotification(void)
 {
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mNetworkServer->mClientVector.size(); i++)
 	{
-		mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
-			sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
+		mNetworkServer->mClientVector.at(i)->mMessage.Init(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData,
+			sizeof(mNetworkServer->mClientVector.at(i)->mMessage.outgoingData));
 
-		mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_SERVEREXIT);	// type
-		mClientVector.at(i)->netClient->mMessage.AddSequences(mClientVector.at(i)->netClient);	// sequences
+		mNetworkServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_SERVEREXIT);	// type
+		mNetworkServer->mClientVector.at(i)->mMessage.AddSequences(mNetworkServer->mClientVector.at(i));	// sequences
 	}
 
 	mNetworkServer->SendPackets();
 }
 
-void ServerSideGame::ReadDeltaMoveCommand(Message *mes, ServerSideClient *client)
+void ServerSideGame::ReadDeltaMoveCommand(Message *mes, dreamClient *client)
 {
 	int flags = 0;
 
@@ -287,18 +292,18 @@ void ServerSideGame::ReadDeltaMoveCommand(Message *mes, ServerSideClient *client
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->mCommand.mKey = mes->ReadByte();
+		client->mServerSidePlayer->mCommand.mKey = mes->ReadByte();
 
 		//LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
 	}
 
 	// Read time to run command
-	client->mCommand.mMilliseconds = mes->ReadByte();
+	client->mServerSidePlayer->mCommand.mMilliseconds = mes->ReadByte();
 }
 
-void ServerSideGame::BuildMoveCommand(Message *mes, ServerSideClient *client)
+void ServerSideGame::BuildMoveCommand(Message *mes, dreamClient *client)
 {
-	Command* command = &client->mCommand;
+	Command* command = &client->mServerSidePlayer->mCommand;
 	// Add to the message
 	// Key
 	mes->WriteByte(command->mKey);
@@ -315,20 +320,20 @@ void ServerSideGame::BuildMoveCommand(Message *mes, ServerSideClient *client)
 void ServerSideGame::BuildDeltaMoveCommand(Message *mes, dreamClient *client)
 {
 
-	ServerSidePlayer* player = client->mPlayer;
-	Command* command = &client->mCommand;
+	ServerSidePlayer* player = client->mServerSidePlayer;
+	Command* command = &client->mServerSidePlayer->mCommand;
 	int flags = 0;
 
-	int last = (client->netClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+	int last = (client->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(client->mFrame[last].mKey != command->mKey)
+	if(client->mServerSidePlayer->mFrame[last].mKey != command->mKey)
 	{
 		flags |= CMD_KEY;
 	}
 
-	if(client->mFrame[last].mOrigin.x != command->mOrigin.x ||
-		client->mFrame[last].mOrigin.z != command->mOrigin.z)
+	if(client->mServerSidePlayer->mFrame[last].mOrigin.x != command->mOrigin.x ||
+		client->mServerSidePlayer->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
 		flags |= CMD_ORIGIN;
 	}
@@ -346,7 +351,7 @@ void ServerSideGame::BuildDeltaMoveCommand(Message *mes, dreamClient *client)
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
-		mes->WriteByte(client->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
+		mes->WriteByte(client->mServerSidePlayer->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
 	}
 
 	mes->WriteFloat(command->mOrigin.x);

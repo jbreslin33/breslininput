@@ -48,15 +48,15 @@ public:
 	void	ReadPackets(void);
 	void	SendCommand(void);
 	void	SendExitNotification(void);
-	void	ReadDeltaMoveCommand(Message *mes, ServerSideClient *client);
-	void	BuildMoveCommand(Message *mes, ServerSideClient *client);
-	void	BuildDeltaMoveCommand(Message *mes, ServerSideClient *client);
+	void	ReadDeltaMoveCommand(Message *mes, dreamClient *client);
+	void	BuildMoveCommand(Message *mes, dreamClient *client);
+	void	BuildDeltaMoveCommand(Message *mes, dreamClient *client);
 
 	// Server.cpp
 	int		InitNetwork();
 	void	ShutdownNetwork(void);
 	void	AddClient(void);
-	void	RemoveClient(ServerSideClient* client);
+	void	RemoveClient(dreamClient* client);
 	void	RemoveClients(void);
 	void	Frame(int msec);
 

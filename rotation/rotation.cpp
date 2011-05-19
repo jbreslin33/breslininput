@@ -5,7 +5,6 @@
 
 //player,client,shape,animation combo
 #include "../player/clientSidePlayer.h"
-#include "../client/clientSideClient.h"
 #include "../shape/ogreShape.h"
 #include "../animation/ogreAnimation.h"
 
@@ -51,11 +50,11 @@ void Rotation::processTick()
 	mServerRotOld  = Ogre::Vector3::ZERO;
     mServerRotNew  = Ogre::Vector3::ZERO;
 
-    mServerRotOld.x = mPlayer->mClient->mServerFrame.mRotOld.x;
-    mServerRotOld.z = mPlayer->mClient->mServerFrame.mRotOld.z;
+    mServerRotOld.x = mPlayer->mServerFrame.mRotOld.x;
+    mServerRotOld.z = mPlayer->mServerFrame.mRotOld.z;
 
-    mServerRotNew.x = mPlayer->mClient->mServerFrame.mRot.x;
-    mServerRotNew.z = mPlayer->mClient->mServerFrame.mRot.z;
+    mServerRotNew.x = mPlayer->mServerFrame.mRot.x;
+    mServerRotNew.z = mPlayer->mServerFrame.mRot.z;
 
     mServerRotNew.normalise();
     mServerRotOld.normalise();
@@ -67,7 +66,7 @@ void Rotation::processTick()
     mDegreesToServer = toServer.getYaw().valueDegrees();
 
     //calculate server rotation from last tick to new one
-    Quaternion serverRot = mPlayer->mClient->mServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
+	Quaternion serverRot = mPlayer->mClientSideServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
     mServerRotSpeed = serverRot.getYaw().valueDegrees();
@@ -80,20 +79,20 @@ void Rotation::processTick()
 	//LogString("mPlayer->mServerRotSpeed %f", mPlayer->mServerRotSpeed);
 
     // yaw server guy to new rot
-    mPlayer->mClient->mServerPlayer->mShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
+    mPlayer->mClientSideServerPlayer->mShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
 
 	mRotationStateMachine->update();
 }
 
 void Rotation::interpolateTick(float renderTime)
 {
-    float rotSpeed = mPlayer->mClient->mCommand.mRotSpeed * renderTime;
+    float rotSpeed = mPlayer->mCommand.mRotSpeed * renderTime;
 	mPlayer->mShape->getSceneNode()->yaw(Degree(rotSpeed));
 
 	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
 
-	serverRotNew.x = mPlayer->mClient->mServerFrame.mRot.x;
-	serverRotNew.z = mPlayer->mClient->mServerFrame.mRot.z;
+	serverRotNew.x = mPlayer->mServerFrame.mRot.x;
+	serverRotNew.z = mPlayer->mServerFrame.mRot.z;
 
 	serverRotNew.normalise();
 
@@ -106,12 +105,12 @@ void Rotation::interpolateTick(float renderTime)
 	// are we back in sync
 	if(abs(mDegreesToServer) < mRotInterpLimitLow)
 	{
-       mPlayer->mClient->mCommand.mCatchupRot = false;
+       mPlayer->mCommand.mCatchupRot = false;
 	}
 
-	if (mServerRotSpeed == 0.0 && mPlayer->mClient->mCommand.mCatchupRot == false)
+	if (mServerRotSpeed == 0.0 && mPlayer->mCommand.mCatchupRot == false)
 	{
-       mPlayer->mClient->mCommand.mRotSpeed = 0.0;
+       mPlayer->mCommand.mRotSpeed = 0.0;
 	}
 }
 

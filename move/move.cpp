@@ -5,7 +5,6 @@
 
 //player,client,shape,animation combo
 #include "../player/clientSidePlayer.h"
-#include "../client/clientSideClient.h"
 #include "../shape/ogreShape.h"
 #include "../animation/ogreAnimation.h"
 
@@ -48,20 +47,20 @@ Move::~Move()
 
 void Move::processTick()
 {
-	mDeltaX = mPlayer->mClient->mServerFrame.mOrigin.x - mPlayer->mShape->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mClient->mServerFrame.mOrigin.z - mPlayer->mShape->getSceneNode()->getPosition().z;
+	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->mShape->getSceneNode()->getPosition().x;
+    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->mShape->getSceneNode()->getPosition().z;
 
 	//distance we are off from server
 	mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2));
 
 	// if server has come to a stop
-	if(mPlayer->mClient->mServerFrame.mVelocity.x == 0.0 && mPlayer->mClient->mServerFrame.mVelocity.z == 0.0)
+	if(mPlayer->mServerFrame.mVelocity.x == 0.0 && mPlayer->mServerFrame.mVelocity.z == 0.0)
 	{
-		mPlayer->mClient->mCommand.mStop = true;
+		mPlayer->mCommand.mStop = true;
 	}
 	else //server still moving
 	{
-		mPlayer->mClient->mCommand.mStop = false;
+		mPlayer->mCommand.mStop = false;
 	}
 
 	mMoveStateMachine->update();
@@ -72,11 +71,11 @@ void Move::interpolateTick(float renderTime)
 {
 	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	transVector.x = mPlayer->mClient->mCommand.mVelocity.x;
-	transVector.z = mPlayer->mClient->mCommand.mVelocity.z;
+	transVector.x = mPlayer->mCommand.mVelocity.x;
+	transVector.z = mPlayer->mCommand.mVelocity.z;
 	mPlayer->mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-	mPlayer->mShape->mOgreAnimation->updateAnimations(renderTime,mPlayer->mClient->mCommand.mStop);
+	mPlayer->mShape->mOgreAnimation->updateAnimations(renderTime,mPlayer->mCommand.mStop);
 }
 
 
