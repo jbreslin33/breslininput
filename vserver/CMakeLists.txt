@@ -111,10 +111,6 @@ set(HDRS
 	#math
 	../math/vector3D.h
 	
-	#client
-	../client/client.h
-	../client/serverSideClient.h
-	
 	#command
 	../command/command.h
 	../command/serverSideCommand.h
@@ -155,10 +151,6 @@ set(SRCS
 	#math
 	../math/vector3D.cpp
 	
-	#client
-	../client/client.cpp
-	../client/serverSideClient.cpp
-
 	#command
 	../command/command.cpp
 	../command/serverSideCommand.cpp
@@ -199,10 +191,6 @@ set(HDRS
 	#math
 	../math/vector3D.h
 	
-	#client
-	../client/client.h
-	../client/serverSideClient.h
-	
 	#command
 	../command/command.h
 	../command/serverSideCommand.h
@@ -242,10 +230,6 @@ set(SRCS
 	
 	#math
 	../math/vector3D.cpp
-	
-	#client
-	../client/client.cpp
-	../client/serverSideClient.cpp
 	
 	#command
 	../command/command.cpp

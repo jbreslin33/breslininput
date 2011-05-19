@@ -36,6 +36,8 @@ Move* mMove;
 //Rotation
 Rotation* mRotation;
 
+int			mIndex;
+
 };
 
 #endif

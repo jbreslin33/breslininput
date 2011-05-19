@@ -84,6 +84,11 @@ void dreamSock_Shutdown(void)
 
 dreamClient::dreamClient()
 {
+
+	mServerSidePlayer = NULL;
+	mServerPlayer = NULL;
+	mClientSidePlayer = NULL;
+
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
 	outgoingSequence		= 1;

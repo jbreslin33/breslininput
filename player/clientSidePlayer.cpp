@@ -19,6 +19,8 @@
 
 ClientSidePlayer::ClientSidePlayer(std::string name, ClientSideClient* client, OgreShape* shape) : Player(name)
 {
+	mIndex  = 0;
+
 	mClient   = client;
 	mShape    = shape;
 	mMove     = new Move(this);

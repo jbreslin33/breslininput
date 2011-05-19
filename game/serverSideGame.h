@@ -2,7 +2,7 @@
 #define SERVERSIDEGAME_H
 
 #include <string.h>
-#include <vector>
+
 #include "../tdreamsock/dreamSock.h"
 
 //Ogre headers
@@ -35,8 +35,6 @@ private:
 	Ogre::Root* mRoot;
 	
 	Server	*mNetworkServer;
-
-	std::vector<ServerSideClient*> mClientVector;
 
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms

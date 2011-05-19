@@ -312,7 +312,7 @@ void ServerSideGame::BuildMoveCommand(Message *mes, ServerSideClient *client)
 	mes->WriteByte(command->mMilliseconds);
 }
 
-void ServerSideGame::BuildDeltaMoveCommand(Message *mes, ServerSideClient *client)
+void ServerSideGame::BuildDeltaMoveCommand(Message *mes, dreamClient *client)
 {
 
 	ServerSidePlayer* player = client->mPlayer;

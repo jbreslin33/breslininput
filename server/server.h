@@ -4,6 +4,8 @@
 #include "../tdreamsock/dreamSockLog.h"
 #include "../message/message.h"
 
+#include <vector>
+
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
 	#pragma message ("Auto linking WinSock2 library")
@@ -82,7 +84,7 @@ private:
 	void			ParsePacket(Message *mes, struct sockaddr *address);
 	int				CheckForTimeout(char *data, struct sockaddr *from);
 
-	dreamClient		*clientList;
+	std::vector<dreamClient*> mClientVector;
 
 	int				port;					// Port
 	SOCKET			socket;					// Socket
@@ -101,7 +103,6 @@ public:
 	void			SendPackets(void);
 
 	bool			GetInit(void)			{ return init; }
-	dreamClient		*GetClientList(void)	{ return clientList; }
 
 	int				GetPort(void)			{ return port; }
 };

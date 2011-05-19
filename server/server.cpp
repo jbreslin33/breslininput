@@ -46,28 +46,11 @@ Server::Server()
 	port			= 0;
 	runningIndex	= 1;
 	socket			= 0;
-	clientList		= NULL;
 }
 
 Server::~Server()
 {
-	dreamClient *list = clientList;
-	dreamClient *next;
-
-	while(list != NULL)
-	{
-		next = list->next;
-
-		if(list)
-		{
-			free(list);
-		}
-
-		list = next;
-	}
-
-	clientList = NULL;
-
+	mClientVector.empty();
 	dreamSock_CloseSocket(socket);
 }
 
@@ -109,10 +92,9 @@ void Server::SendAddClient(dreamClient *newClient)
 	newClient->SendPacket();
 
 	// Send 'Add client' message to every client
-	dreamClient *client = clientList;
 
 	// First inform the new client of the other clients
-	for( ; client != NULL; client = client->next)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		LogString("inform new client of others");
 		newClient->mMessage.Init(newClient->mMessage.outgoingData,
@@ -120,41 +102,41 @@ void Server::SendAddClient(dreamClient *newClient)
 
 		newClient->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
-		if(client == newClient)
+		if(mClientVector.size() == 0)
 		{
 
 			LogString("LOCAL Y");
 			newClient->mMessage.WriteByte(1);	// local client
-			newClient->mMessage.WriteByte(client->GetIndex());
-			newClient->mMessage.WriteString(client->GetName());
+			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
+			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
 		}
 		else
 		{
 						LogString("LOCAL N");
 			newClient->mMessage.WriteByte(0);	// not-local client
-			newClient->mMessage.WriteByte(client->GetIndex());
-			newClient->mMessage.WriteString(client->GetName());
+			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
+			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
 		}
 
 		newClient->SendPacket();
 	}
 
 	// Then tell the others about the new client
-	for(client = clientList; client != NULL; client = client->next)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
-		if(client == newClient)
+		if(mClientVector.at(i) == newClient)
 			continue;
 		LogString("telling others of new client");
-		client->mMessage.Init(client->mMessage.outgoingData,
-			sizeof(client->mMessage.outgoingData));
+		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
+			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-		client->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
+		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
-		client->mMessage.WriteByte(0);
-		client->mMessage.WriteByte(newClient->GetIndex());
-		client->mMessage.WriteString(newClient->GetName());
+		mClientVector.at(i)->mMessage.WriteByte(0);
+		mClientVector.at(i)->mMessage.WriteByte(newClient->GetIndex());
+		mClientVector.at(i)->mMessage.WriteString(newClient->GetName());
 
-		client->SendPacket();
+		mClientVector.at(i)->SendPacket();
 	}
 }
 
@@ -163,15 +145,13 @@ void Server::SendRemoveClient(dreamClient *client)
 	int index = client->GetIndex();
 
 	// Send 'Remove client' message to every client
-	dreamClient *list = clientList;
-
-	for( ; list != NULL; list = list->next)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
-		list->mMessage.Init(list->mMessage.outgoingData,
-			sizeof(list->mMessage.outgoingData));
+		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
+			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-		list->mMessage.WriteByte(DREAMSOCK_MES_REMOVECLIENT);	// type
-		list->mMessage.WriteByte(index);							// index
+		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_REMOVECLIENT);	// type
+		mClientVector.at(i)->mMessage.WriteByte(index);							// index
 	}
 
 	SendPackets();
@@ -187,25 +167,23 @@ void Server::SendRemoveClient(dreamClient *client)
 void Server::SendPing(void)
 {
 	// Send ping message to every client
-	dreamClient *list = clientList;
-
-	for( ; list != NULL; list = list->next)
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
-		list->SendPing();
+		mClientVector.at(i)->SendPing();
 	}
 }
 
 void Server::AddClient(struct sockaddr *address, char *name)
 {
 	// First get a pointer to the beginning of client list
-	dreamClient *list = clientList;
-	dreamClient *prev;
-	dreamClient *newClient;
+	//dreamClient *list = clientList;
+	//dreamClient *prev;
+	//dreamClient *newClient;
 
 	LogString("LIB: Adding client, index %d", runningIndex);
 
 	// No clients yet, adding the first one
-	if(clientList == NULL)
+	if(mClientVector.size() == 0)
 	{
 		LogString("LIB: Server: Adding first client");
 

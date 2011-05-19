@@ -12,10 +12,7 @@ public:
 ClientSideClient();
 ~ClientSideClient();
 
-ClientSidePlayer* mPlayer;
-ClientSidePlayer* mServerPlayer;
 
-int			mIndex;
 };
 
 #endif

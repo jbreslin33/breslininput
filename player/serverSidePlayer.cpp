@@ -33,9 +33,9 @@ void ServerSidePlayer::processTick()
 
 	float multiplier = 200.0f;
 
-	clientFrametime = mClient->mCommand.mMilliseconds / 1000.0f;;
+	clientFrametime = mCommand.mMilliseconds / 1000.0f;;
 
-	calculateVelocity(&mClient->mCommand, clientFrametime);
+	calculateVelocity(&mCommand, clientFrametime);
 
 	setKeyDirection();
 
@@ -76,20 +76,20 @@ void ServerSidePlayer::processTick()
 
 	}
 
-	mClient->mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
-	mClient->mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+	mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
+	mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
 
-	if(mClient->mCommand.mVelocity.x != 0.0 || mClient->mCommand.mVelocity.z != 0.0)
+	if(mCommand.mVelocity.x != 0.0 || mCommand.mVelocity.z != 0.0)
 	{
-	   mClient->mCommand.mVelocity.x = mShape->mSceneNode->getOrientation().zAxis().x;
-	   mClient->mCommand.mVelocity.z = mShape->mSceneNode->getOrientation().zAxis().z;
+	   mCommand.mVelocity.x = mShape->mSceneNode->getOrientation().zAxis().x;
+	   mCommand.mVelocity.z = mShape->mSceneNode->getOrientation().zAxis().z;
 	}
 
-	mClient->mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
-	mClient->mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
+	mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
+	mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
 
-	int f = mClient->netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
-	mClient->mProcessedFrame = f;
+	int f = netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+	mProcessedFrame = f;
 }
 void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 {
@@ -137,16 +137,16 @@ void ServerSidePlayer::setKeyDirection()
 		mKeyDirection.y = 0;
 		
 		// keep track of the player's intended direction
-		if(mClient->mCommand.mKey & KEY_UP) 
+		if(mCommand.mKey & KEY_UP) 
 			mKeyDirection.z += -1;
 
-		if(mClient->mCommand.mKey & KEY_LEFT) 
+		if(mCommand.mKey & KEY_LEFT) 
 			mKeyDirection.x += -1;
 		
-		if(mClient->mCommand.mKey & KEY_DOWN) 
+		if(mCommand.mKey & KEY_DOWN) 
            mKeyDirection.z += 1;
 
-		if(mClient->mCommand.mKey & KEY_RIGHT) 
+		if(mCommand.mKey & KEY_RIGHT) 
 			mKeyDirection.x += 1;
 	}
 }

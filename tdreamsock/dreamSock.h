@@ -4,6 +4,8 @@
 #include "dreamSockLog.h"
 #include "../message/message.h"
 
+//#include "../client/clientSideClient.h"
+
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
 	#pragma message ("Auto linking WinSock2 library")
@@ -71,9 +73,12 @@ class dreamClient;
 class dreamServer;
 class dreamSock;
 
+class ClientSidePlayer;
+class ServerSidePlayer;
+
 class dreamClient
 {
-private:
+public:
 	void			DumpBuffer(void);
 	void			ParsePacket(Message *mes);
 
@@ -154,6 +159,11 @@ public:
 
 	Message	mMessage;
 	dreamClient		*next;
+
+ClientSidePlayer* mClientSidePlayer;
+ClientSidePlayer* mServerPlayer;
+ServerSidePlayer* mServerSidePlayer;
+
 };
 
 /***************************************

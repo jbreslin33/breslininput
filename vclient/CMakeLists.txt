@@ -102,10 +102,6 @@ set(HDRS
 	#math
 	../math/vector3D.h
 	
-	#client
-	../client/client.h
-	../client/clientSideClient.h
-	
 	#shape
 	../shape/shape.h
 	../shape/ogreShape.h
@@ -158,10 +154,6 @@ set(SRCS
 	#math
 	../math/vector3D.cpp
 	
-	#client
-	../client/client.cpp
-	../client/clientSideClient.cpp
-	
 	#shape
 	../shape/shape.cpp
 	../shape/ogreShape.cpp
@@ -208,10 +200,6 @@ set(HDRS
 
 	#math
 	../math/vector3D.h
-	
-	#client
-	../client/client.h
-	../client/clientSideClient.h
 	
 	#shape
 	../shape/shape.h
@@ -262,10 +250,6 @@ set(SRCS
 
 	#math
 	../math/vector3D.cpp
-	
-	#client
-	../client/client.cpp
-	../client/clientSideClient.cpp
 	
 	#shape
 	../shape/shape.cpp

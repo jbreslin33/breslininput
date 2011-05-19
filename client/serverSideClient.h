@@ -16,11 +16,11 @@ public:
 ServerSideClient();
 ~ServerSideClient();
 
-struct sockaddr  address;
+//struct sockaddr  address;
 
-dreamClient      *netClient;
+//dreamClient      *netClient;
 
-ServerSidePlayer* mPlayer;
+
 };
 
 #endif
