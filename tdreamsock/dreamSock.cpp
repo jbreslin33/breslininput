@@ -8,6 +8,8 @@
 
 //#define WIN32
 
+#include "../message/message.h"
+
 #ifdef WIN32
 // Windows specific headers
 	#ifndef _WINSOCKAPI_
@@ -35,6 +37,8 @@
 #include <time.h>
 #include "dreamSock.h"
 #include "dreamSockLog.h"
+
+
 
 bool dreamSock_init = false;
 
@@ -167,10 +171,10 @@ void dreamServer::Uninitialise(void)
 void dreamServer::SendAddClient(dreamClient *newClient)
 {
 	// Send connection confirmation
-	newClient->message.Init(newClient->message.outgoingData,
-		sizeof(newClient->message.outgoingData));
+	newClient->mMessage.Init(newClient->mMessage.outgoingData,
+		sizeof(newClient->mMessage.outgoingData));
 
-	newClient->message.WriteByte(DREAMSOCK_MES_CONNECT);	// type
+	newClient->mMessage.WriteByte(DREAMSOCK_MES_CONNECT);	// type
 	newClient->SendPacket();
 
 	// Send 'Add client' message to every client
@@ -180,25 +184,25 @@ void dreamServer::SendAddClient(dreamClient *newClient)
 	for( ; client != NULL; client = client->next)
 	{
 		LogString("inform new client of others");
-		newClient->message.Init(newClient->message.outgoingData,
-			sizeof(newClient->message.outgoingData));
+		newClient->mMessage.Init(newClient->mMessage.outgoingData,
+			sizeof(newClient->mMessage.outgoingData));
 
-		newClient->message.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
+		newClient->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
 		if(client == newClient)
 		{
 
 			LogString("LOCAL Y");
-			newClient->message.WriteByte(1);	// local client
-			newClient->message.WriteByte(client->GetIndex());
-			newClient->message.WriteString(client->GetName());
+			newClient->mMessage.WriteByte(1);	// local client
+			newClient->mMessage.WriteByte(client->GetIndex());
+			newClient->mMessage.WriteString(client->GetName());
 		}
 		else
 		{
 						LogString("LOCAL N");
-			newClient->message.WriteByte(0);	// not-local client
-			newClient->message.WriteByte(client->GetIndex());
-			newClient->message.WriteString(client->GetName());
+			newClient->mMessage.WriteByte(0);	// not-local client
+			newClient->mMessage.WriteByte(client->GetIndex());
+			newClient->mMessage.WriteString(client->GetName());
 		}
 
 		newClient->SendPacket();
@@ -210,14 +214,14 @@ void dreamServer::SendAddClient(dreamClient *newClient)
 		if(client == newClient)
 			continue;
 		LogString("telling others of new client");
-		client->message.Init(client->message.outgoingData,
-			sizeof(client->message.outgoingData));
+		client->mMessage.Init(client->mMessage.outgoingData,
+			sizeof(client->mMessage.outgoingData));
 
-		client->message.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
+		client->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
-		client->message.WriteByte(0);
-		client->message.WriteByte(newClient->GetIndex());
-		client->message.WriteString(newClient->GetName());
+		client->mMessage.WriteByte(0);
+		client->mMessage.WriteByte(newClient->GetIndex());
+		client->mMessage.WriteString(newClient->GetName());
 
 		client->SendPacket();
 	}
@@ -236,20 +240,20 @@ void dreamServer::SendRemoveClient(dreamClient *client)
 
 	for( ; list != NULL; list = list->next)
 	{
-		list->message.Init(list->message.outgoingData,
-			sizeof(list->message.outgoingData));
+		list->mMessage.Init(list->mMessage.outgoingData,
+			sizeof(list->mMessage.outgoingData));
 
-		list->message.WriteByte(DREAMSOCK_MES_REMOVECLIENT);	// type
-		list->message.WriteByte(index);							// index
+		list->mMessage.WriteByte(DREAMSOCK_MES_REMOVECLIENT);	// type
+		list->mMessage.WriteByte(index);							// index
 	}
 
 	SendPackets();
 
 	// Send disconnection confirmation
-	client->message.Init(client->message.outgoingData,
-		sizeof(client->message.outgoingData));
+	client->mMessage.Init(client->mMessage.outgoingData,
+		sizeof(client->mMessage.outgoingData));
 
-	client->message.WriteByte(DREAMSOCK_MES_DISCONNECT);
+	client->mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
 	client->SendPacket();
 }
 
@@ -393,7 +397,7 @@ void dreamServer::RemoveClient(dreamClient *client)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamServer::ParsePacket(dreamMessage *mes, struct sockaddr *address)
+void dreamServer::ParsePacket(Message *mes, struct sockaddr *address)
 {
 	mes->BeginReading();
 	int type = mes->ReadByte();
@@ -496,7 +500,7 @@ int dreamServer::CheckForTimeout(char *data, struct sockaddr *from)
 
 			// Build a 'fake' message so the application will also
 			// receive notification of a client disconnecting
-			dreamMessage mes;
+			Message mes;
 			mes.Init(data, sizeof(data));
 			mes.WriteByte(DREAMSOCK_MES_DISCONNECT);
 
@@ -550,7 +554,7 @@ int dreamServer::GetPacket(char *data, struct sockaddr *from)
 	// Read data of the socket
 	int ret = 0;
 
-	dreamMessage mes;
+	Message mes;
 	mes.Init(data, sizeof(data));
 
 	ret = dreamSock_GetPacket(socket, mes.data, from);
@@ -580,7 +584,7 @@ void dreamServer::SendPackets(void)
 
 	for( ; clList != NULL; clList = clList->next)
 	{
-		if(clList->message.GetSize() == 0)
+		if(clList->mMessage.GetSize() == 0)
 			continue;
 
 		clList->SendPacket();
@@ -727,11 +731,11 @@ void dreamClient::SendConnect(const char *name)
 
 	connectionState = DREAMSOCK_CONNECTING;
 
-	message.Init(message.outgoingData, sizeof(message.outgoingData));
-	message.WriteByte(DREAMSOCK_MES_CONNECT);
-	message.WriteString(name);
+	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
+	mMessage.WriteByte(DREAMSOCK_MES_CONNECT);
+	mMessage.WriteString(name);
 
-	SendPacket(&message);
+	SendPacket(&mMessage);
 }
 
 //-----------------------------------------------------------------------------
@@ -740,10 +744,10 @@ void dreamClient::SendConnect(const char *name)
 //-----------------------------------------------------------------------------
 void dreamClient::SendDisconnect(void)
 {
-	message.Init(message.outgoingData, sizeof(message.outgoingData));
-	message.WriteByte(DREAMSOCK_MES_DISCONNECT);
+	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
+	mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
 
-	SendPacket(&message);
+	SendPacket(&mMessage);
 	Reset();
 
 	connectionState = DREAMSOCK_DISCONNECTING;
@@ -757,17 +761,17 @@ void dreamClient::SendPing(void)
 {
 	pingSent = dreamSock_GetCurrentSystemTime();
 
-	message.Init(message.outgoingData, sizeof(message.outgoingData));
-	message.WriteByte(DREAMSOCK_MES_PING);
+	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
+	mMessage.WriteByte(DREAMSOCK_MES_PING);
 
-	SendPacket(&message);
+	SendPacket(&mMessage);
 }
 
 //-----------------------------------------------------------------------------
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamClient::ParsePacket(dreamMessage *mes)
+void dreamClient::ParsePacket(Message *mes)
 {
 	mes->BeginReading();
 	int type = mes->ReadByte();
@@ -834,7 +838,7 @@ int dreamClient::GetPacket(char *data, struct sockaddr *from)
 
 	int ret;
 
-	dreamMessage mes;
+	Message mes;
 	mes.Init(data, sizeof(data));
 
 	ret = dreamSock_GetPacket(socket, mes.data, from);
@@ -864,7 +868,7 @@ void dreamClient::SendPacket(void)
 	}
 
 	// If the message overflowed, do not send it
-	if(message.GetOverFlow())
+	if(mMessage.GetOverFlow())
 	{
 		LogString("SendPacket error: Could not send because the buffer overflowed");
 		return;
@@ -882,17 +886,17 @@ void dreamClient::SendPacket(void)
 		sendToAddress.sin_family = AF_INET;
 		sendToAddress.sin_addr.s_addr = inetAddr;
 
-		dreamSock_SendPacket(socket, message.GetSize(), message.data,
+		dreamSock_SendPacket(socket, mMessage.GetSize(), mMessage.data,
 			*(struct sockaddr *) &sendToAddress);
 	}
 	else
 	{
-		dreamSock_SendPacket(socket, message.GetSize(), message.data, myaddress);
+		dreamSock_SendPacket(socket, mMessage.GetSize(), mMessage.data, myaddress);
 	}
 
 	// Check if the packet is sequenced
-	message.BeginReading();
-	int type = message.ReadByte();
+	mMessage.BeginReading();
+	int type = mMessage.ReadByte();
 
 	if(type > 0)
 	{
@@ -904,7 +908,7 @@ void dreamClient::SendPacket(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamClient::SendPacket(dreamMessage *theMes)
+void dreamClient::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
 	if(!socket || connectionState == DREAMSOCK_DISCONNECTED)
@@ -950,274 +954,3 @@ void dreamClient::SendPacket(dreamMessage *theMes)
 	}
 }
 
-/***************
-
- Message Buffer
-
-****************/
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::Init(char *d, int length)
-{
-	data		= d;
-	maxSize		= length;
-	size		= 0;
-	readCount	= 0;
-	overFlow	= false;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::Clear(void)
-{
-	size		= 0;
-	readCount	= 0;
-	overFlow	= false;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-char *dreamMessage::GetNewPoint(int length)
-{
-	char *tempData;
-
-	// Check for overflow
-	if(size + length > maxSize)
-	{
-		Clear(); 
-		overFlow = true;
-	}
-
-	tempData = data + size;
-	size += length;
-
-	return tempData;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::AddSequences(dreamClient *client)
-{
-	WriteShort(client->GetOutgoingSequence());
-	WriteShort(client->GetIncomingSequence());
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::Write(const void *d, int length)
-{
-	memcpy(GetNewPoint(length), d, length);		
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::WriteByte(char c)
-{
-	char *buf;
-
-	buf = GetNewPoint(1);
-
-	memcpy(buf, &c, 1);
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::WriteShort(short c)
-{
-	char *buf;
-
-	buf = GetNewPoint(2);
-
-	memcpy(buf, &c, 2);
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::WriteLong(long c)
-{
-	char *buf;
-	
-	buf = GetNewPoint(4);
-
-	memcpy(buf, &c, 4);
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::WriteFloat(float c)
-{
-	char *buf;
-	
-	buf = GetNewPoint(4);
-
-	memcpy(buf, &c, 4);
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::WriteString(const char *s)
-{
-	if(!s)
-	{
-		return;
-	}
-	else
-		Write(s, strlen(s) + 1);
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::BeginReading(void)
-{
-	readCount = 0;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamMessage::BeginReading(int s)
-{
-	size = s;
-	readCount = 0;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-char *dreamMessage::Read(int s)
-{
-	static char c[2048];
-
-	if(readCount+s > size)
-		return NULL;
-	else
-		memcpy(&c, &data[readCount], s);
-
-	readCount += s;
-
-	return c;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-char dreamMessage::ReadByte(void)
-{
-	char c;
-
-	if(readCount+1 > size)
-		c = -1;
-	else
-		memcpy(&c, &data[readCount], 1);
-
-	readCount++;
-
-	return c;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-short dreamMessage::ReadShort(void)
-{
-	short c;
-
-	if(readCount+2 > size)
-		c = -1;
-	else		
-		memcpy(&c, &data[readCount], 2);
-
-	readCount += 2;
-
-	return c;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-long dreamMessage::ReadLong(void)
-{
-	long c;
-
-	if(readCount+4 > size)
-		c = -1;
-	else
-		memcpy(&c, &data[readCount], 4);
-
-	readCount += 4;
-
-	return c;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-float dreamMessage::ReadFloat(void)
-{
-	float c;
-
-	if(readCount+4 > size)
-		c = -1;
-	else
-		memcpy(&c, &data[readCount], 4);
-
-	readCount += 4;
-
-	return c;
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-char *dreamMessage::ReadString(void)
-{
-	static char string[2048];
-	int	l, c;
-
-	l = 0;
-
-	do
-	{
-		c = ReadByte();
-
-		if (c == -1 || c == 0)
-			break;
-
-		string[l] = c;
-		l++;
-	} while(l < sizeof(string)-1);
-
-	string[l] = 0;
-
-	return string;
-}

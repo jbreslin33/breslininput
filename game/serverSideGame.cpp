@@ -170,7 +170,7 @@ void ServerSideGame::ReadPackets(void)
 
 	ServerSideClient *clList;
 
-	dreamMessage mes;
+	Message mes;
 	mes.Init(data, sizeof(data));
 
 	// Get the packet from the socket
@@ -225,16 +225,16 @@ void ServerSideGame::ReadPackets(void)
 
 				for (unsigned int i = 0; i < mClientVector.size(); i++)
 				{
-					mClientVector.at(i)->netClient->message.Init(mClientVector.at(i)->netClient->message.outgoingData,
-						sizeof(clList->netClient->message.outgoingData));
+					mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
+						sizeof(clList->netClient->mMessage.outgoingData));
 
-					mClientVector.at(i)->netClient->message.WriteByte(USER_MES_NONDELTAFRAME);
-					mClientVector.at(i)->netClient->message.WriteShort(mClientVector.at(i)->netClient->GetOutgoingSequence());
-					mClientVector.at(i)->netClient->message.WriteShort(mClientVector.at(i)->netClient->GetIncomingSequence());
+					mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
+					mClientVector.at(i)->netClient->mMessage.WriteShort(mClientVector.at(i)->netClient->GetOutgoingSequence());
+					mClientVector.at(i)->netClient->mMessage.WriteShort(mClientVector.at(i)->netClient->GetIncomingSequence());
 
 					for (unsigned int j = 0; j < mClientVector.size(); j++)
 					{
-						BuildMoveCommand(&mClientVector.at(i)->netClient->message, mClientVector.at(j));
+						BuildMoveCommand(&mClientVector.at(i)->netClient->mMessage, mClientVector.at(j));
 					}
 					mClientVector.at(i)->netClient->SendPacket();
 				}
@@ -259,15 +259,15 @@ void ServerSideGame::SendCommand(void)
 	// Fill messages
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
-		mClientVector.at(i)->netClient->message.Init(mClientVector.at(i)->netClient->message.outgoingData,
-			sizeof(mClientVector.at(i)->netClient->message.outgoingData));
+		mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
+			sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
 
-		mClientVector.at(i)->netClient->message.WriteByte(USER_MES_FRAME);			// type
-		mClientVector.at(i)->netClient->message.AddSequences(mClientVector.at(i)->netClient);	// sequences
+		mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_FRAME);			// type
+		mClientVector.at(i)->netClient->mMessage.AddSequences(mClientVector.at(i)->netClient);	// sequences
 
 		for (unsigned int j = 0; j < mClientVector.size(); j++)
 		{
-			BuildDeltaMoveCommand(&mClientVector.at(i)->netClient->message, mClientVector.at(j));
+			BuildDeltaMoveCommand(&mClientVector.at(i)->netClient->mMessage, mClientVector.at(j));
 		}
 	}
 
@@ -286,17 +286,17 @@ void ServerSideGame::SendExitNotification(void)
 {
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
-		mClientVector.at(i)->netClient->message.Init(mClientVector.at(i)->netClient->message.outgoingData,
-			sizeof(mClientVector.at(i)->netClient->message.outgoingData));
+		mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
+			sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
 
-		mClientVector.at(i)->netClient->message.WriteByte(USER_MES_SERVEREXIT);	// type
-		mClientVector.at(i)->netClient->message.AddSequences(mClientVector.at(i)->netClient);	// sequences
+		mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_SERVEREXIT);	// type
+		mClientVector.at(i)->netClient->mMessage.AddSequences(mClientVector.at(i)->netClient);	// sequences
 	}
 
 	mNetworkServer->SendPackets();
 }
 
-void ServerSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::ReadDeltaMoveCommand(Message *mes, ServerSideClient *client)
 {
 	int flags = 0;
 
@@ -315,7 +315,7 @@ void ServerSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *c
 	client->mCommand.mMilliseconds = mes->ReadByte();
 }
 
-void ServerSideGame::BuildMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::BuildMoveCommand(Message *mes, ServerSideClient *client)
 {
 	Command* command = &client->mCommand;
 	// Add to the message
@@ -331,7 +331,7 @@ void ServerSideGame::BuildMoveCommand(dreamMessage *mes, ServerSideClient *clien
 	mes->WriteByte(command->mMilliseconds);
 }
 
-void ServerSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client)
+void ServerSideGame::BuildDeltaMoveCommand(Message *mes, ServerSideClient *client)
 {
 
 	ServerSidePlayer* player = client->mPlayer;

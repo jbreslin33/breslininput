@@ -49,9 +49,9 @@ public:
 	void	ReadPackets(void);
 	void	SendCommand(void);
 	void	SendExitNotification(void);
-	void	ReadDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client);
-	void	BuildMoveCommand(dreamMessage *mes, ServerSideClient *client);
-	void	BuildDeltaMoveCommand(dreamMessage *mes, ServerSideClient *client);
+	void	ReadDeltaMoveCommand(Message *mes, ServerSideClient *client);
+	void	BuildMoveCommand(Message *mes, ServerSideClient *client);
+	void	BuildDeltaMoveCommand(Message *mes, ServerSideClient *client);
 
 	// Server.cpp
 	int		InitNetwork();

@@ -2,6 +2,7 @@
 #define __DREAMSOCK_H
 
 #include "dreamSockLog.h"
+#include "../message/message.h"
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
@@ -66,54 +67,15 @@
 #define DREAMSOCK_MES_PING			-105
 
 // Introduce classes
-class dreamMessage;
 class dreamClient;
 class dreamServer;
 class dreamSock;
-
-class dreamMessage
-{
-private:
-	bool			overFlow;
-	int				maxSize;
-	int				size;
-	int				readCount;
-
-	char			*GetNewPoint(int length);
-
-public:
-	void			Init(char *d, int length);
-	void			Clear(void);
-	void			Write(const void *d, int length);
-	void			AddSequences(dreamClient *client);
-
-	void			WriteByte(char c);
-	void			WriteShort(short c);
-	void			WriteLong(long c);
-	void			WriteFloat(float c);
-	void			WriteString(const char *s);
-	void			BeginReading(void);
-	void			BeginReading(int s);
-	char			*Read(int s);
-	char			ReadByte(void);
-	short			ReadShort(void);
-	long			ReadLong(void);
-	float			ReadFloat(void);
-	char			*ReadString(void);
-
-	bool			GetOverFlow(void)	{ return overFlow; }
-	int				GetSize(void)		{ return size; }
-	void			SetSize(int s)		{ size = s; }
-
-	char			*data;
-	char			outgoingData[1400];
-};
 
 class dreamClient
 {
 private:
 	void			DumpBuffer(void);
-	void			ParsePacket(dreamMessage *mes);
+	void			ParsePacket(Message *mes);
 
 	int				connectionState;		// Connecting, connected, disconnecting, disconnected
 
@@ -153,7 +115,7 @@ public:
 
 	int				GetPacket(char *data, struct sockaddr *from);
 	void			SendPacket(void);
-	void			SendPacket(dreamMessage *message);
+	void			SendPacket(Message *message);
 
 	unsigned short	GetOutgoingSequence(void)				{ return outgoingSequence; }
 	void			SetOutgoingSequence(unsigned short seq)	{ outgoingSequence = seq; }
@@ -190,7 +152,7 @@ public:
 	int				GetLastMessageTime(void) { return lastMessageTime; }
 	void			SetLastMessageTime(int t) { lastMessageTime = t; }
 
-	dreamMessage	message;
+	Message	mMessage;
 	dreamClient		*next;
 };
 
@@ -201,7 +163,7 @@ private:
 	void			SendRemoveClient(dreamClient *client);
 	void			AddClient(struct sockaddr *address, char *name);
 	void			RemoveClient(dreamClient *client);
-	void			ParsePacket(dreamMessage *mes, struct sockaddr *address);
+	void			ParsePacket(Message *mes, struct sockaddr *address);
 	int				CheckForTimeout(char *data, struct sockaddr *from);
 
 	dreamClient		*clientList;

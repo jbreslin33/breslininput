@@ -4,6 +4,8 @@
 #include "../shape/ogreShape.h"
 #include "../math/vector3D.h"
 
+#include "../message/message.h"
+
 ClientSideGame* game;
 bool keys[256];
 
@@ -195,7 +197,7 @@ void ClientSideGame::ReadPackets(void)
 
 	char name[50];
 
-	dreamMessage mes;
+	Message mes;
 	mes.Init(data, sizeof(data));
 
 	while(ret = mNetworkClient->GetPacket(mes.data, &address))
@@ -273,7 +275,7 @@ void ClientSideGame::SendCommand(void)
 	if(mNetworkClient->GetConnectionState() != DREAMSOCK_CONNECTED)
 		return;
 
-	dreamMessage message;
+	Message message;
 	char data[1400];
 
 	int i = mNetworkClient->GetOutgoingSequence() & (COMMAND_HISTORY_SIZE-1);
@@ -301,7 +303,7 @@ void ClientSideGame::SendCommand(void)
 void ClientSideGame::SendRequestNonDeltaFrame(void)
 {
 	char data[1400];
-	dreamMessage message;
+	Message message;
 	message.Init(data, sizeof(data));
 
 	message.WriteByte(USER_MES_NONDELTAFRAME);
@@ -339,7 +341,7 @@ void ClientSideGame::Disconnect(void)
 	mNetworkClient->SendDisconnect();
 }
 
-void ClientSideGame::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client)
+void ClientSideGame::ReadMoveCommand(Message *mes, ClientSideClient *client)
 {
 	// Key
 	client->mServerFrame.mKey			= mes->ReadByte();
@@ -363,7 +365,7 @@ void ClientSideGame::ReadMoveCommand(dreamMessage *mes, ClientSideClient *client
 	}
 }
 
-void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *client)
+void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSideClient *client)
 {
 	client->mProcessedFrame;
 	int flags = 0;
@@ -406,7 +408,7 @@ void ClientSideGame::ReadDeltaMoveCommand(dreamMessage *mes, ClientSideClient *c
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void ClientSideGame::BuildDeltaMoveCommand(dreamMessage *mes, ClientSideClient *theClient)
+void ClientSideGame::BuildDeltaMoveCommand(Message *mes, ClientSideClient *theClient)
 {
 	int flags = 0;
 	int last = (mNetworkClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);

@@ -30,6 +30,7 @@ extern bool keys[256];
 
 #define USER_MES_KEEPALIVE		12
 
+class Message;
 
 class ClientSideGame : public BaseApplication
 {
@@ -53,9 +54,9 @@ public:
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
 	void	SendRequestNonDeltaFrame(void);
-	void	ReadMoveCommand         (dreamMessage *mes, ClientSideClient *client);
-	void	ReadDeltaMoveCommand    (dreamMessage *mes, ClientSideClient *client);
-	void	BuildDeltaMoveCommand   (dreamMessage *mes, ClientSideClient *theClient);
+	void	ReadMoveCommand         (Message *mes, ClientSideClient *client);
+	void	ReadDeltaMoveCommand    (Message *mes, ClientSideClient *client);
+	void	BuildDeltaMoveCommand   (Message *mes, ClientSideClient *theClient);
 	void	StartConnection         ();
 	void	Connect                 (void);
 	void	Disconnect              (void);
