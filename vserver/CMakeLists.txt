@@ -122,6 +122,9 @@ set(HDRS
 	#message
 	../message/message.h
 	
+	#server
+	../server/server.h
+	
 )
  
 set(SRCS
@@ -162,6 +165,9 @@ set(SRCS
 	
 	#message
 	../message/message.cpp
+	
+	#server
+	../server/server.cpp
 	
 )
 endif (WIN32)
@@ -204,6 +210,9 @@ set(HDRS
 	#message
 	../message/message.h
 	
+	#server
+	../server/server.h
+	
 )
  
 set(SRCS
@@ -244,6 +253,9 @@ set(SRCS
 	
 	#message
 	../message/message.cpp
+	
+	#server
+	../server/server.cpp
 	
 )
 endif (UNIX)

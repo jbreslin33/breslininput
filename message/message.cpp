@@ -1,22 +1,12 @@
-//
-// DreamSock network-library
-//
-// Programmers:
-// Teijo Hakala
-//
-/////////////////////////////////////////////////////////
-
-//#define WIN32
-
 #include "message.h"
 #include "../tdreamsock/dreamSock.h"
 
 // Common headers
 #include <stdio.h>
-#include <stdarg.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <time.h>
+//#include <stdarg.h>
+//#include <stdlib.h>
+//#include <ctype.h>
+//#include <time.h>
 
 void Message::Init(char *d, int length)
 {

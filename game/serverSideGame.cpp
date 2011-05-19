@@ -1,5 +1,5 @@
 #include "serverSideGame.h"
-
+#include "../server/server.h"
 #include "../shape/ogreShape.h"
 #include "../client/serverSideClient.h"
 #include "../player/serverSidePlayer.h"
@@ -40,12 +40,10 @@ ServerSideGame::ServerSideGame()
 	mRoot = new Ogre::Root("plugins.cfg");
 #endif
 
-	mNetworkServer = new dreamServer;
+	mNetworkServer = new Server();
 	mRealTime	= 0;
 	mServerTime	= 0;
 	mFramenum	= 0;
-
-
 }
 
 ServerSideGame::~ServerSideGame()

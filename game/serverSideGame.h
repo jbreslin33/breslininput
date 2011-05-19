@@ -1,5 +1,5 @@
-#ifndef GAMESERVER_H
-#define GAMESERVER_H
+#ifndef SERVERSIDEGAME_H
+#define SERVERSIDEGAME_H
 
 #include <string.h>
 #include <vector>
@@ -12,6 +12,7 @@ using namespace Ogre;
 class ServerSidePlayer;
 class ServerSideClient;
 class Command;
+class Server;
 
 #define COMMAND_HISTORY_SIZE		64
 
@@ -33,7 +34,7 @@ private:
 
 	Ogre::Root* mRoot;
 	
-	dreamServer	*mNetworkServer;
+	Server	*mNetworkServer;
 
 	std::vector<ServerSideClient*> mClientVector;
 

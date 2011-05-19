@@ -156,40 +156,6 @@ public:
 	dreamClient		*next;
 };
 
-class dreamServer
-{
-private:
-	void			SendAddClient(dreamClient *newClient);
-	void			SendRemoveClient(dreamClient *client);
-	void			AddClient(struct sockaddr *address, char *name);
-	void			RemoveClient(dreamClient *client);
-	void			ParsePacket(Message *mes, struct sockaddr *address);
-	int				CheckForTimeout(char *data, struct sockaddr *from);
-
-	dreamClient		*clientList;
-
-	int				port;					// Port
-	SOCKET			socket;					// Socket
-	int				runningIndex;			// Running index numbers for new clients
-
-	bool			init;
-
-public:
-					dreamServer();
-					~dreamServer();
-
-	int				Initialise(const char *localIP, int serverPort);
-	void			Uninitialise(void);
-	void			SendPing(void);
-	int				GetPacket(char *data, struct sockaddr *from);
-	void			SendPackets(void);
-
-	bool			GetInit(void)			{ return init; }
-	dreamClient		*GetClientList(void)	{ return clientList; }
-
-	int				GetPort(void)			{ return port; }
-};
-
 /***************************************
 
   dreamSock global functions
