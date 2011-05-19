@@ -16,21 +16,6 @@
 #include <assert.h>
 #endif
 
-float VectorLength(Vector3D *vec)
-{
-	return (float) sqrt(vec->x*vec->x + vec->z*vec->z);
-}
-
-Vector3D VectorSubstract(Vector3D *vec1, Vector3D *vec2)
-{
-	Vector3D vec;
-
-	vec.x = vec1->x - vec2->x;
-	vec.z = vec1->z - vec2->z;
-
-	return vec;
-}
-
 ServerSideGame::ServerSideGame()
 {
 
@@ -166,8 +151,6 @@ void ServerSideGame::ReadPackets(void)
 
 	struct sockaddr address;
 
-	ServerSideClient *clList;
-
 	Message mes;
 	mes.Init(data, sizeof(data));
 
@@ -224,7 +207,7 @@ void ServerSideGame::ReadPackets(void)
 				for (unsigned int i = 0; i < mClientVector.size(); i++)
 				{
 					mClientVector.at(i)->netClient->mMessage.Init(mClientVector.at(i)->netClient->mMessage.outgoingData,
-						sizeof(clList->netClient->mMessage.outgoingData));
+						sizeof(mClientVector.at(i)->netClient->mMessage.outgoingData));
 
 					mClientVector.at(i)->netClient->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
 					mClientVector.at(i)->netClient->mMessage.WriteShort(mClientVector.at(i)->netClient->GetOutgoingSequence());
