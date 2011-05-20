@@ -31,6 +31,7 @@ extern bool keys[256];
 #define USER_MES_KEEPALIVE		12
 
 class Message;
+class Client;
 
 class ClientSideGame : public BaseApplication
 {

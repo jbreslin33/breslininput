@@ -9,11 +9,6 @@
 #include "Ogre.h"
 using namespace Ogre;
 
-class ServerSidePlayer;
-class ServerSideClient;
-class Command;
-class Server;
-
 #define COMMAND_HISTORY_SIZE		64
 
 #define KEY_UP						1
@@ -27,6 +22,11 @@ class Server;
 #define USER_MES_FRAME				1
 #define USER_MES_NONDELTAFRAME		2
 #define USER_MES_SERVEREXIT			3
+
+class Message;
+class Command;
+class Server;
+class Client;
 
 class ServerSideGame
 {

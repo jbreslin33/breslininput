@@ -2,9 +2,7 @@
 #define __DREAMSOCK_H
 
 #include "dreamSockLog.h"
-#include "../message/message.h"
-
-//#include "../client/clientSideClient.h"
+//#include "../message/message.h"
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
