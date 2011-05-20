@@ -3,12 +3,6 @@
 
 #include "client.h"
 
-#include "../tdreamsock/dreamSock.h"
-#include "../command/serverSideCommand.h"
-
-class DreamClient;
-class ServerSidePlayer;
-
 class ServerSideClient : public Client
 {
 

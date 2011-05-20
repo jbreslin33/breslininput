@@ -49,10 +49,6 @@
 #define DREAMSOCK_DISCONNECTING			2
 #define DREAMSOCK_DISCONNECTED			4
 
-// Error codes
-#define DREAMSOCK_SERVER_ERROR			1
-#define DREAMSOCK_CLIENT_ERROR			2
-
 #ifdef WIN32
 	#define DREAMSOCK_INVALID_SOCKET	INVALID_SOCKET
 #else
@@ -71,7 +67,6 @@
 
 // Introduce classes
 class Client;
-class dreamServer;
 class ServerSideGame;
 
 class Server

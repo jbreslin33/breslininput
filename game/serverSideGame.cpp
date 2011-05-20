@@ -3,7 +3,7 @@
 #include "../shape/ogreShape.h"
 #include "../client/serverSideClient.h"
 #include "../player/serverSidePlayer.h"
-
+#include "../command/serverSideCommand.h"
 
 #include <fstream>
 #include <math.h>

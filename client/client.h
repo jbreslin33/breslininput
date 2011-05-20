@@ -1,14 +1,12 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "../tdreamsock/dreamSockLog.h"
 #include "../message/message.h"
 
-//#include "../client/clientSideClient.h"
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
-	#pragma message ("Auto linking WinSock2 library")
+#pragma message ("Auto linking WinSock2 library")
 
 	#include <winsock2.h>
 #else
@@ -16,7 +14,8 @@
 	#include <netinet/in.h>
 #endif
 
-#include <stdio.h>
+
+//#include <stdio.h>
 #include <stddef.h>
 
 // Define SOCKET data type for UNIX (defined in WinSock for Win32)
@@ -34,10 +33,6 @@
 	#endif
 #endif
 
-// Host types
-#define DREAMSERVER						-1
-#define DREAMCLIENT						0
-
 // Connection protocols
 #define DREAMSOCK_TCP					0
 #define DREAMSOCK_UDP					1
@@ -47,10 +42,6 @@
 #define DREAMSOCK_CONNECTED				1
 #define DREAMSOCK_DISCONNECTING			2
 #define DREAMSOCK_DISCONNECTED			4
-
-// Error codes
-#define DREAMSOCK_SERVER_ERROR			1
-#define DREAMSOCK_CLIENT_ERROR			2
 
 #ifdef WIN32
 	#define DREAMSOCK_INVALID_SOCKET	INVALID_SOCKET
@@ -68,10 +59,12 @@
 #define DREAMSOCK_MES_REMOVECLIENT	-104
 #define DREAMSOCK_MES_PING			-105
 
-// Introduce classes
-class dreamServer;
-class dreamSock;
 
+	// Error codes
+#define DREAMSOCK_SERVER_ERROR			1
+#define DREAMSOCK_CLIENT_ERROR			2
+
+// Introduce classes
 class ClientSidePlayer;
 class ServerSidePlayer;
 

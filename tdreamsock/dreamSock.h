@@ -1,8 +1,7 @@
-#ifndef __DREAMSOCK_H
-#define __DREAMSOCK_H
+#ifndef DREAMSOCK_H
+#define DREAMSOCK_H
 
 #include "dreamSockLog.h"
-//#include "../message/message.h"
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
@@ -40,44 +39,11 @@
 #define DREAMSOCK_TCP					0
 #define DREAMSOCK_UDP					1
 
-// Connection states
-#define DREAMSOCK_CONNECTING			0
-#define DREAMSOCK_CONNECTED				1
-#define DREAMSOCK_DISCONNECTING			2
-#define DREAMSOCK_DISCONNECTED			4
-
-// Error codes
-#define DREAMSOCK_SERVER_ERROR			1
-#define DREAMSOCK_CLIENT_ERROR			2
-
 #ifdef WIN32
 	#define DREAMSOCK_INVALID_SOCKET	INVALID_SOCKET
 #else
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
-
-// System messages
-// Note (for all messages - system and user):
-// positive = sequenced message
-// negative = un-sequenced message
-#define DREAMSOCK_MES_CONNECT		-101
-#define DREAMSOCK_MES_DISCONNECT	-102
-#define DREAMSOCK_MES_ADDCLIENT		-103
-#define DREAMSOCK_MES_REMOVECLIENT	-104
-#define DREAMSOCK_MES_PING			-105
-
-// Introduce classes
-class dreamServer;
-class dreamSock;
-
-class ClientSidePlayer;
-class ServerSidePlayer;
-
-/***************************************
-
-  dreamSock global functions
-
-***************************************/
 
 // Function prototypes
 int	dreamSock_Initialize(void);
