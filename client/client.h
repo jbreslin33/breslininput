@@ -3,7 +3,6 @@
 
 #include "../message/message.h"
 
-
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
 #pragma message ("Auto linking WinSock2 library")
@@ -13,10 +12,6 @@
 	#include <string.h>
 	#include <netinet/in.h>
 #endif
-
-
-//#include <stdio.h>
-#include <stddef.h>
 
 // Define SOCKET data type for UNIX (defined in WinSock for Win32)
 // And socklen_t for Win32
@@ -32,10 +27,6 @@
 	#define FALSE 0
 	#endif
 #endif
-
-// Connection protocols
-#define DREAMSOCK_TCP					0
-#define DREAMSOCK_UDP					1
 
 // Connection states
 #define DREAMSOCK_CONNECTING			0

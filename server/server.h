@@ -4,7 +4,6 @@
 #include "../tdreamsock/dreamSockLog.h"
 #include "../message/message.h"
 
-
 #include <vector>
 
 #ifdef WIN32
@@ -40,8 +39,7 @@
 #define DREAMCLIENT						0
 
 // Connection protocols
-#define DREAMSOCK_TCP					0
-#define DREAMSOCK_UDP					1
+
 
 // Connection states
 #define DREAMSOCK_CONNECTING			0
