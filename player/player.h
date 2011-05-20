@@ -26,7 +26,6 @@ Command	mServerFrame;					// the latest frame from server
 Command	mCommand;						// current frame's commands
 
 long mProcessedFrame;
-dreamClient* netClient;
 
 };
 

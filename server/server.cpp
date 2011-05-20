@@ -130,8 +130,11 @@ void Server::SendAddClient(dreamClient *newClient)
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		if(mClientVector.at(i) == newClient)
+		{
+			LogString("this is the same client, don't inform");
 			continue;
-		LogString("telling others of new client");
+		}
+			LogString("telling others of new client");
 		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
@@ -207,11 +210,12 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	//serverSideClient
 	memcpy(&dc->myaddress,dc->GetSocketAddress(), sizeof(struct sockaddr));
 
-	mClientVector.push_back(dc);
+	//mClientVector.push_back(dc);
 
 	OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mServerSideGame->mRoot);
 	dc->mServerSidePlayer = new ServerSidePlayer("jay" + mClientVector.size(),dc,shape);
 
+	
 
 	runningIndex++;
 

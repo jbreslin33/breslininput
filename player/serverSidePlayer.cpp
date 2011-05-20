@@ -88,7 +88,7 @@ void ServerSidePlayer::processTick()
 	mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
 	mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
 
-	int f = netClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+	int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
 	mProcessedFrame = f;
 }
 void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
