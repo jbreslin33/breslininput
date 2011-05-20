@@ -16,11 +16,6 @@ public:
 ServerSideClient();
 ~ServerSideClient();
 
-//struct sockaddr  address;
-
-//dreamClient      *netClient;
-
-
 };
 
 #endif

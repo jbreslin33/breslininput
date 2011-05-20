@@ -70,7 +70,7 @@ public:
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 
 	// Network variables
-	dreamClient* mNetworkClient;
+	Client* mNetworkClient;
 	const char*  mServerIP;
 
 	//client Variables

@@ -15,7 +15,7 @@ class ServerSidePlayer : public Player
 
 public:
 
-ServerSidePlayer(std::string name, dreamClient* client, OgreShape* shape);
+ServerSidePlayer(std::string name, Client* client, OgreShape* shape);
 ~ServerSidePlayer();
 
 //movement
@@ -24,7 +24,7 @@ void calculateVelocity(Command *command, float frametime);
 void setKeyDirection();
 
 //associated client
-dreamClient* mClient;
+Client* mClient;
 
 //associated shape
 OgreShape* mShape;

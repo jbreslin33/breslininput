@@ -14,7 +14,7 @@
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-ServerSidePlayer::ServerSidePlayer(std::string name, dreamClient* client, OgreShape* shape) : Player(name)
+ServerSidePlayer::ServerSidePlayer(std::string name, Client* client, OgreShape* shape) : Player(name)
 {
 	mClient = client;
 	mShape  = shape;

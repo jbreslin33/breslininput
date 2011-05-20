@@ -9,6 +9,7 @@
 //#define WIN32
 #include "server.h"
 #include "../tdreamsock/dreamSock.h"
+#include "../client/client.h"
 #include "../message/message.h"
 
 #include "../shape/ogreShape.h"
@@ -87,7 +88,7 @@ void Server::Uninitialise(void)
 	init = false;
 }
 
-void Server::SendAddClient(dreamClient *newClient)
+void Server::SendAddClient(Client *newClient)
 {
 	// Send connection confirmation
 	newClient->mMessage.Init(newClient->mMessage.outgoingData,
@@ -148,7 +149,7 @@ void Server::SendAddClient(dreamClient *newClient)
 	}
 }
 
-void Server::SendRemoveClient(dreamClient *client)
+void Server::SendRemoveClient(Client *client)
 {
 	int index = client->GetIndex();
 
@@ -183,46 +184,39 @@ void Server::SendPing(void)
 
 void Server::AddClient(struct sockaddr *address, char *name)
 {
-	// First get a pointer to the beginning of client list
-	//dreamClient *list = clientList;
-	//dreamClient *prev;
-	//dreamClient *newClient;
-
 	LogString("LIB: Adding client, index %d", runningIndex);
-	dreamClient* dc = new dreamClient();
-	mClientVector.push_back(dc);
+	Client* client = new Client();
+	mClientVector.push_back(client);
 	// No clients yet, adding the first one
 
 	LogString("LIB: Server: Adding first client");
 
 	//clientList = (dreamClient *) calloc(1, sizeof(dreamClient));
 
-	dc->SetSocket(socket);
-	dc->SetSocketAddress(address);
-	dc->SetConnectionState(DREAMSOCK_CONNECTING);
-	dc->SetOutgoingSequence(1);
-	dc->SetIncomingSequence(0);
-	dc->SetIncomingAcknowledged(0);
-	dc->SetIndex(runningIndex);
-	dc->SetName(name);
+	client->SetSocket(socket);
+	client->SetSocketAddress(address);
+	client->SetConnectionState(DREAMSOCK_CONNECTING);
+	client->SetOutgoingSequence(1);
+	client->SetIncomingSequence(0);
+	client->SetIncomingAcknowledged(0);
+	client->SetIndex(runningIndex);
+	client->SetName(name);
 
 	//dreamClient* serverSideClient = new dreamClient();
 	//serverSideClient
-	memcpy(&dc->myaddress,dc->GetSocketAddress(), sizeof(struct sockaddr));
+	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
 	//mClientVector.push_back(dc);
 
 	OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mServerSideGame->mRoot);
-	dc->mServerSidePlayer = new ServerSidePlayer("jay" + mClientVector.size(),dc,shape);
-
-	
+	client->mServerSidePlayer = new ServerSidePlayer("jay" + mClientVector.size(),client,shape);
 
 	runningIndex++;
 
-	SendAddClient(dc);
+	SendAddClient(client);
 }
 
-void Server::RemoveClient(dreamClient *client)
+void Server::RemoveClient(Client *client)
 {
 	/*
 	dreamClient *list = NULL;

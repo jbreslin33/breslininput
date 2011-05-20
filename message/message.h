@@ -1,7 +1,7 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
-class dreamClient;
+class Client;
 
 class Message
 {
@@ -17,7 +17,7 @@ public:
 	void			Init(char *d, int length);
 	void			Clear(void);
 	void			Write(const void *d, int length);
-	void			AddSequences(dreamClient *client);
+	void			AddSequences(Client *client);
 
 	void			WriteByte(char c);
 	void			WriteShort(short c);

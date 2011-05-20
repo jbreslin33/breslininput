@@ -70,22 +70,21 @@
 #define DREAMSOCK_MES_PING			-105
 
 // Introduce classes
-class dreamClient;
+class Client;
 class dreamServer;
-class dreamSock;
 class ServerSideGame;
 
 class Server
 {
 public:
-	void			SendAddClient(dreamClient *newClient);
-	void			SendRemoveClient(dreamClient *client);
+	void			SendAddClient(Client *newClient);
+	void			SendRemoveClient(Client *client);
 	void			AddClient(struct sockaddr *address, char *name);
-	void			RemoveClient(dreamClient *client);
+	void			RemoveClient(Client *client);
 	void			ParsePacket(Message *mes, struct sockaddr *address);
 	int				CheckForTimeout(char *data, struct sockaddr *from);
 
-	std::vector<dreamClient*> mClientVector;
+	std::vector<Client*> mClientVector;
 
 	int				port;					// Port
 	SOCKET			socket;					// Socket

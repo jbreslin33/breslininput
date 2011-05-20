@@ -2,6 +2,7 @@
 #include "../player/clientSidePlayer.h"
 
 #include "../tdreamsock/dreamSock.h"
+#include "../client/client.h"
 
 #include "../shape/ogreShape.h"
 #include "../math/vector3D.h"
@@ -14,7 +15,7 @@ bool keys[256];
 ClientSideGame::ClientSideGame(const char* serverIP)
 {
 	mServerIP = serverIP;
- 	mNetworkClient	= new dreamClient();
+ 	mNetworkClient	= new Client();
 
 	mLocalClient		= NULL;
  	mInputClient        = NULL;

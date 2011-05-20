@@ -1,5 +1,6 @@
 #include "message.h"
 #include "../tdreamsock/dreamSock.h"
+#include "../client/client.h"
 
 // Common headers
 #include <stdio.h>
@@ -41,7 +42,7 @@ char *Message::GetNewPoint(int length)
 	return tempData;
 }
 
-void Message::AddSequences(dreamClient *client)
+void Message::AddSequences(Client *client)
 {
 	WriteShort(client->GetOutgoingSequence());
 	WriteShort(client->GetIncomingSequence());

@@ -106,7 +106,7 @@ void ServerSideGame::AddClient(void)
 	*/
 }
 
-void ServerSideGame::RemoveClient(dreamClient* client)
+void ServerSideGame::RemoveClient(Client* client)
 {
 }
 
@@ -282,7 +282,7 @@ void ServerSideGame::SendExitNotification(void)
 	mNetworkServer->SendPackets();
 }
 
-void ServerSideGame::ReadDeltaMoveCommand(Message *mes, dreamClient *client)
+void ServerSideGame::ReadDeltaMoveCommand(Message *mes, Client *client)
 {
 	int flags = 0;
 
@@ -301,7 +301,7 @@ void ServerSideGame::ReadDeltaMoveCommand(Message *mes, dreamClient *client)
 	client->mServerSidePlayer->mCommand.mMilliseconds = mes->ReadByte();
 }
 
-void ServerSideGame::BuildMoveCommand(Message *mes, dreamClient *client)
+void ServerSideGame::BuildMoveCommand(Message *mes, Client *client)
 {
 	Command* command = &client->mServerSidePlayer->mCommand;
 	// Add to the message
@@ -317,7 +317,7 @@ void ServerSideGame::BuildMoveCommand(Message *mes, dreamClient *client)
 	mes->WriteByte(command->mMilliseconds);
 }
 
-void ServerSideGame::BuildDeltaMoveCommand(Message *mes, dreamClient *client)
+void ServerSideGame::BuildDeltaMoveCommand(Message *mes, Client *client)
 {
 
 	ServerSidePlayer* player = client->mServerSidePlayer;

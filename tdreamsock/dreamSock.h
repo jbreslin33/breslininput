@@ -69,100 +69,11 @@
 #define DREAMSOCK_MES_PING			-105
 
 // Introduce classes
-class dreamClient;
 class dreamServer;
 class dreamSock;
 
 class ClientSidePlayer;
 class ServerSidePlayer;
-
-class dreamClient
-{
-public:
-	void			DumpBuffer(void);
-	void			ParsePacket(Message *mes);
-
-	int				connectionState;		// Connecting, connected, disconnecting, disconnected
-
-	unsigned short	outgoingSequence;		// Outgoing packet sequence
-	unsigned short	incomingSequence;		// Incoming packet sequence
-	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
-	unsigned short	droppedPackets;			// Dropped packets
-
-	int				serverPort;				// Port
-	char			serverIP[32];			// IP address
-	int				index;					// Client index (starts from 1, running number)
-	char			name[32];				// Client name
-
-	SOCKET			socket;					// Socket
-	struct sockaddr	myaddress;				// Socket address
-
-	int				pingSent;				// When did we send ping?
-	int				ping;					// Network latency
-
-	int				lastMessageTime;
-
-	bool			init;
-
-public:
-					dreamClient();
-					~dreamClient();
-
-	int				Initialise(const char *localIP, const char *remoteIP, int port);
-	void			Uninitialise(void);
-	void			Reset(void);
-	void			SendConnect(const char *name);
-	void			SendDisconnect(void);
-	void			SendPing(void);
-
-	void			SetConnectionState(int con)		{ connectionState = con; }
-	int				GetConnectionState(void)		{ return connectionState; }
-
-	int				GetPacket(char *data, struct sockaddr *from);
-	void			SendPacket(void);
-	void			SendPacket(Message *message);
-
-	unsigned short	GetOutgoingSequence(void)				{ return outgoingSequence; }
-	void			SetOutgoingSequence(unsigned short seq)	{ outgoingSequence = seq; }
-	void			IncreaseOutgoingSequence(void)			{ outgoingSequence++; }
-	unsigned short	GetIncomingSequence(void)				{ return incomingSequence; }
-	void			SetIncomingSequence(unsigned short seq)	{ incomingSequence = seq; }
-	unsigned short	GetIncomingAcknowledged(void)			{ return incomingAcknowledged; }
-	void			SetIncomingAcknowledged(unsigned short seq) { incomingAcknowledged = seq; }
-	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
-	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
-
-	bool			GetInit(void)			{ return init; }
-
-	int				GetIndex(void)			{ return index; }
-	void			SetIndex(int ind)		{ index = ind; }
-
-	char			*GetName(void)			{ return name; }
-
-#ifdef WIN32
-	void			SetName(char *n)		{ strcpy_s(name, n); }
-#else
-	void			SetName(char *n)		{ strcpy(name, n); }
-#endif
-
-	SOCKET			GetSocket(void)			{ return socket; }
-	void			SetSocket(SOCKET sock)	{ socket = sock; }
-
-	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
-	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
-
-	int				GetPingSent(void)		{ return pingSent; }
-	void			SetPing(int p)			{ ping = p; }
-
-	int				GetLastMessageTime(void) { return lastMessageTime; }
-	void			SetLastMessageTime(int t) { lastMessageTime = t; }
-
-	Message	mMessage;
-
-ClientSidePlayer* mClientSidePlayer;
-ServerSidePlayer* mServerSidePlayer;
-
-};
 
 /***************************************
 
