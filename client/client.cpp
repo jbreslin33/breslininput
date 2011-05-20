@@ -1,5 +1,7 @@
 #include "client.h"
-#include "../tdreamsock/dreamSock.h"
+#include "../tdreamsock/dreamSockLog.h"
+
+#include "../network/network.h"
 
 Client::Client()
 {

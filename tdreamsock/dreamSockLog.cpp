@@ -1,3 +1,4 @@
+#include "dreamSockLog.h"
 
 #ifdef WIN32
 #include <windows.h>
@@ -7,8 +8,6 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <time.h>
-
-#include "dreamSockLog.h"
 
 FILE *LogFile;
 

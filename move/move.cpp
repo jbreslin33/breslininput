@@ -1,8 +1,5 @@
 #include "move.h"
 
-//just using this for logstring need to fix that
-#include "../tdreamsock/dreamSock.h"
-
 //player,client,shape,animation combo
 #include "../player/clientSidePlayer.h"
 #include "../shape/ogreShape.h"

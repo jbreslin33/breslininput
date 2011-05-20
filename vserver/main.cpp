@@ -1,10 +1,3 @@
-/******************************************/
-/* MMOG programmer's guide                */
-/* Tutorial game server                   */
-/* Programming:						      */
-/* Teijo Hakala						      */
-/******************************************/
-
 #ifdef WIN32
 #ifndef _WINSOCKAPI_
 #define _WINSOCKAPI_
@@ -30,6 +23,8 @@
 #endif
 
 #include "../game/serverSideGame.h"
+#include "../network/network.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 #include <string.h>
 #include <stdlib.h>

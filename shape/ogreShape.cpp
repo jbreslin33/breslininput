@@ -1,5 +1,4 @@
 #include "ogreShape.h"
-#include "../tdreamsock/dreamSock.h"
 
 #include "../animation/ogreAnimation.h"
 #include "../math/vector3D.h"

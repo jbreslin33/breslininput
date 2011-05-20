@@ -2,7 +2,6 @@
 #define CLIENTSIDEGAME_H
 
 #include "BaseApplication.h"
-#include "../tdreamsock/dreamSock.h"
 
 #include "../player/clientSidePlayer.h"
 

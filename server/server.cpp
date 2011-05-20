@@ -1,14 +1,8 @@
-//
-// DreamSock network-library
-//
-// Programmers:
-// Teijo Hakala
-//
-/////////////////////////////////////////////////////////
 
-//#define WIN32
 #include "server.h"
-#include "../tdreamsock/dreamSock.h"
+#include "../tdreamsock/dreamSockLog.h"
+
+#include "../network/network.h"
 #include "../client/client.h"
 #include "../message/message.h"
 
@@ -42,8 +36,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
-#include "../tdreamsock/dreamSock.h"
-#include "../tdreamsock/dreamSockLog.h"
+
+
 
 Server::Server(ServerSideGame* serverSideGame)
 {

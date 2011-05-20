@@ -1,7 +1,10 @@
 #include "clientSideGame.h"
+#include "../tdreamsock/dreamSockLog.h"
+
+#include "../network/network.h"
+
 #include "../player/clientSidePlayer.h"
 
-#include "../tdreamsock/dreamSock.h"
 #include "../client/client.h"
 
 #include "../shape/ogreShape.h"

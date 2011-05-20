@@ -1,5 +1,4 @@
 #include "message.h"
-#include "../tdreamsock/dreamSock.h"
 #include "../client/client.h"
 
 // Common headers

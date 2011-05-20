@@ -1,19 +1,16 @@
-/**********************************/
-/* Programmers:                   */
-/* Teijo Hakala                   */
-/**********************************/
 // Windows code only
 
-#include "dreamSock.h"
+#include "../tdreamsock/dreamSockLog.h"
+
+#pragma comment (lib,"ws2_32.lib")
+#pragma message ("Auto linking WinSock2 library")
+#include <winsock2.h>
+
 #include <stdio.h>
 #include <windows.h>
 #include <assert.h>
 
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
 int dreamSock_InitializeWinSock(void)
 {
 	WORD versionRequested;

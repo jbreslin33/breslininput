@@ -1,7 +1,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include "../tdreamsock/dreamSockLog.h"
 #include "../message/message.h"
 
 #include <vector>

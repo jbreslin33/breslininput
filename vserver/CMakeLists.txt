@@ -93,9 +93,11 @@ set(HDRS
 	#game
 	../game/serverSideGame.h
 	
-	#dreamsock
-	../tdreamsock/dreamSock.h
+	#tdreamsock
 	../tdreamsock/dreamSockLog.h
+	
+	#network
+	../network/network.h
 	
 	#shape
 	../shape/shape.h
@@ -121,6 +123,9 @@ set(HDRS
 	#server
 	../server/server.h
 	
+	#client
+	../client/client.h
+	../client/serverSideClient.h
 )
  
 set(SRCS
@@ -133,9 +138,10 @@ set(SRCS
 	
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
-	../tdreamsock/dreamSock.cpp
-	../tdreamsock/dreamSockGlobal.cpp
 	../tdreamsock/dreamWinSock.cpp
+	
+	#network
+	../network/network.cpp
 	
 	#shape
 	../shape/shape.cpp
@@ -161,6 +167,10 @@ set(SRCS
 	#server
 	../server/server.cpp
 	
+	#client
+	../client/client.cpp
+	../client/serverSideClient.cpp
+	
 )
 endif (WIN32)
 
@@ -173,8 +183,10 @@ set(HDRS
 	#game
 	../game/serverSideGame.h
 	
-	#dreamsock
-	../tdreamsock/dreamSock.h
+	#network
+	../network/network.h
+	
+	#tdreamsock
 	../tdreamsock/dreamSockLog.h
 	
 	#shape
@@ -201,6 +213,10 @@ set(HDRS
 	#server
 	../server/server.h
 	
+	#client
+	../client/client.h
+	../client/serverSideClient.h
+	
 )
  
 set(SRCS
@@ -213,9 +229,10 @@ set(SRCS
 
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
-	../tdreamsock/dreamSock.cpp
-	../tdreamsock/dreamSockGlobal.cpp
 	../tdreamsock/dreamLinuxSock.cpp
+
+	#network
+	../network/network.cpp
 	
 	#shape
 	../shape/shape.cpp
@@ -241,6 +258,9 @@ set(SRCS
 	#server
 	../server/server.cpp
 	
+	#client
+	../client/client.cpp
+	../client/serverSideClient.cpp
 )
 endif (UNIX)
 include_directories( ${OIS_INCLUDE_DIRS}

@@ -1,5 +1,5 @@
-#ifndef __DREAMSOCKLOG_H__
-#define __DREAMSOCKLOG_H__
+#ifndef DREAMSOCKLOG_H
+#define DREAMSOCKLOG_H
 
 #ifdef WIN32
 

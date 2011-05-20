@@ -3,8 +3,6 @@
 
 #include <string.h>
 
-#include "../tdreamsock/dreamSock.h"
-
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;

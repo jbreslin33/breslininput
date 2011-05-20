@@ -1,7 +1,5 @@
-#ifndef DREAMSOCK_H
-#define DREAMSOCK_H
-
-#include "dreamSockLog.h"
+#ifndef NETWORK_H
+#define NETWORK_H
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")

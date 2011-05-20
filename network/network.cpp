@@ -1,7 +1,7 @@
-#include "dreamSock.h"
+#include "network.h"
 
 #include "../message/message.h"
-#include "dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 bool dreamSock_init = false;
 

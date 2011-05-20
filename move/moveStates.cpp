@@ -7,9 +7,6 @@
 #include "../player/clientSidePlayer.h"
 #include "../shape/ogreShape.h"
 
-//only using for logstring this needs to be remedied.
-#include "../tdreamsock/dreamSock.h"
-
 Normal_Move* Normal_Move::Instance()
 {
   static Normal_Move instance;

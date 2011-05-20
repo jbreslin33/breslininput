@@ -7,8 +7,6 @@
 
 #include "../command/command.h"
 
-#include "../tdreamsock/dreamSock.h"
-
 class Player
 {
 

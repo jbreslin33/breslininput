@@ -1,8 +1,5 @@
 #include "clientSidePlayer.h"
 
-//just using this for logstring need to fix that
-#include "../tdreamsock/dreamSock.h"
-
 //client,shape,animation combo
 #include "../shape/ogreShape.h"
 
