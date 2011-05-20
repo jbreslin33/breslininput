@@ -95,7 +95,7 @@ void Catchup_Rotation::execute(Rotation* rotation)
 		}
 		else if(rotation->mServerRotSpeed == 0.0)
 		{
-			LogString("catchup2");
+			//LogString("catchup2");
 			if (rotation->mDegreesToServer > 0.0)
 			{
 				rotation->mPlayer->mCommand.mRotSpeed = 250.0;
