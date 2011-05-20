@@ -30,40 +30,32 @@ ClientSideGame::~ClientSideGame()
 {
 	delete mNetworkClient;
 }
-/*
-void ClientSideGame::createPlayer(* client, int index)
-{
-	OgreShape* shape = new OgreShape("jay" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	
-	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("jay" + index,client,shape);
-	shape->getSceneNode()->scale(30,30,30);
-	client->mPlayer = clientSidePlayer;
-	client->mIndex = index;
-}
 
-void ClientSideGame::AddClient(int local, int ind, char *name)
+void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
-	ClientSideClient* clientSideClient = new ClientSideClient();
-	mClientVector.push_back(clientSideClient);
-	createPlayer(clientSideClient, ind);
-	createServerPlayer(clientSideClient,ind);
+	LogString("creating player");
+	OgreShape* shape = new OgreShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	
+	mNetworkClient->mClientSidePlayer = new ClientSidePlayer("jay" + ind,shape);
+	shape->getSceneNode()->scale(30,30,30);
+	
+	mNetworkClient->mClientSidePlayer->mIndex = ind;
+
+	OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	mNetworkClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
+  	shape->getSceneNode()->scale(30,30,30);
+
+	mClientVector.push_back(mNetworkClient->mClientSidePlayer);
 	
 	if(local)
 	{
-		mLocalClient = clientSideClient;
+		mLocalClient = mNetworkClient->mClientSidePlayer;
+		mInputClient = mNetworkClient->mClientSidePlayer;
 		
 		SendRequestNonDeltaFrame();
 	}
 }
 
-void ClientSideGame::createServerPlayer(ClientSideClient* client, int index)
-{
-	OgreShape* shape = new OgreShape("silentBob" + index,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	ClientSidePlayer* clientSidePlayer = new ClientSidePlayer("silentBob" + index,client,shape);
-  	shape->getSceneNode()->scale(30,30,30);
-	client->mServerPlayer = clientSidePlayer;
-}
-*/
 void ClientSideGame::createScene(void)
 {
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
@@ -119,14 +111,19 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(!processUnbufferedInput(evt)) return false;
 
+
 	if(game != NULL)
 	{
-		game->CheckKeys();
+		if (mNetworkClient->mClientSidePlayer != NULL)
+		{
+			game->CheckKeys();
+		}
 		game->RunNetwork(evt.timeSinceLastFrame * 1000);
 		mRenderTime = evt.timeSinceLastFrame;
 
 	}
-    return ret;
+
+	return ret;
 }
 
  void ClientSideGame::Shutdown(void)
@@ -178,7 +175,8 @@ void ClientSideGame::MoveServerPlayer(void)
 void ClientSideGame::StartConnection()
 {
 	int ret = mNetworkClient->Initialise("", mServerIP, 30004);
-
+			//char text2[64];
+		//sprintf(text2, "gimmmmmmmm");
 	if(ret == DREAMSOCK_CLIENT_ERROR)
 	{
 		char text[64];
@@ -189,6 +187,7 @@ void ClientSideGame::StartConnection()
 
 void ClientSideGame::ReadPackets(void)
 {
+	//LogString("reding packs");
 	char data[1400];
 	struct sockaddr address;
 
@@ -217,8 +216,8 @@ void ClientSideGame::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-
-//			AddClient(local, ind, name);
+			LogString("addingdfdfddfd client");
+			AddPlayer(local, ind, name);
 			break;
 
 		case DREAMSOCK_MES_REMOVECLIENT:
@@ -440,12 +439,12 @@ void ClientSideGame::RunNetwork(int msec)
 	time += msec;
 
 	ReadPackets();
-	/*
+	
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		mClientVector.at(i)->interpolateTick(mRenderTime);
 	}
-*/
+
 	// Framerate is too high
 	if(time > (1000 / 60)) {
 		

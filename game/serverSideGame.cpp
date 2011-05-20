@@ -25,7 +25,7 @@ ServerSideGame::ServerSideGame()
 	mRoot = new Ogre::Root("plugins.cfg");
 #endif
 
-	mNetworkServer = new Server();
+	mNetworkServer = new Server(this);
 	mRealTime	= 0;
 	mServerTime	= 0;
 	mFramenum	= 0;
@@ -161,14 +161,14 @@ void ServerSideGame::ReadPackets(void)
 	// Get the packet from the socket
 	try
 	{
-		LogString("trying.....");
+		//LogString("trying.....");
 		while(ret = mNetworkServer->GetPacket(mes.data, &address))
 		{
 			mes.SetSize(ret);
 			mes.BeginReading();
 
 			type = mes.ReadByte();
-			LogString("type:%s",type);
+			//LogString("type:%s",type);
 			// Check the type of the message
 			switch(type)
 			{

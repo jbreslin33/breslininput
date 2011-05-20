@@ -30,7 +30,7 @@ class Server;
 
 class ServerSideGame
 {
-private:
+public:
 
 	Ogre::Root* mRoot;
 	

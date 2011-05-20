@@ -4,6 +4,7 @@
 #include "../tdreamsock/dreamSockLog.h"
 #include "../message/message.h"
 
+
 #include <vector>
 
 #ifdef WIN32
@@ -72,7 +73,7 @@
 class dreamClient;
 class dreamServer;
 class dreamSock;
-
+class ServerSideGame;
 
 class Server
 {
@@ -93,7 +94,7 @@ public:
 	bool			init;
 
 public:
-					Server();
+					Server(ServerSideGame* serverSideGame);
 					~Server();
 
 	int				Initialise(const char *localIP, int serverPort);
@@ -105,6 +106,8 @@ public:
 	bool			GetInit(void)			{ return init; }
 
 	int				GetPort(void)			{ return port; }
+
+	ServerSideGame* mServerSideGame;
 };
 
 #endif

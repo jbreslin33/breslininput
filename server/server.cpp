@@ -11,6 +11,11 @@
 #include "../tdreamsock/dreamSock.h"
 #include "../message/message.h"
 
+#include "../shape/ogreShape.h"
+#include "../player/serverSidePlayer.h"
+
+#include "../game/serverSideGame.h"
+
 #ifdef WIN32
 // Windows specific headers
 	#ifndef _WINSOCKAPI_
@@ -39,10 +44,10 @@
 #include "../tdreamsock/dreamSock.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-Server::Server()
+Server::Server(ServerSideGame* serverSideGame)
 {
 	init			= false;
-
+	mServerSideGame = serverSideGame;
 	port			= 0;
 	runningIndex	= 1;
 	socket			= 0;
@@ -102,7 +107,7 @@ void Server::SendAddClient(dreamClient *newClient)
 
 		newClient->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
-		if(mClientVector.size() == 0)
+		if(mClientVector.at(i) == newClient)
 		{
 
 			LogString("LOCAL Y");
@@ -197,7 +202,16 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	dc->SetIncomingAcknowledged(0);
 	dc->SetIndex(runningIndex);
 	dc->SetName(name);
-	dc->next = NULL;
+
+	//dreamClient* serverSideClient = new dreamClient();
+	//serverSideClient
+	memcpy(&dc->myaddress,dc->GetSocketAddress(), sizeof(struct sockaddr));
+
+	mClientVector.push_back(dc);
+
+	OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mServerSideGame->mRoot);
+	dc->mServerSidePlayer = new ServerSidePlayer("jay" + mClientVector.size(),dc,shape);
+
 
 	runningIndex++;
 
@@ -256,68 +270,78 @@ void Server::RemoveClient(dreamClient *client)
 
 void Server::ParsePacket(Message *mes, struct sockaddr *address)
 {
-	mes->BeginReading();
-	int type = mes->ReadByte();
+        mes->BeginReading();
+        int type = mes->ReadByte();
 
-	// Find the correct client by comparing addresses
-	unsigned int i = 0;
+        // Find the correct client by comparing addresses
+  
+        // If we do not have clients yet, skip to message type checking
+		
+		unsigned int i = 0;
+		if (mClientVector.size() > 0)
+			LogString("vector is not null");
+        //if(clList != NULL )
+        {
+  				for (i = 0; i < mClientVector.size(); i++)
+				{
+						if(memcmp(mClientVector.at(i)->GetSocketAddress(), address, sizeof(address)) == 0)
+                        {
+                                break;
+                        }
+                }
+				if (mClientVector.size() > 0)
+               // if(clList != NULL)
+                {
+                        mClientVector.at(i)->SetLastMessageTime(dreamSock_GetCurrentSystemTime());
 
-	for (i = 0; i < mClientVector.size(); i++)
-	{
-		if(memcmp(mClientVector.at(i)->GetSocketAddress(), address, sizeof(address)) == 0)
-		{
-			break;
-		}
-	}
+                        // Check if the type is a positive number
+                        // -> is the packet sequenced
+                        if(type > 0)
+                        {
+                                unsigned short sequence         = mes->ReadShort();
+                                unsigned short sequenceAck      = mes->ReadShort();
 
+                                if(sequence <= mClientVector.at(i)->GetIncomingSequence())
+                                {
+                                        LogString("LIB: Server: Sequence mismatch (sequence: %ld <= incoming seq: %ld)",
+                                                sequence, mClientVector.at(i)->GetIncomingSequence());
+                                }
 
-	mClientVector.at(i)->SetLastMessageTime(dreamSock_GetCurrentSystemTime());
+                                mClientVector.at(i)->SetDroppedPackets(sequence - mClientVector.at(i)->GetIncomingSequence() - 1);
 
-	// Check if the type is a positive number
-	// -> is the packet sequenced
-	if(type > 0)
-	{
-		unsigned short sequence		= mes->ReadShort();
-		unsigned short sequenceAck	= mes->ReadShort();
+                                mClientVector.at(i)->SetIncomingSequence(sequence);
+                                mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
+                        }
 
-		if(sequence <= mClientVector.at(i)->GetIncomingSequence())
-		{
-			LogString("LIB: Server: Sequence mismatch (sequence: %ld <= incoming seq: %ld)",
-				sequence, mClientVector.at(i)->GetIncomingSequence());
-		}
+                        // Wait for one message before setting state to connected
+                        if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
+                                mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
+                }
+        }
+		LogString("heere");
+        // Parse through the system messages
+        switch(type)
+        {
+        case DREAMSOCK_MES_CONNECT:
+                AddClient(address, mes->ReadString());
 
-		mClientVector.at(i)->SetDroppedPackets(sequence - mClientVector.at(i)->GetIncomingSequence() - 1);
+                LogString("LIBRARY: Server: a client connected succesfully");
+                break;
 
-		mClientVector.at(i)->SetIncomingSequence(sequence);
-		mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
-	}
+        case DREAMSOCK_MES_DISCONNECT:
+                if(mClientVector.at(i) == NULL)
+                        break;
 
-	// Wait for one message before setting state to connected
-	if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
-		mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
+                RemoveClient(mClientVector.at(i));
 
-	// Parse through the system messages
-	switch(type)
-	{
-	case DREAMSOCK_MES_CONNECT:
-		AddClient(address, mes->ReadString());
+                LogString("LIBRARY: Server: a client disconnected");
+                break;
 
-		LogString("LIBRARY: Server: a client connected succesfully");
-		break;
+        case DREAMSOCK_MES_PING:
+                mClientVector.at(i)->SetPing(dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
+                break;
+        }
 
-	case DREAMSOCK_MES_DISCONNECT:
-		if(mClientVector.at(i) == NULL)
-			break;
-
-		RemoveClient(mClientVector.at(i));
-
-		LogString("LIBRARY: Server: a client disconnected");
-		break;
-
-	case DREAMSOCK_MES_PING:
-		mClientVector.at(i)->SetPing(dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
-		break;
-	}
 }
 
 int Server::CheckForTimeout(char *data, struct sockaddr *from)
@@ -357,6 +381,7 @@ int Server::CheckForTimeout(char *data, struct sockaddr *from)
 
 int Server::GetPacket(char *data, struct sockaddr *from)
 {
+	//LogString("getting packet");
 	// Check if the server is set up
 	if(!socket)
 		return 0;

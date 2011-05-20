@@ -158,7 +158,6 @@ public:
 	void			SetLastMessageTime(int t) { lastMessageTime = t; }
 
 	Message	mMessage;
-	dreamClient		*next;
 
 ClientSidePlayer* mClientSidePlayer;
 ServerSidePlayer* mServerSidePlayer;

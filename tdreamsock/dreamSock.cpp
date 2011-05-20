@@ -112,6 +112,7 @@ dreamClient::~dreamClient()
 
 int dreamClient::Initialise(const char *localIP, const char *remoteIP, int port)
 {
+//	LogString("initilisinfdf");
 	// Initialise dreamSock if it is not already initialised
 	dreamSock_Initialize();
 
@@ -170,7 +171,6 @@ void dreamClient::Reset(void)
 
 	lastMessageTime			= 0;
 
-	next = NULL;
 }
 
 void dreamClient::DumpBuffer(void)
@@ -276,6 +276,7 @@ void dreamClient::ParsePacket(Message *mes)
 
 int dreamClient::GetPacket(char *data, struct sockaddr *from)
 {
+	LogString("getPtcadd");
 	// Check if the client is set up or if it is disconnecting
 	if(!socket)
 		return 0;
