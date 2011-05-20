@@ -43,7 +43,7 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 
 	OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	mNetworkClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
-  	shape->getSceneNode()->scale(30,30,30);
+  	shape2->getSceneNode()->scale(30,30,30);
 
 	mClientVector.push_back(mNetworkClient->mClientSidePlayer);
 	

@@ -18,10 +18,12 @@
 
 ClientSidePlayer::ClientSidePlayer(std::string name, OgreShape* shape) : Player(name)
 {
+	mClientSideServerPlayer = NULL;
 	mIndex  = 0;
 	mShape    = shape;
 	mMove     = new Move(this);
 	mRotation = new Rotation(this);
+
 }
 
 ClientSidePlayer::~ClientSidePlayer()

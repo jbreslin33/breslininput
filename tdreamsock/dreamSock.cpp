@@ -276,7 +276,7 @@ void dreamClient::ParsePacket(Message *mes)
 
 int dreamClient::GetPacket(char *data, struct sockaddr *from)
 {
-	LogString("getPtcadd");
+	//LogString("getPtcadd");
 	// Check if the client is set up or if it is disconnecting
 	if(!socket)
 		return 0;
@@ -296,7 +296,7 @@ int dreamClient::GetPacket(char *data, struct sockaddr *from)
 	// Parse system messages
 	ParsePacket(&mes);
 
-	LogString("still good");
+	//LogString("still good");
 	return ret;
 }
 

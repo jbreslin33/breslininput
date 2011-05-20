@@ -283,7 +283,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 		
 		unsigned int i = 0;
 		if (mClientVector.size() > 0)
-			LogString("vector is not null");
+			//LogString("vector is not null");
         //if(clList != NULL )
         {
   				for (i = 0; i < mClientVector.size(); i++)
@@ -322,7 +322,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
                                 mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
                 }
         }
-		LogString("heere");
+		//LogString("heere");
         // Parse through the system messages
         switch(type)
         {
