@@ -205,6 +205,14 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 void Server::RemoveClient(Client *client)
 {
+	
+	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	{
+		if (mClientVector.at(i) == client)
+		{
+			mClientVector.erase (mClientVector.begin()+i);
+		}
+	}
 	/*
 	dreamClient *list = NULL;
 	dreamClient *prev = NULL;
