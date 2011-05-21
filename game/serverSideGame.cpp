@@ -77,39 +77,10 @@ void ServerSideGame::ShutdownNetwork(void)
 	mNetworkServer->Uninitialise();
 }
 
-void ServerSideGame::AddClient(void)
+void ServerSideGame::createPlayer(Client* client, int runningIndex)
 {
-	/*
-	dreamClient *netList = mNetworkServer->GetClientList();
-	
-	if (mClientVector.size() == 0)
-	{
-		LogString("about to create player");
-
-		ServerSideClient* serverSideClient = new ServerSideClient();
-		serverSideClient->netClient = netList;
-		memcpy(&serverSideClient->address,serverSideClient->netClient->GetSocketAddress(), sizeof(struct sockaddr));
-
-		mClientVector.push_back(serverSideClient);
-	
-		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mRoot);
-		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
-		netList->next = NULL;
-	}
-	else
-	{
-		dreamClient* netnext = mClientVector.back()->netClient->next;
-		ServerSideClient* serverSideClient = new ServerSideClient();
-
-		serverSideClient->netClient = netnext;
-		memcpy(&serverSideClient->address,serverSideClient->netClient->GetSocketAddress(), sizeof(struct sockaddr));
-
-		mClientVector.push_back(serverSideClient);
-
-		OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mRoot);
-		serverSideClient->mPlayer = new ServerSidePlayer("jay" + mClientVector.size(),serverSideClient,shape);
-	}
-	*/
+	OgreShape* shape = new OgreShape("oshape" + runningIndex,new Vector3D(),mRoot);
+	client->mServerSidePlayer = new ServerSidePlayer("oplayer" + runningIndex,client,shape);
 }
 
 void ServerSideGame::RemoveClient(Client* client)
@@ -179,7 +150,7 @@ void ServerSideGame::ReadPackets(void)
 			switch(type)
 			{
 			case DREAMSOCK_MES_CONNECT:
-				AddClient();
+
 				break;
 
 			case DREAMSOCK_MES_DISCONNECT:

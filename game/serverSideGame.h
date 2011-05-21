@@ -45,6 +45,9 @@ public:
 	ServerSideGame();
 	~ServerSideGame();
 
+	//player
+	void createPlayer(Client* client, int runningIndex);
+
 	// Network.cpp
 	void	ReadPackets(void);
 	void	SendCommand(void);
@@ -56,7 +59,6 @@ public:
 	// Server.cpp
 	int		InitNetwork();
 	void	ShutdownNetwork(void);
-	void	AddClient(void);
 	void	RemoveClient(Client* client);
 	void	RemoveClients(void);
 	void	Frame(int msec);

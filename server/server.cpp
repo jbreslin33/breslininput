@@ -6,9 +6,6 @@
 #include "../client/client.h"
 #include "../message/message.h"
 
-#include "../shape/ogreShape.h"
-#include "../player/serverSidePlayer.h"
-
 #include "../game/serverSideGame.h"
 
 #ifdef WIN32
@@ -197,14 +194,9 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	client->SetIndex(runningIndex);
 	client->SetName(name);
 
-	//dreamClient* serverSideClient = new dreamClient();
-	//serverSideClient
 	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
-	//mClientVector.push_back(dc);
-
-	OgreShape* shape = new OgreShape("jay" + mClientVector.size(),new Vector3D(),mServerSideGame->mRoot);
-	client->mServerSidePlayer = new ServerSidePlayer("jay" + mClientVector.size(),client,shape);
+	mServerSideGame->createPlayer(client,runningIndex);
 
 	runningIndex++;
 
