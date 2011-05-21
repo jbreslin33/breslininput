@@ -50,16 +50,14 @@
 #define DREAMSOCK_MES_REMOVECLIENT	-104
 #define DREAMSOCK_MES_PING			-105
 
-
-	// Error codes
+// Error codes
 #define DREAMSOCK_SERVER_ERROR			1
 #define DREAMSOCK_CLIENT_ERROR			2
 
 // Introduce classes
+class Network;
 class ClientSidePlayer;
 class ServerSidePlayer;
-
-
 
 class Client
 {
@@ -146,6 +144,8 @@ public:
 
 ClientSidePlayer* mClientSidePlayer;
 ServerSidePlayer* mServerSidePlayer;
+
+	Network* mNetwork;
 
 };
 #endif

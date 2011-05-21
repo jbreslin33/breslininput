@@ -43,9 +43,23 @@
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
 
+#ifdef WIN32
+class DreamWinSock;
+#endif
+
+class Network 
+{
+public:
+Network();
+~Network();
+
+#ifdef WIN32
+DreamWinSock* mDreamWinSock;
+#endif
+
 // Function prototypes
 int	dreamSock_Initialize(void);
-int	dreamSock_InitializeWinSock(void);
+
 void dreamSock_Shutdown(void);
 
 SOCKET dreamSock_Socket(int protocol);
@@ -61,10 +75,9 @@ void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port);
 
 #ifndef WIN32
 int dreamSock_Linux_GetCurrentSystemTime(void);
-#else
-int dreamSock_Win_GetCurrentSystemTime(void);
 #endif
 
 int dreamSock_GetCurrentSystemTime(void);
 
+};
 #endif

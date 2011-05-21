@@ -21,6 +21,7 @@ using namespace Ogre;
 #define USER_MES_NONDELTAFRAME		2
 #define USER_MES_SERVEREXIT			3
 
+class Network;
 class Message;
 class Command;
 class Server;
@@ -36,7 +37,9 @@ public:
 
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms
+
 	long	mFramenum;
+	Network* mNetwork;
 
 public:
 	ServerSideGame();

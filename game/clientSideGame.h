@@ -29,6 +29,10 @@ extern bool keys[256];
 
 #define USER_MES_KEEPALIVE		12
 
+#ifdef WIN32
+class DreamWinSock;
+#endif
+class Network;
 class Message;
 class Client;
 
@@ -73,6 +77,8 @@ public:
 	Client* mNetworkClient;
 	const char*  mServerIP;
 
+	Network* mNetwork;
+
 	//client Variables
 	ClientSidePlayer* mLocalClient;		// Pointer to the local client in the client list
 	ClientSidePlayer*  mInputClient;			// Handles all keyboard input
@@ -85,6 +91,10 @@ public:
 
 	//initialize
 	bool mInit;
+
+#ifdef WIN32
+	DreamWinSock* mDreamWinSock;
+#endif
 };
 
 #endif

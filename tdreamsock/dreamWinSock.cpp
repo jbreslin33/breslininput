@@ -1,5 +1,5 @@
 // Windows code only
-
+#include "dreamWinSock.h"
 #include "../tdreamsock/dreamSockLog.h"
 
 #pragma comment (lib,"ws2_32.lib")
@@ -10,8 +10,15 @@
 #include <windows.h>
 #include <assert.h>
 
+DreamWinSock::DreamWinSock()
+{
+}
 
-int dreamSock_InitializeWinSock(void)
+DreamWinSock::~DreamWinSock()
+{
+}
+
+int DreamWinSock::dreamSock_InitializeWinSock(void)
 {
 	WORD versionRequested;
 	WSADATA wsaData;
@@ -92,7 +99,7 @@ int dreamSock_InitializeWinSock(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-int dreamSock_Win_GetCurrentSystemTime(void)
+int DreamWinSock::dreamSock_Win_GetCurrentSystemTime(void)
 {
 	int curtime;
 	static int base;

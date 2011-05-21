@@ -41,6 +41,7 @@
 
 Server::Server(ServerSideGame* serverSideGame)
 {
+	mNetwork = new Network();
 	init			= false;
 	mServerSideGame = serverSideGame;
 	port			= 0;
@@ -51,19 +52,19 @@ Server::Server(ServerSideGame* serverSideGame)
 Server::~Server()
 {
 	mClientVector.empty();
-	dreamSock_CloseSocket(socket);
+	mNetwork->dreamSock_CloseSocket(socket);
 }
 
 int Server::Initialise(const char *localIP, int serverPort)
 {
 	// Initialise dreamSock if it is not already initialised
-	dreamSock_Initialize();
+	mNetwork->dreamSock_Initialize();
 
 	// Store the server IP and port for later use
 	port = serverPort;
 
 	// Create server socket
-	socket = dreamSock_OpenUDPSocket(localIP, port);
+	socket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
 
 	if(socket == DREAMSOCK_INVALID_SOCKET)
 	{
@@ -77,7 +78,7 @@ int Server::Initialise(const char *localIP, int serverPort)
 
 void Server::Uninitialise(void)
 {
-	dreamSock_CloseSocket(socket);
+	mNetwork->dreamSock_CloseSocket(socket);
 
 	init = false;
 }
@@ -284,7 +285,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 				if (mClientVector.size() > 0)
                // if(clList != NULL)
                 {
-                        mClientVector.at(i)->SetLastMessageTime(dreamSock_GetCurrentSystemTime());
+                        mClientVector.at(i)->SetLastMessageTime(mNetwork->dreamSock_GetCurrentSystemTime());
 
                         // Check if the type is a positive number
                         // -> is the packet sequenced
@@ -330,7 +331,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
                 break;
 
         case DREAMSOCK_MES_PING:
-                mClientVector.at(i)->SetPing(dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
+                mClientVector.at(i)->SetPing(mNetwork->dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
                 break;
         }
 
@@ -338,7 +339,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 
 int Server::CheckForTimeout(char *data, struct sockaddr *from)
 {
-	int currentTime = dreamSock_GetCurrentSystemTime();
+	int currentTime = mNetwork->dreamSock_GetCurrentSystemTime();
 
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
@@ -408,7 +409,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 	Message mes;
 	mes.Init(data, sizeof(data));
 
-	ret = dreamSock_GetPacket(socket, mes.data, from);
+	ret = mNetwork->dreamSock_GetPacket(socket, mes.data, from);
 
 	if(ret <= 0)
 		return 0;

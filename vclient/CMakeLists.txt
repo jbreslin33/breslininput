@@ -93,6 +93,7 @@ set(HDRS
 
 	#dreamsock
 	../tdreamsock/dreamSockLog.h
+	../tdreamsock/dreamWinSock.h
 	
 	#network
 	../network/network.h

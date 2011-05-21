@@ -105,6 +105,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 	game = new ServerSideGame;
 
+
 	if(game->InitNetwork() != 0)
 	{
 		LogString("Could not create game server");
@@ -117,7 +118,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// first peek the message without removing it
 	PeekMessage(&WinMsg, hwnd, 0, 0, PM_NOREMOVE);
 
-	oldTime = dreamSock_GetCurrentSystemTime();
+	oldTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
 
 	try
 	{
@@ -127,7 +128,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				if(!GetMessage(&WinMsg, NULL, 0, 0))
 				{
-					dreamSock_Shutdown();
+					game->mNetwork->dreamSock_Shutdown();
 
 					done = true;
 				}
@@ -138,7 +139,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			do
 			{
-				newTime = dreamSock_GetCurrentSystemTime();
+				newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
 				time = newTime - oldTime;
 			} while (time < 1);
 			
@@ -152,7 +153,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 		LogString("Unknown Exception caught in main loop");
 
-		dreamSock_Shutdown();
+		game->mNetwork->dreamSock_Shutdown();
 
 		MessageBox(NULL, "Unknown Exception caught in main loop", "Error", MB_OK | MB_TASKMODAL);
 
@@ -258,7 +259,7 @@ int main(int argc, char **argv)
 
 	int time, oldTime, newTime;
 
-	oldTime = dreamSock_GetCurrentSystemTime();
+	oldTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
 
 	// App main loop
 	try
@@ -270,7 +271,7 @@ int main(int argc, char **argv)
 			{
 				do
 				{
-					newTime = dreamSock_GetCurrentSystemTime();
+					newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
 					time = newTime - oldTime;
 				} while (time < 1);
 
@@ -285,7 +286,7 @@ int main(int argc, char **argv)
 			{
 				do
 				{
-					newTime = dreamSock_GetCurrentSystemTime();
+					newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
 					time = newTime - oldTime;
 				} while (time < 1);
 

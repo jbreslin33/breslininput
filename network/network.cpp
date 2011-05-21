@@ -2,14 +2,24 @@
 
 #include "../message/message.h"
 #include "../tdreamsock/dreamSockLog.h"
-
+#ifdef WIN32
+#include "../tdreamsock/dreamWinSock.h"
+#endif
 bool dreamSock_init = false;
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_Initialize(void)
+
+Network::Network()
+{
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#endif
+}
+
+Network::~Network()
+{
+}
+
+int Network::dreamSock_Initialize(void)
 {
 	if(dreamSock_init == true)
 		return 0;
@@ -19,7 +29,7 @@ int dreamSock_Initialize(void)
 	StartLog();
 
 #ifdef WIN32
-	return dreamSock_InitializeWinSock();
+	return mDreamWinSock->dreamSock_InitializeWinSock();
 #else
 	return 0;
 #endif
@@ -29,7 +39,7 @@ int dreamSock_Initialize(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-void dreamSock_Shutdown(void)
+void Network::dreamSock_Shutdown(void)
 {
 	if(dreamSock_init == false)
 		return;
@@ -49,7 +59,7 @@ void dreamSock_Shutdown(void)
 // Name: empty()
 // Desc: 
 //-----------------------------------------------------------------------------
-SOCKET dreamSock_Socket(int protocol)
+SOCKET Network::dreamSock_Socket(int protocol)
 {
 	int type;
 	int proto;
@@ -86,11 +96,7 @@ SOCKET dreamSock_Socket(int protocol)
 	return sock;
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_SetNonBlocking(SOCKET sock, u_long setMode)
+int Network::dreamSock_SetNonBlocking(SOCKET sock, u_long setMode)
 {
 	u_long set = setMode;
 
@@ -102,11 +108,7 @@ int dreamSock_SetNonBlocking(SOCKET sock, u_long setMode)
 #endif
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_SetBroadcasting(SOCKET sock, int mode)
+int Network::dreamSock_SetBroadcasting(SOCKET sock, int mode)
 {
 	// make it broadcast capable
 	if(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (char *) &mode, sizeof(int)) == -1)
@@ -127,11 +129,7 @@ int dreamSock_SetBroadcasting(SOCKET sock, int mode)
 	return 0;
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
+int Network::dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
 {
 	char copy[128];
 
@@ -156,11 +154,7 @@ int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
 	else return 1;
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-SOCKET dreamSock_OpenUDPSocket(const char *netInterface, int port)
+SOCKET Network::dreamSock_OpenUDPSocket(const char *netInterface, int port)
 {
 	SOCKET sock;
 
@@ -222,11 +216,7 @@ SOCKET dreamSock_OpenUDPSocket(const char *netInterface, int port)
 	return sock;
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamSock_CloseSocket(SOCKET sock)
+void Network::dreamSock_CloseSocket(SOCKET sock)
 {
 #ifdef WIN32
 		closesocket(sock);
@@ -235,11 +225,7 @@ void dreamSock_CloseSocket(SOCKET sock)
 #endif
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
+int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 {
 	int ret;
 	struct sockaddr tempFrom;
@@ -284,11 +270,7 @@ int dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 	return ret;
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr)
+void Network::dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr)
 {
 	int	ret;
 
@@ -314,11 +296,7 @@ void dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr a
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
+void Network::dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
 {
 	struct sockaddr_in servaddr;
 	socklen_t len;
@@ -357,15 +335,11 @@ void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_GetCurrentSystemTime(void)
+int Network::dreamSock_GetCurrentSystemTime(void)
 {
 #ifndef WIN32
 	return dreamSock_Linux_GetCurrentSystemTime();
 #else
-	return dreamSock_Win_GetCurrentSystemTime();
+	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
 #endif
 }

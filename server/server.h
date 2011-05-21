@@ -63,6 +63,7 @@
 #define DREAMSOCK_MES_PING			-105
 
 // Introduce classes
+class Network;
 class Client;
 class ServerSideGame;
 
@@ -99,6 +100,7 @@ public:
 	int				GetPort(void)			{ return port; }
 
 	ServerSideGame* mServerSideGame;
+	Network* mNetwork;
 };
 
 #endif

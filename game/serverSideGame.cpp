@@ -23,6 +23,7 @@
 
 ServerSideGame::ServerSideGame()
 {
+	mNetwork = new Network();
 
 #ifdef _DEBUG
 	mRoot = new Ogre::Root("plugins_d.cfg");
@@ -43,7 +44,7 @@ ServerSideGame::~ServerSideGame()
 
 int ServerSideGame::InitNetwork()
 {
-	if(dreamSock_Initialize() != 0)
+	if(mNetwork->dreamSock_Initialize() != 0)
 	{
 		LogString("Error initialising Communication Library!");
 		return 1;
