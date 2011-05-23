@@ -48,7 +48,6 @@ public:
 
 	//Game
 	void	AddPlayer   (int local, int index, char *name);
-	void	RemoveClient(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
 	void	Frame       (void);
@@ -61,15 +60,12 @@ public:
 	void	ReadMoveCommand         (Message *mes, ClientSidePlayer *player);
 	void	ReadDeltaMoveCommand    (Message *mes, ClientSidePlayer *player);
 	void	BuildDeltaMoveCommand   (Message *mes, ClientSidePlayer *player);
-	void	StartConnection         ();
 	void	Connect                 (void);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
 	//Ogre
 	bool         processUnbufferedInput(const Ogre::FrameEvent& evt);
-   // void         createPlayer          (ClientSideClient* client, int index);
-	//void         createServerPlayer    (ClientSideClient* client, int index);
     virtual void createScene           (void);
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 

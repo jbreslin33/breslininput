@@ -39,6 +39,18 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mInit			= false;
 	mNetworkShutdown = false;
 
+
+	int ret = mNetworkClient->Initialise("", mServerIP, 30004);
+			//char text2[64];
+		//sprintf(text2, "gimmmmmmmm");
+	if(ret == DREAMSOCK_CLIENT_ERROR)
+	{
+		char text[64];
+		sprintf(text, "Could not open client socket");
+	}
+	Connect();
+
+
  }
 
 ClientSideGame::~ClientSideGame()
@@ -205,19 +217,6 @@ void ClientSideGame::MoveServerPlayer(void)
 	}
 }
 
-void ClientSideGame::StartConnection()
-{
-	int ret = mNetworkClient->Initialise("", mServerIP, 30004);
-			//char text2[64];
-		//sprintf(text2, "gimmmmmmmm");
-	if(ret == DREAMSOCK_CLIENT_ERROR)
-	{
-		char text[64];
-		sprintf(text, "Could not open client socket");
-	}
-	Connect();
-}
-
 void ClientSideGame::ReadPackets(void)
 {
 	//LogString("reding packs");
@@ -257,9 +256,6 @@ void ClientSideGame::ReadPackets(void)
 			ind = mes.ReadByte();
 
 			LogString("Got removeclient %d message", ind);
-
-			RemoveClient(ind);
-
 			break;
 
 		case USER_MES_FRAME:
@@ -303,10 +299,6 @@ void ClientSideGame::ReadPackets(void)
 
 		}
 	}
-}
-
-void ClientSideGame::RemoveClient(int ind)
-{
 }
 
 void ClientSideGame::SendCommand(void)
@@ -508,18 +500,10 @@ extern "C" {
 
         //ClientSideBaseGame* mClientSideBaseGame;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-		std::cout << "Hello World!";
 		StartLogConsole();
         game = new ClientSideGame(strCmdLine);
 #else
         game = new ClientSideGame(argv[1]);
-#endif
-
-		//game = new ClientSideGame;
-	    game->StartConnection();
-
-#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-		//StartLogConsole();
 #endif
 
         try {
