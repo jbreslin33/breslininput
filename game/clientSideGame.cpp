@@ -37,6 +37,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mRenderTime		= 0.0f;
 	mOldTime = 0;
  	mInit			= false;
+	mNetworkShutdown = false;
 
  }
 
@@ -125,16 +126,25 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
     if(!processUnbufferedInput(evt)) return false;
 
-
+	//LogString("frameRendering");
 	if(game != NULL)
 	{
 		if (mNetworkClient->mClientSidePlayer != NULL)
 		{
 			game->CheckKeys();
 		}
+		//LogString("running network");
+		if (mNetworkShutdown == true)
+		{
+			Shutdown();
+		}
 		game->RunNetwork(evt.timeSinceLastFrame * 1000);
 		mRenderTime = evt.timeSinceLastFrame;
 
+	}
+	if (mNetworkShutdown == true)
+	{
+		mShutDown = true;
 	}
 
 	return ret;
@@ -147,14 +157,18 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void ClientSideGame::CheckKeys(void)
 {
-		mInputClient->mCommand.mKey = 0;
+	mInputClient->mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
  	{
- 		Shutdown();
+		LogString("esc");
+		mNetworkShutdown = true;
  		keys[VK_ESCAPE] = false;
  	}
+	
  	if(keys[VK_DOWN])
  	{
+				LogString("esc");
+		mNetworkShutdown = true;
  		mInputClient->mCommand.mKey |= KEY_DOWN;
  	}
  	if(keys[VK_UP])
@@ -486,6 +500,8 @@ extern "C" {
 
         //ClientSideBaseGame* mClientSideBaseGame;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+		std::cout << "Hello World!";
+
         game = new ClientSideGame(strCmdLine);
 #else
         game = new ClientSideGame(argv[1]);

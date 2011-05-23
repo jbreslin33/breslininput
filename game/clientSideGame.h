@@ -91,7 +91,7 @@ public:
 
 	//initialize
 	bool mInit;
-
+	bool mNetworkShutdown;
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;
 #endif
