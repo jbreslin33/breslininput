@@ -17,8 +17,6 @@ Client::Client()
 	incomingAcknowledged	= 0;
 	droppedPackets			= 0;
 
-	init					= false;
-
 	serverPort				= 0;
 
 	pingSent				= 0;
@@ -65,8 +63,6 @@ int Client::Initialise(const char *localIP, const char *remoteIP, int port)
 		return DREAMSOCK_CLIENT_ERROR;
 	}
 
-	init = true;
-
 	return 0;
 }
 
@@ -75,8 +71,6 @@ void Client::Uninitialise(void)
 	mNetwork->dreamSock_CloseSocket(socket);
 
 	Reset();
-
-	init = false;
 }
 
 void Client::Reset(void)

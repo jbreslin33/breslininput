@@ -87,8 +87,6 @@ public:
 
 	int				lastMessageTime;
 
-	bool			init;
-
 public:
 
 	int				Initialise(const char *localIP, const char *remoteIP, int port);
