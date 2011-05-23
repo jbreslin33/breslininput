@@ -60,7 +60,6 @@ public:
 	void	ReadMoveCommand         (Message *mes, ClientSidePlayer *player);
 	void	ReadDeltaMoveCommand    (Message *mes, ClientSidePlayer *player);
 	void	BuildDeltaMoveCommand   (Message *mes, ClientSidePlayer *player);
-	void	Connect                 (void);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
@@ -70,7 +69,7 @@ public:
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 
 	// Network variables
-	Client* mNetworkClient;
+	Client* mClient;
 	const char*  mServerIP;
 
 	Network* mNetwork;

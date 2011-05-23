@@ -28,7 +28,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 #endif
 	mNetwork = new Network();
 	mServerIP = serverIP;
- 	mNetworkClient	= new Client();
+ 	mClient	= new Client();
 
 	mLocalClient		= NULL;
  	mInputClient        = NULL;
@@ -40,7 +40,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 	mNetworkShutdown = false;
 
 
-	int ret = mNetworkClient->Initialise("", mServerIP, 30004);
+	int ret = mClient->Initialise("", mServerIP, 30004);
 			//char text2[64];
 		//sprintf(text2, "gimmmmmmmm");
 	if(ret == DREAMSOCK_CLIENT_ERROR)
@@ -48,14 +48,27 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 		char text[64];
 		sprintf(text, "Could not open client socket");
 	}
-	Connect();
+
+	if(mInit)
+	{
+		LogString("ArmyWar already initialised");
+		return;
+	}
+
+	LogString("ClientSideGame::Connect");
+
+	mInit = true;
+
+	mClient->SendConnect("myname");
 
 
  }
 
 ClientSideGame::~ClientSideGame()
 {
-	delete mNetworkClient;
+
+
+	delete mClient;
 }
 
 void ClientSideGame::AddPlayer(int local, int ind, char *name)
@@ -63,21 +76,21 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 	LogString("creating player");
 	OgreShape* shape = new OgreShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	
-	mNetworkClient->mClientSidePlayer = new ClientSidePlayer("jay" + ind,shape);
+	mClient->mClientSidePlayer = new ClientSidePlayer("jay" + ind,shape);
 	shape->getSceneNode()->scale(30,30,30);
 	
-	mNetworkClient->mClientSidePlayer->mIndex = ind;
+	mClient->mClientSidePlayer->mIndex = ind;
 
 	OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	mNetworkClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
+	mClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
   	shape2->getSceneNode()->scale(30,30,30);
 
-	mClientVector.push_back(mNetworkClient->mClientSidePlayer);
+	mClientVector.push_back(mClient->mClientSidePlayer);
 	
 	if(local)
 	{
-		mLocalClient = mNetworkClient->mClientSidePlayer;
-		mInputClient = mNetworkClient->mClientSidePlayer;
+		mLocalClient = mClient->mClientSidePlayer;
+		mInputClient = mClient->mClientSidePlayer;
 		
 		SendRequestNonDeltaFrame();
 	}
@@ -147,7 +160,7 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	//LogString("frameRendering");
 	if(game != NULL)
 	{
-		if (mNetworkClient->mClientSidePlayer != NULL)
+		if (mClient->mClientSidePlayer != NULL)
 		{
 			game->CheckKeys();
 		}
@@ -235,7 +248,7 @@ void ClientSideGame::ReadPackets(void)
 	Message mes;
 	mes.Init(data, sizeof(data));
 
-	while(ret = mNetworkClient->GetPacket(mes.data, &address))
+	while(ret = mClient->GetPacket(mes.data, &address))
 	{
 		mes.SetSize(ret);
 		mes.BeginReading();
@@ -303,23 +316,23 @@ void ClientSideGame::ReadPackets(void)
 
 void ClientSideGame::SendCommand(void)
 {
-	if(mNetworkClient->GetConnectionState() != DREAMSOCK_CONNECTED)
+	if(mClient->GetConnectionState() != DREAMSOCK_CONNECTED)
 		return;
 
 	Message message;
 	char data[1400];
 
-	int i = mNetworkClient->GetOutgoingSequence() & (COMMAND_HISTORY_SIZE-1);
+	int i = mClient->GetOutgoingSequence() & (COMMAND_HISTORY_SIZE-1);
 
 	message.Init(data, sizeof(data));
 	message.WriteByte(USER_MES_FRAME);						// type
-	message.AddSequences(mNetworkClient);					// sequences
+	message.AddSequences(mClient);					// sequences
 
 	// Build delta-compressed move command
 	BuildDeltaMoveCommand(&message, mInputClient);
 
 	// Send the packet
-	mNetworkClient->SendPacket(&message);
+	mClient->SendPacket(&message);
 
 	// Store the command to the input client's history
 	memcpy(&mInputClient->mFrame[i], &mInputClient->mCommand, sizeof(Command));
@@ -338,28 +351,14 @@ void ClientSideGame::SendRequestNonDeltaFrame(void)
 	message.Init(data, sizeof(data));
 
 	message.WriteByte(USER_MES_NONDELTAFRAME);
-	message.AddSequences(mNetworkClient);
+	message.AddSequences(mClient);
 
-	mNetworkClient->SendPacket(&message);
-}
-
-void ClientSideGame::Connect(void)
-{
-	if(mInit)
-	{
-		LogString("ArmyWar already initialised");
-		return;
-	}
-
-	LogString("ClientSideGame::Connect");
-
-	mInit = true;
-
-	mNetworkClient->SendConnect("myname");
+	mClient->SendPacket(&message);
 }
 
 void ClientSideGame::Disconnect(void)
 {
+
 	if(!mInit)
 		return;
 
@@ -369,7 +368,7 @@ void ClientSideGame::Disconnect(void)
 	mLocalClient = NULL;
 	mInputClient = NULL;
 
-	mNetworkClient->SendDisconnect();
+	mClient->SendDisconnect();
 }
 
 void ClientSideGame::ReadMoveCommand(Message *mes, ClientSidePlayer *client)
@@ -442,7 +441,7 @@ void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSidePlayer *client
 void ClientSideGame::BuildDeltaMoveCommand(Message *mes, ClientSidePlayer *theClient)
 {
 	int flags = 0;
-	int last = (mNetworkClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
 	if(theClient->mFrame[last].mKey != theClient->mCommand.mKey)
