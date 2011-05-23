@@ -26,7 +26,6 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #endif
-	//mNetwork = new Network();
 	mServerIP = serverIP;
  	mClient	= new Client();
 
@@ -85,7 +84,7 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 	mClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
   	shape2->getSceneNode()->scale(30,30,30);
 
-	mClientVector.push_back(mClient->mClientSidePlayer);
+	mPlayerVector.push_back(mClient->mClientSidePlayer);
 	
 	if(local)
 	{
@@ -280,12 +279,12 @@ void ClientSideGame::ReadPackets(void)
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
-			for (unsigned int i = 0; i < mClientVector.size(); i++)
+			for (unsigned int i = 0; i < mPlayerVector.size(); i++)
 			{
 				if (mNetworkShutdown)
 					return;
-				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-				mClientVector.at(i)->processTick();
+				ReadDeltaMoveCommand(&mes, mPlayerVector.at(i));
+				mPlayerVector.at(i)->processTick();
 
 				MoveServerPlayer();
 			}
@@ -298,10 +297,10 @@ void ClientSideGame::ReadPackets(void)
 
 			mOldTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 
-			for (unsigned int i = 0; i < mClientVector.size(); i++)
+			for (unsigned int i = 0; i < mPlayerVector.size(); i++)
 			{
-				//LogString("Reading NONDELTAFRAME for client %d", mClientVector.at(i)->mIndex);
-				ReadMoveCommand(&mes, mClientVector.at(i));
+				//LogString("Reading NONDELTAFRAME for client %d", mPlayerVector.at(i)->mIndex);
+				ReadMoveCommand(&mes, mPlayerVector.at(i));
 			}
 
 			break;
@@ -338,9 +337,9 @@ void ClientSideGame::SendCommand(void)
 	memcpy(&mInputClient->mFrame[i], &mInputClient->mCommand, sizeof(Command));
 
 	// Store the commands to the clients' history
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mPlayerVector.size(); i++)
 	{
-		memcpy(&mClientVector.at(i)->mFrame[i], &mClientVector.at(i)->mCommand, sizeof(Command));
+		memcpy(&mPlayerVector.at(i)->mFrame[i], &mPlayerVector.at(i)->mCommand, sizeof(Command));
 	}
 }
 
@@ -467,9 +466,9 @@ void ClientSideGame::RunNetwork(int msec)
 
 	ReadPackets();
 	
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mPlayerVector.size(); i++)
 	{
-		mClientVector.at(i)->interpolateTick(mRenderTime);
+		mPlayerVector.at(i)->interpolateTick(mRenderTime);
 	}
 
 	// Framerate is too high

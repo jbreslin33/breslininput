@@ -115,8 +115,6 @@ public:
 	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
 	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
 
-	bool			GetInit(void)			{ return init; }
-
 	int				GetIndex(void)			{ return index; }
 	void			SetIndex(int ind)		{ index = ind; }
 

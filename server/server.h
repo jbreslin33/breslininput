@@ -95,8 +95,6 @@ public:
 	int				GetPacket(char *data, struct sockaddr *from);
 	void			SendPackets(void);
 
-	bool			GetInit(void)			{ return init; }
-
 	int				GetPort(void)			{ return port; }
 
 	ServerSideGame* mServerSideGame;

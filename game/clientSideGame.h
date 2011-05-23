@@ -72,12 +72,10 @@ public:
 	Client* mClient;
 	const char*  mServerIP;
 
-	//Network* mNetwork;
-
 	//client Variables
 	ClientSidePlayer* mLocalClient;		// Pointer to the local client in the client list
 	ClientSidePlayer*  mInputClient;			// Handles all keyboard input
-	std::vector<ClientSidePlayer*> mClientVector;	
+	std::vector<ClientSidePlayer*> mPlayerVector;	
 
 	//time
 	float mFrameTime;
