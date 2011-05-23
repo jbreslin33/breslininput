@@ -205,7 +205,6 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 void Server::RemoveClient(Client *client)
 {
-	
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		if (mClientVector.at(i) == client)
@@ -213,52 +212,6 @@ void Server::RemoveClient(Client *client)
 			mClientVector.erase (mClientVector.begin()+i);
 		}
 	}
-	/*
-	dreamClient *list = NULL;
-	dreamClient *prev = NULL;
-	dreamClient *next = NULL;
-
-	int index = client->GetIndex();
-
-	LogString("LIB: Removing client with index %d", index);
-
-	SendRemoveClient(client);
-
-	for(list = clientList; list != NULL; list = list->next)
-	{
-		if(client == list)
-		{
-			if(prev != NULL)
-			{
-				prev->next = client->next;
-			}
-
-			break;
-		}
-
-		prev = list;
-	}
-
-	if(client == clientList)
-	{
-		LogString("LIB: Server: removing first client in list");
-
-		if(list) next = list->next;
-
-		if(client) free(client);
-		client = NULL;
-		clientList = next;
-	}
-	else
-	{
-		LogString("LIB: Server: removing a client");
-
-		if(list) next = list->next;
-
-		if(client) free(client);
-		client = next;
-	}
-	*/
 }
 
 void Server::ParsePacket(Message *mes, struct sockaddr *address)

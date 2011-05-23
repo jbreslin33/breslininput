@@ -509,7 +509,7 @@ extern "C" {
         //ClientSideBaseGame* mClientSideBaseGame;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 		std::cout << "Hello World!";
-
+		StartLogConsole();
         game = new ClientSideGame(strCmdLine);
 #else
         game = new ClientSideGame(argv[1]);
@@ -519,7 +519,7 @@ extern "C" {
 	    game->StartConnection();
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
-		StartLogConsole();
+		//StartLogConsole();
 #endif
 
         try {
