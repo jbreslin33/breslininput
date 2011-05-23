@@ -72,7 +72,7 @@ public:
 	Client* mClient;
 	const char*  mServerIP;
 
-	Network* mNetwork;
+	//Network* mNetwork;
 
 	//client Variables
 	ClientSidePlayer* mLocalClient;		// Pointer to the local client in the client list

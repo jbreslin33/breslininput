@@ -26,7 +26,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #endif
-	mNetwork = new Network();
+	//mNetwork = new Network();
 	mServerIP = serverIP;
  	mClient	= new Client();
 
@@ -276,7 +276,7 @@ void ClientSideGame::ReadPackets(void)
 			mes.ReadShort();
 			mes.ReadShort();
 
-			newTime = mNetwork->dreamSock_GetCurrentSystemTime();
+			newTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
@@ -296,7 +296,7 @@ void ClientSideGame::ReadPackets(void)
 			mes.ReadShort();
 			mes.ReadShort();
 
-			mOldTime = mNetwork->dreamSock_GetCurrentSystemTime();
+			mOldTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 
 			for (unsigned int i = 0; i < mClientVector.size(); i++)
 			{
