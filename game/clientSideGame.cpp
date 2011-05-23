@@ -84,6 +84,14 @@ void ClientSideGame::createScene(void)
 
 bool ClientSideGame::processUnbufferedInput(const Ogre::FrameEvent& evt)
 {
+    if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
+    {
+		keys[VK_ESCAPE] = TRUE;
+    }
+	else
+	{
+		keys[VK_ESCAPE] = FALSE;
+	}
     if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
 		keys[VK_UP] = TRUE;
@@ -122,8 +130,6 @@ bool ClientSideGame::processUnbufferedInput(const Ogre::FrameEvent& evt)
 
 bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
-    bool ret = BaseApplication::frameRenderingQueued(evt);
-
     if(!processUnbufferedInput(evt)) return false;
 
 	//LogString("frameRendering");
@@ -147,6 +153,8 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 		mShutDown = true;
 	}
 
+    bool ret = BaseApplication::frameRenderingQueued(evt);
+	
 	return ret;
 }
 
@@ -162,13 +170,10 @@ void ClientSideGame::CheckKeys(void)
  	{
 		LogString("esc");
 		mNetworkShutdown = true;
- 		keys[VK_ESCAPE] = false;
  	}
 	
  	if(keys[VK_DOWN])
  	{
-				LogString("esc");
-		mNetworkShutdown = true;
  		mInputClient->mCommand.mKey |= KEY_DOWN;
  	}
  	if(keys[VK_UP])
@@ -268,8 +273,11 @@ void ClientSideGame::ReadPackets(void)
 
 			for (unsigned int i = 0; i < mClientVector.size(); i++)
 			{
+				if (mNetworkShutdown)
+					return;
 				ReadDeltaMoveCommand(&mes, mClientVector.at(i));
 				mClientVector.at(i)->processTick();
+
 				MoveServerPlayer();
 			}
 			break;
