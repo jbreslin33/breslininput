@@ -84,43 +84,7 @@ Client::~Client()
 {
 	mNetwork->dreamSock_CloseSocket(mSocket);
 }
-/*
-int Client::Initialise(const char *localIP, const char *remoteIP, int port)
-{
-//	LogString("initilisinfdf");
-	// Initialise dreamSock if it is not already initialised
-	//mNetwork->dreamSock_Initialize();
 
-	// Save server's address information for later use
-	serverPort = port;
-	
-	#ifdef WIN32
-	size_t t = 256;
-	strcpy_s(serverIP,t, remoteIP);
-#else
-	strcpy(serverIP,remoteIP);
-#endif
-	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
-
-	// Create client socket
-	mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, 0);
-
-	// Check that the address is not empty
-	u_long inetAddr = inet_addr(serverIP);
-
-	if(inetAddr == INADDR_NONE)
-	{
-		return DREAMSOCK_CLIENT_ERROR;
-	}
-
-	if(mSocket == DREAMSOCK_INVALID_SOCKET)
-	{
-		return DREAMSOCK_CLIENT_ERROR;
-	}
-
-	return 0;
-}
-*/
 void Client::Uninitialise(void)
 {
 	mNetwork->dreamSock_CloseSocket(mSocket);

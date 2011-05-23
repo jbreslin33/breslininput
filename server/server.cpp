@@ -5,7 +5,7 @@
 #include "../network/network.h"
 #include "../client/client.h"
 #include "../message/message.h"
-
+#include "../player/serverSidePlayer.h"
 #include "../game/serverSideGame.h"
 
 #ifdef WIN32
@@ -380,5 +380,102 @@ void Server::SendPackets(void)
 			continue;
 
 		mClientVector.at(i)->SendPacket();
+	}
+}
+
+
+void Server::ReadPackets(void)
+{
+
+	//LogString("REading packetsdfdfdfdd");
+	char data[1400];
+
+	int type;
+	int ret;
+
+	struct sockaddr address;
+
+	Message mes;
+	mes.Init(data, sizeof(data));
+
+	// Get the packet from the socket
+	try
+	{
+		//LogString("trying.....");
+		while(ret = GetPacket(mes.data, &address))
+		{
+			mes.SetSize(ret);
+			mes.BeginReading();
+
+			type = mes.ReadByte();
+			//LogString("type:%s",type);
+			// Check the type of the message
+			switch(type)
+			{
+			case DREAMSOCK_MES_CONNECT:
+
+				break;
+
+			case DREAMSOCK_MES_DISCONNECT:
+
+				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				{
+					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
+					{
+						//mClientVector.erase(
+					}
+				}
+				break;
+
+			case USER_MES_FRAME:
+//			LogString("Got frame (size: %d bytes)", ret);
+
+				// Skip sequences
+				mes.ReadShort();
+				mes.ReadShort();
+
+				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				{
+					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
+					{
+						mServerSideGame->ReadDeltaMoveCommand(&mes, mClientVector.at(i));
+						mClientVector.at(i)->mServerSidePlayer->processTick();
+
+						break;
+					}
+				}
+
+				break;
+
+			case USER_MES_NONDELTAFRAME:
+
+				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				{
+					mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
+						sizeof(mClientVector.at(i)->mMessage.outgoingData));
+
+					mClientVector.at(i)->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
+					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetOutgoingSequence());
+					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetIncomingSequence());
+
+					for (unsigned int j = 0; j < mClientVector.size(); j++)
+					{
+						mServerSideGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mClientVector.at(j));
+					}
+					mClientVector.at(i)->SendPacket();
+				}
+
+				break;
+
+			}
+		}
+	}
+	catch(...)
+	{
+		LogString("Unknown Exception caught in Lobby ReadPackets loop");
+
+#ifdef WIN32
+		MessageBox(NULL, "Unknown Exception caught in Lobby ReadPackets loop", "Error", MB_OK | MB_TASKMODAL);
+#endif
 	}
 }

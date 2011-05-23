@@ -49,7 +49,7 @@ public:
 	void createPlayer(Client* client, int runningIndex);
 
 	// Network.cpp
-	void	ReadPackets(void);
+
 	void	SendCommand(void);
 	void	SendExitNotification(void);
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);

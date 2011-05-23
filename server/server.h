@@ -98,6 +98,8 @@ public:
 
 	ServerSideGame* mServerSideGame;
 	Network* mNetwork;
+
+	void	ReadPackets(void);
 };
 
 #endif
