@@ -36,7 +36,7 @@
 
 
 
-Server::Server(ServerSideGame* serverSideGame)
+Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
 {
 	mNetwork = new Network();
 	init			= false;
@@ -45,7 +45,19 @@ Server::Server(ServerSideGame* serverSideGame)
 	runningIndex	= 1;
 	socket			= 0;
 
+	// Store the server IP and port for later use
+	port = serverPort;
 
+	// Create server socket
+	socket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
+
+	if(socket == DREAMSOCK_INVALID_SOCKET)
+	{
+		//return DREAMSOCK_SERVER_ERROR;
+		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
+	}
+
+	init = true;
 
 }
 
@@ -57,9 +69,6 @@ Server::~Server()
 
 int Server::Initialise(const char *localIP, int serverPort)
 {
-	// Initialise dreamSock if it is not already initialised
-	mNetwork->dreamSock_Initialize();
-
 	// Store the server IP and port for later use
 	port = serverPort;
 

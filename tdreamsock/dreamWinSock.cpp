@@ -12,14 +12,6 @@
 
 DreamWinSock::DreamWinSock()
 {
-}
-
-DreamWinSock::~DreamWinSock()
-{
-}
-
-int DreamWinSock::dreamSock_InitializeWinSock(void)
-{
 	WORD versionRequested;
 	WSADATA wsaData;
 	DWORD bufferSize = 0;
@@ -34,7 +26,7 @@ int DreamWinSock::dreamSock_InitializeWinSock(void)
 	if(error)
 	{
 		LogString("FATAL ERROR: WSAStartup failed (error = %d)", error);
-		return 1;
+		//return 1;
 	}
 	else
 	{
@@ -48,7 +40,7 @@ int DreamWinSock::dreamSock_InitializeWinSock(void)
 				LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
 
 			WSACleanup();
-			return 1;
+			//return 1;
 		}
 	}
 
@@ -58,7 +50,7 @@ int DreamWinSock::dreamSock_InitializeWinSock(void)
 	if( (NumProtocols != SOCKET_ERROR) && (WSAGetLastError() != WSAENOBUFS) )
 	{
 		WSACleanup();
-		return 1;
+		//return 1;
 	}
 
 	// Allocate a buffer, call WSAEnumProtocols to get an array of
@@ -68,7 +60,7 @@ int DreamWinSock::dreamSock_InitializeWinSock(void)
 	if(SelectedProtocol == NULL)
 	{
 		WSACleanup();
-		return 1;
+		//return 1;
 	}
 
 	// Allocate memory for protocol list and define what protocols to look for
@@ -89,11 +81,14 @@ int DreamWinSock::dreamSock_InitializeWinSock(void)
 	{
 		LogString("FATAL ERROR: Didn't find any required protocols");
 		WSACleanup();
-		return 1;
+		//return 1;
 	}
-
-	return 0;
 }
+
+DreamWinSock::~DreamWinSock()
+{
+}
+
 
 //-----------------------------------------------------------------------------
 // Name: empty()

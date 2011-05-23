@@ -5,50 +5,23 @@
 #ifdef WIN32
 #include "../tdreamsock/dreamWinSock.h"
 #endif
-bool dreamSock_init = false;
-
 
 Network::Network()
 {
+
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #endif
 
-dreamSock_Initialize();
 }
 
 Network::~Network()
 {
 }
 
-int Network::dreamSock_Initialize(void)
-{
-	if(dreamSock_init == true)
-		return 0;
-
-	dreamSock_init = true;
-
-	//StartLog();
-
-#ifdef WIN32
-	return mDreamWinSock->dreamSock_InitializeWinSock();
-#else
-	return 0;
-#endif
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
 void Network::dreamSock_Shutdown(void)
 {
-	if(dreamSock_init == false)
-		return;
-
 	LogString("Shutting down dreamSock");
-
-	dreamSock_init = false;
 
 	StopLog();
 

@@ -33,7 +33,7 @@ public:
 
 	Ogre::Root* mRoot;
 	
-	Server	*mNetworkServer;
+	Server	*mServer;
 
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms
@@ -57,7 +57,7 @@ public:
 	void	BuildDeltaMoveCommand(Message *mes, Client *client);
 
 	// Server.cpp
-	int		InitNetwork();
+	//int		InitNetwork();
 	void	ShutdownNetwork(void);
 	void	RemoveClient(Client* client);
 	void	RemoveClients(void);

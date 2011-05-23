@@ -86,7 +86,7 @@ public:
 	bool			init;
 
 public:
-					Server(ServerSideGame* serverSideGame);
+					Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort);
 					~Server();
 
 	int				Initialise(const char *localIP, int serverPort);

@@ -103,14 +103,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	StartLogConsole();
 
 
-	game = new ServerSideGame;
+	game = new ServerSideGame();
 
-
+/*
 	if(game->InitNetwork() != 0)
 	{
 		LogString("Could not create game server");
 	}
-
+*/
 	MSG WinMsg;
 	bool done = false;
 	int time, oldTime, newTime;
@@ -232,12 +232,12 @@ int main(int argc, char **argv)
 {
 
 	game = new ServerSideGame;
-
+/*
 	if(game->InitNetwork() != 0)
 	{
 		LogString("Could not create game server");
 	}
-
+*/
 	LogString("Welcome to Army War Server v2.0");
 	LogString("-------------------------------\n");
 

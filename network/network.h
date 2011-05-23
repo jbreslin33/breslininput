@@ -58,7 +58,6 @@ DreamWinSock* mDreamWinSock;
 #endif
 
 // Function prototypes
-int	dreamSock_Initialize(void);
 
 void dreamSock_Shutdown(void);
 

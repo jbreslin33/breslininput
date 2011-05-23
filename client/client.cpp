@@ -34,7 +34,7 @@ int Client::Initialise(const char *localIP, const char *remoteIP, int port)
 {
 //	LogString("initilisinfdf");
 	// Initialise dreamSock if it is not already initialised
-	mNetwork->dreamSock_Initialize();
+	//mNetwork->dreamSock_Initialize();
 
 	// Save server's address information for later use
 	serverPort = port;
