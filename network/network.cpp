@@ -22,7 +22,7 @@ Network::~Network()
 void Network::dreamSock_Shutdown(void)
 {
 	LogString("Shutting down dreamSock");
-
+	
 
 
 #ifdef WIN32

@@ -79,7 +79,7 @@ public:
 	int				index;					// Client index (starts from 1, running number)
 	char			name[32];				// Client name
 
-	SOCKET			socket;					// Socket
+	SOCKET			mSocket;					// Socket
 	struct sockaddr	myaddress;				// Socket address
 
 	int				pingSent;				// When did we send ping?
@@ -124,8 +124,7 @@ public:
 	void			SetName(char *n)		{ strcpy(name, n); }
 #endif
 
-	SOCKET			GetSocket(void)			{ return socket; }
-	void			SetSocket(SOCKET sock)	{ socket = sock; }
+	void			SetSocket(SOCKET sock)	{ mSocket = sock; }
 
 	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
 	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
