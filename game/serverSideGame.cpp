@@ -23,6 +23,7 @@
 
 ServerSideGame::ServerSideGame()
 {
+	StartLog();
 	mNetwork = new Network();
 
 #ifdef _DEBUG

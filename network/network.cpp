@@ -26,7 +26,7 @@ int Network::dreamSock_Initialize(void)
 
 	dreamSock_init = true;
 
-	StartLog();
+	//StartLog();
 
 #ifdef WIN32
 	return mDreamWinSock->dreamSock_InitializeWinSock();

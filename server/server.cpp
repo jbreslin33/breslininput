@@ -44,6 +44,9 @@ Server::Server(ServerSideGame* serverSideGame)
 	port			= 0;
 	runningIndex	= 1;
 	socket			= 0;
+
+
+
 }
 
 Server::~Server()
