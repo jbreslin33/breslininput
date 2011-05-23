@@ -23,7 +23,7 @@ void Network::dreamSock_Shutdown(void)
 {
 	LogString("Shutting down dreamSock");
 
-	StopLog();
+
 
 #ifdef WIN32
 	WSACleanup();

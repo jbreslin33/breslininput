@@ -40,6 +40,7 @@ ServerSideGame::ServerSideGame()
 
 ServerSideGame::~ServerSideGame()
 {
+	StopLog();
 	delete mServer;
 }
 /*

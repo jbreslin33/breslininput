@@ -89,7 +89,6 @@ public:
 					Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort);
 					~Server();
 
-	int				Initialise(const char *localIP, int serverPort);
 	void			Uninitialise(void);
 	void			SendPing(void);
 	int				GetPacket(char *data, struct sockaddr *from);

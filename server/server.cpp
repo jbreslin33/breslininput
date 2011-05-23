@@ -67,24 +67,6 @@ Server::~Server()
 	mNetwork->dreamSock_CloseSocket(socket);
 }
 
-int Server::Initialise(const char *localIP, int serverPort)
-{
-	// Store the server IP and port for later use
-	port = serverPort;
-
-	// Create server socket
-	socket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
-
-	if(socket == DREAMSOCK_INVALID_SOCKET)
-	{
-		return DREAMSOCK_SERVER_ERROR;
-	}
-
-	init = true;
-
-	return 0;
-}
-
 void Server::Uninitialise(void)
 {
 	mNetwork->dreamSock_CloseSocket(socket);
