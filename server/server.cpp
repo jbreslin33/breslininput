@@ -38,6 +38,7 @@
 
 Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
 {
+	LogString("Server Constructor");
 	mNetwork = new Network();
 	init			= false;
 	mServerSideGame = serverSideGame;

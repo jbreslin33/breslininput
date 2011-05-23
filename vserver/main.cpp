@@ -23,6 +23,7 @@
 #endif
 
 #include "../game/serverSideGame.h"
+#include "../server/server.h"
 #include "../network/network.h"
 #include "../tdreamsock/dreamSockLog.h"
 
@@ -118,7 +119,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// first peek the message without removing it
 	PeekMessage(&WinMsg, hwnd, 0, 0, PM_NOREMOVE);
 
-	oldTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
+	oldTime = game->mServer->mNetwork->dreamSock_GetCurrentSystemTime();
 
 	try
 	{
@@ -128,7 +129,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 			{
 				if(!GetMessage(&WinMsg, NULL, 0, 0))
 				{
-					game->mNetwork->dreamSock_Shutdown();
+					game->mServer->mNetwork->dreamSock_Shutdown();
 
 					done = true;
 				}
@@ -139,7 +140,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 
 			do
 			{
-				newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
+				newTime = game->mServer->mNetwork->dreamSock_GetCurrentSystemTime();
 				time = newTime - oldTime;
 			} while (time < 1);
 			
@@ -153,7 +154,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	{
 		LogString("Unknown Exception caught in main loop");
 
-		game->mNetwork->dreamSock_Shutdown();
+		game->mServer->mNetwork->dreamSock_Shutdown();
 
 		MessageBox(NULL, "Unknown Exception caught in main loop", "Error", MB_OK | MB_TASKMODAL);
 
@@ -259,7 +260,7 @@ int main(int argc, char **argv)
 
 	int time, oldTime, newTime;
 
-	oldTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
+	oldTime = game->mServer->mNetwork->dreamSock_GetCurrentSystemTime();
 
 	// App main loop
 	try
@@ -271,7 +272,7 @@ int main(int argc, char **argv)
 			{
 				do
 				{
-					newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
+					newTime = game->mServer->mNetwork->dreamSock_GetCurrentSystemTime();
 					time = newTime - oldTime;
 				} while (time < 1);
 
@@ -286,7 +287,7 @@ int main(int argc, char **argv)
 			{
 				do
 				{
-					newTime = game->mNetwork->dreamSock_GetCurrentSystemTime();
+					newTime = game->mServer->mNetwork->dreamSock_GetCurrentSystemTime();
 					time = newTime - oldTime;
 				} while (time < 1);
 

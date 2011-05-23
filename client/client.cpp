@@ -5,6 +5,7 @@
 
 Client::Client()
 {
+	LogString("server Side Client constructor");
 	mNetwork = new Network();
 
 	mServerSidePlayer = NULL;

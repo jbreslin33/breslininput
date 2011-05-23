@@ -1,7 +1,7 @@
 #include "serverSideGame.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../network/network.h"
+//#include "../network/network.h"
 
 #include "../server/server.h"
 
@@ -24,7 +24,8 @@
 ServerSideGame::ServerSideGame()
 {
 	StartLog();
-	mNetwork = new Network();
+	//LogString("log started...in ServerSideGame Constructor");
+	//mNetwork = new Network();
 
 #ifdef _DEBUG
 	mRoot = new Ogre::Root("plugins_d.cfg");

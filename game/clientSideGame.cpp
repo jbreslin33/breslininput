@@ -23,7 +23,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 {
 	StartLog();
 #ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
+	//mDreamWinSock = new DreamWinSock();
 #endif
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
