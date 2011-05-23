@@ -19,8 +19,6 @@
 ClientSideGame* game;
 bool keys[256];
 
-
-
 ClientSideGame::ClientSideGame(const char* serverIP)
 {
 	StartLog();

@@ -13,6 +13,8 @@ Network::Network()
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #endif
+
+dreamSock_Initialize();
 }
 
 Network::~Network()
