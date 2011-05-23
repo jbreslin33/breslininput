@@ -63,6 +63,7 @@ class Client
 {
 public:
 	Client();
+	Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 	void			DumpBuffer(void);
 	void			ParsePacket(Message *mes);

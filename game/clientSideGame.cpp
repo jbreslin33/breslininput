@@ -26,7 +26,7 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 	mDreamWinSock = new DreamWinSock();
 #endif
 	mServerIP = serverIP;
- 	mClient	= new Client();
+ 	mClient	= new Client("", mServerIP, 30004);
 
 	mLocalClient		= NULL;
  	mInputClient        = NULL;
@@ -38,14 +38,9 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 	mNetworkShutdown = false;
 
 
-	int ret = mClient->Initialise("", mServerIP, 30004);
+	//int ret = mClient->Initialise("", mServerIP, 30004);
 			//char text2[64];
 		//sprintf(text2, "gimmmmmmmm");
-	if(ret == DREAMSOCK_CLIENT_ERROR)
-	{
-		char text[64];
-		sprintf(text, "Could not open client socket");
-	}
 
 	if(mInit)
 	{

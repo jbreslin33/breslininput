@@ -25,12 +25,66 @@ Client::Client()
 	lastMessageTime			= 0;
 	mSocket = 0;
 }
+Client::Client(const char *localIP, const char *remoteIP, int port)
+{
+	mNetwork = new Network();
+
+	mServerSidePlayer = NULL;
+	mClientSidePlayer = NULL;
+
+	connectionState	= DREAMSOCK_DISCONNECTED;
+
+	outgoingSequence		= 1;
+	incomingSequence		= 0;
+	incomingAcknowledged	= 0;
+	droppedPackets			= 0;
+
+	serverPort				= 0;
+
+	pingSent				= 0;
+	ping					= 0;
+
+	lastMessageTime			= 0;
+	mSocket = 0;
+
+	//old Initialise code for client side client...int Client::Initialise(const char *localIP, const char *remoteIP, int port)
+//	LogString("initilisinfdf");
+	// Initialise dreamSock if it is not already initialised
+	//mNetwork->dreamSock_Initialize();
+
+	// Save server's address information for later use
+	serverPort = port;
+	
+	#ifdef WIN32
+	size_t t = 256;
+	strcpy_s(serverIP,t, remoteIP);
+#else
+	strcpy(serverIP,remoteIP);
+#endif
+	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
+
+	// Create client socket
+	mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, 0);
+
+	// Check that the address is not empty
+	u_long inetAddr = inet_addr(serverIP);
+
+	if(inetAddr == INADDR_NONE)
+	{
+		LogString("DREAMSOCK_CLIENT_ERROR");
+	}
+
+	if(mSocket == DREAMSOCK_INVALID_SOCKET)
+	{
+		LogString("DREAMSOCK_CLIENT_ERROR");
+	}
+}
 
 Client::~Client()
 {
 	mNetwork->dreamSock_CloseSocket(mSocket);
 }
-
+/*
 int Client::Initialise(const char *localIP, const char *remoteIP, int port)
 {
 //	LogString("initilisinfdf");
@@ -66,7 +120,7 @@ int Client::Initialise(const char *localIP, const char *remoteIP, int port)
 
 	return 0;
 }
-
+*/
 void Client::Uninitialise(void)
 {
 	mNetwork->dreamSock_CloseSocket(mSocket);
