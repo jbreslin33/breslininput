@@ -43,31 +43,9 @@ ServerSideGame::~ServerSideGame()
 	StopLog();
 	delete mServer;
 }
-/*
-int ServerSideGame::InitNetwork()
-{
-	// Create the game servers on new ports, starting from 30004
-	int ret = mServer->Initialise("", 30004);
 
-	if(ret == DREAMSOCK_SERVER_ERROR)
-	{
-#ifdef WIN32
-		char text[64];
-		sprintf(text, "Could not open server on port %d", mServer->GetPort());
-
-		MessageBox(NULL, text, "Error", MB_OK);
-#else
-		LogString("Could not open server on port %d", mServer->GetPort());
-#endif
-		return 1;
-	}
-
-	return 0;
-}
-*/
 void ServerSideGame::ShutdownNetwork(void)
 {
-	RemoveClients();
 	mServer->Uninitialise();
 }
 
@@ -75,15 +53,6 @@ void ServerSideGame::createPlayer(Client* client, int runningIndex)
 {
 	OgreShape* shape = new OgreShape("oshape" + runningIndex,new Vector3D(),mRoot);
 	client->mServerSidePlayer = new ServerSidePlayer("oplayer" + runningIndex,client,shape);
-}
-
-void ServerSideGame::RemoveClient(Client* client)
-{
-}
-
-void ServerSideGame::RemoveClients(void)
-{
-
 }
 
 void ServerSideGame::Frame(int msec)

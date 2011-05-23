@@ -57,10 +57,8 @@ public:
 	void	BuildDeltaMoveCommand(Message *mes, Client *client);
 
 	// Server.cpp
-	//int		InitNetwork();
+
 	void	ShutdownNetwork(void);
-	void	RemoveClient(Client* client);
-	void	RemoveClients(void);
 	void	Frame(int msec);
 
 };
