@@ -132,6 +132,7 @@ void Client::SendConnect(const char *name)
 
 void Client::SendDisconnect(void)
 {
+		LogString("sending disconnect...");
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
 	mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
 
