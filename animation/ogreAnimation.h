@@ -1,4 +1,3 @@
-
 #ifndef OGREANIMATION_H
 #define OGREANIMATION_H
 
@@ -33,12 +32,12 @@ class OgreAnimation
 {
 
 public:
-	OgreAnimation(Entity* entity);
-~OgreAnimation();
+	OgreAnimation();
+	~OgreAnimation();
 
 //animation
 void         updateAnimations (Real renderTime, bool stop);
-void         setupAnimations  ();
+void         setupAnimations  (Entity* entity);
 void         fadeAnimations   (Real deltaTime);
 void         setTopAnimation  (AnimID id, bool reset);
 void         setBaseAnimation (AnimID id, bool reset);

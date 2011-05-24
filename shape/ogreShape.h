@@ -2,14 +2,13 @@
 #define OGRESHAPE_H
 
 #include "shape.h"
+#include "../animation/ogreAnimation.h"
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
-class OgreAnimation;
-
-class OgreShape : public Shape
+class OgreShape : public Shape, public OgreAnimation
 {
 
 public:
@@ -24,9 +23,6 @@ std::string         mMeshName;
 Entity*             mEntity;
 Ogre::SceneManager* mSceneManager;
 SceneNode*          mSceneNode;
-
-//animation
-OgreAnimation* mOgreAnimation;
 
 };
 

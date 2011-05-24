@@ -72,7 +72,7 @@ void Move::interpolateTick(float renderTime)
 	transVector.z = mPlayer->mCommand.mVelocity.z;
 	mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-	mPlayer->mOgreAnimation->updateAnimations(renderTime,mPlayer->mCommand.mStop);
+	mPlayer->updateAnimations(renderTime,mPlayer->mCommand.mStop);
 }
 
 

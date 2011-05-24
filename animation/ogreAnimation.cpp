@@ -3,19 +3,22 @@
 #include "../math/vector3D.h"
 
 
-OgreAnimation::OgreAnimation(Entity* entity)
+OgreAnimation::OgreAnimation()
 {
-	mEntity = entity;
+	mEntity = NULL;
 	mStop = true;
-	setupAnimations();
+	//setupAnimations();
 }
 
 OgreAnimation::~OgreAnimation()
 {
 }
 
-void OgreAnimation::setupAnimations()
+
+
+void OgreAnimation::setupAnimations(Entity* entity)
 	{
+		mEntity = entity;
 		// this is very important due to the nature of the exported animations
 		mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
 		String animNames[] =
