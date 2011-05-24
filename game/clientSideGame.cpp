@@ -35,14 +35,6 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mInit			= false;
 	mNetworkShutdown = false;
 
-	if(mInit)
-	{
-		LogString("ArmyWar already initialised");
-		return;
-	}
-
-	LogString("ClientSideGame::Connect");
-
 	mInit = true;
 
 	mClient->SendConnect("myname");
@@ -58,7 +50,6 @@ ClientSideGame::~ClientSideGame()
 
 void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
-	LogString("creating player");
 	mClient->mClientSidePlayer = new ClientSidePlayer(mClient,"jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	mClient->mClientSidePlayer->getSceneNode()->scale(30,30,30);
 	
@@ -244,7 +235,6 @@ void ClientSideGame::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-			LogString("addingdfdfddfd client");
 			AddPlayer(local, ind, name);
 			break;
 
