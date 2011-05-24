@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 	catch(...)
 	{
 
-		dreamSock_Shutdown();
+		game->mServer->mNetwork->dreamSock_Shutdown();
 
 		LogString("Unknown Exception caught in main loop");
 
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 	LogString("Shutting down everything");
 
 
-	dreamSock_Shutdown();
+	game->mServer->mNetwork->dreamSock_Shutdown();
 
 	return 0;
 }

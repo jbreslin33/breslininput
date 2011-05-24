@@ -20,7 +20,7 @@
 #include <pthread.h>
 #include <signal.h>
 
-#include "dreamSock.h"
+//#include "dreamSock.h"
 
 //-----------------------------------------------------------------------------
 // Name: empty()

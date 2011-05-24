@@ -2,7 +2,13 @@
 #include "../tdreamsock/dreamSockLog.h"
 
 #include "../network/network.h"
-
+#ifdef WIN32
+//
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
 
 Client::Client(Network* network)
 {

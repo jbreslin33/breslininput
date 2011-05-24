@@ -4,6 +4,21 @@
 #include "../tdreamsock/dreamSockLog.h"
 #ifdef WIN32
 #include "../tdreamsock/dreamWinSock.h"
+#else
+#include <stdio.h>
+#include <memory.h>
+#include <malloc.h>
+#include <errno.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <sys/time.h>
+#include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+#include <signal.h>
 #endif
 
 Network::Network()
