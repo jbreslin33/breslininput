@@ -14,7 +14,16 @@ Network::Network()
 #endif
 
 	mSocket = 0;
+}
 
+Network::Network(const char netInterface[32], int port)
+{
+
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#endif
+
+	mSocket = 0;
 }
 
 Network::~Network()
