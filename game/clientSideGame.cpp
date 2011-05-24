@@ -1,9 +1,9 @@
 #include "clientSideGame.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#ifdef WIN32
-#include "../tdreamsock/dreamWinSock.h"
-#endif
+///#ifdef WIN32
+//#include "../tdreamsock/dreamWinSock.h"
+//#endif
 
 #include "../network/network.h"
 
@@ -22,9 +22,7 @@ bool keys[256];
 ClientSideGame::ClientSideGame(const char* serverIP)
 {
 	StartLog();
-#ifdef WIN32
-	//mDreamWinSock = new DreamWinSock();
-#endif
+
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
 
@@ -37,11 +35,6 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mInit			= false;
 	mNetworkShutdown = false;
 
-
-	//int ret = mClient->Initialise("", mServerIP, 30004);
-			//char text2[64];
-		//sprintf(text2, "gimmmmmmmm");
-
 	if(mInit)
 	{
 		LogString("ArmyWar already initialised");
@@ -53,7 +46,6 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 	mInit = true;
 
 	mClient->SendConnect("myname");
-
 
  }
 

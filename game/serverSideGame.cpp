@@ -1,8 +1,6 @@
 #include "serverSideGame.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-//#include "../network/network.h"
-
 #include "../server/server.h"
 
 #include "../shape/ogreShape.h"
@@ -10,22 +8,10 @@
 #include "../player/serverSidePlayer.h"
 #include "../command/serverSideCommand.h"
 
-#include <fstream>
-#include <math.h>
-#include <malloc.h>
-#include <stdlib.h>
-
-#ifdef WIN32
-#include <windows.h>
-#include <mmsystem.h>
-#include <assert.h>
-#endif
 
 ServerSideGame::ServerSideGame()
 {
 	StartLog();
-	//LogString("log started...in ServerSideGame Constructor");
-	//mNetwork = new Network();
 
 #ifdef _DEBUG
 	mRoot = new Ogre::Root("plugins_d.cfg");
