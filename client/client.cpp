@@ -4,10 +4,10 @@
 #include "../network/network.h"
 
 
-Client::Client()
+Client::Client(Network* network)
 {
 	LogString("server Side Client constructor");
-	mNetwork = new Network();
+	mNetwork = network;
 
 	mServerSidePlayer = NULL;
 	mClientSidePlayer = NULL;
@@ -25,12 +25,12 @@ Client::Client()
 	ping					= 0;
 
 	lastMessageTime			= 0;
-	mSocket = 0;
+
 }
 
 Client::Client(const char *localIP, const char *remoteIP, int port)
 {
-	mNetwork = new Network();
+
 
 	mServerSidePlayer = NULL;
 	mClientSidePlayer = NULL;
@@ -48,7 +48,6 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	ping					= 0;
 
 	lastMessageTime			= 0;
-	mSocket = 0;
 
 	//old Initialise code for client side client...int Client::Initialise(const char *localIP, const char *remoteIP, int port)
 //	LogString("initilisinfdf");
@@ -67,7 +66,8 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
 
 	// Create client socket
-	mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, 0);
+		mNetwork = new Network(localIP, 0);
+	//mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, 0);
 
 	// Check that the address is not empty
 	u_long inetAddr = inet_addr(serverIP);
@@ -77,7 +77,7 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 		LogString("DREAMSOCK_CLIENT_ERROR");
 	}
 
-	if(mSocket == DREAMSOCK_INVALID_SOCKET)
+	if(mNetwork->mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
 		LogString("DREAMSOCK_CLIENT_ERROR");
 	}
@@ -85,12 +85,12 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 
 Client::~Client()
 {
-	mNetwork->dreamSock_CloseSocket(mSocket);
+	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 }
 
 void Client::Uninitialise(void)
 {
-	mNetwork->dreamSock_CloseSocket(mSocket);
+	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 
 	Reset();
 }
@@ -116,7 +116,7 @@ void Client::DumpBuffer(void)
 	char data[1400];
 	int ret;
 
-	while((ret = mNetwork->dreamSock_GetPacket(mSocket, data, NULL)) > 0)
+	while((ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, data, NULL)) > 0)
 	{
 	}
 }
@@ -216,7 +216,7 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 {
 	//LogString("getPtcadd");
 	// Check if the client is set up or if it is disconnecting
-	if(!mSocket)
+	if(!mNetwork->mSocket)
 		return 0;
 
 	int ret;
@@ -224,7 +224,7 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 	Message mes;
 	mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(mSocket, mes.data, from);
+	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data, from);
 
 	if(ret <= 0)
 		return 0;
@@ -241,7 +241,7 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 void Client::SendPacket(void)
 {
 	// Check that everything is set up
-	if(!mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -266,12 +266,12 @@ void Client::SendPacket(void)
 		sendToAddress.sin_family = AF_INET;
 		sendToAddress.sin_addr.s_addr = inetAddr;
 
-		mNetwork->dreamSock_SendPacket(mSocket, mMessage.GetSize(), mMessage.data,
+		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data,
 			*(struct sockaddr *) &sendToAddress);
 	}
 	else
 	{
-		mNetwork->dreamSock_SendPacket(mSocket, mMessage.GetSize(), mMessage.data, myaddress);
+		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, myaddress);
 	}
 
 	// Check if the packet is sequenced
@@ -287,7 +287,7 @@ void Client::SendPacket(void)
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
-	if(!mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -312,12 +312,12 @@ void Client::SendPacket(Message *theMes)
 		sendToAddress.sin_family = AF_INET;
 		sendToAddress.sin_addr.s_addr = inetAddr;
 
-		mNetwork->dreamSock_SendPacket(mSocket, theMes->GetSize(), theMes->data,
+		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
 	}
 	else
 	{
-		mNetwork->dreamSock_SendPacket(mSocket, theMes->GetSize(), theMes->data, myaddress);
+		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data, myaddress);
 	}
 
 	// Check if the packet is sequenced

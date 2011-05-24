@@ -80,7 +80,7 @@ public:
 	std::vector<Client*> mClientVector;
 
 	int				port;					// Port
-	SOCKET			mSocket;					// Socket
+
 	int				runningIndex;			// Running index numbers for new clients
 
 	bool			init;
@@ -100,6 +100,7 @@ public:
 	Network* mNetwork;
 
 	void	ReadPackets(void);
+	const char *mLocalIP;
 };
 
 #endif

@@ -23,11 +23,16 @@ Network::Network(const char netInterface[32], int port)
 	mDreamWinSock = new DreamWinSock();
 #endif
 
-	mSocket = 0;
+	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
 }
 
 Network::~Network()
 {
+}
+
+void Network::setSocket(const char netInterface[32], int port)
+{
+	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
 }
 
 void Network::dreamSock_Shutdown(void)

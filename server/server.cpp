@@ -42,18 +42,21 @@ Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPor
 
 	init			= false;
 	mServerSideGame = serverSideGame;
+	mLocalIP = localIP;
 	port			= 0;
+	
 	runningIndex	= 1;
+
 
 	// Store the server IP and port for later use
 	port = serverPort;
 
 	// Create server socket
 
-		mNetwork = new Network();
-	mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
+		mNetwork = new Network(localIP, port);
+	//mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
 
-	if(mSocket == DREAMSOCK_INVALID_SOCKET)
+	if(mNetwork->mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
 		//return DREAMSOCK_SERVER_ERROR;
 		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
@@ -66,12 +69,12 @@ Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPor
 Server::~Server()
 {
 	mClientVector.empty();
-	mNetwork->dreamSock_CloseSocket(mSocket);
+	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 }
 
 void Server::Uninitialise(void)
 {
-	mNetwork->dreamSock_CloseSocket(mSocket);
+	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 
 	init = false;
 }
@@ -173,7 +176,9 @@ void Server::SendPing(void)
 void Server::AddClient(struct sockaddr *address, char *name)
 {
 	LogString("LIB: Adding client, index %d", runningIndex);
-	Client* client = new Client();
+	Client* client = new Client(mNetwork);
+	//mNetwork = new Network();
+	//client->mNetwork->setSocket(mLocalIP,port);
 	mClientVector.push_back(client);
 	// No clients yet, adding the first one
 
@@ -181,8 +186,9 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	//clientList = (dreamClient *) calloc(1, sizeof(dreamClient));
 
-	client->SetSocket(mSocket);
+//	client->SetSocket(client->mNetwork->mSocket);
 	client->SetSocketAddress(address);
+	
 	client->SetConnectionState(DREAMSOCK_CONNECTING);
 	client->SetOutgoingSequence(1);
 	client->SetIncomingSequence(0);
@@ -325,7 +331,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 {
 	//LogString("getting packet");
 	// Check if the server is set up
-	if(!mSocket)
+	if(!mNetwork->mSocket)
 		return 0;
 
 	// Check for timeout
@@ -335,7 +341,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 		return timeout;
 
 	// Wait for a while or incoming data
-	int maxfd = mSocket;
+	int maxfd = mNetwork->mSocket;
 	fd_set allset;
 	struct timeval waittime;
 
@@ -343,7 +349,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 	waittime.tv_usec = (10 % 1000) * 1000;
 
 	FD_ZERO(&allset); 
-	FD_SET(mSocket, &allset);
+	FD_SET(mNetwork->mSocket, &allset);
 
 	fd_set reading = allset;
 
@@ -358,7 +364,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 	Message mes;
 	mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(mSocket, mes.data, from);
+	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data, from);
 
 	if(ret <= 0)
 		return 0;
@@ -374,7 +380,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 void Server::SendPackets(void)
 {
 	// Check if the server is set up
-	if(!mSocket)
+	if(!mNetwork->mSocket)
 		return;
 
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
