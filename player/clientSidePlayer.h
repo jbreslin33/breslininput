@@ -4,31 +4,32 @@
 #include "player.h"
 #include "../move/move.h"
 #include "../rotation/rotation.h"
+#include "../shape/ogreShape.h"
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
-class OgreShape;
+class Client;
 
-class ClientSidePlayer : public Player, public Move, public Rotation
+class ClientSidePlayer : public Player, public Move, public Rotation, public OgreShape
 {
 
 public:
 
-ClientSidePlayer(std::string name, OgreShape* shape);
+ClientSidePlayer(Client* client, std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~ClientSidePlayer();
 
 //ticks
 void processTick    ();
 void interpolateTick    (float renderTime);
 
-//associated Shape
-OgreShape* mShape;
+Client* mClient;
 
 int			mIndex;
 
-ClientSidePlayer* mClientSideServerPlayer;
+ClientSidePlayer* mServerPlayer;
+
 
 };
 

@@ -44,8 +44,8 @@ Move::~Move()
 
 void Move::processTick()
 {
-	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->mShape->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->mShape->getSceneNode()->getPosition().z;
+	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
+    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
 
 	//distance we are off from server
 	mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2));
@@ -70,9 +70,9 @@ void Move::interpolateTick(float renderTime)
 
 	transVector.x = mPlayer->mCommand.mVelocity.x;
 	transVector.z = mPlayer->mCommand.mVelocity.z;
-	mPlayer->mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+	mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-	mPlayer->mShape->mOgreAnimation->updateAnimations(renderTime,mPlayer->mCommand.mStop);
+	mPlayer->mOgreAnimation->updateAnimations(renderTime,mPlayer->mCommand.mStop);
 }
 
 

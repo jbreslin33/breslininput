@@ -73,8 +73,8 @@ void Catchup_Move::execute(Move* move)
 		serverDest.x = move->mPlayer->mServerFrame.mOrigin.x + serverDest.x;
 		serverDest.z = move->mPlayer->mServerFrame.mOrigin.z + serverDest.z;
 
-		myDest.x = serverDest.x - move->mPlayer->mShape->getSceneNode()->getPosition().x;
-		myDest.z = serverDest.z - move->mPlayer->mShape->getSceneNode()->getPosition().z;
+		myDest.x = serverDest.x - move->mPlayer->getSceneNode()->getPosition().x;
+		myDest.z = serverDest.z - move->mPlayer->getSceneNode()->getPosition().z;
 
         //dist from clienr pos to future server pos
 		float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2);

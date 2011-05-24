@@ -1,6 +1,7 @@
 #include "rotation.h"
 
 //player,client,shape,animation combo
+#include "../client/client.h"
 #include "../player/clientSidePlayer.h"
 #include "../shape/ogreShape.h"
 #include "../animation/ogreAnimation.h"
@@ -57,13 +58,13 @@ void Rotation::processTick()
     mServerRotOld.normalise();
 
     //calculate how far off we are from server
-    Quaternion toServer = mPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
+    Quaternion toServer = mPlayer->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
 
     // convert to degrees
     mDegreesToServer = toServer.getYaw().valueDegrees();
 
     //calculate server rotation from last tick to new one
-	Quaternion serverRot = mPlayer->mClientSideServerPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
+	Quaternion serverRot = mPlayer->mServerPlayer->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
     mServerRotSpeed = serverRot.getYaw().valueDegrees();
@@ -76,7 +77,7 @@ void Rotation::processTick()
 	//LogString("mPlayer->mServerRotSpeed %f", mPlayer->mServerRotSpeed);
 
     // yaw server guy to new rot
-    mPlayer->mClientSideServerPlayer->mShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
+    mPlayer->mServerPlayer->getSceneNode()->yaw(Degree(mServerRotSpeed));
 
 	mRotationStateMachine->update();
 }
@@ -84,7 +85,7 @@ void Rotation::processTick()
 void Rotation::interpolateTick(float renderTime)
 {
     float rotSpeed = mPlayer->mCommand.mRotSpeed * renderTime;
-	mPlayer->mShape->getSceneNode()->yaw(Degree(rotSpeed));
+	mPlayer->getSceneNode()->yaw(Degree(rotSpeed));
 
 	Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
 
@@ -94,7 +95,7 @@ void Rotation::interpolateTick(float renderTime)
 	serverRotNew.normalise();
 
 	//calculate how far off we are from server
-    Quaternion toServer = mPlayer->mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+    Quaternion toServer = mPlayer->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
 
 	// convert to degrees
 	Real mDegreesToServer = toServer.getYaw().valueDegrees();

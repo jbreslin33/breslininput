@@ -59,16 +59,14 @@ ClientSideGame::~ClientSideGame()
 void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
 	LogString("creating player");
-	OgreShape* shape = new OgreShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	
-	mClient->mClientSidePlayer = new ClientSidePlayer("jay" + ind,shape);
-	shape->getSceneNode()->scale(30,30,30);
+	mClient->mClientSidePlayer = new ClientSidePlayer(mClient,"jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	mClient->mClientSidePlayer->getSceneNode()->scale(30,30,30);
 	
 	mClient->mClientSidePlayer->mIndex = ind;
 
-	OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	mClient->mClientSidePlayer->mClientSideServerPlayer = new ClientSidePlayer("silentBob" + ind,shape2);
-  	shape2->getSceneNode()->scale(30,30,30);
+	//OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	mClient->mClientSidePlayer->mServerPlayer = new ClientSidePlayer(mClient,"silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+  	mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->scale(30,30,30);
 
 	mPlayerVector.push_back(mClient->mClientSidePlayer);
 	
@@ -208,10 +206,10 @@ void ClientSideGame::MoveServerPlayer(void)
 	transVector.x = mLocalClient->mServerFrame.mOrigin.x;
 	transVector.z = mLocalClient->mServerFrame.mOrigin.z;
 
-	if (mLocalClient->mClientSideServerPlayer)
+	if (mLocalClient->mServerPlayer)
 	{
 		//LogString("try to move server player");
-			mLocalClient->mClientSideServerPlayer->mShape->getSceneNode()->setPosition(transVector);
+			mLocalClient->mServerPlayer->getSceneNode()->setPosition(transVector);
 	}
 }
 

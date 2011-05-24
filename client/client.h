@@ -139,6 +139,7 @@ public:
 ClientSidePlayer* mClientSidePlayer;
 ServerSidePlayer* mServerSidePlayer;
 
+
 	Network* mNetwork;
 
 };
