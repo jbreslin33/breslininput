@@ -2,16 +2,16 @@
 #define CLIENTSIDEPLAYER_H
 
 #include "player.h"
+#include "../move/move.h"
+#include "../rotation/rotation.h"
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
 class OgreShape;
-class Move;
-class Rotation;
 
-class ClientSidePlayer : public Player
+class ClientSidePlayer : public Player, public Move, public Rotation
 {
 
 public:
@@ -25,12 +25,6 @@ void interpolateTick    (float renderTime);
 
 //associated Shape
 OgreShape* mShape;
-
-//Move 
-Move* mMove;
-
-//Rotation
-Rotation* mRotation;
 
 int			mIndex;
 

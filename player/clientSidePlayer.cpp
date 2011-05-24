@@ -13,14 +13,11 @@
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-ClientSidePlayer::ClientSidePlayer(std::string name, OgreShape* shape) : Player(name)
+ClientSidePlayer::ClientSidePlayer(std::string name, OgreShape* shape) : Player(name), Move(this), Rotation(this)
 {
 	mClientSideServerPlayer = NULL;
 	mIndex  = 0;
 	mShape    = shape;
-	mMove     = new Move(this);
-	mRotation = new Rotation(this);
-
 }
 
 ClientSidePlayer::~ClientSidePlayer()
@@ -29,11 +26,11 @@ ClientSidePlayer::~ClientSidePlayer()
 
 void ClientSidePlayer::processTick()
 {
-	mMove->processTick();
-	mRotation->processTick();
+	Move::processTick();
+	Rotation::processTick();
 }
 void ClientSidePlayer::interpolateTick(float renderTime)
 {
-	mMove->interpolateTick(renderTime);
-	mRotation->interpolateTick(renderTime);
+	Move::interpolateTick(renderTime);
+	Rotation::interpolateTick(renderTime);
 }
