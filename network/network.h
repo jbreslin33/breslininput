@@ -29,10 +29,6 @@
 	#endif
 #endif
 
-// Host types
-#define DREAMSERVER						-1
-#define DREAMCLIENT						0
-
 // Connection protocols
 #define DREAMSOCK_TCP					0
 #define DREAMSOCK_UDP					1
