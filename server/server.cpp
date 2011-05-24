@@ -17,18 +17,14 @@ Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPor
 	
 	runningIndex	= 1;
 
-
 	// Store the server IP and port for later use
 	port = serverPort;
 
 	// Create server socket
 
-		mNetwork = new Network(localIP, port);
-	//mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
-
+	mNetwork = new Network(localIP, port);
 
 	init = true;
-
 }
 
 Server::~Server()

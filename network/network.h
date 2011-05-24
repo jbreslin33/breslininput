@@ -77,7 +77,5 @@ int dreamSock_GetCurrentSystemTime(void);
 
 SOCKET mSocket;
 
-void setSocket(const char netInterface[32], int port);
-
 };
 #endif

@@ -37,11 +37,6 @@ Network::~Network()
 {
 }
 
-void Network::setSocket(const char netInterface[32], int port)
-{
-	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
-}
-
 void Network::dreamSock_Shutdown(void)
 {
 	LogString("Shutting down dreamSock");
