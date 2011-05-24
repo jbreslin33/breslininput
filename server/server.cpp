@@ -38,8 +38,6 @@
 
 Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
 {
-	LogString("Server Constructor");
-
 	init			= false;
 	mServerSideGame = serverSideGame;
 	mLocalIP = localIP;
@@ -101,15 +99,12 @@ void Server::SendAddClient(Client *newClient)
 
 		if(mClientVector.at(i) == newClient)
 		{
-
-			LogString("LOCAL Y");
 			newClient->mMessage.WriteByte(1);	// local client
 			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
 			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
 		}
 		else
 		{
-						LogString("LOCAL N");
 			newClient->mMessage.WriteByte(0);	// not-local client
 			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
 			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
@@ -177,18 +172,9 @@ void Server::AddClient(struct sockaddr *address, char *name)
 {
 	LogString("LIB: Adding client, index %d", runningIndex);
 	Client* client = new Client(mNetwork);
-	//mNetwork = new Network();
-	//client->mNetwork->setSocket(mLocalIP,port);
 	mClientVector.push_back(client);
-	// No clients yet, adding the first one
 
-	LogString("LIB: Server: Adding first client");
-
-	//clientList = (dreamClient *) calloc(1, sizeof(dreamClient));
-
-//	client->SetSocket(client->mNetwork->mSocket);
 	client->SetSocketAddress(address);
-	
 	client->SetConnectionState(DREAMSOCK_CONNECTING);
 	client->SetOutgoingSequence(1);
 	client->SetIncomingSequence(0);
@@ -218,78 +204,74 @@ void Server::RemoveClient(Client *client)
 
 void Server::ParsePacket(Message *mes, struct sockaddr *address)
 {
-        mes->BeginReading();
-        int type = mes->ReadByte();
+	mes->BeginReading();
+    int type = mes->ReadByte();
 
-        // Find the correct client by comparing addresses
+    // Find the correct client by comparing addresses
   
-        // If we do not have clients yet, skip to message type checking
+    // If we do not have clients yet, skip to message type checking
 		
-		unsigned int i = 0;
-		if (mClientVector.size() > 0)
-			//LogString("vector is not null");
-        //if(clList != NULL )
-        {
-  				for (i = 0; i < mClientVector.size(); i++)
-				{
-						if(memcmp(mClientVector.at(i)->GetSocketAddress(), address, sizeof(address)) == 0)
-                        {
-                                break;
-                        }
-                }
-				if (mClientVector.size() > 0)
-               // if(clList != NULL)
-                {
-                        mClientVector.at(i)->SetLastMessageTime(mNetwork->dreamSock_GetCurrentSystemTime());
-
-                        // Check if the type is a positive number
-                        // -> is the packet sequenced
-                        if(type > 0)
-                        {
-                                unsigned short sequence         = mes->ReadShort();
-                                unsigned short sequenceAck      = mes->ReadShort();
-
-                                if(sequence <= mClientVector.at(i)->GetIncomingSequence())
-                                {
-                                        LogString("LIB: Server: Sequence mismatch (sequence: %ld <= incoming seq: %ld)",
-                                                sequence, mClientVector.at(i)->GetIncomingSequence());
-                                }
-
-                                mClientVector.at(i)->SetDroppedPackets(sequence - mClientVector.at(i)->GetIncomingSequence() - 1);
-
-                                mClientVector.at(i)->SetIncomingSequence(sequence);
-                                mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
-                        }
-
-                        // Wait for one message before setting state to connected
-                        if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
-                                mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
-                }
+	unsigned int i = 0;
+	if (mClientVector.size() > 0)
+    {
+  		for (i = 0; i < mClientVector.size(); i++)
+		{
+			if(memcmp(mClientVector.at(i)->GetSocketAddress(), address, sizeof(address)) == 0)
+            {
+				break;
+             }
         }
-		//LogString("heere");
-        // Parse through the system messages
-        switch(type)
+		if (mClientVector.size() > 0)
+        // if(clList != NULL)
         {
-        case DREAMSOCK_MES_CONNECT:
-                AddClient(address, mes->ReadString());
+			mClientVector.at(i)->SetLastMessageTime(mNetwork->dreamSock_GetCurrentSystemTime());
 
-                LogString("LIBRARY: Server: a client connected succesfully");
-                break;
+            // Check if the type is a positive number
+            // -> is the packet sequenced
+            if(type > 0)
+            {
+				unsigned short sequence         = mes->ReadShort();
+                unsigned short sequenceAck      = mes->ReadShort();
+
+                if(sequence <= mClientVector.at(i)->GetIncomingSequence())
+                {
+					LogString("LIB: Server: Sequence mismatch (sequence: %ld <= incoming seq: %ld)",
+                    sequence, mClientVector.at(i)->GetIncomingSequence());
+                }
+
+                mClientVector.at(i)->SetDroppedPackets(sequence - mClientVector.at(i)->GetIncomingSequence() - 1);
+                mClientVector.at(i)->SetIncomingSequence(sequence);
+                mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
+			}
+
+            // Wait for one message before setting state to connected
+            if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
+				mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
+        }
+	}
+	//LogString("heere");
+    // Parse through the system messages
+    switch(type)
+    {
+		case DREAMSOCK_MES_CONNECT:
+			AddClient(address, mes->ReadString());
+
+            LogString("LIBRARY: Server: a client connected succesfully");
+            break;
 
         case DREAMSOCK_MES_DISCONNECT:
-                if(mClientVector.at(i) == NULL)
-                        break;
+			if(mClientVector.at(i) == NULL)
+				break;
 
-                RemoveClient(mClientVector.at(i));
+            RemoveClient(mClientVector.at(i));
 
-                LogString("LIBRARY: Server: a client disconnected");
-                break;
+            LogString("LIBRARY: Server: a client disconnected");
+            break;
 
         case DREAMSOCK_MES_PING:
-                mClientVector.at(i)->SetPing(mNetwork->dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
-                break;
-        }
-
+			mClientVector.at(i)->SetPing(mNetwork->dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
+            break;
+	}
 }
 
 int Server::CheckForTimeout(char *data, struct sockaddr *from)

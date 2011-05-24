@@ -6,7 +6,6 @@
 
 Client::Client(Network* network)
 {
-	LogString("server Side Client constructor");
 	mNetwork = network;
 
 	mServerSidePlayer = NULL;
@@ -48,11 +47,6 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	ping					= 0;
 
 	lastMessageTime			= 0;
-
-	//old Initialise code for client side client...int Client::Initialise(const char *localIP, const char *remoteIP, int port)
-//	LogString("initilisinfdf");
-	// Initialise dreamSock if it is not already initialised
-	//mNetwork->dreamSock_Initialize();
 
 	// Save server's address information for later use
 	serverPort = port;
@@ -214,7 +208,6 @@ void Client::ParsePacket(Message *mes)
 
 int Client::GetPacket(char *data, struct sockaddr *from)
 {
-	//LogString("getPtcadd");
 	// Check if the client is set up or if it is disconnecting
 	if(!mNetwork->mSocket)
 		return 0;
@@ -234,7 +227,6 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 	// Parse system messages
 	ParsePacket(&mes);
 
-	//LogString("still good");
 	return ret;
 }
 
