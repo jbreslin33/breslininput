@@ -176,9 +176,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 
 	if (type == DREAMSOCK_MES_CONNECT)
 	{
-				LogString("MESCON");
 				AddClient(address, mes->ReadString());
-
 				LogString("LIBRARY: Server: a client connected succesfully");
 	}
 	else
