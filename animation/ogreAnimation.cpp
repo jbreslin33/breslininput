@@ -45,21 +45,26 @@ void OgreAnimation::setupAnimations(Entity* entity)
 
 void OgreAnimation::addTime(Real deltaTime)
 {
-	updateAnimations(deltaTime,mStop);
+
 }
 
-void OgreAnimation::updateAnimations(Real deltaTime, bool stop)
+void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
 {
 	mStop = stop;
 
-	Real baseAnimSpeed = 1;
-	Real topAnimSpeed = 1;
+	Real baseAnimSpeed = animSpeed;
+	Real topAnimSpeed = animSpeed;
 
 	mTimer += deltaTime;
 
 	if (mStop == false)
 	{
-		if (mBaseAnimID == ANIM_IDLE_BASE)
+		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
+		{
+			setBaseAnimation(ANIM_JUMP_LOOP, true);
+			setTopAnimation(ANIM_NONE, true);
+		}
+		else if (mBaseAnimID == ANIM_IDLE_BASE || mBaseAnimID == ANIM_JUMP_LOOP)
 	    {
 			// start running if not already moving and the player wants to move
 			setBaseAnimation(ANIM_RUN_BASE, true);

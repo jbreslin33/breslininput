@@ -36,7 +36,7 @@ public:
 	~OgreAnimation();
 
 //animation
-void         updateAnimations (Real renderTime, bool stop);
+void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
 void         setupAnimations  (Entity* entity);
 void         fadeAnimations   (Real deltaTime);
 void         setTopAnimation  (AnimID id, bool reset);

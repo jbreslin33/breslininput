@@ -14,13 +14,16 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
+#define KEY_SPACE				16
 
 Move::Move(ClientSidePlayer* player)
 {
 	mPlayer = player;
 
-	mRunSpeed  = 200.0;
-	mTurnSpeed = 250.0;
+	mRunSpeed     = 0.0;
+	mRunSpeedMax  = 500.0;
+	//mAccel        = 50.0
+	
 	mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
 	mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
 	mPosInterpFactor    = 10.0;
@@ -28,6 +31,7 @@ Move::Move(ClientSidePlayer* player)
 	//deltas
 	mDeltaX        = 0.0; 
 	mDeltaZ		   = 0.0;
+	mDeltaY        = 0.0;
 	mDeltaPosition = 0.0;
 
 	//move states
@@ -44,8 +48,9 @@ Move::~Move()
 
 void Move::processTick()
 {
-	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
+	mDeltaX = mPlayer->mClient->mServerFrame.mOrigin.x - mPlayer->mShape->getSceneNode()->getPosition().x;
+    mDeltaZ = mPlayer->mClient->mServerFrame.mOrigin.z - mPlayer->mShape->getSceneNode()->getPosition().z;
+	mDeltaY = mPlayer->mClient->mServerFrame.mOrigin.y - mPlayer->mShape->getSceneNode()->getPosition().y;
 
 	//distance we are off from server
 	mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2));
@@ -70,7 +75,9 @@ void Move::interpolateTick(float renderTime)
 
 	transVector.x = mPlayer->mCommand.mVelocity.x;
 	transVector.z = mPlayer->mCommand.mVelocity.z;
-	mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+	
+transVector.y = mPlayer->mClient->mCommand.mVelocity.y;
+mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
 	mPlayer->updateAnimations(renderTime,mPlayer->mCommand.mStop);
 }
@@ -78,7 +85,7 @@ void Move::interpolateTick(float renderTime)
 
 void Move::calculateVelocity(Command* command, float frametime)
 {
- 	float multiplier = 200.0f;
+
 
  	command->mVelocity.x = 0.0f;
  	command->mVelocity.z = 0.0f;
