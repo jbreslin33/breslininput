@@ -19,6 +19,8 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 #include <signal.h>
+
+#include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
 Network::Network()
@@ -26,6 +28,8 @@ Network::Network()
 
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
 #endif
 
 	mSocket = 0;
@@ -36,6 +40,8 @@ Network::Network(const char netInterface[32], int port)
 
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
 #endif
 
 	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
@@ -346,7 +352,7 @@ void Network::dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
 int Network::dreamSock_GetCurrentSystemTime(void)
 {
 #ifndef WIN32
-	return dreamSock_Linux_GetCurrentSystemTime();
+	return mDreamLinuxSock->dreamSock_Linux_GetCurrentSystemTime();
 #else
 	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
 #endif

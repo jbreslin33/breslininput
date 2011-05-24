@@ -41,6 +41,8 @@
 
 #ifdef WIN32
 class DreamWinSock;
+#else
+class DreamLinuxSock;
 #endif
 
 class Network 
@@ -52,6 +54,8 @@ Network(const char netInterface[32], int port);
 
 #ifdef WIN32
 DreamWinSock* mDreamWinSock;
+#else
+DreamLinuxSock* mDreamLinuxSock;
 #endif
 
 // Function prototypes
