@@ -3,6 +3,7 @@
 
 #include "../network/network.h"
 
+
 Client::Client()
 {
 	LogString("server Side Client constructor");
@@ -26,6 +27,7 @@ Client::Client()
 	lastMessageTime			= 0;
 	mSocket = 0;
 }
+
 Client::Client(const char *localIP, const char *remoteIP, int port)
 {
 	mNetwork = new Network();

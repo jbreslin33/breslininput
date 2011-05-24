@@ -39,7 +39,7 @@
 Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
 {
 	LogString("Server Constructor");
-	mNetwork = new Network();
+
 	init			= false;
 	mServerSideGame = serverSideGame;
 	port			= 0;
@@ -49,6 +49,8 @@ Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPor
 	port = serverPort;
 
 	// Create server socket
+
+		mNetwork = new Network();
 	mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, port);
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)

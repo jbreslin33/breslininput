@@ -13,6 +13,8 @@ Network::Network()
 	mDreamWinSock = new DreamWinSock();
 #endif
 
+	mSocket = 0;
+
 }
 
 Network::~Network()

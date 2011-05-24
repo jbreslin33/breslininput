@@ -78,5 +78,7 @@ int dreamSock_Linux_GetCurrentSystemTime(void);
 
 int dreamSock_GetCurrentSystemTime(void);
 
+SOCKET mSocket;
+
 };
 #endif

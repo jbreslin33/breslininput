@@ -126,7 +126,7 @@ set(HDRS
 	
 	#client
 	../client/client.h
-	../client/serverSideClient.h
+
 )
  
 set(SRCS
@@ -170,7 +170,6 @@ set(SRCS
 	
 	#client
 	../client/client.cpp
-	../client/serverSideClient.cpp
 	
 )
 endif (WIN32)
@@ -216,7 +215,6 @@ set(HDRS
 	
 	#client
 	../client/client.h
-	../client/serverSideClient.h
 	
 )
  
@@ -261,7 +259,7 @@ set(SRCS
 	
 	#client
 	../client/client.cpp
-	../client/serverSideClient.cpp
+
 )
 endif (UNIX)
 include_directories( ${OIS_INCLUDE_DIRS}
