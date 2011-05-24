@@ -2,13 +2,15 @@
 #define SERVERSIDEPLAYER_H
 
 #include "../player/player.h"
-#include "../client/serverSideClient.h"
+
+
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
 class OgreShape;
+class Client;
 
 class ServerSidePlayer : public Player
 {

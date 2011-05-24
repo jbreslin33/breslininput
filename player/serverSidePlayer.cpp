@@ -1,5 +1,7 @@
 #include "serverSidePlayer.h"
 
+#include "../client/client.h"
+
 #include "../shape/ogreShape.h"
 
 #include "../math/vector3D.h"
