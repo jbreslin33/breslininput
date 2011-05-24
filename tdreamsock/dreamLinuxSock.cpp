@@ -1,9 +1,9 @@
-/**********************************/
-/* Programmers:                   */
-/* Teijo Hakala                   */
-/**********************************/
+
+
 // Unix code only
 #ifndef WIN32
+
+#include "dreamLinuxSock.h"
 
 #include <stdio.h>
 #include <memory.h>
@@ -21,12 +21,14 @@
 #include <signal.h>
 
 //#include "dreamSock.h"
+DreamLinuxSock::DreamLinuxSock()
+{
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
-int dreamSock_Linux_GetCurrentSystemTime(void)
+}
+DreamLinuxSock::~DreamLinuxSock()
+{
+}
+int DreamLinuxSock::dreamSock_Linux_GetCurrentSystemTime(void)
 {
 	struct timeval tp;
 	struct timezone tzp;

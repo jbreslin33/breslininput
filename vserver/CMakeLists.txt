@@ -188,6 +188,7 @@ set(HDRS
 	
 	#tdreamsock
 	../tdreamsock/dreamSockLog.h
+	../tdreamsock/dreamLinuxSock.h
 	
 	#shape
 	../shape/shape.h
