@@ -53,7 +53,7 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 
 	mClient->mClientSidePlayer->mServerPlayer = new ClientSidePlayer(mClient,"silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
   	mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->scale(30,30,30);
-
+	//mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->setVisible(false);
 	mPlayerVector.push_back(mClient->mClientSidePlayer);
 	
 	if(local)

@@ -51,77 +51,77 @@ void Move::processTick()
 {
 	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
     mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
-	mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
+    mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
 
-	//distance we are off from server
-	mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2));
+        //distance we are off from server
+        mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
 
-	// if server has come to a stop
-	if(mPlayer->mServerFrame.mVelocity.x == 0.0 && mPlayer->mServerFrame.mVelocity.z == 0.0)
-	{
-		mPlayer->mCommand.mStop = true;
-	}
-	else //server still moving
-	{
-		mPlayer->mCommand.mStop = false;
-	}
+        // if server has come to a stop
+        if(mPlayer->mServerFrame.mVelocity.x == 0.0 && mPlayer->mServerFrame.mVelocity.z == 0.0
+                && mPlayer->mServerFrame.mVelocity.y == 0.0)
+        {
+                mPlayer->mCommand.mStop = true;
+        }
+        else //server still moving
+        {
+                mPlayer->mCommand.mStop = false;
+        }
 
-	mMoveStateMachine->update();
+        mMoveStateMachine->update();
 }
 
 void Move::interpolateTick(float renderTime)
 {
-	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+        Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	transVector.x = mPlayer->mCommand.mVelocity.x;
-	transVector.z = mPlayer->mCommand.mVelocity.z;
-	transVector.y = mPlayer->mCommand.mVelocity.y;
+        transVector.x = mPlayer->mCommand.mVelocity.x;
+        transVector.z = mPlayer->mCommand.mVelocity.z;
+        transVector.y = mPlayer->mCommand.mVelocity.y;
+        
+        mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-	mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+        if(mPlayer->getSceneNode()->getPosition().y < 0.0)
+		{
+			mPlayer->getSceneNode()->setPosition(mPlayer->getSceneNode()->getPosition().x,
+			0.0, mPlayer->getSceneNode()->getPosition().z);
+		}
+        float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
-    if(mPlayer->getSceneNode()->getPosition().y < 0.0)
-	{
-		LogString("if met");
-       mPlayer->getSceneNode()->setPosition(mPlayer->getSceneNode()->getPosition().x,
-           0.0, mPlayer->getSceneNode()->getPosition().z);
-	}
-
-    float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
-	//LogString("updateAnimations");
-    mPlayer->updateAnimations(transVector.y, renderTime, mPlayer->mCommand.mStop, animSpeed);
+        mPlayer->updateAnimations(transVector.y, renderTime, mPlayer->mCommand.mStop, animSpeed);
 }
 
 
 void Move::calculateVelocity(Command* command, float frametime)
 {
- 	command->mVelocity.x = 0.0f;
- 	command->mVelocity.z = 0.0f;
 
- 	if(command->mKey & KEY_UP)
-	{
-		command->mVelocity.z += -1;
-	}
+        command->mVelocity.x = 0.0f;
+        command->mVelocity.z = 0.0f;
 
-	if(command->mKey & KEY_DOWN)
-	{
+        if(command->mKey & KEY_UP)
+        {
+                command->mVelocity.z += -1;
+        }
+
+        if(command->mKey & KEY_DOWN)
+        {
         command->mVelocity.z += 1;
-	}
+        }
 
-	if(command->mKey & KEY_LEFT)
-	{
-		command->mVelocity.x += -1;
-	}
+        if(command->mKey & KEY_LEFT)
+        {
+                command->mVelocity.x += -1;
+        }
 
-	if(command->mKey & KEY_RIGHT)
-	{
-		command->mVelocity.x += 1;
-	}
+        if(command->mKey & KEY_RIGHT)
+        {
+                command->mVelocity.x += 1;
+        }
 
-	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
-	if(length != 0.0)
-	{
-	   command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
-	   command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
-	}
+        float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
+        if(length != 0.0)
+        {
+           command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
+           command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
+        }
 }
 
