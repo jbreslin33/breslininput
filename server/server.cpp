@@ -81,10 +81,8 @@ void Server::SendAddClient(Client *newClient)
 	{
 		if(mClientVector.at(i) == newClient)
 		{
-			LogString("this is the same client, don't inform");
 			continue;
 		}
-			LogString("telling others of new client");
 		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
@@ -348,14 +346,13 @@ void Server::ReadPackets(void)
 	// Get the packet from the socket
 	try
 	{
-		//LogString("trying.....");
 		while(ret = GetPacket(mes.data, &address))
 		{
 			mes.SetSize(ret);
 			mes.BeginReading();
 
 			type = mes.ReadByte();
-			//LogString("type:%s",type);
+
 			// Check the type of the message
 			switch(type)
 			{

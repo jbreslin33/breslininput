@@ -187,9 +187,11 @@ void ServerSideGame::BuildDeltaMoveCommand(Message *mes, Client *client)
 
 	mes->WriteFloat(command->mOrigin.x);
 	mes->WriteFloat(command->mOrigin.z);
+	mes->WriteFloat(command->mOrigin.y);
 
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);
+	mes->WriteFloat(command->mVelocity.y);
 
     mes->WriteFloat(command->mRot.x);
 	mes->WriteFloat(command->mRot.z);

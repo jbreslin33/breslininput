@@ -15,10 +15,13 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
+#define KEY_SPACE				16
 
 Rotation::Rotation(ClientSidePlayer* player)
 {
 	mPlayer = player;
+
+	mTurnSpeed = 250.0;
 
 	mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
 	mRotInterpLimitLow  = 4.0; //how close to server till we are in sync

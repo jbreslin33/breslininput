@@ -31,11 +31,22 @@ void Normal_Move::execute(Move* move)
 
 	    serverDest.x = move->mPlayer->mServerFrame.mVelocity.x;
 		serverDest.z = move->mPlayer->mServerFrame.mVelocity.z;
+	serverDest.y = move->mPlayer->mClient->mServerFrame.mVelocity.y;
 		serverDest.normalise();
-        serverDest = serverDest * move->mRunSpeed/1000.0;
+
+		move->mRunSpeed = 0.0;
+        if(move->mPlayer->mClient->mCommand.mMilliseconds != 0)
+		{
+		   move->mRunSpeed = sqrt(pow(move->mPlayer->mClient->mServerFrame.mVelocity.x, 2) + 
+		   pow(move->mPlayer->mClient->mServerFrame.mVelocity.z, 2) + pow(move->mPlayer->mClient->mServerFrame.mVelocity.y, 2))/move->mPlayer->mClient->mCommand.mMilliseconds;
+		}
+
+		serverDest = serverDest * move->mRunSpeed;
+
 
 		move->mPlayer->mCommand.mVelocity.x = serverDest.x;
 	    move->mPlayer->mCommand.mVelocity.z = serverDest.z;
+move->mPlayer->mClient->mCommand.mVelocity.y = serverDest.y;
 	}
 }
 void Normal_Move::exit(Move* move)
@@ -66,12 +77,15 @@ void Catchup_Move::execute(Move* move)
 
 		serverDest.x = move->mPlayer->mServerFrame.mVelocity.x;
 		serverDest.z = move->mPlayer->mServerFrame.mVelocity.z;
+serverDest.y = move->mPlayer->mClient->mServerFrame.mVelocity.y;
 		serverDest.normalise();
 
 		float multiplier = move->mDeltaPosition * move->mPosInterpFactor;
 		serverDest = serverDest * multiplier;
 		serverDest.x = move->mPlayer->mServerFrame.mOrigin.x + serverDest.x;
 		serverDest.z = move->mPlayer->mServerFrame.mOrigin.z + serverDest.z;
+serverDest.y = move->mPlayer->mClient->mServerFrame.mOrigin.y + serverDest.y;
+
 
 		myDest.x = serverDest.x - move->mPlayer->getSceneNode()->getPosition().x;
 		myDest.z = serverDest.z - move->mPlayer->getSceneNode()->getPosition().z;
@@ -81,7 +95,7 @@ void Catchup_Move::execute(Move* move)
 		predictDist = sqrt(predictDist);
 
 		//server velocity
-		float vel = sqrt(pow(move->mPlayer->mServerFrame.mVelocity.x, 2) + pow(move->mPlayer->mServerFrame.mVelocity.z, 2))/move->mPlayer->mCommand.mMilliseconds;
+		float vel = sqrt(pow(move->mPlayer->mServerFrame.mVelocity.z, 2) + pow(move->mPlayer->mServerFrame.mVelocity.y, 2))/move->mPlayer->mCommand.mMilliseconds;
 		//time needed to get to future server pos
 		float time = move->mDeltaPosition * move->mPosInterpFactor/(move->mRunSpeed/1000.0f);
 
@@ -92,6 +106,7 @@ void Catchup_Move::execute(Move* move)
 
 		move->mPlayer->mCommand.mVelocity.x = myDest.x;
 	    move->mPlayer->mCommand.mVelocity.z = myDest.z;
+	move->mPlayer->mClient->mCommand.mVelocity.y = myDest.y;
 	}
 
 }

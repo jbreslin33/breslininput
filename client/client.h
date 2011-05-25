@@ -140,7 +140,7 @@ ClientSidePlayer* mClientSidePlayer;
 ServerSidePlayer* mServerSidePlayer;
 
 
-	Network* mNetwork;
+Network* mNetwork;
 
 };
 #endif

@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #endif
 
+//server side client constructor, many instances will be made, one for each client connected.
 Client::Client(Network* network)
 {
 	mNetwork = network;
@@ -33,6 +34,7 @@ Client::Client(Network* network)
 
 }
 
+//client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int port)
 {
 
@@ -123,7 +125,6 @@ void Client::DumpBuffer(void)
 
 void Client::SendConnect(const char *name)
 {
-	LogString("sending connect...");
 	// Dump buffer so there won't be any old packets to process
 	DumpBuffer();
 
@@ -138,7 +139,6 @@ void Client::SendConnect(const char *name)
 
 void Client::SendDisconnect(void)
 {
-		LogString("sending disconnect...");
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
 	mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
 
