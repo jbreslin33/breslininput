@@ -3,8 +3,6 @@
 #include "../animation/ogreAnimation.h"
 #include "../math/vector3D.h"
 
-#define CHAR_HEIGHT 5          // height of character's center of mass above ground
-
 //constructor for client side ogre shape
 OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : Shape(name,position),
 OgreAnimation()
@@ -33,7 +31,7 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : S
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 	
 	// create main model
-	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::UNIT_Y * CHAR_HEIGHT);
+	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::ZERO);
 }
 
 OgreShape::~OgreShape()
