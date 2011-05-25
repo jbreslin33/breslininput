@@ -35,14 +35,6 @@ ClientSideGame::ClientSideGame(const char* serverIP)
  	mInit			= false;
 	mNetworkShutdown = false;
 
-	if(mInit)
-	{
-		LogString("ArmyWar already initialised");
-		return;
-	}
-
-	LogString("ClientSideGame::Connect");
-
 	mInit = true;
 
 	mClient->SendConnect("myname");
@@ -58,7 +50,6 @@ ClientSideGame::~ClientSideGame()
 
 void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
-	LogString("creating player");
 	mClient->mClientSidePlayer = new ClientSidePlayer(mClient,"jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	mClient->mClientSidePlayer->getSceneNode()->scale(30,30,30);
 	
@@ -132,6 +123,14 @@ bool ClientSideGame::processUnbufferedInput(const Ogre::FrameEvent& evt)
 	{
         keys[VK_RIGHT] = FALSE;
 	}
+	if (mKeyboard->isKeyDown(OIS::KC_SPACE)) // Right - yaw or strafe
+    {
+		keys[VK_SPACE] = TRUE;
+    }
+	else
+	{
+        keys[VK_SPACE] = FALSE;
+	}
 
     return true;
 }
@@ -196,7 +195,12 @@ void ClientSideGame::CheckKeys(void)
  	{
  		mInputClient->mCommand.mKey |= KEY_RIGHT;
  	}
- 	mInputClient->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+	if(keys[VK_SPACE])
+ 	{
+ 		mInputClient.mCommand.mKey |= KEY_SPACE;
+ 	}
+
+ 	mInputClient.mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
 
 void ClientSideGame::MoveServerPlayer(void)
@@ -244,7 +248,6 @@ void ClientSideGame::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-			LogString("addingdfdfddfd client");
 			AddPlayer(local, ind, name);
 			break;
 
@@ -404,9 +407,15 @@ void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSidePlayer *client
 	// Read time to run command
 	client->mServerFrame.mOrigin.x = mes->ReadFloat();
 	client->mServerFrame.mOrigin.z = mes->ReadFloat();
+	client->mServerFrame.mOrigin.y = mes->ReadFloat();
 
 	client->mServerFrame.mVelocity.x = mes->ReadFloat();
 	client->mServerFrame.mVelocity.z = mes->ReadFloat();
+	client->mServerFrame.mVelocity.y = mes->ReadFloat();
+
+	//LogString("x %f", client->mServerFrame.mVelocity.x);
+    //LogString("z %f", client->mServerFrame.mVelocity.z);
+    //LogString("y %f", client->mServerFrame.mVelocity.y);
 
 	client->mServerFrame.mRotOld.x = client->mServerFrame.mRot.x;
 	client->mServerFrame.mRotOld.z = client->mServerFrame.mRot.z;

@@ -20,7 +20,7 @@ void Normal_Rotation::enter(Rotation* rotation)
 void Normal_Rotation::execute(Rotation* rotation)
 {
 	// are we too far off
-    if(abs(rotation->mDegreesToServer) > 6.0)
+    if(abs(rotation->mDegreesToServer) > rotation->mRotInterpLimitHigh)
 	{
 		rotation->mPlayer->mCommand.mCatchupRot = true;
 		rotation->mRotationStateMachine->changeState(Catchup_Rotation::Instance());
@@ -33,14 +33,14 @@ void Normal_Rotation::execute(Rotation* rotation)
 		}
 		else
 		{
-			// if server rot counter-clockwise hardcode server rot to +500
+			// if server rot counter-clockwise hardcode server rot to +mTurnSpeed
 			if(rotation->mServerRotSpeed > 0.0)
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = 250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = rotation->mTurnSpeed;
 			}
 			else //clockwise - set to -500
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = -250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = -rotation->mTurnSpeed;
 			}
 		}
 	}
@@ -61,7 +61,7 @@ void Catchup_Rotation::enter(Rotation* rotation)
 void Catchup_Rotation::execute(Rotation* rotation)
 {
     // are we back on track
-    if(abs(rotation->mDegreesToServer) < 4.0)
+    if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
 	{
 		rotation->mPlayer->mCommand.mCatchupRot = false;
 		rotation->mRotationStateMachine->changeState(Normal_Rotation::Instance());
@@ -75,20 +75,20 @@ void Catchup_Rotation::execute(Rotation* rotation)
 			// if server rot counter-clockwise hardcode server rot to +500
 			if(rotation->mServerRotSpeed > 0.0)
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = 250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = rotation->mTurnSpeed;
 			}
 			else //clockwise - set to -500
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = -250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = -rotation->mTurnSpeed;
 			}
 
 			if(rotation->mDegreesToServer/rotation->mServerRotSpeed > 0.0)
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = rotation->mPlayer->mCommand.mRotSpeed * 1.20f;
+				rotation->mPlayer->mCommand.mRotSpeed = rotation->mPlayer->mCommand.mRotSpeed * rotation->mRotInterpIncrease;
 			}
 			else
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = rotation->mPlayer->mCommand.mRotSpeed * 0.8f;
+				rotation->mPlayer->mCommand.mRotSpeed = rotation->mPlayer->mCommand.mRotSpeed * rotation->mRotInterpDecrease;
 			}
 		}
 		else if(rotation->mServerRotSpeed == 0.0)
@@ -96,11 +96,11 @@ void Catchup_Rotation::execute(Rotation* rotation)
 			//LogString("catchup2");
 			if (rotation->mDegreesToServer > 0.0)
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = 250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = rotation->mTurnSpeed;
 			}
 			else //clockwise - set to -500
 			{
-				rotation->mPlayer->mCommand.mRotSpeed = -250.0;
+				rotation->mPlayer->mCommand.mRotSpeed = -rotation->mTurnSpeed;
 			}
 		}
 	}

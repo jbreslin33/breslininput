@@ -3,19 +3,22 @@
 #include "../math/vector3D.h"
 
 
-OgreAnimation::OgreAnimation(Entity* entity)
+OgreAnimation::OgreAnimation()
 {
-	mEntity = entity;
+	mEntity = NULL;
 	mStop = true;
-	setupAnimations();
+	//setupAnimations();
 }
 
 OgreAnimation::~OgreAnimation()
 {
 }
 
-void OgreAnimation::setupAnimations()
+
+
+void OgreAnimation::setupAnimations(Entity* entity)
 	{
+		mEntity = entity;
 		// this is very important due to the nature of the exported animations
 		mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
 		String animNames[] =
@@ -42,21 +45,26 @@ void OgreAnimation::setupAnimations()
 
 void OgreAnimation::addTime(Real deltaTime)
 {
-	updateAnimations(deltaTime,mStop);
+
 }
 
-void OgreAnimation::updateAnimations(Real deltaTime, bool stop)
+void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
 {
 	mStop = stop;
 
-	Real baseAnimSpeed = 1;
-	Real topAnimSpeed = 1;
+	Real baseAnimSpeed = animSpeed;
+	Real topAnimSpeed = animSpeed;
 
 	mTimer += deltaTime;
 
 	if (mStop == false)
 	{
-		if (mBaseAnimID == ANIM_IDLE_BASE)
+		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
+		{
+			setBaseAnimation(ANIM_JUMP_LOOP, true);
+			setTopAnimation(ANIM_NONE, true);
+		}
+		else if (mBaseAnimID == ANIM_IDLE_BASE || mBaseAnimID == ANIM_JUMP_LOOP)
 	    {
 			// start running if not already moving and the player wants to move
 			setBaseAnimation(ANIM_RUN_BASE, true);

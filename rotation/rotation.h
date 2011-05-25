@@ -30,6 +30,7 @@ ClientSidePlayer* mPlayer;
 RotationStateMachine* mRotationStateMachine;
 
 float mServerRotSpeed;
+float mTurnSpeed;
 
 float mRotInterpLimitHigh;
 float mRotInterpLimitLow;

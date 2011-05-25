@@ -6,7 +6,8 @@
 #define CHAR_HEIGHT 5          // height of character's center of mass above ground
 
 //constructor for client side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : Shape(name,position)
+OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : Shape(name,position),
+OgreAnimation()
 {
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
@@ -20,11 +21,13 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mEntity = mSceneManager->createEntity(mShapeName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
+
+	setupAnimations(mEntity);
 	//create an animation instance and pass our entity in
-	mOgreAnimation = new OgreAnimation(mEntity);
+	//mOgreAnimation = new OgreAnimation(mEntity);
 }
 //this is the contructor for server side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : Shape(name,position)
+OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : Shape(name,position), OgreAnimation()
 {
 	
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);

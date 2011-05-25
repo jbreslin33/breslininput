@@ -1,11 +1,13 @@
 #include "serverSidePlayer.h"
 
+#include "../client/client.h"
+
 #include "../shape/ogreShape.h"
 
 #include "../math/vector3D.h"
 #include <math.h>
 
-#define RUN_SPEED 200           // character running speed in units per second
+#define MAX_RUN_SPEED 500           // character running speed in units per second
 #define TURN_SPEED 250.0f      // character turning in degrees per second
 
 #define KEY_UP					1
@@ -20,6 +22,12 @@ ServerSidePlayer::ServerSidePlayer(std::string name, Client* client, OgreShape* 
 
 	mKeyDirection = Vector3::ZERO;
     mGoalDirection = Vector3::ZERO;
+	mJumping  = false;
+	mRunSpeed = 0.0;
+	mRunAccel    = 5.0;
+	mRunDecel    = 5.0;
+	mJumpAccel   = 300.0;
+	mGravity     = 900.0;
 }
 
 ServerSidePlayer::~ServerSidePlayer()
@@ -41,7 +49,14 @@ void ServerSidePlayer::processTick()
 	mGoalDirection = Vector3::ZERO;   // we will calculate this
 	Real yawAtSpeed;
 
-	if (!mKeyDirection.isZeroLength())
+	if (mKeyDirection.isZeroLength())
+	{
+		if(mRunSpeed > 0.0)
+		   mRunSpeed -= mRunDecel;
+		else
+           mRunSpeed = 0.0;
+	}
+	else
 	{
 		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
 		mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
@@ -69,6 +84,9 @@ void ServerSidePlayer::processTick()
 			
 		mShape->mSceneNode->yaw(Degree(yawToGoal));
 
+		if(mRunSpeed < MAX_RUN_SPEED)
+			mRunSpeed += mRunAccel;
+
 		// move in current body direction (not the goal direction)
 		mShape->mSceneNode->translate(0, 0, clientFrametime * RUN_SPEED,
 			Node::TS_LOCAL);
@@ -76,13 +94,31 @@ void ServerSidePlayer::processTick()
 	}
 
 	mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
-	mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+		if(mJumping)
+		{
+			LogString("mJumping");
+		   mShape->mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
+		   mVerticalVelocity -= mGravity * clientFrametime;
 
-	if(mCommand.mVelocity.x != 0.0 || mCommand.mVelocity.z != 0.0)
-	{
-	   mCommand.mVelocity.x = mShape->mSceneNode->getOrientation().zAxis().x;
-	   mCommand.mVelocity.z = mShape->mSceneNode->getOrientation().zAxis().z;
-	}
+		   if(mShape->mSceneNode->getPosition().y < 0.0)
+		   {
+			   LogString("if");
+              mShape->mSceneNode->setPosition(mShape->mSceneNode->getPosition().x, 0.0, mShape->mSceneNode->getPosition().z);
+              mVerticalVelocity = 0.0;
+			  mJumping = false;
+		   }
+		}
+
+	//if(mClient->mCommand.mVelocity.x != 0.0 || mClient->mCommand.mVelocity.z != 0.0)
+	//{
+	   mClient->mCommand.mVelocity.x = mShape->mSceneNode->getPosition().x - mClient->mCommand.mOrigin.x;
+	   mClient->mCommand.mVelocity.z = mShape->mSceneNode->getPosition().z - mClient->mCommand.mOrigin.z;
+	   mClient->mCommand.mVelocity.y = mShape->mSceneNode->getPosition().y - mClient->mCommand.mOrigin.y;
+	//}
+
+	mClient->mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
+	mClient->mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+	mClient->mCommand.mOrigin.y = mShape->mSceneNode->getPosition().y;
 
 	mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
 	mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
@@ -93,7 +129,7 @@ void ServerSidePlayer::processTick()
 void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 {
 
-	float multiplier = 200.0f;
+	//float multiplier = 200.0f;
 
 	command->mVelocity.x = 0.0f;
 	command->mVelocity.z = 0.0f;
@@ -121,8 +157,8 @@ void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
 	if(length != 0.0)
 	{
-	   command->mVelocity.x = command->mVelocity.x/length * 0.2f * frametime * 1000;
-	   command->mVelocity.z = command->mVelocity.z/length * 0.2f * frametime * 1000;
+	   command->mVelocity.x = command->mVelocity.x/length * MAX_RUN_SPEED * frametime;
+	   command->mVelocity.z = command->mVelocity.z/length * MAX_RUN_SPEED * frametime;
 	}
 }
 
@@ -147,5 +183,20 @@ void ServerSidePlayer::setKeyDirection()
 
 		if(mCommand.mKey & KEY_RIGHT) 
 			mKeyDirection.x += 1;
+
+		if(mClient->mCommand.mKey & KEY_SPACE) 
+		{
+			if(!mJumping)
+				startJump();
+		}
+
 	}
+}
+
+void ServerSidePlayer::startJump()
+{
+	//LogString("startJump");
+   mJumping = true;
+   mVerticalVelocity = mJumpAccel;
+   
 }
