@@ -1,4 +1,5 @@
 #include "move.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 //player,client,shape,animation combo
 #include "../player/clientSidePlayer.h"
@@ -48,9 +49,9 @@ Move::~Move()
 
 void Move::processTick()
 {
-	mDeltaX = mPlayer->mClient->mServerFrame.mOrigin.x - mPlayer->mShape->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mClient->mServerFrame.mOrigin.z - mPlayer->mShape->getSceneNode()->getPosition().z;
-	mDeltaY = mPlayer->mClient->mServerFrame.mOrigin.y - mPlayer->mShape->getSceneNode()->getPosition().y;
+	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
+    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
+	mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
 
 	//distance we are off from server
 	mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2));
@@ -66,7 +67,6 @@ void Move::processTick()
 	}
 
 	mMoveStateMachine->update();
-	//processRotation();
 }
 
 void Move::interpolateTick(float renderTime)
@@ -75,18 +75,25 @@ void Move::interpolateTick(float renderTime)
 
 	transVector.x = mPlayer->mCommand.mVelocity.x;
 	transVector.z = mPlayer->mCommand.mVelocity.z;
-	
-transVector.y = mPlayer->mClient->mCommand.mVelocity.y;
-mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+	transVector.y = mPlayer->mCommand.mVelocity.y;
 
-	mPlayer->updateAnimations(renderTime,mPlayer->mCommand.mStop);
+	mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+
+    if(mPlayer->getSceneNode()->getPosition().y < 0.0)
+	{
+		LogString("if met");
+       mPlayer->getSceneNode()->setPosition(mPlayer->getSceneNode()->getPosition().x,
+           0.0, mPlayer->getSceneNode()->getPosition().z);
+	}
+
+    float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
+	//LogString("updateAnimations");
+    mPlayer->updateAnimations(transVector.y, renderTime, mPlayer->mCommand.mStop, animSpeed);
 }
 
 
 void Move::calculateVelocity(Command* command, float frametime)
 {
-
-
  	command->mVelocity.x = 0.0f;
  	command->mVelocity.z = 0.0f;
 
@@ -113,8 +120,8 @@ void Move::calculateVelocity(Command* command, float frametime)
 	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
 	if(length != 0.0)
 	{
-	   command->mVelocity.x = command->mVelocity.x/length * 0.2f * frametime * 1000;
-	   command->mVelocity.z = command->mVelocity.z/length * 0.2f * frametime * 1000;
+	   command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
+	   command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
 	}
 }
 

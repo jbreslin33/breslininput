@@ -1,5 +1,5 @@
 #include "serverSidePlayer.h"
-
+#include "../tdreamsock/dreamSockLog.h"
 #include "../client/client.h"
 
 #include "../shape/ogreShape.h"
@@ -14,6 +14,7 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
+#define KEY_SPACE				16
 
 ServerSidePlayer::ServerSidePlayer(std::string name, Client* client, OgreShape* shape) : Player(name)
 {
@@ -88,7 +89,7 @@ void ServerSidePlayer::processTick()
 			mRunSpeed += mRunAccel;
 
 		// move in current body direction (not the goal direction)
-		mShape->mSceneNode->translate(0, 0, clientFrametime * RUN_SPEED,
+		mShape->mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,
 			Node::TS_LOCAL);
 
 	}
@@ -111,14 +112,14 @@ void ServerSidePlayer::processTick()
 
 	//if(mClient->mCommand.mVelocity.x != 0.0 || mClient->mCommand.mVelocity.z != 0.0)
 	//{
-	   mClient->mCommand.mVelocity.x = mShape->mSceneNode->getPosition().x - mClient->mCommand.mOrigin.x;
-	   mClient->mCommand.mVelocity.z = mShape->mSceneNode->getPosition().z - mClient->mCommand.mOrigin.z;
-	   mClient->mCommand.mVelocity.y = mShape->mSceneNode->getPosition().y - mClient->mCommand.mOrigin.y;
+	   mCommand.mVelocity.x = mShape->mSceneNode->getPosition().x - mCommand.mOrigin.x;
+	   mCommand.mVelocity.z = mShape->mSceneNode->getPosition().z - mCommand.mOrigin.z;
+	   mCommand.mVelocity.y = mShape->mSceneNode->getPosition().y - mCommand.mOrigin.y;
 	//}
 
-	mClient->mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
-	mClient->mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
-	mClient->mCommand.mOrigin.y = mShape->mSceneNode->getPosition().y;
+	mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
+	mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+	mCommand.mOrigin.y = mShape->mSceneNode->getPosition().y;
 
 	mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
 	mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
@@ -184,7 +185,7 @@ void ServerSidePlayer::setKeyDirection()
 		if(mCommand.mKey & KEY_RIGHT) 
 			mKeyDirection.x += 1;
 
-		if(mClient->mCommand.mKey & KEY_SPACE) 
+		if(mCommand.mKey & KEY_SPACE) 
 		{
 			if(!mJumping)
 				startJump();

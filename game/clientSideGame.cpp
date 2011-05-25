@@ -1,10 +1,6 @@
 #include "clientSideGame.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-///#ifdef WIN32
-//#include "../tdreamsock/dreamWinSock.h"
-//#endif
-
 #include "../network/network.h"
 
 #include "../player/clientSidePlayer.h"
@@ -55,7 +51,6 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 	
 	mClient->mClientSidePlayer->mIndex = ind;
 
-	//OgreShape* shape2 = new OgreShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	mClient->mClientSidePlayer->mServerPlayer = new ClientSidePlayer(mClient,"silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
   	mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->scale(30,30,30);
 
@@ -139,14 +134,12 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
     if(!processUnbufferedInput(evt)) return false;
 
-	//LogString("frameRendering");
 	if(game != NULL)
 	{
 		if (mClient->mClientSidePlayer != NULL)
 		{
 			game->CheckKeys();
 		}
-		//LogString("running network");
 		if (mNetworkShutdown == true)
 		{
 			Shutdown();
@@ -197,10 +190,10 @@ void ClientSideGame::CheckKeys(void)
  	}
 	if(keys[VK_SPACE])
  	{
- 		mInputClient.mCommand.mKey |= KEY_SPACE;
+ 		mInputClient->mCommand.mKey |= KEY_SPACE;
  	}
 
- 	mInputClient.mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+ 	mInputClient->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
 
 void ClientSideGame::MoveServerPlayer(void)
@@ -212,14 +205,12 @@ void ClientSideGame::MoveServerPlayer(void)
 
 	if (mLocalClient->mServerPlayer)
 	{
-		//LogString("try to move server player");
-			mLocalClient->mServerPlayer->getSceneNode()->setPosition(transVector);
+		mLocalClient->mServerPlayer->getSceneNode()->setPosition(transVector);
 	}
 }
 
 void ClientSideGame::ReadPackets(void)
 {
-	//LogString("reding packs");
 	char data[1400];
 	struct sockaddr address;
 
