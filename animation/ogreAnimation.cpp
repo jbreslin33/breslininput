@@ -1,6 +1,7 @@
 #include "ogreAnimation.h"
 
 #include "../math/vector3D.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 
 OgreAnimation::OgreAnimation()
