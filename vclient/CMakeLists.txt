@@ -122,18 +122,18 @@ set(HDRS
 	../move/clientSideMove.h
 	
 	#move states
-	../move/moveStateMachine.h
-	../move/moveState.h
-	../move/moveStates.h
+	../move/clientSideMoveStateMachine.h
+	../move/clientSideMoveState.h
+	../move/clientSideMoveStates.h
 	
 	#rotation
 	../rotation/rotation.h
 	../rotation/clientSideRotation.h
-
+	
 	#rotation states
-	../rotation/rotationStateMachine.h
-	../rotation/rotationState.h
-	../rotation/rotationStates.h	
+	../rotation/clientSideRotationStateMachine.h
+	../rotation/clientSideRotationState.h
+	../rotation/clientSideRotationStates.h	
 	
 	#message
 	../message/message.h
@@ -182,14 +182,14 @@ set(SRCS
 	../move/clientSideMove.cpp
 	
 	#move states
-	../move/moveStates.cpp
+	../move/clientSideMoveStates.cpp
 	
 	#rotation
 	../rotation/rotation.cpp
 	../rotation/clientSideRotation.cpp
 	
 	#rotation states
-	../rotation/rotationStates.cpp
+	../rotation/clientSideRotationStates.cpp
 	
 	#message
 	../message/message.cpp
@@ -237,18 +237,18 @@ set(HDRS
 	../move/clientSideMove.h
 	
 	#move states
-	../move/moveStateMachine.h
-	../move/moveState.h
-	../move/moveStates.h
+	../move/clientSideMoveStateMachine.h
+	../move/clientSideMoveState.h
+	../move/clientSideMoveStates.h
 	
 	#rotation
 	../rotation/rotation.h
 	../rotation/clientSideRotation.h
 	
 	#rotation states
-	../rotation/rotationStateMachine.h
-	../rotation/rotationState.h
-	../rotation/rotationStates.h
+	../rotation/clientSideRotationStateMachine.h
+	../rotation/clientSideRotationState.h
+	../rotation/clientSideRotationStates.h
 
 	#message
 	../message/message.h
@@ -295,14 +295,14 @@ set(SRCS
 	../move/clientSideMove.cpp
 	
 	#move states
-	../move/moveStates.cpp
+	../move/clientSideMoveStates.cpp
 	
 	#rotation
 	../rotation/rotation.cpp
 	../rotation/clientSideRotation.cpp	
 
 	#rotation states
-	../rotation/rotationStates.cpp
+	../rotation/clientSideRotationStates.cpp
 	
 	#message
 	../message/message.cpp
