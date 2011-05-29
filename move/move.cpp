@@ -27,7 +27,7 @@ Move::Move(ClientSidePlayer* player)
 	
 	mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
 	mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
-	mPosInterpFactor    = 10.0;
+	mPosInterpFactor    = 4.0;
 
 	//deltas
 	mDeltaX        = 0.0; 
