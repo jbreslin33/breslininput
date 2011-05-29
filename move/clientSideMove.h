@@ -10,6 +10,7 @@
 using namespace Ogre;
 
 class Command;
+class ClientSideMoveStateMachine;
 
 class ClientSideMove : public virtual OgreShape, public Move 
 {
@@ -24,6 +25,7 @@ void processTick    ();
 void interpolateTick    (float renderTime);
 void calculateVelocity(Command* command, float frametime);
 
+ClientSideMoveStateMachine* mMoveStateMachine;
 };
 
 #endif

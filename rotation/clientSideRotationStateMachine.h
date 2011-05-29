@@ -1,36 +1,36 @@
-#ifndef ROTATIONSTATEMACHINE_H
-#define ROTATIONSTATEMACHINE_H
-#include "rotationState.h"
+#ifndef CLIENTSIDEROTATIONSTATEMACHINE_H
+#define CLIENTSIDEROTATIONSTATEMACHINE_H
+#include "clientSideRotationState.h"
 
-class Rotation;
+class ClientSideRotation;
 
-class RotationStateMachine
+class ClientSideRotationStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  Rotation*   m_pOwner;
-  RotationState*    m_pCurrentState;
+  ClientSideRotation*   m_pOwner;
+  ClientSideRotationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  RotationState*   m_pPreviousState;
+  ClientSideRotationState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  RotationState*   m_pGlobalState;
+  ClientSideRotationState*   m_pGlobalState;
 
 public:
 
-  RotationStateMachine(Rotation* owner):m_pOwner(owner),
+  ClientSideRotationStateMachine(ClientSideRotation* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~RotationStateMachine(){}
+  virtual ~ClientSideRotationStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(RotationState* s){m_pCurrentState = s;}
-  void setGlobalState(RotationState* s) {m_pGlobalState = s;}
-  void setPreviousState(RotationState* s){m_pPreviousState = s;}
+  void setCurrentState(ClientSideRotationState* s){m_pCurrentState = s;}
+  void setGlobalState(ClientSideRotationState* s) {m_pGlobalState = s;}
+  void setPreviousState(ClientSideRotationState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(RotationState* pNewState)
+  void  changeState(ClientSideRotationState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  RotationState*  currentState()  const{return m_pCurrentState;}
-  RotationState*  globalState()   const{return m_pGlobalState;}
-  RotationState*  previousState() const{return m_pPreviousState;}
+  ClientSideRotationState*  currentState()  const{return m_pCurrentState;}
+  ClientSideRotationState*  globalState()   const{return m_pGlobalState;}
+  ClientSideRotationState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

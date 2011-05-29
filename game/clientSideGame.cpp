@@ -138,8 +138,9 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	if(game != NULL)
 	{
-		if (mClient->mClientSideShape != NULL)
+		if (mShapeVector.size() > 0)
 		{
+			//LogString("good");
 			game->CheckKeys();
 		}
 		if (mNetworkShutdown == true)
@@ -388,7 +389,7 @@ void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSideShape *client)
 		client->mServerFrame.mKey = mes->ReadByte();
 
 		client->mCommand.mKey = client->mServerFrame.mKey;
-		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	// Origin

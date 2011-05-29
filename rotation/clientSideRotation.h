@@ -10,7 +10,7 @@
 using namespace Ogre;
 
 class Command;
-class RotationStateMachine;
+class ClientSideRotationStateMachine;
 class ClientSideShape;
 
 class ClientSideRotation :  public virtual OgreShape, public Rotation
@@ -29,7 +29,7 @@ void processTick    ();
 void interpolateTick    (float renderTime);
 
 ClientSideShape* mServerShape;
-
+ClientSideRotationStateMachine* mRotationStateMachine;
 };
 
 #endif
