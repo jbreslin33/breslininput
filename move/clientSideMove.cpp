@@ -8,8 +8,8 @@
 using namespace Ogre;
 
 //move states
-#include "moveStateMachine.h"
-#include "moveStates.h"
+#include "clientSideMoveStateMachine.h"
+#include "clientSideMoveStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -22,28 +22,11 @@ ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::Scene
 							   std::string mesh)
  : OgreShape(name,position,mSceneMgr,mesh), Move() 
 {
-	//mShape = player;
-
-	mRunSpeed     = 0.0;
-	mRunSpeedMax  = 500.0;
-	//mAccel        = 50.0
-	
-	mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
-	mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
-	mPosInterpFactor    = 4.0;
-
-	//deltas
-	mDeltaX        = 0.0; 
-	mDeltaZ		   = 0.0;
-	mDeltaY        = 0.0;
-	mDeltaPosition = 0.0;
-
 	//move states
-	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
+	mMoveStateMachine = new ClientSideMoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
 	mMoveStateMachine->setGlobalState       (NULL);
-	//mMoveStateMachine->changeState        (Normal_Move::Instance());
 }
 
 ClientSideMove::~ClientSideMove()
@@ -53,7 +36,7 @@ ClientSideMove::~ClientSideMove()
 void ClientSideMove::processTick()
 {
 
-
+	//LogString("ClientSideMove::processTick");
 	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
     mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
     mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
@@ -96,7 +79,7 @@ void ClientSideMove::interpolateTick(float renderTime)
 
 		float yVelocity = mServerFrame.mVelocity.y;
 
-      //  updateAnimations(yVelocity, renderTime, mCommand.mStop, animSpeed);
+//        updateAnimations(yVelocity, renderTime, mCommand.mStop, animSpeed);
 
 }
 

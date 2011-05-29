@@ -1,29 +1,29 @@
-#ifndef MOVESTATES_H
-#define MOVESTATES_H
-#include "moveState.h"
+#ifndef CLIENTSIDEMOVESTATES_H
+#define CLIENTSIDEMOVESTATES_H
+#include "clientSideMoveState.h"
 
-class Move;
+class ClientSideMove;
 
-class Normal_Move : public MoveState
+class Normal_Move : public ClientSideMoveState
 {
 private:
   Normal_Move(){}
 public:
   static Normal_Move* Instance();
-  void enter  (Move* move);
-  void execute(Move* move);
-  void exit   (Move* move);
+  void enter  (ClientSideMove* move);
+  void execute(ClientSideMove* move);
+  void exit   (ClientSideMove* move);
 };
 
-class Catchup_Move : public MoveState
+class Catchup_Move : public ClientSideMoveState
 {
 private:
   Catchup_Move(){}
 public:
   static Catchup_Move* Instance();
-  void enter  (Move* move);
-  void execute(Move* move);
-  void exit   (Move* move);
+  void enter  (ClientSideMove* move);
+  void execute(ClientSideMove* move);
+  void exit   (ClientSideMove* move);
 };
 
 #endif

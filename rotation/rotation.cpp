@@ -1,9 +1,5 @@
 #include "rotation.h"
 
-//rotation states
-#include "rotationStateMachine.h"
-#include "rotationStates.h"
-
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
 #define KEY_DOWN				2
@@ -13,8 +9,6 @@
 
 Rotation::Rotation()
 {
-//	mShape = player;
-
 	mTurnSpeed = 250.0;
 
 	mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
@@ -27,88 +21,8 @@ Rotation::Rotation()
 	mServerRotNew  = Ogre::Vector3::ZERO;
 	mDegreesToServer = 0.0;
 
-	//rotation states
-	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
-	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
-	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
-	mRotationStateMachine->setGlobalState       (NULL);
-	//mRotationStateMachine->changeState        (Normal_Rotation::Instance());
-
 }
 
 Rotation::~Rotation()
 {
 }
-void Rotation::processTick()
-{
-	/*
-        mServerRotOld  = Ogre::Vector3::ZERO;
-    mServerRotNew  = Ogre::Vector3::ZERO;
-
-    mServerRotOld.x = mShape->mServerFrame.mRotOld.x;
-    mServerRotOld.z = mShape->mServerFrame.mRotOld.z;
-
-    mServerRotNew.x = mShape->mServerFrame.mRot.x;
-    mServerRotNew.z = mShape->mServerFrame.mRot.z;
-
-    mServerRotNew.normalise();
-    mServerRotOld.normalise();
-
-    //calculate how far off we are from server
-    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
-
-    // convert to degrees
-    mDegreesToServer = toServer.getYaw().valueDegrees();
-
-    //calculate server rotation from last tick to new one
-    Quaternion serverRot = mShape->mServerShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
-
-    // convert to degrees
-    mServerRotSpeed = serverRot.getYaw().valueDegrees();
-
-    if(abs(mServerRotSpeed) < 0.01)
-        {
-                mServerRotSpeed = 0.0;
-        }
-    
-        //LogString("mShape->mServerRotSpeed %f", mShape->mServerRotSpeed);
-
-    // yaw server guy to new rot
-    mShape->mServerShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
-
-        mRotationStateMachine->update();
-		*/
-}
-
-void Rotation::interpolateTick(float renderTime)
-{
-	/*
-    float rotSpeed = mShape->mCommand.mRotSpeed * renderTime;
-        mShape->getSceneNode()->yaw(Degree(rotSpeed));
-
-        Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
-
-        serverRotNew.x = mShape->mServerFrame.mRot.x;
-        serverRotNew.z = mShape->mServerFrame.mRot.z;
-
-        serverRotNew.normalise();
-
-        //calculate how far off we are from server
-    Quaternion toServer = mShape->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
-        // convert to degrees
-        Real mDegreesToServer = toServer.getYaw().valueDegrees();
-
-        // are we back in sync
-        if(abs(mDegreesToServer) < mRotInterpLimitLow)
-        {
-       mShape->mCommand.mCatchupRot = false;
-        }
-
-        if (mServerRotSpeed == 0.0 && mShape->mCommand.mCatchupRot == false)
-        {
-       mShape->mCommand.mRotSpeed = 0.0;
-        }
-		*/
-}
-

@@ -10,8 +10,8 @@
 using namespace Ogre;
 
 //rotation states
-#include "rotationStateMachine.h"
-#include "rotationStates.h"
+#include "clientSideRotationStateMachine.h"
+#include "clientSideRotationStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -24,29 +24,13 @@ ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
  : OgreShape(name, position,mSceneMgr,mesh), Rotation()
 {
-	//mShape = player;
-
 	mServerShape = NULL;
 
-	mTurnSpeed = 250.0;
-
-	mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
-	mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
-	mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
-    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
-
-	//rotation
-	mServerRotOld  = Ogre::Vector3::ZERO;
-	mServerRotNew  = Ogre::Vector3::ZERO;
-	mDegreesToServer = 0.0;
-
 	//rotation states
-	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
+	mRotationStateMachine = new ClientSideRotationStateMachine(this);    //setup the state machine
 	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
 	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
 	mRotationStateMachine->setGlobalState       (NULL);
-	//mClientSideRotationStateMachine->changeState        (Normal_ClientSideRotation::Instance());
-
 }
 
 ClientSideRotation::~ClientSideRotation()
@@ -55,8 +39,7 @@ ClientSideRotation::~ClientSideRotation()
 
 void ClientSideRotation::processTick()
 {
-	
-        mServerRotOld  = Ogre::Vector3::ZERO;
+    mServerRotOld  = Ogre::Vector3::ZERO;
     mServerRotNew  = Ogre::Vector3::ZERO;
 
     mServerRotOld.x = mServerFrame.mRotOld.x;

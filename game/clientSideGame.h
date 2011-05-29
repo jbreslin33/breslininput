@@ -76,7 +76,7 @@ public:
 
 	//client Variables
 	ClientSideShape* mLocalShape;		// Pointer to the local client in the client list
-	ClientSideShape*  mInputShape;			// Handles all keyboard input
+	ClientSideShape* mInputShape;			// Handles all keyboard input
 	std::vector<ClientSideShape*> mShapeVector;	
 
 	//time

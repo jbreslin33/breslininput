@@ -5,7 +5,6 @@
 #include "Ogre.h"
 using namespace Ogre;
 
-class MoveStateMachine;
 class Command;
 
 class Move
@@ -15,14 +14,6 @@ public:
 
 Move();
 ~Move();
-
-//ticks
-void processTick    ();
-void interpolateTick    (float renderTime);
-void calculateVelocity(Command* command, float frametime);
-
-//move state machine
-MoveStateMachine*   mMoveStateMachine;
 
 float mRunSpeed;
 float mRunSpeedMax;
