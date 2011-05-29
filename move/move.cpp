@@ -89,7 +89,7 @@ void Move::interpolateTick(float renderTime)
 
 		float yVelocity = mPlayer->mServerFrame.mVelocity.y;
 
-        mPlayer->updateAnimations(yVelocity, renderTime, mPlayer->mCommand.mStop, animSpeed);
+      //  mPlayer->updateAnimations(yVelocity, renderTime, mPlayer->mCommand.mStop, animSpeed);
 }
 
 
