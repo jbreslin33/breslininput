@@ -5,7 +5,6 @@
 #include "Ogre.h"
 using namespace Ogre;
 
-class ClientSidePlayer;
 class MoveStateMachine;
 class Command;
 
@@ -14,16 +13,13 @@ class Move
 
 public:
 
-Move(ClientSidePlayer* player);
+Move();
 ~Move();
 
 //ticks
 void processTick    ();
 void interpolateTick    (float renderTime);
 void calculateVelocity(Command* command, float frametime);
-
-//player
-ClientSidePlayer* mPlayer;
 
 //move state machine
 MoveStateMachine*   mMoveStateMachine;

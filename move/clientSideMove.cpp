@@ -18,10 +18,11 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
- : ClientSideShape(name, position,mSceneMgr,mesh)
+ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+							   std::string mesh)
+ : OgreShape(name,position,mSceneMgr,mesh), Move() 
 {
-	//mPlayer = player;
+	//mShape = player;
 
 	mRunSpeed     = 0.0;
 	mRunSpeedMax  = 500.0;
@@ -52,22 +53,22 @@ ClientSideMove::~ClientSideMove()
 void ClientSideMove::processTick()
 {
 /*
-	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
-    mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
+	mDeltaX = mShape->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
+    mDeltaZ = mShape->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
+    mDeltaY = mShape->mServerFrame.mOrigin.y - mShape->getSceneNode()->getPosition().y;
 
         //distance we are off from server
         mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
 
         // if server has come to a stop
-        if(mPlayer->mServerFrame.mVelocity.x == 0.0 && mPlayer->mServerFrame.mVelocity.z == 0.0
-                && mPlayer->mServerFrame.mVelocity.y == 0.0)
+        if(mShape->mServerFrame.mVelocity.x == 0.0 && mShape->mServerFrame.mVelocity.z == 0.0
+                && mShape->mServerFrame.mVelocity.y == 0.0)
         {
-                mPlayer->mCommand.mStop = true;
+                mShape->mCommand.mStop = true;
         }
         else //server still moving
         {
-                mPlayer->mCommand.mStop = false;
+                mShape->mCommand.mStop = false;
         }
 
         mMoveStateMachine->update();
@@ -79,22 +80,22 @@ void ClientSideMove::interpolateTick(float renderTime)
 /*
         Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-        transVector.x = mPlayer->mCommand.mVelocity.x;
-        transVector.z = mPlayer->mCommand.mVelocity.z;
-        transVector.y = mPlayer->mCommand.mVelocity.y;
+        transVector.x = mShape->mCommand.mVelocity.x;
+        transVector.z = mShape->mCommand.mVelocity.z;
+        transVector.y = mShape->mCommand.mVelocity.y;
         
-        mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+        mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-        if(mPlayer->getSceneNode()->getPosition().y < 0.0)
+        if(mShape->getSceneNode()->getPosition().y < 0.0)
 		{
-			mPlayer->getSceneNode()->setPosition(mPlayer->getSceneNode()->getPosition().x,
-			0.0, mPlayer->getSceneNode()->getPosition().z);
+			mShape->getSceneNode()->setPosition(mShape->getSceneNode()->getPosition().x,
+			0.0, mShape->getSceneNode()->getPosition().z);
 		}
         float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
-		float yVelocity = mPlayer->mServerFrame.mVelocity.y;
+		float yVelocity = mShape->mServerFrame.mVelocity.y;
 
-      //  mPlayer->updateAnimations(yVelocity, renderTime, mPlayer->mCommand.mStop, animSpeed);
+      //  mShape->updateAnimations(yVelocity, renderTime, mShape->mCommand.mStop, animSpeed);
 */
 }
 

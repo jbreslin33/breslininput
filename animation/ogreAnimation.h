@@ -8,6 +8,9 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+//parents
+#include "../shape/ogreShape.h"
+
 // all the animations our character has, and a null ID
 // some of these affect separate body parts and will be blended together
 enum AnimID
@@ -28,11 +31,12 @@ enum AnimID
     ANIM_NONE
 };
 
-class OgreAnimation
+class OgreAnimation : public virtual OgreShape
 {
 
 public:
-	OgreAnimation();
+	OgreAnimation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+								   std::string mesh);
 	~OgreAnimation();
 
 //animation
