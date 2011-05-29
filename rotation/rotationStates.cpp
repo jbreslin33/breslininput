@@ -59,8 +59,8 @@ void Catchup_Rotation::enter(Rotation* rotation)
 }
 void Catchup_Rotation::execute(Rotation* rotation)
 {
-    // are we back on track
-    if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
+        // are we back on track
+        if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
         {
                 rotation->mPlayer->mCommand.mCatchupRot = false;
                 rotation->mRotationStateMachine->changeState(Normal_Rotation::Instance());
