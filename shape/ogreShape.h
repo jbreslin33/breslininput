@@ -2,13 +2,13 @@
 #define OGRESHAPE_H
 
 #include "shape.h"
-#include "../animation/ogreAnimation.h"
+
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
-class OgreShape : public Shape, public OgreAnimation
+class OgreShape : public Shape
 {
 
 public:
