@@ -8,6 +8,8 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+#include <string>
+
 class ClientSideShape : public OgreShape, public OgreAnimation
 {
 

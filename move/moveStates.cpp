@@ -13,11 +13,11 @@ Normal_Move* Normal_Move::Instance()
   static Normal_Move instance;
   return &instance;
 }
-void Normal_Move::enter(Move* move)
+void Normal_Move::enter(ClientSideMove* move)
 {
 
 }
-void Normal_Move::execute(Move* move)
+void Normal_Move::execute(ClientSideMove* move)
 {
         // if distance exceeds threshold
         if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mPlayer->mCommand.mStop == false)
@@ -50,7 +50,7 @@ void Normal_Move::execute(Move* move)
                 move->mPlayer->mCommand.mVelocity.y = serverDest.y;
         }
 }
-void Normal_Move::exit(Move* move)
+void Normal_Move::exit(ClientSideMove* move)
 {
 }
 
@@ -59,11 +59,11 @@ Catchup_Move* Catchup_Move::Instance()
   static Catchup_Move instance;
   return &instance;
 }
-void Catchup_Move::enter(Move* move)
+void Catchup_Move::enter(ClientSideMove* move)
 {
         //LogString("STATE: Catchup_Move");
 }
-void Catchup_Move::execute(Move* move)
+void Catchup_Move::execute(ClientSideMove* move)
 {
         //if we are back in sync
         if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mPlayer->mCommand.mStop == true)
@@ -113,7 +113,7 @@ void Catchup_Move::execute(Move* move)
         }
 
 }
-void Catchup_Move::exit(Move* move)
+void Catchup_Move::exit(ClientSideMove* move)
 {
 }
 

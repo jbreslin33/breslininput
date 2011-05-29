@@ -2,13 +2,13 @@
 #define MOVESTATEMACHINE_H
 #include "moveState.h"
 
-class Move;
+class ClientSideMove;
 
 class MoveStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  Move*   m_pOwner;
+  ClientSideMove*   m_pOwner;
   MoveState*    m_pCurrentState;
 
   //a record of the last state the agent was in
@@ -19,7 +19,7 @@ private:
 
 public:
 
-  MoveStateMachine(Move* owner):m_pOwner(owner),
+  MoveStateMachine(ClientSideMove* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)

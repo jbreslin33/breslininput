@@ -1,10 +1,11 @@
-#include "move.h"
+#include "clientSideMove.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-//player,client,shape,animation combo
-#include "../player/clientSidePlayer.h"
-#include "../shape/ogreShape.h"
-#include "../animation/ogreAnimation.h"
+#include <string>
+
+//Ogre headers
+#include "Ogre.h"
+using namespace Ogre;
 
 //move states
 #include "moveStateMachine.h"
@@ -17,9 +18,10 @@
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-Move::Move(ClientSidePlayer* player)
+ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
+ : ClientSideShape(name, position,mSceneMgr,mesh)
 {
-	mPlayer = player;
+	//mPlayer = player;
 
 	mRunSpeed     = 0.0;
 	mRunSpeedMax  = 500.0;
@@ -43,13 +45,13 @@ Move::Move(ClientSidePlayer* player)
 	//mMoveStateMachine->changeState        (Normal_Move::Instance());
 }
 
-Move::~Move()
+ClientSideMove::~ClientSideMove()
 {
 }
 
-void Move::processTick()
+void ClientSideMove::processTick()
 {
-
+/*
 	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
     mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
     mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
@@ -69,12 +71,12 @@ void Move::processTick()
         }
 
         mMoveStateMachine->update();
-
+*/
 }
 
-void Move::interpolateTick(float renderTime)
+void ClientSideMove::interpolateTick(float renderTime)
 {
-
+/*
         Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
         transVector.x = mPlayer->mCommand.mVelocity.x;
@@ -93,13 +95,13 @@ void Move::interpolateTick(float renderTime)
 		float yVelocity = mPlayer->mServerFrame.mVelocity.y;
 
       //  mPlayer->updateAnimations(yVelocity, renderTime, mPlayer->mCommand.mStop, animSpeed);
-
+*/
 }
 
 
-void Move::calculateVelocity(Command* command, float frametime)
+void ClientSideMove::calculateVelocity(Command* command, float frametime)
 {
-
+/*
         command->mVelocity.x = 0.0f;
         command->mVelocity.z = 0.0f;
 
@@ -129,6 +131,6 @@ void Move::calculateVelocity(Command* command, float frametime)
            command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
            command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
         }
-
+*/
 }
 

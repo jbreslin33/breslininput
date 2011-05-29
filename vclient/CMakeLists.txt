@@ -119,6 +119,7 @@ set(HDRS
 	
 	#move
 	../move/move.h
+	../move/clientSideMove.h
 	
 	#player move states
 	../move/moveStateMachine.h
@@ -177,6 +178,7 @@ set(SRCS
 	
 	#move
 	../move/move.cpp
+	../move/clientSideMove.cpp
 	
 	#player move states
 	../move/moveStates.cpp
@@ -230,6 +232,7 @@ set(HDRS
 	
 	#move
 	../move/move.h
+	../move/clientSideMove.h
 	
 	#player move states
 	../move/moveStateMachine.h
@@ -286,6 +289,7 @@ set(SRCS
 	
 	#move
 	../move/move.cpp
+	../move/clientSideMove.cpp
 	
 	#player move states
 	../move/moveStates.cpp
