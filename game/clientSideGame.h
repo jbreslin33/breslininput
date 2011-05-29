@@ -10,6 +10,7 @@
 #define VK_DOWN 0x28
 #define VK_LEFT 0x25
 #define VK_RIGHT 0x27
+#define VK_SPACE 0x20
 
 extern bool keys[256];
 
