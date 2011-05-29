@@ -1,11 +1,6 @@
 #include "move.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-//player,client,shape,animation combo
-#include "../player/clientSidePlayer.h"
-#include "../shape/ogreShape.h"
-#include "../animation/ogreAnimation.h"
-
 //move states
 #include "moveStateMachine.h"
 #include "moveStates.h"
@@ -17,9 +12,9 @@
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-Move::Move(ClientSidePlayer* player)
+Move::Move()
 {
-	mPlayer = player;
+	//mShape = player;
 
 	mRunSpeed     = 0.0;
 	mRunSpeedMax  = 500.0;
@@ -49,57 +44,57 @@ Move::~Move()
 
 void Move::processTick()
 {
-
-	mDeltaX = mPlayer->mServerFrame.mOrigin.x - mPlayer->getSceneNode()->getPosition().x;
-    mDeltaZ = mPlayer->mServerFrame.mOrigin.z - mPlayer->getSceneNode()->getPosition().z;
-    mDeltaY = mPlayer->mServerFrame.mOrigin.y - mPlayer->getSceneNode()->getPosition().y;
+/*
+	mDeltaX = mShape->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
+    mDeltaZ = mShape->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
+    mDeltaY = mShape->mServerFrame.mOrigin.y - mShape->getSceneNode()->getPosition().y;
 
         //distance we are off from server
         mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
 
         // if server has come to a stop
-        if(mPlayer->mServerFrame.mVelocity.x == 0.0 && mPlayer->mServerFrame.mVelocity.z == 0.0
-                && mPlayer->mServerFrame.mVelocity.y == 0.0)
+        if(mShape->mServerFrame.mVelocity.x == 0.0 && mShape->mServerFrame.mVelocity.z == 0.0
+                && mShape->mServerFrame.mVelocity.y == 0.0)
         {
-                mPlayer->mCommand.mStop = true;
+                mShape->mCommand.mStop = true;
         }
         else //server still moving
         {
-                mPlayer->mCommand.mStop = false;
+                mShape->mCommand.mStop = false;
         }
 
         mMoveStateMachine->update();
-
+*/
 }
 
 void Move::interpolateTick(float renderTime)
 {
-
+/*
         Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-        transVector.x = mPlayer->mCommand.mVelocity.x;
-        transVector.z = mPlayer->mCommand.mVelocity.z;
-        transVector.y = mPlayer->mCommand.mVelocity.y;
+        transVector.x = mShape->mCommand.mVelocity.x;
+        transVector.z = mShape->mCommand.mVelocity.z;
+        transVector.y = mShape->mCommand.mVelocity.y;
         
-        mPlayer->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+        mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-        if(mPlayer->getSceneNode()->getPosition().y < 0.0)
+        if(mShape->getSceneNode()->getPosition().y < 0.0)
 		{
-			mPlayer->getSceneNode()->setPosition(mPlayer->getSceneNode()->getPosition().x,
-			0.0, mPlayer->getSceneNode()->getPosition().z);
+			mShape->getSceneNode()->setPosition(mShape->getSceneNode()->getPosition().x,
+			0.0, mShape->getSceneNode()->getPosition().z);
 		}
         float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
-		float yVelocity = mPlayer->mServerFrame.mVelocity.y;
+		float yVelocity = mShape->mServerFrame.mVelocity.y;
 
-      //  mPlayer->updateAnimations(yVelocity, renderTime, mPlayer->mCommand.mStop, animSpeed);
-
+      //  mShape->updateAnimations(yVelocity, renderTime, mShape->mCommand.mStop, animSpeed);
+*/
 }
 
 
 void Move::calculateVelocity(Command* command, float frametime)
 {
-
+/*
         command->mVelocity.x = 0.0f;
         command->mVelocity.z = 0.0f;
 
@@ -129,6 +124,6 @@ void Move::calculateVelocity(Command* command, float frametime)
            command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
            command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
         }
-
+*/
 }
 

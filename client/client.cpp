@@ -16,7 +16,7 @@ Client::Client(Network* network)
 	mNetwork = network;
 
 	mServerSidePlayer = NULL;
-	mClientSidePlayer = NULL;
+	mClientSideShape = NULL;
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
@@ -40,7 +40,7 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 
 
 	mServerSidePlayer = NULL;
-	mClientSidePlayer = NULL;
+	mClientSideShape = NULL;
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 

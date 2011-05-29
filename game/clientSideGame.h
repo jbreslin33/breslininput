@@ -3,7 +3,7 @@
 
 #include "BaseApplication.h"
 
-#include "../player/clientSidePlayer.h"
+#include "../shape/clientSideShape.h"
 
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
@@ -59,9 +59,9 @@ public:
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
 	void	SendRequestNonDeltaFrame(void);
-	void	ReadMoveCommand         (Message *mes, ClientSidePlayer *player);
-	void	ReadDeltaMoveCommand    (Message *mes, ClientSidePlayer *player);
-	void	BuildDeltaMoveCommand   (Message *mes, ClientSidePlayer *player);
+	void	ReadMoveCommand         (Message *mes, ClientSideShape *player);
+	void	ReadDeltaMoveCommand    (Message *mes, ClientSideShape *player);
+	void	BuildDeltaMoveCommand   (Message *mes, ClientSideShape *player);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
@@ -75,9 +75,9 @@ public:
 	const char*  mServerIP;
 
 	//client Variables
-	ClientSidePlayer* mLocalClient;		// Pointer to the local client in the client list
-	ClientSidePlayer*  mInputClient;			// Handles all keyboard input
-	std::vector<ClientSidePlayer*> mPlayerVector;	
+	ClientSideShape* mLocalShape;		// Pointer to the local client in the client list
+	ClientSideShape*  mInputShape;			// Handles all keyboard input
+	std::vector<ClientSideShape*> mShapeVector;	
 
 	//time
 	float mFrameTime;

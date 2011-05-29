@@ -2,29 +2,25 @@
 #define CLIENTSIDEPLAYER_H
 
 #include "player.h"
-#include "../move/move.h"
-#include "../rotation/rotation.h"
+
+#include "../move/clientSideMove.h"
+#include "../rotation/clientSideRotation.h"
 #include "../shape/clientSideShape.h"
 
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
-class Client;
-
-class ClientSidePlayer : public Player, public Move, public Rotation, public ClientSideShape
+class ClientSidePlayer : public Player, public ClientSideMove, public ClientSideRotation 
 {
 
 public:
 
-ClientSidePlayer(Client* client, std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+ClientSidePlayer(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~ClientSidePlayer();
 
-//ticks
-void processTick    ();
-void interpolateTick    (float renderTime);
 
-Client* mClient;
+
 
 int			mIndex;
 

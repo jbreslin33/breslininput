@@ -1,10 +1,12 @@
 #include "ogreAnimation.h"
-
-#include "../math/vector3D.h"
 #include "../tdreamsock/dreamSockLog.h"
 
+#include "../math/vector3D.h"
 
-OgreAnimation::OgreAnimation()
+
+
+OgreAnimation::OgreAnimation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+								   std::string mesh) : OgreShape(name,position,mSceneMgr,mesh)
 {
 	mEntity = NULL;
 	mStop = true;

@@ -1,12 +1,18 @@
 #include "ogreShape.h"
-
+#include "../tdreamsock/dreamSockLog.h"
 
 #include "../math/vector3D.h"
 
+
+OgreShape::OgreShape()
+{
+
+}
 //constructor for client side ogre shape
 OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : Shape(name,position)
 
 {
+	LogString("OgreShape Constructor");
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
@@ -24,6 +30,7 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	//create an animation instance and pass our entity in
 	//mOgreAnimation = new OgreAnimation(mEntity);
 }
+
 //this is the contructor for server side ogre shape
 OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : Shape(name,position)
 {

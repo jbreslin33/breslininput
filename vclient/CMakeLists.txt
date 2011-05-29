@@ -114,22 +114,23 @@ set(HDRS
 	../animation/ogreAnimation.h
 	
 	#player
-	../player/player.h
-	../player/clientSidePlayer.h
+	#../player/player.h
+	#../player/clientSideShape.h
 	
 	#move
 	../move/move.h
 	../move/clientSideMove.h
 	
-	#player move states
+	#move states
 	../move/moveStateMachine.h
 	../move/moveState.h
 	../move/moveStates.h
 	
 	#rotation
 	../rotation/rotation.h
-	
-	#player rotation states
+	../rotation/clientSideRotation.h
+
+	#rotation states
 	../rotation/rotationStateMachine.h
 	../rotation/rotationState.h
 	../rotation/rotationStates.h	
@@ -173,20 +174,21 @@ set(SRCS
 	../animation/ogreAnimation.cpp
 	
 	#player
-	../player/player.cpp
-	../player/clientSidePlayer.cpp
+	#../player/player.cpp
+	#../player/clientSideShape.cpp
 	
 	#move
 	../move/move.cpp
 	../move/clientSideMove.cpp
 	
-	#player move states
+	#move states
 	../move/moveStates.cpp
 	
 	#rotation
 	../rotation/rotation.cpp
+	../rotation/clientSideRotation.cpp
 	
-	#player rotation states
+	#rotation states
 	../rotation/rotationStates.cpp
 	
 	#message
@@ -227,22 +229,23 @@ set(HDRS
 	../animation/ogreAnimation.h
 	
 	#player
-	../player/player.h
-	../player/clientSidePlayer.h
+	#../player/player.h
+	#../player/clientSideShape.h
 	
 	#move
 	../move/move.h
 	../move/clientSideMove.h
 	
-	#player move states
+	#move states
 	../move/moveStateMachine.h
 	../move/moveState.h
 	../move/moveStates.h
 	
 	#rotation
 	../rotation/rotation.h
+	../rotation/clientSideRotation.h
 	
-	#player rotation states
+	#rotation states
 	../rotation/rotationStateMachine.h
 	../rotation/rotationState.h
 	../rotation/rotationStates.h
@@ -284,20 +287,21 @@ set(SRCS
 	../animation/ogreAnimation.cpp
 	
 	#player
-	../player/player.cpp
-	../player/clientSidePlayer.cpp
+	#../player/player.cpp
+	#../player/clientSideShape.cpp
 	
 	#move
 	../move/move.cpp
 	../move/clientSideMove.cpp
 	
-	#player move states
+	#move states
 	../move/moveStates.cpp
 	
 	#rotation
 	../rotation/rotation.cpp
-	
-	#player rotation states
+	../rotation/clientSideRotation.cpp	
+
+	#rotation states
 	../rotation/rotationStates.cpp
 	
 	#message

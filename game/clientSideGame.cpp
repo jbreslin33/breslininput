@@ -3,7 +3,7 @@
 
 #include "../network/network.h"
 
-#include "../player/clientSidePlayer.h"
+#include "../shape/clientSideShape.h"
 
 #include "../client/client.h"
 
@@ -22,8 +22,8 @@ ClientSideGame::ClientSideGame(const char* serverIP)
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
 
-	mLocalClient		= NULL;
- 	mInputClient        = NULL;
+	mLocalShape		= NULL;
+ 	mInputShape        = NULL;
 
 	mFrameTime		= 0.0f;
  	mRenderTime		= 0.0f;
@@ -46,20 +46,21 @@ ClientSideGame::~ClientSideGame()
 
 void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
-	mClient->mClientSidePlayer = new ClientSidePlayer(mClient,"jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	mClient->mClientSidePlayer->getSceneNode()->scale(30,30,30);
+	ClientSideShape* clientSideShape = new ClientSideShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	//mClient->mClientSideShape = new ClientSideShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	//clientSideShape->getSceneNode()->scale(30,30,30);
 	
-	mClient->mClientSidePlayer->mIndex = ind;
+	clientSideShape->mIndex = ind;
 
-	mClient->mClientSidePlayer->mServerPlayer = new ClientSidePlayer(mClient,"silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-  	mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->scale(30,30,30);
-	mClient->mClientSidePlayer->mServerPlayer->getSceneNode()->setVisible(false);
-	mPlayerVector.push_back(mClient->mClientSidePlayer);
+	clientSideShape->mServerShape = new ClientSideShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+  	//clientSideShape->mServerShape->getSceneNode()->scale(30,30,30);
+	//clientSideShape->mServerShape->getSceneNode()->setVisible(false);
+	mShapeVector.push_back(clientSideShape);
 	
 	if(local)
 	{
-		mLocalClient = mClient->mClientSidePlayer;
-		mInputClient = mClient->mClientSidePlayer;
+		mLocalShape = clientSideShape;
+		mInputShape = clientSideShape;
 		
 		SendRequestNonDeltaFrame();
 	}
@@ -136,7 +137,7 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 	if(game != NULL)
 	{
-		if (mClient->mClientSidePlayer != NULL)
+		if (mClient->mClientSideShape != NULL)
 		{
 			game->CheckKeys();
 		}
@@ -165,7 +166,7 @@ bool ClientSideGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void ClientSideGame::CheckKeys(void)
 {
-	mInputClient->mCommand.mKey = 0;
+	mInputShape->mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
  	{
 		LogString("esc");
@@ -174,38 +175,38 @@ void ClientSideGame::CheckKeys(void)
 	
  	if(keys[VK_DOWN])
  	{
- 		mInputClient->mCommand.mKey |= KEY_DOWN;
+ 		mInputShape->mCommand.mKey |= KEY_DOWN;
  	}
  	if(keys[VK_UP])
  	{
- 		mInputClient->mCommand.mKey |= KEY_UP;
+ 		mInputShape->mCommand.mKey |= KEY_UP;
  	}
  	if(keys[VK_LEFT])
  	{
- 		mInputClient->mCommand.mKey |= KEY_LEFT;
+ 		mInputShape->mCommand.mKey |= KEY_LEFT;
  	}
  	if(keys[VK_RIGHT])
  	{
- 		mInputClient->mCommand.mKey |= KEY_RIGHT;
+ 		mInputShape->mCommand.mKey |= KEY_RIGHT;
  	}
 	if(keys[VK_SPACE])
  	{
- 		mInputClient->mCommand.mKey |= KEY_SPACE;
+ 		mInputShape->mCommand.mKey |= KEY_SPACE;
  	}
 
- 	mInputClient->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+ 	mInputShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
 
 void ClientSideGame::MoveServerPlayer(void)
 {
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	transVector.x = mLocalClient->mServerFrame.mOrigin.x;
-	transVector.z = mLocalClient->mServerFrame.mOrigin.z;
+	transVector.x = mLocalShape->mServerFrame.mOrigin.x;
+	transVector.z = mLocalShape->mServerFrame.mOrigin.z;
 
-	if (mLocalClient->mServerPlayer)
+	if (mLocalShape->mServerShape)
 	{
-		mLocalClient->mServerPlayer->getSceneNode()->setPosition(transVector);
+		mLocalShape->mServerShape->getSceneNode()->setPosition(transVector);
 	}
 }
 
@@ -257,12 +258,12 @@ void ClientSideGame::ReadPackets(void)
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
-			for (unsigned int i = 0; i < mPlayerVector.size(); i++)
+			for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			{
 				if (mNetworkShutdown)
 					return;
-				ReadDeltaMoveCommand(&mes, mPlayerVector.at(i));
-				mPlayerVector.at(i)->processTick();
+				ReadDeltaMoveCommand(&mes, mShapeVector.at(i));
+				mShapeVector.at(i)->processTick();
 
 				MoveServerPlayer();
 			}
@@ -275,10 +276,10 @@ void ClientSideGame::ReadPackets(void)
 
 			mOldTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 
-			for (unsigned int i = 0; i < mPlayerVector.size(); i++)
+			for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			{
-				//LogString("Reading NONDELTAFRAME for client %d", mPlayerVector.at(i)->mIndex);
-				ReadMoveCommand(&mes, mPlayerVector.at(i));
+				//LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
+				ReadMoveCommand(&mes, mShapeVector.at(i));
 			}
 
 			break;
@@ -306,18 +307,18 @@ void ClientSideGame::SendCommand(void)
 	message.AddSequences(mClient);					// sequences
 
 	// Build delta-compressed move command
-	BuildDeltaMoveCommand(&message, mInputClient);
+	BuildDeltaMoveCommand(&message, mInputShape);
 
 	// Send the packet
 	mClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mInputClient->mFrame[i], &mInputClient->mCommand, sizeof(Command));
+	memcpy(&mInputShape->mFrame[i], &mInputShape->mCommand, sizeof(Command));
 
 	// Store the commands to the clients' history
-	for (unsigned int i = 0; i < mPlayerVector.size(); i++)
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		memcpy(&mPlayerVector.at(i)->mFrame[i], &mPlayerVector.at(i)->mCommand, sizeof(Command));
+		memcpy(&mShapeVector.at(i)->mFrame[i], &mShapeVector.at(i)->mCommand, sizeof(Command));
 	}
 }
 
@@ -342,13 +343,13 @@ void ClientSideGame::Disconnect(void)
 	LogString("ClientSideGame::Disconnect");
 
 	mInit = false;
-	mLocalClient = NULL;
-	mInputClient = NULL;
+	mLocalShape = NULL;
+	mInputShape = NULL;
 
 	mClient->SendDisconnect();
 }
 
-void ClientSideGame::ReadMoveCommand(Message *mes, ClientSidePlayer *client)
+void ClientSideGame::ReadMoveCommand(Message *mes, ClientSideShape *client)
 {
 	// Key
 	client->mServerFrame.mKey			= mes->ReadByte();
@@ -372,7 +373,7 @@ void ClientSideGame::ReadMoveCommand(Message *mes, ClientSidePlayer *client)
 	}
 }
 
-void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSidePlayer *client)
+void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSideShape *client)
 {
 	client->mProcessedFrame;
 	int flags = 0;
@@ -421,7 +422,7 @@ void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSidePlayer *client
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void ClientSideGame::BuildDeltaMoveCommand(Message *mes, ClientSidePlayer *theClient)
+void ClientSideGame::BuildDeltaMoveCommand(Message *mes, ClientSideShape *theClient)
 {
 	int flags = 0;
 	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
@@ -450,9 +451,9 @@ void ClientSideGame::RunNetwork(int msec)
 
 	ReadPackets();
 	
-	for (unsigned int i = 0; i < mPlayerVector.size(); i++)
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		mPlayerVector.at(i)->interpolateTick(mRenderTime);
+		mShapeVector.at(i)->interpolateTick(mRenderTime);
 	}
 
 	// Framerate is too high
