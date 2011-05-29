@@ -14,9 +14,9 @@ void Normal_Move::enter(Move* move)
 }
 void Normal_Move::execute(Move* move)
 {
-	/*
+	
         // if distance exceeds threshold
-        if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mShape->mCommand.mStop == false)
+        if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mCommand.mStop == false)
         {
                 move->mMoveStateMachine->changeState(Catchup_Move::Instance());
         }
@@ -45,7 +45,7 @@ void Normal_Move::execute(Move* move)
             move->mShape->mCommand.mVelocity.z = serverDest.z;
                 move->mShape->mCommand.mVelocity.y = serverDest.y;
         }
-		*/
+		
 }
 void Normal_Move::exit(Move* move)
 {
@@ -62,7 +62,7 @@ void Catchup_Move::enter(Move* move)
 }
 void Catchup_Move::execute(Move* move)
 {
-	/*
+	
         //if we are back in sync
         if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mShape->mCommand.mStop == true)
         {
@@ -109,7 +109,7 @@ void Catchup_Move::execute(Move* move)
             move->mShape->mCommand.mVelocity.z = myDest.z;
                 move->mShape->mCommand.mVelocity.y = myDest.y;
         }
-		*/
+		
 
 }
 void Catchup_Move::exit(Move* move)

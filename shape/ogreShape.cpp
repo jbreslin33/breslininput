@@ -16,13 +16,14 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
+	mName         = name;
     mSceneNode    = mSceneManager->getRootSceneNode()->createChildSceneNode();
 
 	// put character in starting spawn spot
     mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
 
 	// create entity and attach mesh to it
-    mEntity = mSceneManager->createEntity(mShapeName, mMeshName);
+    mEntity = mSceneManager->createEntity(mName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
 

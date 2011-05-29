@@ -18,7 +18,6 @@ Shape(std::string name, Vector3D* position);
 ~Shape();
 
 //stats
-std::string mShapeName;
 Vector3D* mPosition;
 
 //ticks
