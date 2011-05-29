@@ -4,7 +4,7 @@
 #include "player.h"
 #include "../move/move.h"
 #include "../rotation/rotation.h"
-#include "../shape/ogreShape.h"
+#include "../shape/clientSideShape.h"
 
 //Ogre headers
 #include "Ogre.h"
@@ -12,7 +12,7 @@ using namespace Ogre;
 
 class Client;
 
-class ClientSidePlayer : public Player, public Move, public Rotation, public OgreShape
+class ClientSidePlayer : public Player, public Move, public Rotation, public ClientSideShape
 {
 
 public:
