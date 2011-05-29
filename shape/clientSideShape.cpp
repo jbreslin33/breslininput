@@ -7,7 +7,8 @@ ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::Sce
 								 std::string mesh)
  : ClientSideMove(name,position,mSceneMgr,mesh),
  ClientSideRotation(name,position,mSceneMgr,mesh),
- OgreAnimation(name,position,mSceneMgr,mesh)
+ OgreAnimation(name,position,mSceneMgr,mesh),
+ OgreShape(name,position,mSceneMgr,mesh)
 {
 	LogString("ClientSideShape Constructor");
 //setupAnimations(mEntity);
@@ -21,11 +22,12 @@ ClientSideShape::~ClientSideShape()
 
 void ClientSideShape::processTick()
 {
-	//Move::processTick();
-	//Rotation::processTick();
+	//LogString("clientSideShape::processTick");
+	ClientSideMove::processTick();
+	ClientSideRotation::processTick();
 }
 void ClientSideShape::interpolateTick(float renderTime)
 {
-	//Move::interpolateTick(renderTime);
-	//Rotation::interpolateTick(renderTime);
+	ClientSideMove::interpolateTick(renderTime);
+	ClientSideRotation::interpolateTick(renderTime);
 }

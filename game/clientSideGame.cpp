@@ -48,13 +48,14 @@ void ClientSideGame::AddPlayer(int local, int ind, char *name)
 {
 	ClientSideShape* clientSideShape = new ClientSideShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	//mClient->mClientSideShape = new ClientSideShape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	//clientSideShape->getSceneNode()->scale(30,30,30);
+	clientSideShape->getSceneNode()->scale(30,30,30);
 	
 	clientSideShape->mIndex = ind;
 
 	clientSideShape->mServerShape = new ClientSideShape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-  	//clientSideShape->mServerShape->getSceneNode()->scale(30,30,30);
-	//clientSideShape->mServerShape->getSceneNode()->setVisible(false);
+	clientSideShape->setServerShape(clientSideShape->mServerShape);
+	clientSideShape->mServerShape->getSceneNode()->scale(30,30,30);
+	clientSideShape->mServerShape->getSceneNode()->setVisible(false);
 	mShapeVector.push_back(clientSideShape);
 	
 	if(local)

@@ -52,57 +52,58 @@ ClientSideMove::~ClientSideMove()
 
 void ClientSideMove::processTick()
 {
-/*
-	mDeltaX = mShape->mServerFrame.mOrigin.x - mShape->getSceneNode()->getPosition().x;
-    mDeltaZ = mShape->mServerFrame.mOrigin.z - mShape->getSceneNode()->getPosition().z;
-    mDeltaY = mShape->mServerFrame.mOrigin.y - mShape->getSceneNode()->getPosition().y;
+
+
+	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
+    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
+    mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
 
         //distance we are off from server
         mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
 
         // if server has come to a stop
-        if(mShape->mServerFrame.mVelocity.x == 0.0 && mShape->mServerFrame.mVelocity.z == 0.0
-                && mShape->mServerFrame.mVelocity.y == 0.0)
+        if(mServerFrame.mVelocity.x == 0.0 && mServerFrame.mVelocity.z == 0.0
+                && mServerFrame.mVelocity.y == 0.0)
         {
-                mShape->mCommand.mStop = true;
+                mCommand.mStop = true;
         }
         else //server still moving
         {
-                mShape->mCommand.mStop = false;
+                mCommand.mStop = false;
         }
 
         mMoveStateMachine->update();
-*/
+
 }
 
 void ClientSideMove::interpolateTick(float renderTime)
 {
-/*
+
         Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-        transVector.x = mShape->mCommand.mVelocity.x;
-        transVector.z = mShape->mCommand.mVelocity.z;
-        transVector.y = mShape->mCommand.mVelocity.y;
+        transVector.x = mCommand.mVelocity.x;
+        transVector.z = mCommand.mVelocity.z;
+        transVector.y = mCommand.mVelocity.y;
         
-        mShape->getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+        getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
 
-        if(mShape->getSceneNode()->getPosition().y < 0.0)
+        if(getSceneNode()->getPosition().y < 0.0)
 		{
-			mShape->getSceneNode()->setPosition(mShape->getSceneNode()->getPosition().x,
-			0.0, mShape->getSceneNode()->getPosition().z);
+			getSceneNode()->setPosition(getSceneNode()->getPosition().x,
+			0.0, getSceneNode()->getPosition().z);
 		}
         float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
-		float yVelocity = mShape->mServerFrame.mVelocity.y;
+		float yVelocity = mServerFrame.mVelocity.y;
 
-      //  mShape->updateAnimations(yVelocity, renderTime, mShape->mCommand.mStop, animSpeed);
-*/
+      //  updateAnimations(yVelocity, renderTime, mCommand.mStop, animSpeed);
+
 }
 
 
 void ClientSideMove::calculateVelocity(Command* command, float frametime)
 {
-/*
+
         command->mVelocity.x = 0.0f;
         command->mVelocity.z = 0.0f;
 
@@ -132,6 +133,6 @@ void ClientSideMove::calculateVelocity(Command* command, float frametime)
            command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
            command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
         }
-*/
+
 }
 
