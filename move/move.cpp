@@ -11,7 +11,7 @@
 Move::Move()
 {
 	mRunSpeed     = 0.0;
-	mRunSpeedMax  = 500.0;
+	mRunSpeedMax  = 200.0;
 	//mAccel        = 50.0
 	
 	mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
