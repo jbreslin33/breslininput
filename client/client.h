@@ -57,7 +57,7 @@
 // Introduce classes
 class Network;
 class ClientSideShape;
-class ServerSidePlayer;
+class ServerSideShape;
 
 class Client
 {
@@ -137,7 +137,7 @@ public:
 	Message	mMessage;
 
 ClientSideShape* mClientSideShape;
-ServerSidePlayer* mServerSidePlayer;
+ServerSideShape* mServerSideShape;
 
 
 Network* mNetwork;

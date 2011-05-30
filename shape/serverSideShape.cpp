@@ -3,11 +3,11 @@
 
 #include <string>
 
-ServerSideShape::ServerSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
-								 std::string mesh)
- : ServerSideMove(name,position,mSceneMgr,mesh),
- ServerSideRotation(name,position,mSceneMgr,mesh),
- OgreShape(name,position,mSceneMgr,mesh)
+ServerSideShape::ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root)
+:
+	ServerSideMove    (name,position,root),
+	ServerSideRotation(name,position,root),
+	OgreShape		  (name,position,root)
 {
 	mServerShape = NULL;
 }

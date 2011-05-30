@@ -5,7 +5,7 @@
 #include "../network/network.h"
 #include "../client/client.h"
 #include "../message/message.h"
-#include "../player/serverSidePlayer.h"
+#include "../shape/serverSideShape.h"
 #include "../game/serverSideGame.h"
 
 Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
@@ -383,7 +383,7 @@ void Server::ReadPackets(void)
 					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
 					{
 						mServerSideGame->ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-						mClientVector.at(i)->mServerSidePlayer->processTick();
+						mClientVector.at(i)->mServerSideShape->processTick();
 
 						break;
 					}

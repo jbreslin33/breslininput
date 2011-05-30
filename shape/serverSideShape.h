@@ -15,7 +15,7 @@ class ServerSideShape : public ServerSideMove , public ServerSideRotation
 {
 
 public:
-ServerSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root);
 ~ServerSideShape();
 
 ServerSideShape* mServerShape;
