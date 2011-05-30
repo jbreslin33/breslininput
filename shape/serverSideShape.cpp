@@ -21,7 +21,6 @@ ServerSideShape::~ServerSideShape()
 
 void ServerSideShape::processTick()
 {
-	//LogString("serverSideshape tick");
 	ServerSideMove::processTick();
 	ServerSideRotation::processTick();
 

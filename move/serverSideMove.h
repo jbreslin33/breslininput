@@ -23,7 +23,6 @@ ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root);
 
 //ticks
 void processTick    ();
-void calculateVelocity(Command* command, float frametime);
 
 void setKeyDirection();
 void startJump();
