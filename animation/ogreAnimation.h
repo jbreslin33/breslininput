@@ -55,7 +55,6 @@ bool            mFadingIn[NUM_ANIMS];  // which animations are fading in
 bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
 Real            mTimer;                // general timer to see how long animations have been playing
 AnimationState  *mAnimationState;
-bool            mStop;
 
 };
 
