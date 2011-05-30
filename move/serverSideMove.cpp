@@ -23,10 +23,14 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
-							   std::string mesh)
- : OgreShape(name,position,mSceneMgr,mesh), Move() 
+ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root)
+:
+	OgreShape(name,position,root),
+	Move     (                  ) 
 {
+
+	mClient = NULL;
+
 	mKeyDirection  = Vector3::ZERO;
 	mGoalDirection = Vector3::ZERO;
     

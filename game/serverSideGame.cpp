@@ -3,9 +3,8 @@
 
 #include "../server/server.h"
 
-#include "../shape/ogreShape.h"
 #include "../client/serverSideClient.h"
-#include "../player/serverSidePlayer.h"
+#include "../shape/serverSideShape.h"
 #include "../command/serverSideCommand.h"
 
 
@@ -38,8 +37,11 @@ void ServerSideGame::ShutdownNetwork(void)
 
 void ServerSideGame::createPlayer(Client* client, int runningIndex)
 {
-	OgreShape* shape = new OgreShape("oshape" + runningIndex,new Vector3D(),mRoot);
-	client->mServerSidePlayer = new ServerSidePlayer("oplayer" + runningIndex,client,shape);
+	//OgreShape* shape = new OgreShape("oshape" + runningIndex,new Vector3D(),mRoot);
+	
+	client->mServerSideShape = new ServerSideShape("oplayer" + runningIndex, new Vector3D(),mRoot);
+	client->mServerSideShape->mClient = client;
+	//ServerSideShape* 
 }
 
 void ServerSideGame::Frame(int msec)
@@ -95,7 +97,7 @@ void ServerSideGame::SendCommand(void)
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
 		int num = (mServer->mClientVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mServer->mClientVector.at(i)->mServerSidePlayer->mFrame[num], &mServer->mClientVector.at(i)->mServerSidePlayer->mCommand, sizeof(ServerSideCommand));
+		memcpy(&mServer->mClientVector.at(i)->mServerSideShape->mFrame[num], &mServer->mClientVector.at(i)->mServerSideShape->mCommand, sizeof(ServerSideCommand));
 	}
 }
 
@@ -123,18 +125,18 @@ void ServerSideGame::ReadDeltaMoveCommand(Message *mes, Client *client)
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->mServerSidePlayer->mCommand.mKey = mes->ReadByte();
+		client->mServerSideShape->mCommand.mKey = mes->ReadByte();
 
 		//LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
 	}
 
 	// Read time to run command
-	client->mServerSidePlayer->mCommand.mMilliseconds = mes->ReadByte();
+	client->mServerSideShape->mCommand.mMilliseconds = mes->ReadByte();
 }
 
 void ServerSideGame::BuildMoveCommand(Message *mes, Client *client)
 {
-	Command* command = &client->mServerSidePlayer->mCommand;
+	Command* command = &client->mServerSideShape->mCommand;
 	// Add to the message
 	// Key
 	mes->WriteByte(command->mKey);
@@ -151,20 +153,20 @@ void ServerSideGame::BuildMoveCommand(Message *mes, Client *client)
 void ServerSideGame::BuildDeltaMoveCommand(Message *mes, Client *client)
 {
 
-	ServerSidePlayer* player = client->mServerSidePlayer;
-	Command* command = &client->mServerSidePlayer->mCommand;
+	ServerSideShape* player = client->mServerSideShape;
+	Command* command = &client->mServerSideShape->mCommand;
 	int flags = 0;
 
 	int last = (client->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(client->mServerSidePlayer->mFrame[last].mKey != command->mKey)
+	if(client->mServerSideShape->mFrame[last].mKey != command->mKey)
 	{
 		flags |= CMD_KEY;
 	}
 
-	if(client->mServerSidePlayer->mFrame[last].mOrigin.x != command->mOrigin.x ||
-		client->mServerSidePlayer->mFrame[last].mOrigin.z != command->mOrigin.z)
+	if(client->mServerSideShape->mFrame[last].mOrigin.x != command->mOrigin.x ||
+		client->mServerSideShape->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
 		flags |= CMD_ORIGIN;
 	}
@@ -182,7 +184,7 @@ void ServerSideGame::BuildDeltaMoveCommand(Message *mes, Client *client)
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
-		mes->WriteByte(client->mServerSidePlayer->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
+		mes->WriteByte(client->mServerSideShape->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
 	}
 
 	mes->WriteFloat(command->mOrigin.x);

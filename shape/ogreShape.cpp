@@ -9,8 +9,9 @@ OgreShape::OgreShape()
 
 }
 //constructor for client side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh) : Shape(name,position)
-
+OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
+:
+	Shape(name,position)
 {
 	LogString("OgreShape Constructor");
 	//let's set our member variables to those passed in for use...
@@ -33,7 +34,9 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 }
 
 //this is the contructor for server side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root) : Shape(name,position)
+OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
+:
+	Shape(name,position)
 {
 	
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);

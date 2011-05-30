@@ -22,7 +22,9 @@ using namespace Ogre;
 
 ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
- : OgreShape(name, position,mSceneMgr,mesh), Rotation()
+:
+	OgreShape(name, position,mSceneMgr,mesh),
+	Rotation (                             )
 {
 	mServerShape = NULL;
 

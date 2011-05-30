@@ -105,10 +105,6 @@ set(HDRS
 	../shape/ogreShape.h
 	../shape/serverSideShape.h
 	
-	#player
-	../player/player.h
-	../player/serverSidePlayer.h
-	
 	#move
 	../move/move.h
 	../move/serverSideMove.h
@@ -165,10 +161,6 @@ set(SRCS
 	../shape/ogreShape.cpp
 	../shape/serverSideShape.cpp
 	
-	#player
-	../player/player.cpp
-	../player/serverSidePlayer.cpp
-	
 	#move
 	../move/move.cpp
 	../move/serverSideMove.cpp
@@ -222,10 +214,6 @@ set(HDRS
 	../shape/shape.h
 	../shape/ogreShape.h
 	../shape/serverSideShape.h
-	
-	#player
-	../player/player.h
-	../player/serverSidePlayer.h
 	
 	#move
 	../move/move.h
@@ -281,10 +269,6 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/ogreShape.cpp
-	
-	#player
-	../player/player.cpp
-	../player/serverSidePlayer.cpp
 	../shape/serverSideShape.cpp
 	
 	#move

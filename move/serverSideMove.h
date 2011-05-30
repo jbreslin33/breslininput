@@ -18,7 +18,7 @@ class ServerSideMove : public virtual OgreShape, public Move
 
 public:
 
-ServerSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root);
 ~ServerSideMove();
 
 //ticks

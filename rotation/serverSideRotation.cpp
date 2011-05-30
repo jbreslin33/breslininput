@@ -21,8 +21,10 @@ using namespace Ogre;
 #define KEY_SPACE				16
 
 ServerSideRotation::ServerSideRotation(std::string name, Vector3D* position,
-									   Ogre::SceneManager* mSceneMgr, std::string mesh)
- : OgreShape(name, position,mSceneMgr,mesh), Rotation()
+									   Ogre::Root* root)
+:
+	OgreShape(name,position,root),
+	Rotation (                  )
 {
 	mServerShape = NULL;
 
