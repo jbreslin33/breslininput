@@ -26,6 +26,22 @@ void interpolateTick    (float renderTime);
 void calculateVelocity(Command* command, float frametime);
 
 ClientSideMoveStateMachine* mMoveStateMachine;
+
+//thresholds
+float mRunSpeedMax;
+float mTurnSpeed;
+float mPosInterpLimitHigh;
+float mPosInterpLimitLow;
+
+float mPosInterpFactor;
+
+//deltas
+float mDeltaX;
+float mDeltaZ;
+float mDeltaY;
+
+float mDeltaPosition;
+
 };
 
 #endif
