@@ -3,8 +3,6 @@
 
 #include "../player/player.h"
 
-
-
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
