@@ -1,18 +1,19 @@
-#include "clientSideRotationStates.h"
-#include "clientSideRotationStateMachine.h"
+#include "serverSideRotationStates.h"
+#include "serverSideRotationStateMachine.h"
 
-#include "clientSideRotation.h"
+#include "serverSideRotation.h"
 
 Normal_Rotation* Normal_Rotation::Instance()
 {
   static Normal_Rotation instance;
   return &instance;
 }
-void Normal_Rotation::enter(ClientSideRotation* rotation)
+void Normal_Rotation::enter(ServerSideRotation* rotation)
 {
 }
-void Normal_Rotation::execute(ClientSideRotation* rotation)
+void Normal_Rotation::execute(ServerSideRotation* rotation)
 {
+	/*
 	// are we too far off
     if(abs(rotation->mDegreesToServer) > rotation->mRotInterpLimitHigh)
         {
@@ -38,9 +39,9 @@ void Normal_Rotation::execute(ClientSideRotation* rotation)
                         }
                 }
         }
-		
+		*/
 }
-void Normal_Rotation::exit(ClientSideRotation* rotation)
+void Normal_Rotation::exit(ServerSideRotation* rotation)
 {
 }
 
@@ -49,11 +50,12 @@ Catchup_Rotation* Catchup_Rotation::Instance()
   static Catchup_Rotation instance;
   return &instance;
 }
-void Catchup_Rotation::enter(ClientSideRotation* rotation)
+void Catchup_Rotation::enter(ServerSideRotation* rotation)
 {
 }
-void Catchup_Rotation::execute(ClientSideRotation* rotation)
+void Catchup_Rotation::execute(ServerSideRotation* rotation)
 {
+	/*
 	// are we back on track
     if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
     {
@@ -94,8 +96,9 @@ void Catchup_Rotation::execute(ClientSideRotation* rotation)
             }
 		}
 	}
+	*/
 }
-void Catchup_Rotation::exit(ClientSideRotation* rotation)
+void Catchup_Rotation::exit(ServerSideRotation* rotation)
 {
 }
 

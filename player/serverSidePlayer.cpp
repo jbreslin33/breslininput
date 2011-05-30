@@ -37,96 +37,95 @@ ServerSidePlayer::~ServerSidePlayer()
 
 void ServerSidePlayer::processTick()
 {
-        float clientFrametime;
+	float clientFrametime;
 
-        clientFrametime = mCommand.mMilliseconds / 1000.0f;;
+    clientFrametime = mCommand.mMilliseconds / 1000.0f;;
 
-        //calculateVelocity(&mClient->mCommand, clientFrametime);
+	setKeyDirection();
 
-        setKeyDirection();
+    mGoalDirection = Vector3::ZERO;   // we will calculate this
+    Real yawAtSpeed;
 
-        mGoalDirection = Vector3::ZERO;   // we will calculate this
-        Real yawAtSpeed;
-
-        if (mKeyDirection.isZeroLength())
-        {
-                if(mRunSpeed > 0.0)
-                   mRunSpeed -= mRunDecel;
-                else
-           mRunSpeed = 0.0;
-        }
+    if (mKeyDirection.isZeroLength())
+    {
+		if(mRunSpeed > 0.0)
+		{
+			mRunSpeed -= mRunDecel;
+		}
         else
+		{
+           mRunSpeed = 0.0;
+		}
+    }
+    else
+    {
+		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
+        mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
+        mGoalDirection.y = 0;
+        mGoalDirection.normalise();
+
+        Quaternion toGoal = mShape->mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
+        // calculate how much the character has to turn to face goal direction
+        Real yawToGoal = toGoal.getYaw().valueDegrees();
+
+        // this is how much the character CAN turn this frame
+        if(yawToGoal == 0.0)
+		{
+			yawAtSpeed = 0.0;
+		}
+        else
+		{
+			yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
+		}
+
+        // turn as much as we can, but not more than we need to
+        if (yawToGoal < 0)
+		{
+			yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
+		}         
+		else if (yawToGoal > 0)
+		{
+			yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
+		}               
+        mShape->mSceneNode->yaw(Degree(yawToGoal));
+            
+        if(mRunSpeed < MAX_RUN_SPEED)
+		{
+			mRunSpeed += mRunAccel;
+		}
+	}
+
+    // move in current body direction (not the goal direction)
+    mShape->mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,Node::TS_LOCAL);
+
+    if(mJumping)
+    {
+		LogString("mJumping");
+        mShape->mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
+        mVerticalVelocity -= mGravity * clientFrametime;
+
+        if(mShape->mSceneNode->getPosition().y < 0.0)
         {
-                mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
-                mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
-
-
-                mGoalDirection.y = 0;
-                mGoalDirection.normalise();
-
-                Quaternion toGoal = mShape->mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
-
-                // calculate how much the character has to turn to face goal direction
-                Real yawToGoal = toGoal.getYaw().valueDegrees();
-
-                // this is how much the character CAN turn this frame
-                if(yawToGoal == 0.0)
-                        yawAtSpeed = 0.0;
-                else
-                   yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
-        
-                // turn as much as we can, but not more than we need to
-                if (yawToGoal < 0) 
-                        yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
-                else if (yawToGoal > 0)
-                        yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
-                        
-                mShape->mSceneNode->yaw(Degree(yawToGoal));
-
-                //LogString("x %f", mShape->mSceneNode->getOrientation().zAxis().x);
-                //LogString("y %f", mShape->mSceneNode->getOrientation().zAxis().y);
-                //LogString("z %f", mShape->mSceneNode->getOrientation().zAxis().z);
-                
-                if(mRunSpeed < MAX_RUN_SPEED)
-                        mRunSpeed += mRunAccel;
-
+			LogString("if");
+            mShape->mSceneNode->setPosition(mShape->mSceneNode->getPosition().x, 0.0, mShape->mSceneNode->getPosition().z);
+            mVerticalVelocity = 0.0;
+            mJumping = false;
         }
+	}
 
-        // move in current body direction (not the goal direction)
-                mShape->mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,
-                        Node::TS_LOCAL);
+    mCommand.mVelocity.x = mShape->mSceneNode->getPosition().x - mCommand.mOrigin.x;
+    mCommand.mVelocity.z = mShape->mSceneNode->getPosition().z - mCommand.mOrigin.z;
+    mCommand.mVelocity.y = mShape->mSceneNode->getPosition().y - mCommand.mOrigin.y;
 
-                if(mJumping)
-                {
-                        LogString("mJumping");
-                   mShape->mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
-                   mVerticalVelocity -= mGravity * clientFrametime;
+    mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
+    mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
+    mCommand.mOrigin.y = mShape->mSceneNode->getPosition().y;
 
-                   if(mShape->mSceneNode->getPosition().y < 0.0)
-                   {
-                           LogString("if");
-              mShape->mSceneNode->setPosition(mShape->mSceneNode->getPosition().x, 0.0, mShape->mSceneNode->getPosition().z);
-              mVerticalVelocity = 0.0;
-                          mJumping = false;
-                   }
-                }
+    mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
+    mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
 
-        //if(mClient->mCommand.mVelocity.x != 0.0 || mClient->mCommand.mVelocity.z != 0.0)
-        //{
-           mCommand.mVelocity.x = mShape->mSceneNode->getPosition().x - mCommand.mOrigin.x;
-           mCommand.mVelocity.z = mShape->mSceneNode->getPosition().z - mCommand.mOrigin.z;
-           mCommand.mVelocity.y = mShape->mSceneNode->getPosition().y - mCommand.mOrigin.y;
-        //}
-
-        mCommand.mOrigin.x = mShape->mSceneNode->getPosition().x;
-        mCommand.mOrigin.z = mShape->mSceneNode->getPosition().z;
-        mCommand.mOrigin.y = mShape->mSceneNode->getPosition().y;
-
-        mCommand.mRot.x = mShape->mSceneNode->getOrientation().zAxis().x;
-        mCommand.mRot.z = mShape->mSceneNode->getOrientation().zAxis().z;
-
-        int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
-        mProcessedFrame = f;
+	int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+    mProcessedFrame = f;
 }
 void ServerSidePlayer::calculateVelocity(Command* command, float frametime)
 {

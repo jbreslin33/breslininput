@@ -1,4 +1,4 @@
-#include "clientSideMove.h"
+#include "serverSideMove.h"
 #include "../tdreamsock/dreamSockLog.h"
 
 #include <string>
@@ -8,8 +8,8 @@
 using namespace Ogre;
 
 //move states
-#include "clientSideMoveStateMachine.h"
-#include "clientSideMoveStates.h"
+#include "serverSideMoveStateMachine.h"
+#include "serverSideMoveStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -18,22 +18,22 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 							   std::string mesh)
  : OgreShape(name,position,mSceneMgr,mesh), Move() 
 {
 	//move states
-	mMoveStateMachine = new ClientSideMoveStateMachine(this);    //setup the state machine
+	mMoveStateMachine = new ServerSideMoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
 	mMoveStateMachine->setGlobalState       (NULL);
 }
 
-ClientSideMove::~ClientSideMove()
+ServerSideMove::~ServerSideMove()
 {
 }
 
-void ClientSideMove::processTick()
+void ServerSideMove::processTick()
 {
 	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
     mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
@@ -55,25 +55,7 @@ void ClientSideMove::processTick()
     mMoveStateMachine->update();
 }
 
-void ClientSideMove::interpolateTick(float renderTime)
-{
-	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
-
-    transVector.x = mCommand.mVelocity.x;
-    transVector.z = mCommand.mVelocity.z;
-    transVector.y = mCommand.mVelocity.y;
-        
-    getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
-
-    if(getSceneNode()->getPosition().y < 0.0)
-	{	
-		getSceneNode()->setPosition(getSceneNode()->getPosition().x,
-			0.0, getSceneNode()->getPosition().z);
-	}
-}
-
-
-void ClientSideMove::calculateVelocity(Command* command, float frametime)
+void ServerSideMove::calculateVelocity(Command* command, float frametime)
 {
 	command->mVelocity.x = 0.0f;
     command->mVelocity.z = 0.0f;

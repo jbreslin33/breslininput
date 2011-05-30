@@ -1,19 +1,20 @@
-#include "clientSideMoveStates.h"
-#include "clientSideMoveStateMachine.h"
+#include "serverSideMoveStates.h"
+#include "serverSideMoveStateMachine.h"
 
-#include "clientSideMove.h"
+#include "serverSideMove.h"
 
 Normal_Move* Normal_Move::Instance()
 {
   static Normal_Move instance;
   return &instance;
 }
-void Normal_Move::enter(ClientSideMove* move)
+void Normal_Move::enter(ServerSideMove* move)
 {
 
 }
-void Normal_Move::execute(ClientSideMove* move)
+void Normal_Move::execute(ServerSideMove* move)
 {
+	/*
 	// if distance exceeds threshold
     if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mCommand.mStop == false)
     {
@@ -43,8 +44,9 @@ void Normal_Move::execute(ClientSideMove* move)
         move->mCommand.mVelocity.z = serverDest.z;
         move->mCommand.mVelocity.y = serverDest.y;
 	}
+	*/
 }
-void Normal_Move::exit(ClientSideMove* move)
+void Normal_Move::exit(ServerSideMove* move)
 {
 }
 
@@ -53,11 +55,12 @@ Catchup_Move* Catchup_Move::Instance()
 	static Catchup_Move instance;
 	return &instance;
 }
-void Catchup_Move::enter(ClientSideMove* move)
+void Catchup_Move::enter(ServerSideMove* move)
 {
 }
-void Catchup_Move::execute(ClientSideMove* move)
+void Catchup_Move::execute(ServerSideMove* move)
 {
+	/*
 	//if we are back in sync
     if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mCommand.mStop == true)
     {
@@ -78,7 +81,7 @@ void Catchup_Move::execute(ClientSideMove* move)
         serverDest.x = move->mServerFrame.mOrigin.x + serverDest.x;
         serverDest.z = move->mServerFrame.mOrigin.z + serverDest.z;
         serverDest.y = move->mServerFrame.mOrigin.y + serverDest.y;
-                //LogString("mOrigin.y %f", move->mClient->mServerFrame.mOrigin.y);
+                //LogString("mOrigin.y %f", move->mServer->mServerFrame.mOrigin.y);
 
         myDest.x = serverDest.x - move->getSceneNode()->getPosition().x;
         myDest.z = serverDest.z - move->getSceneNode()->getPosition().z;
@@ -104,8 +107,9 @@ void Catchup_Move::execute(ClientSideMove* move)
         move->mCommand.mVelocity.z = myDest.z;
         move->mCommand.mVelocity.y = myDest.y;
 	}
+	*/
 }
-void Catchup_Move::exit(ClientSideMove* move)
+void Catchup_Move::exit(ServerSideMove* move)
 {
 }
 

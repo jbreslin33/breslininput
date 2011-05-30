@@ -1,36 +1,36 @@
-#ifndef CLIENTSIDEROTATIONSTATEMACHINE_H
-#define CLIENTSIDEROTATIONSTATEMACHINE_H
-#include "clientSideRotationState.h"
+#ifndef SERVERSIDEROTATIONSTATEMACHINE_H
+#define SERVERSIDEROTATIONSTATEMACHINE_H
+#include "serverSideRotationState.h"
 
-class ClientSideRotation;
+class ServerSideRotation;
 
-class ClientSideRotationStateMachine
+class ServerSideRotationStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ClientSideRotation*   m_pOwner;
-  ClientSideRotationState*    m_pCurrentState;
+  ServerSideRotation*   m_pOwner;
+  ServerSideRotationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ClientSideRotationState*   m_pPreviousState;
+  ServerSideRotationState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ClientSideRotationState*   m_pGlobalState;
+  ServerSideRotationState*   m_pGlobalState;
 
 public:
 
-  ClientSideRotationStateMachine(ClientSideRotation* owner):m_pOwner(owner),
+  ServerSideRotationStateMachine(ServerSideRotation* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ClientSideRotationStateMachine(){}
+  virtual ~ServerSideRotationStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ClientSideRotationState* s){m_pCurrentState = s;}
-  void setGlobalState(ClientSideRotationState* s) {m_pGlobalState = s;}
-  void setPreviousState(ClientSideRotationState* s){m_pPreviousState = s;}
+  void setCurrentState(ServerSideRotationState* s){m_pCurrentState = s;}
+  void setGlobalState(ServerSideRotationState* s) {m_pGlobalState = s;}
+  void setPreviousState(ServerSideRotationState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ClientSideRotationState* pNewState)
+  void  changeState(ServerSideRotationState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ClientSideRotationState*  currentState()  const{return m_pCurrentState;}
-  ClientSideRotationState*  globalState()   const{return m_pGlobalState;}
-  ClientSideRotationState*  previousState() const{return m_pPreviousState;}
+  ServerSideRotationState*  currentState()  const{return m_pCurrentState;}
+  ServerSideRotationState*  globalState()   const{return m_pGlobalState;}
+  ServerSideRotationState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 
