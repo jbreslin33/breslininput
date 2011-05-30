@@ -7,7 +7,7 @@
 #include "../math/vector3D.h"
 #include <math.h>
 
-#define MAX_RUN_SPEED 500           // character running speed in units per second
+#define MAX_RUN_SPEED 200           // character running speed in units per second
 #define TURN_SPEED 250.0f      // character turning in degrees per second
 
 #define KEY_UP                                  1
