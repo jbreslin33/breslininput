@@ -23,6 +23,7 @@ void processTick();
 void calculateVelocity(Command *command, float frametime);
 void setKeyDirection();
 void startJump();
+
 //associated client
 Client* mClient;
 
