@@ -130,17 +130,6 @@ void ServerSideMove::processTick()
             mJumping = false;
         }
 	}
-
-    mCommand.mVelocity.x = mSceneNode->getPosition().x - mCommand.mOrigin.x;
-    mCommand.mVelocity.z = mSceneNode->getPosition().z - mCommand.mOrigin.z;
-    mCommand.mVelocity.y = mSceneNode->getPosition().y - mCommand.mOrigin.y;
-
-    mCommand.mOrigin.x = mSceneNode->getPosition().x;
-    mCommand.mOrigin.z = mSceneNode->getPosition().z;
-    mCommand.mOrigin.y = mSceneNode->getPosition().y;
-
-    mCommand.mRot.x = mSceneNode->getOrientation().zAxis().x;
-    mCommand.mRot.z = mSceneNode->getOrientation().zAxis().z;
 }
 
 void ServerSideMove::setKeyDirection()
