@@ -389,7 +389,7 @@ void ClientSideGame::ReadDeltaMoveCommand(Message *mes, ClientSideShape *client)
 		client->mServerFrame.mKey = mes->ReadByte();
 
 		client->mCommand.mKey = client->mServerFrame.mKey;
-		LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
 	}
 
 	// Origin
