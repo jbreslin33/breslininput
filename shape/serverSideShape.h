@@ -20,6 +20,9 @@ ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root);
 
 void processTick();
 
+//associated client if any
+Client* mClient;
+
 };
 
 #endif

@@ -28,9 +28,6 @@ void calculateVelocity(Command* command, float frametime);
 void setKeyDirection();
 void startJump();
 
-//associated client if any
-Client* mClient;
-
 ServerSideMoveStateMachine* mMoveStateMachine;
 
 //keys
