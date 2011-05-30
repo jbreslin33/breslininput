@@ -16,19 +16,6 @@ Move();
 ~Move();
 
 float mRunSpeed;
-float mRunSpeedMax;
-float mTurnSpeed;
-float mPosInterpLimitHigh;
-float mPosInterpLimitLow;
-float mPosInterpFactor;
-
-//deltas
-float mDeltaX;
-float mDeltaZ;
-float mDeltaY;
-
-float mDeltaPosition;
-
 
 };
 

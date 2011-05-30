@@ -35,7 +35,6 @@ ServerSideMoveStateMachine* mMoveStateMachine;
 
 //keys
 Vector3 mKeyDirection;
-
 Vector3 mGoalDirection;
 
 //run acceleration
@@ -43,7 +42,7 @@ float mRunDecel;
 float mRunAccel;
 
 //jumping
-bool mJumping;
+bool  mJumping;
 float mVerticalVelocity;
 float mJumpAccel;
 float mGravity;
