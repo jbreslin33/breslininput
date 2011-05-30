@@ -8,9 +8,8 @@
 OgreAnimation::OgreAnimation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								   std::string mesh) : OgreShape(name,position,mSceneMgr,mesh)
 {
-	mEntity = NULL;
 	mStop = true;
-	//setupAnimations();
+	setupAnimations();
 }
 
 OgreAnimation::~OgreAnimation()
@@ -19,9 +18,8 @@ OgreAnimation::~OgreAnimation()
 
 
 
-void OgreAnimation::setupAnimations(Entity* entity)
+void OgreAnimation::setupAnimations()
 	{
-		mEntity = entity;
 		// this is very important due to the nature of the exported animations
 		mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
 		String animNames[] =

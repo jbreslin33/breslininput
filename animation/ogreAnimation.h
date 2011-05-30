@@ -41,7 +41,7 @@ public:
 
 //animation
 void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
-void         setupAnimations  (Entity* entity);
+void         setupAnimations  ();
 void         fadeAnimations   (Real deltaTime);
 void         setTopAnimation  (AnimID id, bool reset);
 void         setBaseAnimation (AnimID id, bool reset);
@@ -56,8 +56,6 @@ bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
 Real            mTimer;                // general timer to see how long animations have been playing
 AnimationState  *mAnimationState;
 bool            mStop;
-
-Entity* mEntity;
 
 };
 
