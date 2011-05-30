@@ -24,6 +24,19 @@ void ServerSideShape::processTick()
 	ServerSideMove::processTick();
 	ServerSideRotation::processTick();
 
+	//set all vars to be sent off to clients playing on internets
+    mCommand.mVelocity.x = mSceneNode->getPosition().x - mCommand.mOrigin.x;
+    mCommand.mVelocity.z = mSceneNode->getPosition().z - mCommand.mOrigin.z;
+    mCommand.mVelocity.y = mSceneNode->getPosition().y - mCommand.mOrigin.y;
+
+    mCommand.mOrigin.x = mSceneNode->getPosition().x;
+    mCommand.mOrigin.z = mSceneNode->getPosition().z;
+    mCommand.mOrigin.y = mSceneNode->getPosition().y;
+
+    mCommand.mRot.x = mSceneNode->getOrientation().zAxis().x;
+    mCommand.mRot.z = mSceneNode->getOrientation().zAxis().z;
+
+	//set mProcessed frame if their is a client controlling this shape
 	if (mClient != NULL)
 	{
 		int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
