@@ -10,10 +10,7 @@ ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::Sce
  OgreAnimation(name,position,mSceneMgr,mesh),
  OgreShape(name,position,mSceneMgr,mesh)
 {
-	LogString("ClientSideShape Constructor");
-//setupAnimations(mEntity);
 	mServerShape = NULL;
-	
 }
 
 ClientSideShape::~ClientSideShape()
@@ -22,7 +19,6 @@ ClientSideShape::~ClientSideShape()
 
 void ClientSideShape::processTick()
 {
-	//LogString("clientSideShape::processTick");
 	ClientSideMove::processTick();
 	ClientSideRotation::processTick();
 
@@ -31,9 +27,8 @@ void ClientSideShape::interpolateTick(float renderTime)
 {
 	ClientSideMove::interpolateTick(renderTime);
 	ClientSideRotation::interpolateTick(renderTime);
-	        float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
+	float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
-		float yVelocity = mServerFrame.mVelocity.y;
+	float yVelocity = mServerFrame.mVelocity.y;
 	OgreAnimation::updateAnimations(yVelocity, renderTime, mCommand.mStop, animSpeed);
-
 }

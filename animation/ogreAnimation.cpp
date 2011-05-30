@@ -8,7 +8,6 @@
 OgreAnimation::OgreAnimation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								   std::string mesh) : OgreShape(name,position,mSceneMgr,mesh)
 {
-	mStop = true;
 	setupAnimations();
 }
 
@@ -16,33 +15,31 @@ OgreAnimation::~OgreAnimation()
 {
 }
 
-
-
 void OgreAnimation::setupAnimations()
+{
+	// this is very important due to the nature of the exported animations
+	mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
+	String animNames[] =
+	{"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",
+	"SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
+
+	// populate our animation list
+	for (int i = 0; i < NUM_ANIMS; i++)
 	{
-		// this is very important due to the nature of the exported animations
-		mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
-		String animNames[] =
-		{"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",
-		"SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
-
-		// populate our animation list
-		for (int i = 0; i < NUM_ANIMS; i++)
-		{
-			mAnims[i] = mEntity->getAnimationState(animNames[i]);
-			mAnims[i]->setLoop(true);
-			mFadingIn[i] = false;
-			mFadingOut[i] = false;
-		}
-
-		// start off in the idle state (top and bottom together)
-		setBaseAnimation(ANIM_IDLE_BASE,false);
-		setTopAnimation(ANIM_IDLE_TOP,false);
-
-		// relax the hands since we're not holding anything
-		mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
-
+		mAnims[i] = mEntity->getAnimationState(animNames[i]);
+		mAnims[i]->setLoop(true);
+		mFadingIn[i] = false;
+		mFadingOut[i] = false;
 	}
+
+	// start off in the idle state (top and bottom together)
+	setBaseAnimation(ANIM_IDLE_BASE,false);
+	setTopAnimation(ANIM_IDLE_TOP,false);
+
+	// relax the hands since we're not holding anything
+	mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+
+}
 
 void OgreAnimation::addTime(Real deltaTime)
 {
@@ -51,14 +48,12 @@ void OgreAnimation::addTime(Real deltaTime)
 
 void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
 {
-	mStop = stop;
-
 	Real baseAnimSpeed = animSpeed;
 	Real topAnimSpeed = animSpeed;
 
 	mTimer += deltaTime;
 
-	if (mStop == false)
+	if (mCommand.mStop == false)
 	{
 		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
 		{
