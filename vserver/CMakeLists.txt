@@ -103,10 +103,29 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/ogreShape.h
+	../shape/serverSideShape.h
 	
 	#player
 	../player/player.h
 	../player/serverSidePlayer.h
+	
+	#move
+	../move/move.h
+	../move/serverSideMove.h
+	
+	#move states
+	../move/serverSideMoveStateMachine.h
+	../move/serverSideMoveState.h
+	../move/serverSideMoveStates.h
+	
+	#rotation
+	../rotation/rotation.h
+	../rotation/serverSideRotation.h
+	
+	#rotation states
+	../rotation/serverSideRotationStateMachine.h
+	../rotation/serverSideRotationState.h
+	../rotation/serverSideRotationStates.h	
 	
 	#math
 	../math/vector3D.h
@@ -144,10 +163,25 @@ set(SRCS
 	#shape
 	../shape/shape.cpp
 	../shape/ogreShape.cpp
+	../shape/serverSideShape.cpp
 	
 	#player
 	../player/player.cpp
 	../player/serverSidePlayer.cpp
+	
+	#move
+	../move/move.cpp
+	../move/serverSideMove.cpp
+	
+	#move states
+	../move/serverSideMoveStates.cpp
+	
+	#rotation
+	../rotation/rotation.cpp
+	../rotation/serverSideRotation.cpp
+	
+	#rotation states
+	../rotation/serverSideRotationStates.cpp
 	
 	#math
 	../math/vector3D.cpp
@@ -187,10 +221,29 @@ set(HDRS
 	#shape
 	../shape/shape.h
 	../shape/ogreShape.h
+	../shape/serverSideShape.h
 	
 	#player
 	../player/player.h
 	../player/serverSidePlayer.h
+	
+	#move
+	../move/move.h
+	../move/serverSideMove.h
+	
+	#move states
+	../move/serverSideMoveStateMachine.h
+	../move/serverSideMoveState.h
+	../move/serverSideMoveStates.h
+	
+	#rotation
+	../rotation/rotation.h
+	../rotation/serverSideRotation.h
+	
+	#rotation states
+	../rotation/serverSideRotationStateMachine.h
+	../rotation/serverSideRotationState.h
+	../rotation/serverSideRotationStates.h	
 	
 	#math
 	../math/vector3D.h
@@ -232,6 +285,21 @@ set(SRCS
 	#player
 	../player/player.cpp
 	../player/serverSidePlayer.cpp
+	../shape/serverSideShape.cpp
+	
+	#move
+	../move/move.cpp
+	../move/serverSideMove.cpp
+	
+	#move states
+	../move/serverSideMoveStates.cpp
+	
+	#rotation
+	../rotation/rotation.cpp
+	../rotation/serverSideRotation.cpp
+	
+	#rotation states
+	../rotation/serverSideRotationStates.cpp
 	
 	#math
 	../math/vector3D.cpp

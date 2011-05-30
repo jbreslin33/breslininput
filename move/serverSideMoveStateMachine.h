@@ -1,36 +1,36 @@
-#ifndef CLIENTSIDEMOVESTATEMACHINE_H
-#define CLIENTSIDEMOVESTATEMACHINE_H
-#include "clientSideMoveState.h"
+#ifndef SERVERSIDEMOVESTATEMACHINE_H
+#define SERVERSIDEMOVESTATEMACHINE_H
+#include "serverSideMoveState.h"
 
-class ClientSideMove;
+class ServerSideMove;
 
-class ClientSideMoveStateMachine
+class ServerSideMoveStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ClientSideMove*   m_pOwner;
-  ClientSideMoveState*    m_pCurrentState;
+  ServerSideMove*   m_pOwner;
+  ServerSideMoveState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ClientSideMoveState*   m_pPreviousState;
+  ServerSideMoveState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ClientSideMoveState*   m_pGlobalState;
+  ServerSideMoveState*   m_pGlobalState;
 
 public:
 
-  ClientSideMoveStateMachine(ClientSideMove* owner):m_pOwner(owner),
+  ServerSideMoveStateMachine(ServerSideMove* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ClientSideMoveStateMachine(){}
+  virtual ~ServerSideMoveStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ClientSideMoveState* s){m_pCurrentState = s;}
-  void setGlobalState(ClientSideMoveState* s) {m_pGlobalState = s;}
-  void setPreviousState(ClientSideMoveState* s){m_pPreviousState = s;}
+  void setCurrentState(ServerSideMoveState* s){m_pCurrentState = s;}
+  void setGlobalState(ServerSideMoveState* s) {m_pGlobalState = s;}
+  void setPreviousState(ServerSideMoveState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ClientSideMoveState* pNewState)
+  void  changeState(ServerSideMoveState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ClientSideMoveState*  currentState()  const{return m_pCurrentState;}
-  ClientSideMoveState*  globalState()   const{return m_pGlobalState;}
-  ClientSideMoveState*  previousState() const{return m_pPreviousState;}
+  ServerSideMoveState*  currentState()  const{return m_pCurrentState;}
+  ServerSideMoveState*  globalState()   const{return m_pGlobalState;}
+  ServerSideMoveState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

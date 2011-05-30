@@ -1,5 +1,5 @@
-#ifndef CLIENTSIDEROTATION_H
-#define CLIENTSIDEROTATION_H
+#ifndef SERVERSIDEROTATION_H
+#define SERVERSIDEROTATION_H
 
 //parents
 #include "rotation.h"
@@ -10,26 +10,24 @@
 using namespace Ogre;
 
 class Command;
-class ClientSideRotationStateMachine;
-class ClientSideShape;
+class ServerSideRotationStateMachine;
+class ServerSideShape;
 
-class ClientSideRotation :  public virtual OgreShape, public Rotation
+class ServerSideRotation :  public virtual OgreShape, public Rotation
 {
 
 public:
 
-ClientSideRotation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
-~ClientSideRotation();
+ServerSideRotation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+~ServerSideRotation();
 
-void setServerShape(ClientSideShape* serverShape) { mServerShape = serverShape; }
+void setServerShape(ServerSideShape* serverShape) { mServerShape = serverShape; }
 
 //movement
 void processTick    ();
 
-void interpolateTick    (float renderTime);
-
-ClientSideShape* mServerShape;
-ClientSideRotationStateMachine* mRotationStateMachine;
+ServerSideShape* mServerShape;
+ServerSideRotationStateMachine* mRotationStateMachine;
 };
 
 #endif

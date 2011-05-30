@@ -1,23 +1,23 @@
-#ifndef CLIENTSIDEROTATIONSTATE_H
-#define CLIENTSIDEROTATIONSTATE_H
+#ifndef SERVERSIDEROTATIONSTATE_H
+#define SERVERSIDEROTATIONSTATE_H
 
-class ClientSideRotation;
+class ServerSideRotation;
 
-class ClientSideRotationState
+class ServerSideRotationState
 {
 public:
 
-  virtual ~ClientSideRotationState(){}
+  virtual ~ServerSideRotationState(){}
 
   //this will execute when the state is entered
-  virtual void enter(ClientSideRotation*)=0;
+  virtual void enter(ServerSideRotation*)=0;
 
   //this is the states normal update function
-  virtual void execute(ClientSideRotation*)=0;
+  virtual void execute(ServerSideRotation*)=0;
 
   //this will execute when the state is exited. (My word, isn't
   //life full of surprises... ;o))
-  virtual void exit(ClientSideRotation*)=0;
+  virtual void exit(ServerSideRotation*)=0;
 };
 
 #endif

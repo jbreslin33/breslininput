@@ -1,7 +1,7 @@
-#include "clientSideRotation.h"
+#include "serverSideRotation.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../shape/clientSideShape.h"
+#include "../shape/serverSideShape.h"
 
 #include <string>
 
@@ -10,8 +10,8 @@
 using namespace Ogre;
 
 //rotation states
-#include "clientSideRotationStateMachine.h"
-#include "clientSideRotationStates.h"
+#include "serverSideRotationStateMachine.h"
+#include "serverSideRotationStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -20,25 +20,26 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
+ServerSideRotation::ServerSideRotation(std::string name, Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
  : OgreShape(name, position,mSceneMgr,mesh), Rotation()
 {
 	mServerShape = NULL;
 
 	//rotation states
-	mRotationStateMachine = new ClientSideRotationStateMachine(this);    //setup the state machine
+	mRotationStateMachine = new ServerSideRotationStateMachine(this);    //setup the state machine
 	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
 	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
 	mRotationStateMachine->setGlobalState       (NULL);
 }
 
-ClientSideRotation::~ClientSideRotation()
+ServerSideRotation::~ServerSideRotation()
 {
 }
 
-void ClientSideRotation::processTick()
+void ServerSideRotation::processTick()
 {
+	/*
     mServerRotOld  = Ogre::Vector3::ZERO;
     mServerRotNew  = Ogre::Vector3::ZERO;
 
@@ -74,38 +75,5 @@ void ClientSideRotation::processTick()
     mServerShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
 
         mRotationStateMachine->update();
-		
+	*/	
 }
-
-void ClientSideRotation::interpolateTick(float renderTime)
-{
-	
-    float rotSpeed = mCommand.mRotSpeed * renderTime;
-        getSceneNode()->yaw(Degree(rotSpeed));
-
-        Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
-
-        serverRotNew.x = mServerFrame.mRot.x;
-        serverRotNew.z = mServerFrame.mRot.z;
-
-        serverRotNew.normalise();
-
-        //calculate how far off we are from server
-    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
-        // convert to degrees
-        Real mDegreesToServer = toServer.getYaw().valueDegrees();
-
-        // are we back in sync
-        if(abs(mDegreesToServer) < mRotInterpLimitLow)
-        {
-       mCommand.mCatchupRot = false;
-        }
-
-        if (mServerRotSpeed == 0.0 && mCommand.mCatchupRot == false)
-        {
-       mCommand.mRotSpeed = 0.0;
-        }
-		
-}
-
