@@ -18,8 +18,6 @@ public:
 ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root);
 ~ServerSideShape();
 
-ServerSideShape* mServerShape;
-
 void processTick();
 
 };

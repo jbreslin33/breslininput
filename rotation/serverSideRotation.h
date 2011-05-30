@@ -21,12 +21,9 @@ public:
 ServerSideRotation(std::string name, Vector3D* position, Ogre::Root* root);
 ~ServerSideRotation();
 
-void setServerShape(ServerSideShape* serverShape) { mServerShape = serverShape; }
-
 //movement
 void processTick    ();
 
-ServerSideShape* mServerShape;
 ServerSideRotationStateMachine* mRotationStateMachine;
 };
 

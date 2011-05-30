@@ -9,7 +9,7 @@ ServerSideShape::ServerSideShape(std::string name, Vector3D* position, Ogre::Roo
 	ServerSideRotation(name,position,root),
 	OgreShape		  (name,position,root)
 {
-	mServerShape = NULL;
+
 }
 
 ServerSideShape::~ServerSideShape()
@@ -18,6 +18,7 @@ ServerSideShape::~ServerSideShape()
 
 void ServerSideShape::processTick()
 {
+	//LogString("serverSideshape tick");
 	ServerSideMove::processTick();
 	ServerSideRotation::processTick();
 

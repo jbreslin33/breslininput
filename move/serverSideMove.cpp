@@ -29,16 +29,22 @@ ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root*
 	Move     (                  ) 
 {
 
+
+
 	mClient = NULL;
 
 	mKeyDirection  = Vector3::ZERO;
 	mGoalDirection = Vector3::ZERO;
-    
-	mJumping  = false;
-    mJumpAccel   = 300.0;
-    mGravity     = 900.0;
 
-	//move states
+    mKeyDirection = Vector3::ZERO;
+	mGoalDirection = Vector3::ZERO;
+        mJumping  = false;
+        mRunAccel    = 5.0;
+        mRunDecel    = 5.0;
+        mJumpAccel   = 300.0;
+        mGravity     = 900.0;
+
+  	//move states
 	mMoveStateMachine = new ServerSideMoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());

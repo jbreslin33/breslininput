@@ -37,8 +37,6 @@ void ServerSideGame::ShutdownNetwork(void)
 
 void ServerSideGame::createPlayer(Client* client, int runningIndex)
 {
-	//OgreShape* shape = new OgreShape("oshape" + runningIndex,new Vector3D(),mRoot);
-	
 	client->mServerSideShape = new ServerSideShape("oplayer" + runningIndex, new Vector3D(),mRoot);
 	client->mServerSideShape->mClient = client;
 	//ServerSideShape* 
