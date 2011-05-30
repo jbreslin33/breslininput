@@ -39,7 +39,6 @@ void ServerSideGame::createPlayer(Client* client, int runningIndex)
 {
 	client->mServerSideShape = new ServerSideShape("oplayer" + runningIndex, new Vector3D(),mRoot);
 	client->mServerSideShape->mClient = client;
-	//ServerSideShape* 
 }
 
 void ServerSideGame::Frame(int msec)

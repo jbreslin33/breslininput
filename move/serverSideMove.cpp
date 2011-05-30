@@ -28,8 +28,6 @@ ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root*
 	OgreShape(name,position,root),
 	Move     (                  ) 
 {
-	//neccesary evil should this just be in ServerSideShape? in case anyone else wants it?
-	mClient = NULL;
 	
 	//keys
     mKeyDirection = Vector3::ZERO;
@@ -144,8 +142,7 @@ void ServerSideMove::processTick()
     mCommand.mRot.x = mSceneNode->getOrientation().zAxis().x;
     mCommand.mRot.z = mSceneNode->getOrientation().zAxis().z;
 
-	int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
-    mProcessedFrame = f;
+
 }
 void ServerSideMove::calculateVelocity(Command* command, float frametime)
 {
