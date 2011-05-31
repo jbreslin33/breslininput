@@ -53,19 +53,8 @@ ServerSideMove::~ServerSideMove()
 }
 void ServerSideMove::processTick()
 {
-
-	//i can see it looks like i need to do rotation first but only if
-	//mkey != 0
 	float clientFrametime;
-
     clientFrametime = mCommand.mMilliseconds / 1000.0f;;
-
-	//setKeyDirection();
-
-
-
-  //  mGoalDirection = Vector3::ZERO;   // we will calculate this
-    //Real yawAtSpeed;
 
     if (mCommand.mKey == 0)
 	{
@@ -80,8 +69,6 @@ void ServerSideMove::processTick()
     }
 	else
 	{
-		//this only gets called if their is mKey so should it be the 
-		//first thing that gets called on move?
         if(mRunSpeed < MAX_RUN_SPEED)
 		{
 			mRunSpeed += mRunAccel;
@@ -91,7 +78,7 @@ void ServerSideMove::processTick()
     // move in current body direction (not the goal direction)
     mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,Node::TS_LOCAL);
 
-
+	/********************** JUMP **********************/
     if(mCommand.mKey & KEY_SPACE) 
     {
 		if(!mJumping)
@@ -102,18 +89,17 @@ void ServerSideMove::processTick()
 
     if(mJumping)
     {
-		//LogString("mJumping");
         mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
         mVerticalVelocity -= mGravity * clientFrametime;
 
         if(mSceneNode->getPosition().y < 0.0)
         {
-			//LogString("if");
             mSceneNode->setPosition(mSceneNode->getPosition().x, 0.0, mSceneNode->getPosition().z);
             mVerticalVelocity = 0.0;
             mJumping = false;
         }
 	}
+	/****************** END JUMP ************************/
 }
 
 
