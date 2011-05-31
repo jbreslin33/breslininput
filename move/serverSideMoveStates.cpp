@@ -3,6 +3,8 @@
 
 #include "serverSideMove.h"
 
+#include "../command/command.h"
+
 #define MAX_RUN_SPEED 200           // character running speed in units per second
 
 Normal_Move* Normal_Move::Instance()
@@ -16,9 +18,6 @@ void Normal_Move::enter(ServerSideMove* move)
 }
 void Normal_Move::execute(ServerSideMove* move)
 {
-	float clientFrametime;
-    clientFrametime = move->mCommand.mMilliseconds / 1000.0f;;
-
     if (move->mCommand.mKey == 0)
 	{
 		if(move->mRunSpeed > 0.0)
@@ -39,7 +38,7 @@ void Normal_Move::execute(ServerSideMove* move)
 	}
 
     // move in current body direction (not the goal direction)
-    move->mSceneNode->translate(0, 0, clientFrametime * move->mRunSpeed,Node::TS_LOCAL);
+	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);
 }
 void Normal_Move::exit(ServerSideMove* move)
 {

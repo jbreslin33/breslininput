@@ -9,11 +9,11 @@ public:
 ServerSideCommand();
 ~ServerSideCommand();
 	
-	int key;								// Pressed keys
+//	int key;								// Pressed keys
 
-	Vector3D vel;							// Velocity
-	Vector3D origin;						// Position
+//	Vector3D vel;							// Velocity
+//	Vector3D origin;						// Position
 
-	int msec;								// How long to run command (in ms)
+//	int msec;								// How long to run command (in ms)
 };
 #endif

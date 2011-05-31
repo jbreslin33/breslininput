@@ -5,8 +5,7 @@
 
 #include "../client/serverSideClient.h"
 #include "../shape/serverSideShape.h"
-#include "../command/serverSideCommand.h"
-
+#include "../command/command.h"
 
 ServerSideGame::ServerSideGame()
 {
@@ -94,7 +93,7 @@ void ServerSideGame::SendCommand(void)
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
 		int num = (mServer->mClientVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mServer->mClientVector.at(i)->mServerSideShape->mFrame[num], &mServer->mClientVector.at(i)->mServerSideShape->mCommand, sizeof(ServerSideCommand));
+		memcpy(&mServer->mClientVector.at(i)->mServerSideShape->mFrame[num], &mServer->mClientVector.at(i)->mServerSideShape->mCommand, sizeof(Command));
 	}
 }
 
@@ -129,6 +128,8 @@ void ServerSideGame::ReadDeltaMoveCommand(Message *mes, Client *client)
 
 	// Read time to run command
 	client->mServerSideShape->mCommand.mMilliseconds = mes->ReadByte();
+	//let's set the shape's clientFrameTime right here.....
+	client->mServerSideShape->mCommand.mClientFrametime = client->mServerSideShape->mCommand.mMilliseconds / 1000.0f;
 }
 
 void ServerSideGame::BuildMoveCommand(Message *mes, Client *client)

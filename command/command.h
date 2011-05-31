@@ -23,5 +23,7 @@ int mMilliseconds;      //not used
 bool mCatchup;          //true = pos needs to catchup
 bool mCatchupRot;       //true = rot needs to catchup
 bool mStop;             //true = server is not moving
+
+float mClientFrametime;
 };
 #endif
