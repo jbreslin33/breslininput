@@ -5,6 +5,8 @@
 
 #include "../shape/clientSideShape.h"
 
+
+
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
 #define VK_DOWN 0x28
@@ -37,6 +39,7 @@ class DreamWinSock;
 class Network;
 class Message;
 class Client;
+class MovableTextOverlay;
 
 class ClientSideGame : public BaseApplication
 {
@@ -78,7 +81,8 @@ public:
 	ClientSideShape* mLocalShape;		// Pointer to the local client in the client list
 	ClientSideShape* mInputShape;			// Handles all keyboard input
 	std::vector<ClientSideShape*> mShapeVector;	
-
+	vector<MovableTextOverlay*> myVect;
+	
 	//time
 	float mFrameTime;
 	float mRenderTime;
