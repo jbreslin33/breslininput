@@ -28,11 +28,9 @@ void ServerSideShape::processTick()
 	//should we though? we do it for movement below
 	//does rotation not get to do the same?
 	//is this why the rotation gets off???
+	//UPDATE--I now check for mKey inside Rotation State machine
     
-	//if (mCommand.mKey != 0)
-	//{
-		ServerSideRotation::processTick();
-	//}
+	ServerSideRotation::processTick();
 
 	//even though there is no mKey set we still need to move as
 	//brian has put in a deceleration factor so let's let it run...
