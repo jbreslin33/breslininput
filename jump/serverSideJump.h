@@ -26,7 +26,6 @@ void startJump();
 ServerSideJumpStateMachine* mJumpStateMachine;
 
 //jumping
-bool  mJumping;
 float mVerticalVelocity;
 float mJumpAccel;
 float mGravity;

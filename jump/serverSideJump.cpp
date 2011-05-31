@@ -23,7 +23,6 @@ ServerSideJump::ServerSideJump(std::string name, Vector3D* position, Ogre::Root*
 	OgreShape(name,position,root)
 {
 	//jumping
-    mJumping  = false;
 	mVerticalVelocity = 0.0;
     mJumpAccel   = 300.0;
     mGravity     = 900.0;
@@ -46,6 +45,5 @@ void ServerSideJump::processTick()
 
 void ServerSideJump::startJump()
 {
-	mJumping = true;
 	mVerticalVelocity = mJumpAccel;
 }
