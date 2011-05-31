@@ -30,10 +30,12 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mSceneNode->attachObject(mEntity);
 
 //billboard
+		// create the attributes used by MovableTextOverlay
+	MovableTextOverlayAttributes *attrs = new MovableTextOverlayAttributes("Attrs1",mSceneMgr->getCamera("PlayerCam"),"BlueHighway",16,ColourValue::White,"RedTransparent");
 	//mSceneMgr->getCamera("PlayerCam");
 //	mText = new ObjectTextDisplay(mEntity, mSceneMgr->getCamera("PlayerCam"));
   //  mText->enable(true);
-    //mText->setText("Ogre Head");
+  //  mText->setText("Ogre Head");
 //end billboard
 
 }
