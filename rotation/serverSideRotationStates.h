@@ -15,12 +15,12 @@ public:
   void exit   (ServerSideRotation* rotation);
 };
 
-class Catchup_Rotation : public ServerSideRotationState
+class No_Rotation : public ServerSideRotationState
 {
 private:
-  Catchup_Rotation(){}
+  No_Rotation(){}
 public:
-  static Catchup_Rotation* Instance();
+  static No_Rotation* Instance();
   void enter  (ServerSideRotation* rotation);
   void execute(ServerSideRotation* rotation);
   void exit   (ServerSideRotation* rotation);

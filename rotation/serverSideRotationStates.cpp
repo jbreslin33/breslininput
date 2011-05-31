@@ -15,6 +15,12 @@ void Normal_Rotation::enter(ServerSideRotation* rotation)
 }
 void Normal_Rotation::execute(ServerSideRotation* rotation)
 {
+	if (rotation->mCommand.mKey == 0)
+	{
+		rotation->mRotationStateMachine->changeState(No_Rotation::Instance());
+		return;
+	}
+	
 	float clientFrametime;
 
     clientFrametime = rotation->mCommand.mMilliseconds / 1000.0f;;
@@ -59,19 +65,23 @@ void Normal_Rotation::exit(ServerSideRotation* rotation)
 {
 }
 
-Catchup_Rotation* Catchup_Rotation::Instance()
+No_Rotation* No_Rotation::Instance()
 {
-  static Catchup_Rotation instance;
+  static No_Rotation instance;
   return &instance;
 }
-void Catchup_Rotation::enter(ServerSideRotation* rotation)
+void No_Rotation::enter(ServerSideRotation* rotation)
 {
 }
-void Catchup_Rotation::execute(ServerSideRotation* rotation)
+void No_Rotation::execute(ServerSideRotation* rotation)
 {
-	
+	if (rotation->mCommand.mKey != 0)
+	{
+		rotation->mRotationStateMachine->changeState(Normal_Rotation::Instance());
+		return;
+	}
 }
-void Catchup_Rotation::exit(ServerSideRotation* rotation)
+void No_Rotation::exit(ServerSideRotation* rotation)
 {
 }
 
