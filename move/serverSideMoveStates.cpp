@@ -18,45 +18,157 @@ void Normal_Move::enter(ServerSideMove* move)
 }
 void Normal_Move::execute(ServerSideMove* move)
 {
-    if (move->mCommand.mKey == 0)
+    if (move->mCommand.mKey == 0) 
 	{
-		if(move->mRunSpeed > 0.0)
+		if(move->mRunSpeed > 0.0) //Decelerate_Move
 		{
-			move->mRunSpeed -= move->mRunDecel;
+			move->mMoveStateMachine->changeState(Decelerate_Move::Instance());
+			return;
 		}
-        else
+        else //No_Move
 		{
-           move->mRunSpeed = 0.0;
+			move->mMoveStateMachine->changeState(No_Move::Instance());
+			return;
 		}
     }
-	else
+	else 
 	{
-        if(move->mRunSpeed < MAX_RUN_SPEED)
+        if(move->mRunSpeed < MAX_RUN_SPEED) //Accelerate_Move
 		{
-			move->mRunSpeed += move->mRunAccel;
+			move->mMoveStateMachine->changeState(Accelerate_Move::Instance());
+			return;
 		}
 	}
 
-    // move in current body direction (not the goal direction)
+	// move in current body direction (not the goal direction)
 	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);
 }
 void Normal_Move::exit(ServerSideMove* move)
 {
 }
 
-Catchup_Move* Catchup_Move::Instance()
+No_Move* No_Move::Instance()
 {
-	static Catchup_Move instance;
+	static No_Move instance;
 	return &instance;
 }
-void Catchup_Move::enter(ServerSideMove* move)
+void No_Move::enter(ServerSideMove* move)
 {
 }
-void Catchup_Move::execute(ServerSideMove* move)
+void No_Move::execute(ServerSideMove* move)
 {
-	
+    if (move->mCommand.mKey == 0) 
+	{
+		if(move->mRunSpeed > 0.0) //Decelerate_Move
+		{
+			move->mMoveStateMachine->changeState(Decelerate_Move::Instance());
+			return;
+		}
+        else //No_Move
+		{
+           move->mRunSpeed = 0.0;
+		}
+    }
+	else 
+	{
+        if(move->mRunSpeed < MAX_RUN_SPEED) //Accelerate_Move
+		{
+			move->mMoveStateMachine->changeState(Accelerate_Move::Instance());
+			return;
+		}
+		else //Normal_Move 
+		{
+			move->mMoveStateMachine->changeState(Normal_Move::Instance());
+			return;
+		}
+	}
 }
-void Catchup_Move::exit(ServerSideMove* move)
+void No_Move::exit(ServerSideMove* move)
 {
 }
 
+Accelerate_Move* Accelerate_Move::Instance()
+{
+	static Accelerate_Move instance;
+	return &instance;
+}
+void Accelerate_Move::enter(ServerSideMove* move)
+{
+}
+void Accelerate_Move::execute(ServerSideMove* move)
+{
+    if (move->mCommand.mKey == 0) 
+	{
+		if(move->mRunSpeed > 0.0) //Decelerate_Move
+		{
+			move->mMoveStateMachine->changeState(Decelerate_Move::Instance());
+			return;
+		}
+        else //No_Move
+		{
+			move->mMoveStateMachine->changeState(No_Move::Instance());
+			return;
+		}
+    }
+	else 
+	{
+        if(move->mRunSpeed < MAX_RUN_SPEED) //Accelerate_Move
+		{
+			move->mRunSpeed += move->mRunAccel;
+		}
+		else //Normal_Move 
+		{
+			move->mMoveStateMachine->changeState(Normal_Move::Instance());
+			return;
+		}
+	}
+
+	// move in current body direction (not the goal direction)
+	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);
+}
+void Accelerate_Move::exit(ServerSideMove* move)
+{
+}
+
+Decelerate_Move* Decelerate_Move::Instance()
+{
+	static Decelerate_Move instance;
+	return &instance;
+}
+void Decelerate_Move::enter(ServerSideMove* move)
+{
+}
+void Decelerate_Move::execute(ServerSideMove* move)
+{
+    if (move->mCommand.mKey == 0) 
+	{
+		if(move->mRunSpeed > 0.0) //Decelerate_Move
+		{
+			move->mRunSpeed -= move->mRunDecel;
+		}
+        else //No_Move
+		{
+			move->mMoveStateMachine->changeState(No_Move::Instance());
+			return;
+		}
+    }
+	else 
+	{
+        if(move->mRunSpeed < MAX_RUN_SPEED) //Accelerate_Move
+		{
+			move->mMoveStateMachine->changeState(Accelerate_Move::Instance());
+			return;
+		}
+		else //Normal_Move 
+		{
+			move->mMoveStateMachine->changeState(Normal_Move::Instance());
+			return;
+		}
+	}
+
+	// move in current body direction (not the goal direction)
+	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);	
+}
+void Decelerate_Move::exit(ServerSideMove* move)
+{
+}
