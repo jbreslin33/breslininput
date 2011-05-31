@@ -78,43 +78,7 @@ void ServerSideMove::processTick()
            mRunSpeed = 0.0;
 		}
     }
-    else
-    {
-		/*
-		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
-        mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
-        mGoalDirection.y = 0;
-        mGoalDirection.normalise();
-
-        Quaternion toGoal = mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
-        // calculate how much the character has to turn to face goal direction
-        Real yawToGoal = toGoal.getYaw().valueDegrees();
-
-        // this is how much the character CAN turn this frame
-        if(yawToGoal == 0.0)
-		{
-			yawAtSpeed = 0.0;
-		}
-        else
-		{
-			yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
-		}
-
-        // turn as much as we can, but not more than we need to
-        if (yawToGoal < 0)
-		{
-			yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
-		}         
-		else if (yawToGoal > 0)
-		{
-			yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
-		}               
-        mSceneNode->yaw(Degree(yawToGoal));
-            
-*/
-	}
-
-	if (mCommand.mKey != 0)
+	else
 	{
 		//this only gets called if their is mKey so should it be the 
 		//first thing that gets called on move?
