@@ -15,15 +15,36 @@ public:
   void exit   (ServerSideMove* move);
 };
 
-class Catchup_Move : public ServerSideMoveState
+class No_Move : public ServerSideMoveState
 {
 private:
-  Catchup_Move(){}
+  No_Move(){}
 public:
-  static Catchup_Move* Instance();
+  static No_Move* Instance();
   void enter  (ServerSideMove* move);
   void execute(ServerSideMove* move);
   void exit   (ServerSideMove* move);
 };
 
+class Accelerate_Move : public ServerSideMoveState
+{
+private:
+  Accelerate_Move(){}
+public:
+  static Accelerate_Move* Instance();
+  void enter  (ServerSideMove* move);
+  void execute(ServerSideMove* move);
+  void exit   (ServerSideMove* move);
+};
+
+class Decelerate_Move : public ServerSideMoveState
+{
+private:
+  Decelerate_Move(){}
+public:
+  static Decelerate_Move* Instance();
+  void enter  (ServerSideMove* move);
+  void execute(ServerSideMove* move);
+  void exit   (ServerSideMove* move);
+};
 #endif
