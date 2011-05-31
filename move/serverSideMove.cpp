@@ -55,6 +55,9 @@ ServerSideMove::~ServerSideMove()
 }
 void ServerSideMove::processTick()
 {
+
+	//i can see it looks like i need to do rotation first but only if
+	//mkey != 0
 	float clientFrametime;
 
     clientFrametime = mCommand.mMilliseconds / 1000.0f;;
@@ -64,7 +67,6 @@ void ServerSideMove::processTick()
     mGoalDirection = Vector3::ZERO;   // we will calculate this
     Real yawAtSpeed;
 
-    //if (mKeyDirection.isZeroLength())
     if (mCommand.mKey == 0)
 	{
 		if(mRunSpeed > 0.0)
@@ -108,6 +110,13 @@ void ServerSideMove::processTick()
 		}               
         mSceneNode->yaw(Degree(yawToGoal));
             
+
+	}
+
+	if (mCommand.mKey != 0)
+	{
+		//this only gets called if their is mKey so should it be the 
+		//first thing that gets called on move?
         if(mRunSpeed < MAX_RUN_SPEED)
 		{
 			mRunSpeed += mRunAccel;
