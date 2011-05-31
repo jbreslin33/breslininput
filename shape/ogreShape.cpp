@@ -3,6 +3,8 @@
 
 #include "../math/vector3D.h"
 
+//billboard
+#include "../billboard/movableTextOverlay.h"
 
 OgreShape::OgreShape()
 {
@@ -27,10 +29,13 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mEntity = mSceneManager->createEntity(mName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
+//billboard
+	//mSceneMgr->getCamera("PlayerCam");
+//	mText = new ObjectTextDisplay(mEntity, mSceneMgr->getCamera("PlayerCam"));
+  //  mText->enable(true);
+    //mText->setText("Ogre Head");
+//end billboard
 
-	
-	//create an animation instance and pass our entity in
-	//mOgreAnimation = new OgreAnimation(mEntity);
 }
 
 //this is the contructor for server side ogre shape
@@ -38,6 +43,7 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 :
 	Shape(name,position)
 {
+	mText = NULL;
 	
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 	
