@@ -64,8 +64,9 @@ void ServerSideMove::processTick()
     mGoalDirection = Vector3::ZERO;   // we will calculate this
     Real yawAtSpeed;
 
-    if (mKeyDirection.isZeroLength())
-    {
+    //if (mKeyDirection.isZeroLength())
+    if (mCommand.mKey == 0)
+	{
 		if(mRunSpeed > 0.0)
 		{
 			mRunSpeed -= mRunDecel;
@@ -118,13 +119,13 @@ void ServerSideMove::processTick()
 
     if(mJumping)
     {
-		LogString("mJumping");
+		//LogString("mJumping");
         mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
         mVerticalVelocity -= mGravity * clientFrametime;
 
         if(mSceneNode->getPosition().y < 0.0)
         {
-			LogString("if");
+			//LogString("if");
             mSceneNode->setPosition(mSceneNode->getPosition().x, 0.0, mSceneNode->getPosition().z);
             mVerticalVelocity = 0.0;
             mJumping = false;

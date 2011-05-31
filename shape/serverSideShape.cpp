@@ -24,6 +24,8 @@ void ServerSideShape::processTick()
 	ServerSideMove::processTick();
 	ServerSideRotation::processTick();
 
+
+
 	//set all vars to be sent off to clients playing on internets
     mCommand.mVelocity.x = mSceneNode->getPosition().x - mCommand.mOrigin.x;
     mCommand.mVelocity.z = mSceneNode->getPosition().z - mCommand.mOrigin.z;
