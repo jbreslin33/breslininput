@@ -24,14 +24,12 @@ ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root);
 //ticks
 void processTick    ();
 
-void setKeyDirection();
+
 void startJump();
 
 ServerSideMoveStateMachine* mMoveStateMachine;
 
-//keys
-Vector3 mKeyDirection;
-Vector3 mGoalDirection;
+
 
 //run acceleration
 float mRunDecel;

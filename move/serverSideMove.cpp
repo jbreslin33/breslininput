@@ -4,7 +4,7 @@
 #include "../client/client.h"
 
 #define MAX_RUN_SPEED 200           // character running speed in units per second
-#define TURN_SPEED 250.0f      // character turning in degrees per second
+
 
 #include <string>
 
@@ -29,9 +29,7 @@ ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root*
 	Move     (                  ) 
 {
 	
-	//keys
-    mKeyDirection = Vector3::ZERO;
-	mGoalDirection = Vector3::ZERO;
+
 
 	//run acceleration
     mRunAccel    = 5.0;
@@ -62,10 +60,12 @@ void ServerSideMove::processTick()
 
     clientFrametime = mCommand.mMilliseconds / 1000.0f;;
 
-	setKeyDirection();
+	//setKeyDirection();
 
-    mGoalDirection = Vector3::ZERO;   // we will calculate this
-    Real yawAtSpeed;
+
+
+  //  mGoalDirection = Vector3::ZERO;   // we will calculate this
+    //Real yawAtSpeed;
 
     if (mCommand.mKey == 0)
 	{
@@ -80,6 +80,7 @@ void ServerSideMove::processTick()
     }
     else
     {
+		/*
 		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
         mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
         mGoalDirection.y = 0;
@@ -110,7 +111,7 @@ void ServerSideMove::processTick()
 		}               
         mSceneNode->yaw(Degree(yawToGoal));
             
-
+*/
 	}
 
 	if (mCommand.mKey != 0)
@@ -125,6 +126,15 @@ void ServerSideMove::processTick()
 
     // move in current body direction (not the goal direction)
     mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,Node::TS_LOCAL);
+
+
+    if(mCommand.mKey & KEY_SPACE) 
+    {
+		if(!mJumping)
+		{
+			startJump();
+	    }
+    }
 
     if(mJumping)
     {
@@ -142,38 +152,6 @@ void ServerSideMove::processTick()
 	}
 }
 
-void ServerSideMove::setKeyDirection()
-{
-	mKeyDirection.x = 0;
-    mKeyDirection.z = 0;
-    mKeyDirection.y = 0;
-                
-    // keep track of the player's intended direction
-    if(mCommand.mKey & KEY_UP) 
-	{
-		mKeyDirection.z += -1;
-	}
-    if(mCommand.mKey & KEY_LEFT) 
-	{
-		mKeyDirection.x += -1;
-	}
-                
-    if(mCommand.mKey & KEY_DOWN) 
-	{
-        mKeyDirection.z += 1;
-	}
-    if(mCommand.mKey & KEY_RIGHT) 
-	{
-		mKeyDirection.x += 1;
-	}
-    if(mCommand.mKey & KEY_SPACE) 
-    {
-		if(!mJumping)
-		{
-			startJump();
-	    }
-    }
-}
 
 void ServerSideMove::startJump()
 {
