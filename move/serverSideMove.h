@@ -11,7 +11,6 @@ using namespace Ogre;
 
 class Command;
 class ServerSideMoveStateMachine;
-class Client;
 
 class ServerSideMove : public virtual OgreShape, public Move 
 {
@@ -24,22 +23,12 @@ ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root);
 //ticks
 void processTick    ();
 
-
-void startJump();
-
 ServerSideMoveStateMachine* mMoveStateMachine;
-
-
 
 //run acceleration
 float mRunDecel;
 float mRunAccel;
 
-//jumping
-bool  mJumping;
-float mVerticalVelocity;
-float mJumpAccel;
-float mGravity;
 };
 
 #endif
