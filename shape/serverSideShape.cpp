@@ -7,8 +7,9 @@
 
 ServerSideShape::ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root)
 :
-	ServerSideMove    (name,position,root),
 	ServerSideRotation(name,position,root),
+	ServerSideMove    (name,position,root),
+	ServerSideJump    (name,position,root),
 	OgreShape		  (name,position,root)
 {
 	//client if this shape has associated with it
@@ -35,6 +36,9 @@ void ServerSideShape::processTick()
 	//even though there is no mKey set we still need to move as
 	//brian has put in a deceleration factor so let's let it run...
 	ServerSideMove::processTick();
+
+	//jump is a good work in progress but it's now it's own thing
+	ServerSideJump::processTick();
 
 	//set all vars to be sent off to clients playing on internets
 	//none of this actually moves anything on server it is what is

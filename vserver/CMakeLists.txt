@@ -123,6 +123,14 @@ set(HDRS
 	../rotation/serverSideRotationState.h
 	../rotation/serverSideRotationStates.h	
 	
+	#jump
+	../jump/serverSideJump.h
+	
+	#jump states
+	../jump/serverSideJumpStateMachine.h
+	../jump/serverSideJumpState.h
+	../jump/serverSideJumpStates.h	
+	
 	#math
 	../math/vector3D.h
 	
@@ -174,6 +182,12 @@ set(SRCS
 	
 	#rotation states
 	../rotation/serverSideRotationStates.cpp
+	
+	#jump
+	../jump/serverSideJump.cpp
+	
+	#jump states
+	../jump/serverSideJumpStates.cpp
 	
 	#math
 	../math/vector3D.cpp
@@ -233,6 +247,14 @@ set(HDRS
 	../rotation/serverSideRotationState.h
 	../rotation/serverSideRotationStates.h	
 	
+	#jump
+	../jump/serverSideJump.h
+	
+	#jump states
+	../jump/serverSideJumpStateMachine.h
+	../jump/serverSideJumpState.h
+	../jump/serverSideJumpStates.h	
+	
 	#math
 	../math/vector3D.h
 	
@@ -284,6 +306,12 @@ set(SRCS
 	
 	#rotation states
 	../rotation/serverSideRotationStates.cpp
+	
+	#jump
+	../jump/serverSideJump.cpp
+	
+	#jump states
+	../jump/serverSideJumpStates.cpp
 	
 	#math
 	../math/vector3D.cpp

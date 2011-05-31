@@ -2,8 +2,9 @@
 #define SERVERSIDESHAPE_H
 
 //parents
-#include "../move/serverSideMove.h"
 #include "../rotation/serverSideRotation.h"
+#include "../move/serverSideMove.h"
+#include "../jump/serverSideJump.h"
 
 //Ogre headers
 #include "Ogre.h"
@@ -11,7 +12,13 @@ using namespace Ogre;
 
 #include <string>
 
-class ServerSideShape : public ServerSideMove , public ServerSideRotation
+class Client;
+
+class ServerSideShape
+	:
+	public ServerSideMove ,
+	public ServerSideRotation ,
+	public ServerSideJump
 {
 
 public:

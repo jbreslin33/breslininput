@@ -28,20 +28,11 @@ ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root*
 	OgreShape(name,position,root),
 	Move     (                  ) 
 {
-	
-
-
 	//run acceleration
     mRunAccel    = 5.0;
     mRunDecel    = 5.0;
 
-	//jumping
-    mJumping  = false;
-	mVerticalVelocity = 0.0;
-    mJumpAccel   = 300.0;
-    mGravity     = 900.0;
-
-  	//move states
+ 	//move states
 	mMoveStateMachine = new ServerSideMoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
@@ -77,34 +68,6 @@ void ServerSideMove::processTick()
 
     // move in current body direction (not the goal direction)
     mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,Node::TS_LOCAL);
-
-	/********************** JUMP **********************/
-    if(mCommand.mKey & KEY_SPACE) 
-    {
-		if(!mJumping)
-		{
-			startJump();
-	    }
-    }
-
-    if(mJumping)
-    {
-        mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
-        mVerticalVelocity -= mGravity * clientFrametime;
-
-        if(mSceneNode->getPosition().y < 0.0)
-        {
-            mSceneNode->setPosition(mSceneNode->getPosition().x, 0.0, mSceneNode->getPosition().z);
-            mVerticalVelocity = 0.0;
-            mJumping = false;
-        }
-	}
-	/****************** END JUMP ************************/
 }
 
 
-void ServerSideMove::startJump()
-{
-	mJumping = true;
-	mVerticalVelocity = mJumpAccel;
-}
