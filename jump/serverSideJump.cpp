@@ -40,29 +40,7 @@ ServerSideJump::~ServerSideJump()
 }
 void ServerSideJump::processTick()
 {
-	float clientFrametime;
-    clientFrametime = mCommand.mMilliseconds / 1000.0f;;
-
-    if(mCommand.mKey & KEY_SPACE) 
-    {
-		if(!mJumping)
-		{
-			startJump();
-	    }
-    }
-
-    if(mJumping)
-    {
-        mSceneNode->translate(0, clientFrametime * mVerticalVelocity, 0, Node::TS_LOCAL);
-        mVerticalVelocity -= mGravity * clientFrametime;
-
-        if(mSceneNode->getPosition().y < 0.0)
-        {
-            mSceneNode->setPosition(mSceneNode->getPosition().x, 0.0, mSceneNode->getPosition().z);
-            mVerticalVelocity = 0.0;
-            mJumping = false;
-        }
-	}
+	mJumpStateMachine->update();
 }
 
 

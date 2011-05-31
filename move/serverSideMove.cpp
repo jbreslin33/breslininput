@@ -43,30 +43,7 @@ ServerSideMove::~ServerSideMove()
 }
 void ServerSideMove::processTick()
 {
-	float clientFrametime;
-    clientFrametime = mCommand.mMilliseconds / 1000.0f;;
-
-    if (mCommand.mKey == 0)
-	{
-		if(mRunSpeed > 0.0)
-		{
-			mRunSpeed -= mRunDecel;
-		}
-        else
-		{
-           mRunSpeed = 0.0;
-		}
-    }
-	else
-	{
-        if(mRunSpeed < MAX_RUN_SPEED)
-		{
-			mRunSpeed += mRunAccel;
-		}
-	}
-
-    // move in current body direction (not the goal direction)
-    mSceneNode->translate(0, 0, clientFrametime * mRunSpeed,Node::TS_LOCAL);
+	mMoveStateMachine->update();
 }
 
 
