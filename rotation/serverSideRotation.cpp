@@ -18,7 +18,6 @@ using namespace Ogre;
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-#define KEY_SPACE				16
 
 #define TURN_SPEED 250.0f      // character turning in degrees per second
 
@@ -49,40 +48,40 @@ void ServerSideRotation::processTick()
 
     clientFrametime = mCommand.mMilliseconds / 1000.0f;;
 
-
 	mGoalDirection = Vector3::ZERO;   // we will calculate this
 
-Real yawAtSpeed;
+	Real yawAtSpeed;
 
-		mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
-        mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
-        mGoalDirection.y = 0;
-        mGoalDirection.normalise();
+	mGoalDirection += mKeyDirection.z * Vector3::UNIT_Z;
+    mGoalDirection += mKeyDirection.x * Vector3::UNIT_X;
+    mGoalDirection.y = 0;
+    mGoalDirection.normalise();
 
-        Quaternion toGoal = mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
-        // calculate how much the character has to turn to face goal direction
-        Real yawToGoal = toGoal.getYaw().valueDegrees();
+    Quaternion toGoal = mSceneNode->getOrientation().zAxis().getRotationTo(mGoalDirection,Vector3::UNIT_Y);
+    
+	// calculate how much the character has to turn to face goal direction
+    Real yawToGoal = toGoal.getYaw().valueDegrees();
 
-        // this is how much the character CAN turn this frame
-        if(yawToGoal == 0.0)
-		{
-			yawAtSpeed = 0.0;
-		}
-        else
-		{
-			yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
-		}
+    // this is how much the character CAN turn this frame
+    if(yawToGoal == 0.0)
+	{
+		yawAtSpeed = 0.0;
+	}
+    else
+	{
+		yawAtSpeed = yawToGoal / Math::Abs(yawToGoal) * clientFrametime * TURN_SPEED;
+	}
 
-        // turn as much as we can, but not more than we need to
-        if (yawToGoal < 0)
-		{
-			yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
-		}         
-		else if (yawToGoal > 0)
-		{
-			yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
-		}               
-        mSceneNode->yaw(Degree(yawToGoal));
+    // turn as much as we can, but not more than we need to
+    if (yawToGoal < 0)
+	{
+		yawToGoal = std::min<Real>(0, std::max<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, yawAtSpeed, 0);
+	}         
+	else if (yawToGoal > 0)
+	{
+		yawToGoal = std::max<Real>(0, std::min<Real>(yawToGoal, yawAtSpeed)); //yawToGoal = Math::Clamp<Real>(yawToGoal, 0, yawAtSpeed);
+	}               
+    mSceneNode->yaw(Degree(yawToGoal));
 }
 
 
