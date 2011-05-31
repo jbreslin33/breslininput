@@ -141,6 +141,10 @@ set(HDRS
 	#client
 	../client/client.h
 
+	#billboard
+	../billboard/movableTextOverlay.h
+	../billboard/rectLayoutManager.h
+	
 	
 	
 )
@@ -196,6 +200,9 @@ set(SRCS
 	
 	#client
 	../client/client.cpp
+	
+	#billboard
+	../billboard/movableTextOverlay.cpp
 
 )
 endif (WIN32)
@@ -255,7 +262,10 @@ set(HDRS
 	
 	#client
 	../client/client.h
-	
+		
+	#billboard
+	../billboard/movableTextOverlay.h
+	../billboard/rectLayoutManager.h
 )
  
 set(SRCS
@@ -309,6 +319,9 @@ set(SRCS
 	
 	#client
 	../client/client.cpp
+	
+	#billboard
+	../billboard/movableTextOverlay.cpp
 	
 )
 endif (UNIX)

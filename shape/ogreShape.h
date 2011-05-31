@@ -8,6 +8,8 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+class MovableTextOverlayAttributes;
+
 class OgreShape : public Shape
 {
 
@@ -24,6 +26,9 @@ std::string         mMeshName;
 Entity*             mEntity;
 Ogre::SceneManager* mSceneManager;
 SceneNode*          mSceneNode;
+
+//billboard
+MovableTextOverlayAttributes* mText;
 
 };
 
