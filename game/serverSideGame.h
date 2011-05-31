@@ -13,7 +13,6 @@ using namespace Ogre;
 #define KEY_DOWN					2
 #define KEY_LEFT					4
 #define KEY_RIGHT					8
-#define KEY_SPACE				16
 
 #define CMD_KEY						1
 #define CMD_ORIGIN					4

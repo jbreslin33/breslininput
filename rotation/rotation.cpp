@@ -5,7 +5,6 @@
 #define KEY_DOWN				2
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
-#define KEY_SPACE				16
 
 Rotation::Rotation()
 {
