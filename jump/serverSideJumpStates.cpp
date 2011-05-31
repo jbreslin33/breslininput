@@ -17,11 +17,8 @@ void Normal_Jump::enter(ServerSideJump* jump)
 }
 void Normal_Jump::execute(ServerSideJump* jump)
 {
-	float clientFrametime;
-    clientFrametime = jump->mCommand.mMilliseconds / 1000.0f;;
-
-    jump->mSceneNode->translate(0, clientFrametime * jump->mVerticalVelocity, 0, Node::TS_LOCAL);
-    jump->mVerticalVelocity -= jump->mGravity * clientFrametime;
+	jump->mSceneNode->translate(0, jump->mCommand.mClientFrametime * jump->mVerticalVelocity, 0, Node::TS_LOCAL);
+    jump->mVerticalVelocity -= jump->mGravity * jump->mCommand.mClientFrametime;
 
     if(jump->mSceneNode->getPosition().y < 0.0)
     {
@@ -29,7 +26,6 @@ void Normal_Jump::execute(ServerSideJump* jump)
         jump->mVerticalVelocity = 0.0;
 		jump->mJumpStateMachine->changeState(No_Jump::Instance());
     }
-
 }
 void Normal_Jump::exit(ServerSideJump* jump)
 {

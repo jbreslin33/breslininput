@@ -136,7 +136,6 @@ set(HDRS
 	
 	#command
 	../command/command.h
-	../command/serverSideCommand.h
 	
 	#message
 	../message/message.h
@@ -194,7 +193,6 @@ set(SRCS
 	
 	#command
 	../command/command.cpp
-	../command/serverSideCommand.cpp
 	
 	#message
 	../message/message.cpp
@@ -260,7 +258,6 @@ set(HDRS
 	
 	#command
 	../command/command.h
-	../command/serverSideCommand.h
 	
 	#message
 	../message/message.h
@@ -318,7 +315,6 @@ set(SRCS
 	
 	#command
 	../command/command.cpp
-	../command/serverSideCommand.cpp
 	
 	#message
 	../message/message.cpp

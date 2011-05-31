@@ -25,6 +25,8 @@ Command::Command()
 	mCatchup    = false;
 	mCatchupRot = false;
 	mStop       = true;
+
+	mClientFrametime = 0.0f;
 }
 
 Command::~Command()
