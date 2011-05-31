@@ -23,8 +23,12 @@ ServerSideRotation(std::string name, Vector3D* position, Ogre::Root* root);
 
 //movement
 void processTick    ();
-
+void setKeyDirection();
 ServerSideRotationStateMachine* mRotationStateMachine;
+
+//keys
+Vector3 mKeyDirection;
+Vector3 mGoalDirection;
 };
 
 #endif

@@ -21,8 +21,14 @@ ServerSideShape::~ServerSideShape()
 
 void ServerSideShape::processTick()
 {
-	ServerSideRotation::processTick();
+	
 
+setKeyDirection();
+
+    if (mCommand.mKey != 0)
+	{
+		ServerSideRotation::processTick();
+	}
 	ServerSideMove::processTick();
 
 
