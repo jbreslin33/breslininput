@@ -3,7 +3,7 @@
 
 #include "../billboard/objectTitle.h"
 
-#include <string>
+#include <string.h>
 
 ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								 std::string mesh)
@@ -22,9 +22,14 @@ ClientSideShape::~ClientSideShape()
 
 void ClientSideShape::processTick()
 {
-	ClientSideMove::processTick();
+	mObjectTitleString.clear(); //empty title string so it can be filled anew
+	
+	ClientSideMove::processTick(); 
 	ClientSideRotation::processTick();
-	mObjectTitle->update();
+
+	mObjectTitle->setTitle(mObjectTitleString); //fill title with mObjectTitleString which we have appended from all states we want info on.
+
+	mObjectTitle->update(); //draw title for shape
 
 }
 void ClientSideShape::interpolateTick(float renderTime)
