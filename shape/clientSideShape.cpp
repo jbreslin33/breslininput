@@ -1,7 +1,7 @@
 #include "clientSideShape.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../billboard/ObjectTitle.h"
+#include "../billboard/objectTitle.h"
 
 #include <string>
 

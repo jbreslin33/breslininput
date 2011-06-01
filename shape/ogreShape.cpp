@@ -4,7 +4,7 @@
 #include "../math/vector3D.h"
 
 //billboard
-#include "../billboard/ObjectTitle.h"
+#include "../billboard/objectTitle.h"
 
 OgreShape::OgreShape()
 {
