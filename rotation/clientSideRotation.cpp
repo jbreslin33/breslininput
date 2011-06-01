@@ -23,10 +23,22 @@ using namespace Ogre;
 ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
 :
-	OgreShape(name, position,mSceneMgr,mesh),
-	Rotation (                             )
+	OgreShape(name, position,mSceneMgr,mesh)
 {
 	mServerShape = NULL;
+
+	//vars
+	mTurnSpeed = 250.0;
+
+	mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
+	mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
+	mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
+    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
+
+	//rotation
+	mServerRotOld  = Ogre::Vector3::ZERO;
+	mServerRotNew  = Ogre::Vector3::ZERO;
+	mDegreesToServer = 0.0;
 
 	//rotation states
 	mRotationStateMachine = new ClientSideRotationStateMachine(this);    //setup the state machine

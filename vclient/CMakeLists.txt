@@ -100,7 +100,6 @@ set(HDRS
 	
 	#command
 	../command/command.h
-	../command/clientSideCommand.h
 	
 	#math
 	../math/vector3D.h
@@ -113,10 +112,6 @@ set(HDRS
 	#animation
 	../animation/ogreAnimation.h
 	
-	#player
-	#../player/player.h
-	#../player/clientSideShape.h
-	
 	#move
 	../move/move.h
 	../move/clientSideMove.h
@@ -127,7 +122,6 @@ set(HDRS
 	../move/clientSideMoveStates.h
 	
 	#rotation
-	../rotation/rotation.h
 	../rotation/clientSideRotation.h
 	
 	#rotation states
@@ -162,7 +156,6 @@ set(SRCS
 	
 	#command
 	../command/command.cpp
-	../command/clientSideCommand.cpp
 	
 	#math
 	../math/vector3D.cpp
@@ -175,10 +168,6 @@ set(SRCS
 	#animation
 	../animation/ogreAnimation.cpp
 	
-	#player
-	#../player/player.cpp
-	#../player/clientSideShape.cpp
-	
 	#move
 	../move/move.cpp
 	../move/clientSideMove.cpp
@@ -187,7 +176,6 @@ set(SRCS
 	../move/clientSideMoveStates.cpp
 	
 	#rotation
-	../rotation/rotation.cpp
 	../rotation/clientSideRotation.cpp
 	
 	#rotation states
@@ -220,7 +208,6 @@ set(HDRS
 	
 	#command
 	../command/command.h
-	../command/clientSideCommand.h
 
 	#math
 	../math/vector3D.h
@@ -233,10 +220,6 @@ set(HDRS
 	#animation
 	../animation/ogreAnimation.h
 	
-	#player
-	#../player/player.h
-	#../player/clientSideShape.h
-	
 	#move
 	../move/move.h
 	../move/clientSideMove.h
@@ -247,7 +230,6 @@ set(HDRS
 	../move/clientSideMoveStates.h
 	
 	#rotation
-	../rotation/rotation.h
 	../rotation/clientSideRotation.h
 	
 	#rotation states
@@ -280,7 +262,6 @@ set(SRCS
 	
 	#command
 	../command/command.cpp
-	../command/clientSideCommand.cpp
 
 	#math
 	../math/vector3D.cpp
@@ -293,10 +274,6 @@ set(SRCS
 	#animation
 	../animation/ogreAnimation.cpp
 	
-	#player
-	#../player/player.cpp
-	#../player/clientSideShape.cpp
-	
 	#move
 	../move/move.cpp
 	../move/clientSideMove.cpp
@@ -305,7 +282,6 @@ set(SRCS
 	../move/clientSideMoveStates.cpp
 	
 	#rotation
-	../rotation/rotation.cpp
 	../rotation/clientSideRotation.cpp	
 
 	#rotation states

@@ -2,7 +2,6 @@
 #define SERVERSIDEROTATION_H
 
 //parents
-#include "rotation.h"
 #include "../shape/ogreShape.h"
 
 //Ogre headers
@@ -13,7 +12,7 @@ class Command;
 class ServerSideRotationStateMachine;
 class ServerSideShape;
 
-class ServerSideRotation :  public virtual OgreShape, public Rotation
+class ServerSideRotation :  public virtual OgreShape
 {
 
 public:
