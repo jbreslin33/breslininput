@@ -1,6 +1,8 @@
 #include "clientSideShape.h"
 #include "../tdreamsock/dreamSockLog.h"
 
+#include "../billboard/ObjectTitle.h"
+
 #include <string>
 
 ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
@@ -22,6 +24,7 @@ void ClientSideShape::processTick()
 {
 	ClientSideMove::processTick();
 	ClientSideRotation::processTick();
+	mObjectTitle->update();
 
 }
 void ClientSideShape::interpolateTick(float renderTime)
