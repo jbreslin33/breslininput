@@ -3,6 +3,8 @@
 
 #include "clientSideRotation.h"
 
+#include "../billboard/ObjectTitle.h"
+
 Normal_Rotation* Normal_Rotation::Instance()
 {
   static Normal_Rotation instance;
@@ -10,6 +12,7 @@ Normal_Rotation* Normal_Rotation::Instance()
 }
 void Normal_Rotation::enter(ClientSideRotation* rotation)
 {
+	rotation->mObjectTitle->setTitle("Normal");
 }
 void Normal_Rotation::execute(ClientSideRotation* rotation)
 {
@@ -51,6 +54,7 @@ Catchup_Rotation* Catchup_Rotation::Instance()
 }
 void Catchup_Rotation::enter(ClientSideRotation* rotation)
 {
+	rotation->mObjectTitle->setTitle("Catchup");
 }
 void Catchup_Rotation::execute(ClientSideRotation* rotation)
 {
