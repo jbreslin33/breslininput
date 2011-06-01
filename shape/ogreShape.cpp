@@ -29,27 +29,15 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mEntity = mSceneManager->createEntity(mName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
-//billboard
-
-//	mObjectTitle = new ObjectTitle(mName, mEntity, mSceneMgr->getCamera("PlayerCam"), "state",
-	//	"Times New Roman", Ogre::ColourValue::White);
- const Ogre::String& titlename = mName + "me";
-const Ogre::String& title = mName + "tit";
-const Ogre::String& fontName = "SdkTrays/Caption";
- const Ogre::ColourValue& color = Ogre::ColourValue::White;
-mObjectTitle = new ObjectTitle
-(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
-        fontName, color);
-
-
-		// create the attributes used by MovableTextOverlay
-	//MovableTextOverlayAttributes *attrs = new MovableTextOverlayAttributes("Attrs1",mSceneMgr->getCamera("PlayerCam"),"font_name",12,ColourValue::White,"RedTransparent");
-	//mSceneMgr->getCamera("PlayerCam");
-//	mText = new ObjectTextDisplay(mEntity, mSceneMgr->getCamera("PlayerCam"));
-  //  mText->enable(true);
-  //  mText->setText("Ogre Head");
-//end billboard
-
+	//billboard
+	const Ogre::String& titlename = mName + "me";
+	const Ogre::String& title = mName + ":state";
+	const Ogre::String& fontName = "SdkTrays/Caption";
+	const Ogre::ColourValue& color = Ogre::ColourValue::White;
+	mObjectTitle = new ObjectTitle
+	(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
+    fontName, color);
+	//end billboard
 }
 
 //this is the contructor for server side ogre shape
