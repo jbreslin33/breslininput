@@ -12,10 +12,12 @@ Normal_Rotation* Normal_Rotation::Instance()
 }
 void Normal_Rotation::enter(ClientSideRotation* rotation)
 {
-	rotation->mObjectTitle->setTitle("Normal");
+
+	//rotation->mObjectTitle->setTitle("Normal");
 }
 void Normal_Rotation::execute(ClientSideRotation* rotation)
 {
+		rotation->mObjectTitleString.append("R:Normal");
 	// are we too far off
     if(abs(rotation->mDegreesToServer) > rotation->mRotInterpLimitHigh)
         {
@@ -54,10 +56,12 @@ Catchup_Rotation* Catchup_Rotation::Instance()
 }
 void Catchup_Rotation::enter(ClientSideRotation* rotation)
 {
-	rotation->mObjectTitle->setTitle("Catchup");
+	//rotation->mObjectTitleString.append("R:Catchup");
+	//rotation->mObjectTitle->setTitle("Catchup");
 }
 void Catchup_Rotation::execute(ClientSideRotation* rotation)
 {
+	rotation->mObjectTitleString.append("R:Catchup");
 	// are we back on track
     if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
     {

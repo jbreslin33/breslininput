@@ -14,6 +14,7 @@ void Normal_Move::enter(ClientSideMove* move)
 }
 void Normal_Move::execute(ClientSideMove* move)
 {
+	move->mObjectTitleString.append("M:Normal ");
 	// if distance exceeds threshold
     if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mCommand.mStop == false)
     {
@@ -58,6 +59,7 @@ void Catchup_Move::enter(ClientSideMove* move)
 }
 void Catchup_Move::execute(ClientSideMove* move)
 {
+	move->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
     if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mCommand.mStop == true)
     {
