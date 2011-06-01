@@ -115,7 +115,6 @@ set(HDRS
 	../move/serverSideMoveStates.h
 	
 	#rotation
-	../rotation/rotation.h
 	../rotation/serverSideRotation.h
 	
 	#rotation states
@@ -179,7 +178,6 @@ set(SRCS
 	../move/serverSideMoveStates.cpp
 	
 	#rotation
-	../rotation/rotation.cpp
 	../rotation/serverSideRotation.cpp
 	
 	#rotation states
@@ -243,7 +241,6 @@ set(HDRS
 	../move/serverSideMoveStates.h
 	
 	#rotation
-	../rotation/rotation.h
 	../rotation/serverSideRotation.h
 	
 	#rotation states
@@ -306,7 +303,6 @@ set(SRCS
 	../move/serverSideMoveStates.cpp
 	
 	#rotation
-	../rotation/rotation.cpp
 	../rotation/serverSideRotation.cpp
 	
 	#rotation states

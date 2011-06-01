@@ -24,8 +24,7 @@ using namespace Ogre;
 ServerSideRotation::ServerSideRotation(std::string name, Vector3D* position,
 									   Ogre::Root* root)
 :
-	OgreShape(name,position,root),
-	Rotation (                  )
+	OgreShape(name,position,root)
 {
 	//keys
     mKeyDirection = Vector3::ZERO;
