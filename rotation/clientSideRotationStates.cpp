@@ -3,7 +3,7 @@
 
 #include "clientSideRotation.h"
 
-#include "../billboard/ObjectTitle.h"
+#include "../billboard/objectTitle.h"
 
 Normal_Rotation* Normal_Rotation::Instance()
 {
