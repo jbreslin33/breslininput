@@ -47,9 +47,16 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 {
 
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
-	
+	mMeshName     = ""; //not used on server
+	mName         = ""; //not used on server
+	mEntity       = NULL; //not used on server
+
 	// create main model
 	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::ZERO);
+
+	//billboard
+	mObjectTitle       = NULL; //not used on server
+	mObjectTitleString = ""; //not used on server
 }
 
 OgreShape::~OgreShape()

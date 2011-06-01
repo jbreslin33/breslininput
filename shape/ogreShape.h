@@ -8,6 +8,9 @@
 #include "Ogre.h"
 using namespace Ogre;
 
+//utility
+#include <string.h>
+
 class ObjectTitle;
 
 class OgreShape : public Shape
@@ -29,6 +32,7 @@ SceneNode*          mSceneNode;
 
 //billboard
 ObjectTitle* mObjectTitle;
+std::string  mObjectTitleString;
  
 
 };
