@@ -4,7 +4,7 @@
 #include "../math/vector3D.h"
 
 //billboard
-#include "../billboard/movableTextOverlay.h"
+#include "../billboard/ObjectTitle.h"
 
 OgreShape::OgreShape()
 {
@@ -30,8 +30,20 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mSceneNode->attachObject(mEntity);
 
 //billboard
+
+//	mObjectTitle = new ObjectTitle(mName, mEntity, mSceneMgr->getCamera("PlayerCam"), "state",
+	//	"Times New Roman", Ogre::ColourValue::White);
+ const Ogre::String& titlename = mName + "me";
+const Ogre::String& title = mName + "tit";
+const Ogre::String& fontName = "SdkTrays/Caption";
+ const Ogre::ColourValue& color = Ogre::ColourValue::White;
+mObjectTitle = new ObjectTitle
+(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
+        fontName, color);
+
+
 		// create the attributes used by MovableTextOverlay
-	MovableTextOverlayAttributes *attrs = new MovableTextOverlayAttributes("Attrs1",mSceneMgr->getCamera("PlayerCam"),"BlueHighway",16,ColourValue::White,"RedTransparent");
+	//MovableTextOverlayAttributes *attrs = new MovableTextOverlayAttributes("Attrs1",mSceneMgr->getCamera("PlayerCam"),"font_name",12,ColourValue::White,"RedTransparent");
 	//mSceneMgr->getCamera("PlayerCam");
 //	mText = new ObjectTextDisplay(mEntity, mSceneMgr->getCamera("PlayerCam"));
   //  mText->enable(true);
@@ -45,8 +57,7 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 :
 	Shape(name,position)
 {
-	mText = NULL;
-	
+
 	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 	
 	// create main model
