@@ -1,21 +1,21 @@
-#include "clientSideRotationStates.h"
-#include "clientSideRotationStateMachine.h"
+#include "rotationStates.h"
+#include "rotationStateMachine.h"
 
-#include "clientSideRotation.h"
+#include "rotation.h"
 
-#include "../billboard/objectTitle.h"
+#include "../../billboard/objectTitle.h"
 
 Normal_Rotation* Normal_Rotation::Instance()
 {
   static Normal_Rotation instance;
   return &instance;
 }
-void Normal_Rotation::enter(ClientSideRotation* rotation)
+void Normal_Rotation::enter(Rotation* rotation)
 {
 
 	//rotation->mObjectTitle->setTitle("Normal");
 }
-void Normal_Rotation::execute(ClientSideRotation* rotation)
+void Normal_Rotation::execute(Rotation* rotation)
 {
 		rotation->mObjectTitleString.append("R:Normal");
 	// are we too far off
@@ -45,7 +45,7 @@ void Normal_Rotation::execute(ClientSideRotation* rotation)
         }
 		
 }
-void Normal_Rotation::exit(ClientSideRotation* rotation)
+void Normal_Rotation::exit(Rotation* rotation)
 {
 }
 
@@ -54,12 +54,12 @@ Catchup_Rotation* Catchup_Rotation::Instance()
   static Catchup_Rotation instance;
   return &instance;
 }
-void Catchup_Rotation::enter(ClientSideRotation* rotation)
+void Catchup_Rotation::enter(Rotation* rotation)
 {
 	//rotation->mObjectTitleString.append("R:Catchup");
 	//rotation->mObjectTitle->setTitle("Catchup");
 }
-void Catchup_Rotation::execute(ClientSideRotation* rotation)
+void Catchup_Rotation::execute(Rotation* rotation)
 {
 	rotation->mObjectTitleString.append("R:Catchup");
 	// are we back on track
@@ -103,7 +103,7 @@ void Catchup_Rotation::execute(ClientSideRotation* rotation)
 		}
 	}
 }
-void Catchup_Rotation::exit(ClientSideRotation* rotation)
+void Catchup_Rotation::exit(Rotation* rotation)
 {
 }
 

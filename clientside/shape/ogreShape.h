@@ -1,25 +1,29 @@
 #ifndef OGRESHAPE_H
 #define OGRESHAPE_H
 
-//parents
-#include "shape.h"
-
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
 
+//command
+#include "../../command/command.h"
+
 //utility
 #include <string.h>
 
+//math
+#include "../../math/vector3D.h"
+
+#define COMMAND_HISTORY_SIZE		64
+
 class ObjectTitle;
 
-class OgreShape : public Shape
+class OgreShape
 {
 
 public:
 OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 OgreShape();
-OgreShape(std::string name, Vector3D* position, Ogre::Root* root);
 ~OgreShape();
 
 SceneNode* getSceneNode() { return mSceneNode; }
@@ -33,6 +37,19 @@ SceneNode*          mSceneNode;
 //billboard
 ObjectTitle* mObjectTitle;
 std::string  mObjectTitleString;
+
+//stats
+Vector3D* mPosition;
+
+//id
+int			mIndex;
+std::string mName;
+
+Command mFrame[COMMAND_HISTORY_SIZE];
+Command	mServerFrame;					// the latest frame from server
+Command	mCommand;						// current frame's commands
+
+long mProcessedFrame;
  
 
 };
