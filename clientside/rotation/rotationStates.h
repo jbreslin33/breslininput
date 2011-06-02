@@ -4,23 +4,23 @@
 
 class Rotation;
 
-class Normal_Rotation : public RotationState
+class Normal_ProcessTick_Rotation : public RotationState
 {
 private:
-  Normal_Rotation(){}
+  Normal_ProcessTick_Rotation(){}
 public:
-  static Normal_Rotation* Instance();
+  static Normal_ProcessTick_Rotation* Instance();
   void enter  (Rotation* rotation);
   void execute(Rotation* rotation);
   void exit   (Rotation* rotation);
 };
 
-class Catchup_Rotation : public RotationState
+class Catchup_ProcessTick_Rotation : public RotationState
 {
 private:
-  Catchup_Rotation(){}
+  Catchup_ProcessTick_Rotation(){}
 public:
-  static Catchup_Rotation* Instance();
+  static Catchup_ProcessTick_Rotation* Instance();
   void enter  (Rotation* rotation);
   void execute(Rotation* rotation);
   void exit   (Rotation* rotation);

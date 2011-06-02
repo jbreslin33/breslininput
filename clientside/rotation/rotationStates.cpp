@@ -5,66 +5,65 @@
 
 #include "../../billboard/objectTitle.h"
 
-Normal_Rotation* Normal_Rotation::Instance()
+Normal_ProcessTick_Rotation* Normal_ProcessTick_Rotation::Instance()
 {
-  static Normal_Rotation instance;
+  static Normal_ProcessTick_Rotation instance;
   return &instance;
 }
-void Normal_Rotation::enter(Rotation* rotation)
+void Normal_ProcessTick_Rotation::enter(Rotation* rotation)
 {
 }
-void Normal_Rotation::execute(Rotation* rotation)
+void Normal_ProcessTick_Rotation::execute(Rotation* rotation)
 {
 	rotation->mObjectTitleString.append("R:Normal");
 	
 	// are we too far off
     if(abs(rotation->mDegreesToServer) > rotation->mRotInterpLimitHigh)
-        {
-                rotation->mCommand.mCatchupRot = true;
-                rotation->mRotationStateMachine->changeState(Catchup_Rotation::Instance());
-        }
-        else
-        {
-                if (rotation->mServerRotSpeed == 0.0)
-                {
-                        rotation->mCommand.mRotSpeed = 0.0;
-                }
-                else
-                {
-                        // if server rot counter-clockwise hardcode server rot to +mTurnSpeed
-                        if(rotation->mServerRotSpeed > 0.0)
-                        {
-                                rotation->mCommand.mRotSpeed = rotation->mTurnSpeed;
-                        }
-                        else //clockwise - set to -mTurnSpeed
-                        {
-                                rotation->mCommand.mRotSpeed = -rotation->mTurnSpeed;
-                        }
-                }
-        }
-		
+    {
+        rotation->mRotationProcessTickStateMachine->changeState(Catchup_ProcessTick_Rotation::Instance());
+		return;
+    }
+    else
+    {
+         if (rotation->mServerRotSpeed == 0.0)
+         {
+			rotation->mCommand.mRotSpeed = 0.0;
+         }
+         else
+         {
+			// if server rot counter-clockwise hardcode server rot to +mTurnSpeed
+            if(rotation->mServerRotSpeed > 0.0)
+            {
+				rotation->mCommand.mRotSpeed = rotation->mTurnSpeed;
+            }
+			else //clockwise - set to -mTurnSpeed
+            {
+				rotation->mCommand.mRotSpeed = -rotation->mTurnSpeed;
+            }
+		}
+	}
 }
-void Normal_Rotation::exit(Rotation* rotation)
+void Normal_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
 
-Catchup_Rotation* Catchup_Rotation::Instance()
+Catchup_ProcessTick_Rotation* Catchup_ProcessTick_Rotation::Instance()
 {
-  static Catchup_Rotation instance;
+  static Catchup_ProcessTick_Rotation instance;
   return &instance;
 }
-void Catchup_Rotation::enter(Rotation* rotation)
+void Catchup_ProcessTick_Rotation::enter(Rotation* rotation)
 {
 }
-void Catchup_Rotation::execute(Rotation* rotation)
+void Catchup_ProcessTick_Rotation::execute(Rotation* rotation)
 {
 	rotation->mObjectTitleString.append("R:Catchup");
 
 	// are we back on track
     if(abs(rotation->mDegreesToServer) < rotation->mRotInterpLimitLow)
     {
-		rotation->mCommand.mCatchupRot = false;
-        rotation->mRotationStateMachine->changeState(Normal_Rotation::Instance());
+        rotation->mRotationProcessTickStateMachine->changeState(Normal_ProcessTick_Rotation::Instance());
+		return;
     }
     else
     {
@@ -101,7 +100,7 @@ void Catchup_Rotation::execute(Rotation* rotation)
 		}
 	}
 }
-void Catchup_Rotation::exit(Rotation* rotation)
+void Catchup_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
 
