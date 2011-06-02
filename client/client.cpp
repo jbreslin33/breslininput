@@ -16,7 +16,6 @@ Client::Client(Network* network)
 	mNetwork = network;
 
 	mShape = NULL;
-	mClientSideShape = NULL;
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
@@ -40,7 +39,6 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 
 
 	mShape = NULL;
-	mClientSideShape = NULL;
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
