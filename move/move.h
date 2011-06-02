@@ -15,7 +15,7 @@ public:
 Move();
 ~Move();
 
-float mRunSpeed;
+
 
 };
 

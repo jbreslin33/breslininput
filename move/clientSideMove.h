@@ -27,6 +27,9 @@ void calculateVelocity(Command* command, float frametime);
 
 ClientSideMoveStateMachine* mMoveStateMachine;
 
+//run speed
+float mRunSpeed;
+
 //thresholds
 float mRunSpeedMax;
 float mTurnSpeed;

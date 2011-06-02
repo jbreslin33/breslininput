@@ -56,7 +56,7 @@
 
 // Introduce classes
 class Network;
-class ClientSideShape;
+class Shape;
 class Shape;
 
 class Client
@@ -136,9 +136,7 @@ public:
 
 	Message	mMessage;
 
-ClientSideShape* mClientSideShape;
 Shape* mShape;
-
 
 Network* mNetwork;
 

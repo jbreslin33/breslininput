@@ -89,7 +89,7 @@ set(HDRS
 	
 	#game
 	../game/BaseApplication.h
-	../game/clientSideGame.h
+	../clientside/game/game.h
 
 	#dreamsock
 	../tdreamsock/dreamSockLog.h
@@ -105,29 +105,27 @@ set(HDRS
 	../math/vector3D.h
 	
 	#shape
-	../shape/shape.h
-	../shape/ogreShape.h
-	../shape/clientSideShape.h
+	../clientside/shape/shape.h
+	../clientside/shape/ogreShape.h
 	
 	#animation
 	../animation/ogreAnimation.h
 	
 	#move
-	../move/move.h
-	../move/clientSideMove.h
+	../clientside/move/move.h
 	
 	#move states
-	../move/clientSideMoveStateMachine.h
-	../move/clientSideMoveState.h
-	../move/clientSideMoveStates.h
+	../clientside/move/moveStateMachine.h
+	../clientside/move/moveState.h
+	../clientside/move/moveStates.h
 	
 	#rotation
-	../rotation/clientSideRotation.h
+	../clientside/rotation/rotation.h
 	
 	#rotation states
-	../rotation/clientSideRotationStateMachine.h
-	../rotation/clientSideRotationState.h
-	../rotation/clientSideRotationStates.h	
+	../clientside/rotation/rotationStateMachine.h
+	../clientside/rotation/rotationState.h
+	../clientside/rotation/rotationStates.h	
 	
 	#message
 	../message/message.h
@@ -145,7 +143,7 @@ set(SRCS
 
 	#game
 	../game/BaseApplication.cpp
-	../game/clientSideGame.cpp
+	../clientside/game/game.cpp
 	
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
@@ -161,25 +159,24 @@ set(SRCS
 	../math/vector3D.cpp
 	
 	#shape
-	../shape/shape.cpp
-	../shape/ogreShape.cpp
-	../shape/clientSideShape.cpp
+	../clientside/shape/shape.cpp
+	../clientside/shape/ogreShape.cpp
 	
 	#animation
 	../animation/ogreAnimation.cpp
 	
 	#move
-	../move/move.cpp
-	../move/clientSideMove.cpp
+	../clientside/move/move.cpp
+
 	
 	#move states
-	../move/clientSideMoveStates.cpp
+	../clientside/move/moveStates.cpp
 	
 	#rotation
-	../rotation/clientSideRotation.cpp
+	../clientside/rotation/rotation.cpp
 	
 	#rotation states
-	../rotation/clientSideRotationStates.cpp
+	../clientside/rotation/rotationStates.cpp
 	
 	#message
 	../message/message.cpp
@@ -198,7 +195,7 @@ set(HDRS
 
 	#game
 	../game/BaseApplication.h
-	../game/clientSideGame.h
+	../clientside/game/game.h
 	
 	#dreamsock
 	../tdreamsock/dreamSockLog.h
@@ -213,30 +210,28 @@ set(HDRS
 	../math/vector3D.h
 	
 	#shape
-	../shape/shape.h
-	../shape/ogreShape.h
-	../shape/clientSideShape.h
+	../clientside/shape/shape.h
+	../clientside/shape/ogreShape.h
 	
 	#animation
 	../animation/ogreAnimation.h
 	
 	#move
-	../move/move.h
-	../move/clientSideMove.h
+	../clientside/move/move.h
 	
 	#move states
-	../move/clientSideMoveStateMachine.h
-	../move/clientSideMoveState.h
-	../move/clientSideMoveStates.h
+	../clientside/move/moveStateMachine.h
+	../clientside/move/moveState.h
+	../clientside/move/moveStates.h
 	
 	#rotation
-	../rotation/clientSideRotation.h
+	../clientside/rotation/rotation.h
 	
 	#rotation states
-	../rotation/clientSideRotationStateMachine.h
-	../rotation/clientSideRotationState.h
-	../rotation/clientSideRotationStates.h
-
+	../clientside/rotation/rotationStateMachine.h
+	../clientside/rotation/rotationState.h
+	../clientside/rotation/rotationStates.h	
+	
 	#message
 	../message/message.h
 	
@@ -251,7 +246,7 @@ set(SRCS
 
 	#game
 	../game/BaseApplication.cpp
-	../game/clientSideGame.cpp
+	../clientside/game/game.cpp
 
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
@@ -267,25 +262,24 @@ set(SRCS
 	../math/vector3D.cpp
 	
 	#shape
-	../shape/shape.cpp
-	../shape/ogreShape.cpp
-	../shape/clientSideShape.cpp
-
+	../clientside/shape/shape.cpp
+	../clientside/shape/ogreShape.cpp
+	
 	#animation
 	../animation/ogreAnimation.cpp
 	
 	#move
-	../move/move.cpp
-	../move/clientSideMove.cpp
+	../clientside/move/move.cpp
+
 	
 	#move states
-	../move/clientSideMoveStates.cpp
+	../clientside/move/moveStates.cpp
 	
 	#rotation
-	../rotation/clientSideRotation.cpp	
-
+	../clientside/rotation/rotation.cpp
+	
 	#rotation states
-	../rotation/clientSideRotationStates.cpp
+	../clientside/rotation/rotationStates.cpp
 	
 	#message
 	../message/message.cpp

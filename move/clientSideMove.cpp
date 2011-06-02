@@ -22,6 +22,9 @@ ClientSideMove::ClientSideMove(std::string name, Vector3D* position, Ogre::Scene
 							   std::string mesh)
  : OgreShape(name,position,mSceneMgr,mesh), Move() 
 {
+	//run speed
+	mRunSpeed     = 0.0;
+
 	//thresholds
 	mRunSpeedMax  = 200.0;
 	

@@ -9,26 +9,26 @@
 using namespace Ogre;
 
 class Command;
-class ClientSideRotationStateMachine;
-class ClientSideShape;
+class RotationStateMachine;
+class Shape;
 
-class ClientSideRotation :  public virtual OgreShape
+class Rotation :  public virtual OgreShape
 {
 
 public:
 
-ClientSideRotation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
-~ClientSideRotation();
+Rotation(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+~Rotation();
 
-void setServerShape(ClientSideShape* serverShape) { mServerShape = serverShape; }
+void setServerShape(Shape* serverShape) { mServerShape = serverShape; }
 
 //movement
 void processTick    ();
 
 void interpolateTick    (float renderTime);
 
-ClientSideShape* mServerShape;
-ClientSideRotationStateMachine* mRotationStateMachine;
+Shape* mServerShape;
+RotationStateMachine* mRotationStateMachine;
 
 //vars
 float mServerRotSpeed;
