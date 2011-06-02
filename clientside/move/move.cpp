@@ -1,5 +1,5 @@
 #include "move.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
 #include <string>
 

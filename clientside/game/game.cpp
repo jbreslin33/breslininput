@@ -1,16 +1,15 @@
-#include "Game.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "game.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../network/network.h"
+#include "../../network/network.h"
 
-#include "../shape/Shape.h"
+#include "../../clientside/shape/shape.h"
 
-#include "../client/client.h"
+#include "../../client/client.h"
 
-#include "../shape/ogreShape.h"
-#include "../math/vector3D.h"
+#include "../../math/vector3D.h"
 
-#include "../message/message.h"
+#include "../../message/message.h"
 
 Game* game;
 bool keys[256];
@@ -46,22 +45,22 @@ Game::~Game()
 
 void Game::AddPlayer(int local, int ind, char *name)
 {
-	Shape* Shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	//mClient->mShape = new Shape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	Shape->getSceneNode()->scale(30,30,30);
+	shape->getSceneNode()->scale(30,30,30);
 	
-	Shape->mIndex = ind;
+	shape->mIndex = ind;
 
-	Shape->mServerShape = new Shape(" silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	Shape->setServerShape(Shape->mServerShape);
-	Shape->mServerShape->getSceneNode()->scale(30,30,30);
+	shape->mServerShape = new Shape(" silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	shape->setServerShape(shape->mServerShape);
+	shape->mServerShape->getSceneNode()->scale(30,30,30);
 	//Shape->mServerShape->getSceneNode()->setVisible(false);
-	mShapeVector.push_back(Shape);
+	mShapeVector.push_back(shape);
 	
 	if(local)
 	{
-		mLocalShape = Shape;
-		mInputShape = Shape;
+		mLocalShape = shape;
+		mInputShape = shape;
 		
 		SendRequestNonDeltaFrame();
 	}

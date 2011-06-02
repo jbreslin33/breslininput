@@ -2,8 +2,8 @@
 #define SHAPE_H
 
 //parents
-#include "../../move/move.h"
-#include "../../rotation/rotation.h"
+#include "../../clientside/move/move.h"
+#include "../../clientside/rotation/rotation.h"
 #include "../../animation/ogreAnimation.h"
 
 //Ogre headers
@@ -12,7 +12,7 @@ using namespace Ogre;
 
 #include <string>
 
-class Shape : public ClientSideMove , public ClientSideRotation, public OgreAnimation
+class Shape : public Move , public Rotation, public OgreAnimation
 {
 
 public:
@@ -24,18 +24,6 @@ Shape* mServerShape;
 //ticks
 void processTick();
 void interpolateTick(float renderTime);
-
-//stats
-Vector3D* mPosition;
-
-//id
-int			mIndex;
-std::string mName;
-
-Command mFrame[COMMAND_HISTORY_SIZE];
-Command	mServerFrame;					// the latest frame from server
-Command	mCommand;						// current frame's commands
-
 
 };
 
