@@ -9,20 +9,20 @@
 using namespace Ogre;
 
 class Command;
-class ServerSideMoveStateMachine;
+class MoveStateMachine;
 
-class ServerSideMove : public virtual OgreShape
+class Move : public virtual OgreShape
 {
 
 public:
 
-ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root);
-~ServerSideMove();
+Move(std::string name, Vector3D* position, Ogre::Root* root);
+~Move();
 
 //ticks
 void processTick    ();
 
-ServerSideMoveStateMachine* mMoveStateMachine;
+MoveStateMachine* mMoveStateMachine;
 
 //run speed
 float mRunSpeed;

@@ -9,21 +9,21 @@
 using namespace Ogre;
 
 class Command;
-class ServerSideJumpStateMachine;
+class JumpStateMachine;
 
-class ServerSideJump : public virtual OgreShape
+class Jump : public virtual OgreShape
 {
 
 public:
 
-ServerSideJump(std::string name, Vector3D* position, Ogre::Root* root);
-~ServerSideJump();
+Jump(std::string name, Vector3D* position, Ogre::Root* root);
+~Jump();
 
 //ticks
 void processTick    ();
 void startJump();
 
-ServerSideJumpStateMachine* mJumpStateMachine;
+JumpStateMachine* mJumpStateMachine;
 
 //jumping
 float mVerticalVelocity;

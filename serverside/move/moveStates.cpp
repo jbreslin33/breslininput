@@ -12,11 +12,11 @@ Normal_Move* Normal_Move::Instance()
   static Normal_Move instance;
   return &instance;
 }
-void Normal_Move::enter(ServerSideMove* move)
+void Normal_Move::enter(Move* move)
 {
 
 }
-void Normal_Move::execute(ServerSideMove* move)
+void Normal_Move::execute(Move* move)
 {
     if (move->mCommand.mKey == 0) 
 	{
@@ -43,7 +43,7 @@ void Normal_Move::execute(ServerSideMove* move)
 	// move in current body direction (not the goal direction)
 	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);
 }
-void Normal_Move::exit(ServerSideMove* move)
+void Normal_Move::exit(Move* move)
 {
 }
 
@@ -52,10 +52,10 @@ No_Move* No_Move::Instance()
 	static No_Move instance;
 	return &instance;
 }
-void No_Move::enter(ServerSideMove* move)
+void No_Move::enter(Move* move)
 {
 }
-void No_Move::execute(ServerSideMove* move)
+void No_Move::execute(Move* move)
 {
     if (move->mCommand.mKey == 0) 
 	{
@@ -83,7 +83,7 @@ void No_Move::execute(ServerSideMove* move)
 		}
 	}
 }
-void No_Move::exit(ServerSideMove* move)
+void No_Move::exit(Move* move)
 {
 }
 
@@ -92,10 +92,10 @@ Accelerate_Move* Accelerate_Move::Instance()
 	static Accelerate_Move instance;
 	return &instance;
 }
-void Accelerate_Move::enter(ServerSideMove* move)
+void Accelerate_Move::enter(Move* move)
 {
 }
-void Accelerate_Move::execute(ServerSideMove* move)
+void Accelerate_Move::execute(Move* move)
 {
     if (move->mCommand.mKey == 0) 
 	{
@@ -126,7 +126,7 @@ void Accelerate_Move::execute(ServerSideMove* move)
 	// move in current body direction (not the goal direction)
 	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);
 }
-void Accelerate_Move::exit(ServerSideMove* move)
+void Accelerate_Move::exit(Move* move)
 {
 }
 
@@ -135,10 +135,10 @@ Decelerate_Move* Decelerate_Move::Instance()
 	static Decelerate_Move instance;
 	return &instance;
 }
-void Decelerate_Move::enter(ServerSideMove* move)
+void Decelerate_Move::enter(Move* move)
 {
 }
-void Decelerate_Move::execute(ServerSideMove* move)
+void Decelerate_Move::execute(Move* move)
 {
     if (move->mCommand.mKey == 0) 
 	{
@@ -169,6 +169,6 @@ void Decelerate_Move::execute(ServerSideMove* move)
 	// move in current body direction (not the goal direction)
 	move->mSceneNode->translate(0, 0, move->mCommand.mClientFrametime * move->mRunSpeed,Node::TS_LOCAL);	
 }
-void Decelerate_Move::exit(ServerSideMove* move)
+void Decelerate_Move::exit(Move* move)
 {
 }

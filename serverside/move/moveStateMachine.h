@@ -2,35 +2,35 @@
 #define SERVERSIDEMOVESTATEMACHINE_H
 #include "moveState.h"
 
-class ServerSideMove;
+class Move;
 
-class ServerSideMoveStateMachine
+class MoveStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ServerSideMove*   m_pOwner;
-  ServerSideMoveState*    m_pCurrentState;
+  Move*   m_pOwner;
+  MoveState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ServerSideMoveState*   m_pPreviousState;
+  MoveState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ServerSideMoveState*   m_pGlobalState;
+  MoveState*   m_pGlobalState;
 
 public:
 
-  ServerSideMoveStateMachine(ServerSideMove* owner):m_pOwner(owner),
+  MoveStateMachine(Move* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ServerSideMoveStateMachine(){}
+  virtual ~MoveStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ServerSideMoveState* s){m_pCurrentState = s;}
-  void setGlobalState(ServerSideMoveState* s) {m_pGlobalState = s;}
-  void setPreviousState(ServerSideMoveState* s){m_pPreviousState = s;}
+  void setCurrentState(MoveState* s){m_pCurrentState = s;}
+  void setGlobalState(MoveState* s) {m_pGlobalState = s;}
+  void setPreviousState(MoveState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ServerSideMoveState* pNewState)
+  void  changeState(MoveState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ServerSideMoveState*  currentState()  const{return m_pCurrentState;}
-  ServerSideMoveState*  globalState()   const{return m_pGlobalState;}
-  ServerSideMoveState*  previousState() const{return m_pPreviousState;}
+  MoveState*  currentState()  const{return m_pCurrentState;}
+  MoveState*  globalState()   const{return m_pGlobalState;}
+  MoveState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

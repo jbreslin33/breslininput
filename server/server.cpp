@@ -8,10 +8,10 @@
 #include "../serverside/shape/shape.h"
 #include "../serverside/game/game.h"
 
-Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
+Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 {
 	init			= false;
-	mServerSideGame = serverSideGame;
+	mGame = serverSideGame;
 	mLocalIP = localIP;
 	port			= 0;
 	
@@ -145,7 +145,7 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
-	mServerSideGame->createPlayer(client,runningIndex);
+	mGame->createPlayer(client,runningIndex);
 
 	runningIndex++;
 
@@ -382,8 +382,8 @@ void Server::ReadPackets(void)
 				{
 					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
 					{
-						mServerSideGame->ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-						mClientVector.at(i)->mServerSideShape->processTick();
+						mGame->ReadDeltaMoveCommand(&mes, mClientVector.at(i));
+						mClientVector.at(i)->mShape->processTick();
 
 						break;
 					}
@@ -404,7 +404,7 @@ void Server::ReadPackets(void)
 
 					for (unsigned int j = 0; j < mClientVector.size(); j++)
 					{
-						mServerSideGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mClientVector.at(j));
+						mGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mClientVector.at(j));
 					}
 					mClientVector.at(i)->SendPacket();
 				}

@@ -39,7 +39,7 @@
 int runningDaemon;
 #endif
 
-ServerSideGame* game;
+Game* game;
 
 #ifdef WIN32
 
@@ -104,7 +104,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	StartLogConsole();
 
 
-	game = new ServerSideGame();
+	game = new Game();
 
 /*
 	if(game->InitNetwork() != 0)
@@ -232,7 +232,7 @@ int keyPress(void)
 int main(int argc, char **argv)
 {
 
-	game = new ServerSideGame;
+	game = new Game;
 /*
 	if(game->InitNetwork() != 0)
 	{

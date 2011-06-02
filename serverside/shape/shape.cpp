@@ -5,22 +5,22 @@
 
 #include <string>
 
-ServerSideShape::ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root)
+Shape::Shape(std::string name, Vector3D* position, Ogre::Root* root)
 :
-	ServerSideRotation(name,position,root),
-	ServerSideMove    (name,position,root),
-	ServerSideJump    (name,position,root),
+	Rotation(name,position,root),
+	Move    (name,position,root),
+	Jump    (name,position,root),
 	OgreShape		  (name,position,root)
 {
 	//client if this shape has associated with it
 	mClient = NULL;
 }
 
-ServerSideShape::~ServerSideShape()
+Shape::~Shape()
 {
 }
 
-void ServerSideShape::processTick()
+void Shape::processTick()
 {
 	setKeyDirection();
 
@@ -30,14 +30,14 @@ void ServerSideShape::processTick()
 	//is this why the rotation gets off???
 	//UPDATE--I now check for mKey inside Rotation State machine
     
-	ServerSideRotation::processTick();
+	Rotation::processTick();
 
 	//even though there is no mKey set we still need to move as
 	//brian has put in a deceleration factor so let's let it run...
-	ServerSideMove::processTick();
+	Move::processTick();
 
 	//jump is a good work in progress but it's now it's own thing
-	ServerSideJump::processTick();
+	Jump::processTick();
 
 	//set all vars to be sent off to clients playing on internets
 	//none of this actually moves anything on server it is what is

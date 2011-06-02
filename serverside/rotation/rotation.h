@@ -9,21 +9,21 @@
 using namespace Ogre;
 
 class Command;
-class ServerSideRotationStateMachine;
-class ServerSideShape;
+class RotationStateMachine;
+class Shape;
 
-class ServerSideRotation :  public virtual OgreShape
+class Rotation :  public virtual OgreShape
 {
 
 public:
 
-ServerSideRotation(std::string name, Vector3D* position, Ogre::Root* root);
-~ServerSideRotation();
+Rotation(std::string name, Vector3D* position, Ogre::Root* root);
+~Rotation();
 
 //movement
 void processTick    ();
 void setKeyDirection();
-ServerSideRotationStateMachine* mRotationStateMachine;
+RotationStateMachine* mRotationStateMachine;
 
 //keys
 Vector3 mKeyDirection;

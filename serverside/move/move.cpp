@@ -21,7 +21,7 @@ using namespace Ogre;
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root* root)
+Move::Move(std::string name, Vector3D* position, Ogre::Root* root)
 :
 	OgreShape(name,position,root)
 {
@@ -33,16 +33,16 @@ ServerSideMove::ServerSideMove(std::string name, Vector3D* position, Ogre::Root*
     mRunDecel    = 5.0;
 
  	//move states
-	mMoveStateMachine = new ServerSideMoveStateMachine(this);    //setup the state machine
+	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
 	mMoveStateMachine->setGlobalState       (NULL);
 }
 
-ServerSideMove::~ServerSideMove()
+Move::~Move()
 {
 }
-void ServerSideMove::processTick()
+void Move::processTick()
 {
 	mMoveStateMachine->update();
 }
