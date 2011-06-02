@@ -1,36 +1,36 @@
-#ifndef CLIENTSIDEROTATIONSTATEMACHINE_H
-#define CLIENTSIDEROTATIONSTATEMACHINE_H
-#include "clientSideRotationState.h"
+#ifndef MOVESTATEMACHINE_H
+#define MOVESTATEMACHINE_H
+#include "moveState.h"
 
-class ClientSideRotation;
+class Move;
 
-class ClientSideRotationStateMachine
+class MoveStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ClientSideRotation*   m_pOwner;
-  ClientSideRotationState*    m_pCurrentState;
+  Move*   m_pOwner;
+  MoveState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ClientSideRotationState*   m_pPreviousState;
+  MoveState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ClientSideRotationState*   m_pGlobalState;
+  MoveState*   m_pGlobalState;
 
 public:
 
-  ClientSideRotationStateMachine(ClientSideRotation* owner):m_pOwner(owner),
+  MoveStateMachine(Move* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ClientSideRotationStateMachine(){}
+  virtual ~MoveStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ClientSideRotationState* s){m_pCurrentState = s;}
-  void setGlobalState(ClientSideRotationState* s) {m_pGlobalState = s;}
-  void setPreviousState(ClientSideRotationState* s){m_pPreviousState = s;}
+  void setCurrentState(MoveState* s){m_pCurrentState = s;}
+  void setGlobalState(MoveState* s) {m_pGlobalState = s;}
+  void setPreviousState(MoveState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ClientSideRotationState* pNewState)
+  void  changeState(MoveState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ClientSideRotationState*  currentState()  const{return m_pCurrentState;}
-  ClientSideRotationState*  globalState()   const{return m_pGlobalState;}
-  ClientSideRotationState*  previousState() const{return m_pPreviousState;}
+  MoveState*  currentState()  const{return m_pCurrentState;}
+  MoveState*  globalState()   const{return m_pGlobalState;}
+  MoveState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

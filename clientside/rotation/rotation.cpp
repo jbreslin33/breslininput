@@ -1,7 +1,7 @@
-#include "clientSideRotation.h"
+#include "rotation.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../shape/clientSideShape.h"
+#include "../shape/Shape.h"
 
 #include <string>
 
@@ -10,8 +10,8 @@
 using namespace Ogre;
 
 //rotation states
-#include "clientSideRotationStateMachine.h"
-#include "clientSideRotationStates.h"
+#include "rotationStateMachine.h"
+#include "rotationStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
@@ -20,7 +20,7 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
+Rotation::Rotation(std::string name, Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
 :
 	OgreShape(name, position,mSceneMgr,mesh)
@@ -41,17 +41,17 @@ ClientSideRotation::ClientSideRotation(std::string name, Vector3D* position,
 	mDegreesToServer = 0.0;
 
 	//rotation states
-	mRotationStateMachine = new ClientSideRotationStateMachine(this);    //setup the state machine
+	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
 	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
 	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
 	mRotationStateMachine->setGlobalState       (NULL);
 }
 
-ClientSideRotation::~ClientSideRotation()
+Rotation::~Rotation()
 {
 }
 
-void ClientSideRotation::processTick()
+void Rotation::processTick()
 {
     mServerRotOld  = Ogre::Vector3::ZERO;
     mServerRotNew  = Ogre::Vector3::ZERO;
@@ -91,7 +91,7 @@ void ClientSideRotation::processTick()
 		
 }
 
-void ClientSideRotation::interpolateTick(float renderTime)
+void Rotation::interpolateTick(float renderTime)
 {
 	
     float rotSpeed = mCommand.mRotSpeed * renderTime;

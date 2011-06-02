@@ -1,11 +1,11 @@
-#include "clientSideShape.h"
+#include "Shape.h"
 #include "../tdreamsock/dreamSockLog.h"
 
 #include "../billboard/objectTitle.h"
 
 #include <string.h>
 
-ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+Shape::Shape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								 std::string mesh)
 :
 	ClientSideMove    (name,position,mSceneMgr,mesh),
@@ -14,13 +14,18 @@ ClientSideShape::ClientSideShape(std::string name, Vector3D* position, Ogre::Sce
 	OgreShape         (name,position,mSceneMgr,mesh)
 {
 	mServerShape = NULL;
+
+ 	mPosition = position;
+	mIndex  = 0;
+   	mName = shapeName;
+	mProcessedFrame = 0;
 }
 
-ClientSideShape::~ClientSideShape()
+Shape::~Shape()
 {
 }
 
-void ClientSideShape::processTick()
+void Shape::processTick()
 {
 	mObjectTitleString.clear(); //empty title string so it can be filled anew
 	
@@ -32,7 +37,7 @@ void ClientSideShape::processTick()
 	mObjectTitle->update(); //draw title for shape
 
 }
-void ClientSideShape::interpolateTick(float renderTime)
+void Shape::interpolateTick(float renderTime)
 {
 	ClientSideMove::interpolateTick(renderTime);
 	ClientSideRotation::interpolateTick(renderTime);

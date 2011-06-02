@@ -1,18 +1,18 @@
-#include "clientSideMoveStates.h"
-#include "clientSideMoveStateMachine.h"
+#include "moveStates.h"
+#include "moveStateMachine.h"
 
-#include "clientSideMove.h"
+#include "move.h"
 
 Normal_Move* Normal_Move::Instance()
 {
   static Normal_Move instance;
   return &instance;
 }
-void Normal_Move::enter(ClientSideMove* move)
+void Normal_Move::enter(Move* move)
 {
 
 }
-void Normal_Move::execute(ClientSideMove* move)
+void Normal_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Normal ");
 	// if distance exceeds threshold
@@ -45,7 +45,7 @@ void Normal_Move::execute(ClientSideMove* move)
         move->mCommand.mVelocity.y = serverDest.y;
 	}
 }
-void Normal_Move::exit(ClientSideMove* move)
+void Normal_Move::exit(Move* move)
 {
 }
 
@@ -54,10 +54,10 @@ Catchup_Move* Catchup_Move::Instance()
 	static Catchup_Move instance;
 	return &instance;
 }
-void Catchup_Move::enter(ClientSideMove* move)
+void Catchup_Move::enter(Move* move)
 {
 }
-void Catchup_Move::execute(ClientSideMove* move)
+void Catchup_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
@@ -107,7 +107,7 @@ void Catchup_Move::execute(ClientSideMove* move)
         move->mCommand.mVelocity.y = myDest.y;
 	}
 }
-void Catchup_Move::exit(ClientSideMove* move)
+void Catchup_Move::exit(Move* move)
 {
 }
 
