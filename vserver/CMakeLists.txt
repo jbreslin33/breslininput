@@ -145,7 +145,7 @@ set(HDRS
 	../client/client.h
 	
 	#billboard
-	../billboard/objectTitle.h
+	#../billboard/objectTitle.h
 
 )
  
@@ -202,7 +202,7 @@ set(SRCS
 	../client/client.cpp
 	
 	#billboard
-	../billboard/objectTitle.cpp
+	#../billboard/objectTitle.cpp
 	
 )
 endif (WIN32)
@@ -268,7 +268,7 @@ set(HDRS
 	../client/client.h
 	
 	#billboard
-	../billboard/objectTitle.h
+	#../billboard/objectTitle.h
 )
  
 set(SRCS
@@ -324,7 +324,7 @@ set(SRCS
 	../client/client.cpp
 	
 	#billboard
-	../billboard/objectTitle.cpp
+	#../billboard/objectTitle.cpp
 
 )
 endif (UNIX)
