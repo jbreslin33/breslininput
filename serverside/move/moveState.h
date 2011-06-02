@@ -1,23 +1,23 @@
 #ifndef ClIENTSIDEMOVESTATE_H
 #define ClIENTSIDEMOVESTATE_H
 
-class ServerSideMove;
+class Move;
 
-class ServerSideMoveState
+class MoveState
 {
 public:
 
-  virtual ~ServerSideMoveState(){}
+  virtual ~MoveState(){}
 
   //this will execute when the state is entered
-  virtual void enter(ServerSideMove*)=0;
+  virtual void enter(Move*)=0;
 
   //this is the states normal update function
-  virtual void execute(ServerSideMove*)=0;
+  virtual void execute(Move*)=0;
 
   //this will execute when the state is exited. (My word, isn't
   //life full of surprises... ;o))
-  virtual void exit(ServerSideMove*)=0;
+  virtual void exit(Move*)=0;
 };
 
 #endif

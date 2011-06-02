@@ -30,7 +30,7 @@
 // Introduce classes
 class Network;
 class Client;
-class ServerSideGame;
+class Game;
 
 class Server
 {
@@ -51,7 +51,7 @@ public:
 	bool			init;
 
 public:
-					Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort);
+					Server(Game* serverSideGame,const char *localIP, int serverPort);
 					~Server();
 
 	void			Uninitialise(void);
@@ -61,7 +61,7 @@ public:
 
 	int				GetPort(void)			{ return port; }
 
-	ServerSideGame* mServerSideGame;
+	Game* mGame;
 	Network* mNetwork;
 
 	void	ReadPackets(void);

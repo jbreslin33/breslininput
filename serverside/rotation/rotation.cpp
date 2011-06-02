@@ -21,7 +21,7 @@ using namespace Ogre;
 
 #define TURN_SPEED 250.0f      // character turning in degrees per second
 
-ServerSideRotation::ServerSideRotation(std::string name, Vector3D* position,
+Rotation::Rotation(std::string name, Vector3D* position,
 									   Ogre::Root* root)
 :
 	OgreShape(name,position,root)
@@ -31,22 +31,22 @@ ServerSideRotation::ServerSideRotation(std::string name, Vector3D* position,
 	mGoalDirection = Vector3::ZERO;
 
 	//rotation states
-	mRotationStateMachine = new ServerSideRotationStateMachine(this);    //setup the state machine
+	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
 	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());
 	mRotationStateMachine->setPreviousState     (Normal_Rotation::Instance());
 	mRotationStateMachine->setGlobalState       (NULL);
 }
 
-ServerSideRotation::~ServerSideRotation()
+Rotation::~Rotation()
 {
 }
 
-void ServerSideRotation::processTick()
+void Rotation::processTick()
 {
 	mRotationStateMachine->update();
 }
 
-void ServerSideRotation::setKeyDirection()
+void Rotation::setKeyDirection()
 {
 	mKeyDirection.x = 0;
     mKeyDirection.z = 0;

@@ -2,35 +2,35 @@
 #define ROTATIONSTATEMACHINE_H
 #include "rotationState.h"
 
-class ServerSideRotation;
+class Rotation;
 
-class ServerSideRotationStateMachine
+class RotationStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ServerSideRotation*   m_pOwner;
-  ServerSideRotationState*    m_pCurrentState;
+  Rotation*   m_pOwner;
+  RotationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ServerSideRotationState*   m_pPreviousState;
+  RotationState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ServerSideRotationState*   m_pGlobalState;
+  RotationState*   m_pGlobalState;
 
 public:
 
-  ServerSideRotationStateMachine(ServerSideRotation* owner):m_pOwner(owner),
+  RotationStateMachine(Rotation* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ServerSideRotationStateMachine(){}
+  virtual ~RotationStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ServerSideRotationState* s){m_pCurrentState = s;}
-  void setGlobalState(ServerSideRotationState* s) {m_pGlobalState = s;}
-  void setPreviousState(ServerSideRotationState* s){m_pPreviousState = s;}
+  void setCurrentState(RotationState* s){m_pCurrentState = s;}
+  void setGlobalState(RotationState* s) {m_pGlobalState = s;}
+  void setPreviousState(RotationState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ServerSideRotationState* pNewState)
+  void  changeState(RotationState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ServerSideRotationState*  currentState()  const{return m_pCurrentState;}
-  ServerSideRotationState*  globalState()   const{return m_pGlobalState;}
-  ServerSideRotationState*  previousState() const{return m_pPreviousState;}
+  RotationState*  currentState()  const{return m_pCurrentState;}
+  RotationState*  globalState()   const{return m_pGlobalState;}
+  RotationState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

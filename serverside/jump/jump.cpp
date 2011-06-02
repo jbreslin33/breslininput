@@ -18,7 +18,7 @@ using namespace Ogre;
 //key defines prob should be changed to a variable if possible
 #define KEY_SPACE				16
 
-ServerSideJump::ServerSideJump(std::string name, Vector3D* position, Ogre::Root* root)
+Jump::Jump(std::string name, Vector3D* position, Ogre::Root* root)
 :
 	OgreShape(name,position,root)
 {
@@ -28,22 +28,22 @@ ServerSideJump::ServerSideJump(std::string name, Vector3D* position, Ogre::Root*
     mGravity     = 900.0;
 
   	//move states
-	mJumpStateMachine = new ServerSideJumpStateMachine(this);    //setup the state machine
+	mJumpStateMachine = new JumpStateMachine(this);    //setup the state machine
 	mJumpStateMachine->setCurrentState      (Normal_Jump::Instance());
 	mJumpStateMachine->setPreviousState     (Normal_Jump::Instance());
 	mJumpStateMachine->setGlobalState       (NULL);
 }
 
-ServerSideJump::~ServerSideJump()
+Jump::~Jump()
 {
 }
-void ServerSideJump::processTick()
+void Jump::processTick()
 {
 	mJumpStateMachine->update();
 }
 
 
-void ServerSideJump::startJump()
+void Jump::startJump()
 {
 	mVerticalVelocity = mJumpAccel;
 }

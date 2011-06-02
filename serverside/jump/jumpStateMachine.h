@@ -2,35 +2,35 @@
 #define JUMPSTATEMACHINE_H
 #include "jumpState.h"
 
-class ServerSideJump;
+class Jump;
 
-class ServerSideJumpStateMachine
+class JumpStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  ServerSideJump*   m_pOwner;
-  ServerSideJumpState*    m_pCurrentState;
+  Jump*   m_pOwner;
+  JumpState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  ServerSideJumpState*   m_pPreviousState;
+  JumpState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  ServerSideJumpState*   m_pGlobalState;
+  JumpState*   m_pGlobalState;
 
 public:
 
-  ServerSideJumpStateMachine(ServerSideJump* owner):m_pOwner(owner),
+  JumpStateMachine(Jump* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)
   {}
 
-  virtual ~ServerSideJumpStateMachine(){}
+  virtual ~JumpStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(ServerSideJumpState* s){m_pCurrentState = s;}
-  void setGlobalState(ServerSideJumpState* s) {m_pGlobalState = s;}
-  void setPreviousState(ServerSideJumpState* s){m_pPreviousState = s;}
+  void setCurrentState(JumpState* s){m_pCurrentState = s;}
+  void setGlobalState(JumpState* s) {m_pGlobalState = s;}
+  void setPreviousState(JumpState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(ServerSideJumpState* pNewState)
+  void  changeState(JumpState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  ServerSideJumpState*  currentState()  const{return m_pCurrentState;}
-  ServerSideJumpState*  globalState()   const{return m_pGlobalState;}
-  ServerSideJumpState*  previousState() const{return m_pPreviousState;}
+  JumpState*  currentState()  const{return m_pCurrentState;}
+  JumpState*  globalState()   const{return m_pGlobalState;}
+  JumpState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 

@@ -2,28 +2,28 @@
 #define SERVERSIDEJUMPSTATES_H
 #include "jumpState.h"
 
-class ServerSideJump;
+class Jump;
 
-class Normal_Jump : public ServerSideJumpState
+class Normal_Jump : public JumpState
 {
 private:
   Normal_Jump(){}
 public:
   static Normal_Jump* Instance();
-  void enter  (ServerSideJump* jump);
-  void execute(ServerSideJump* jump);
-  void exit   (ServerSideJump* jump);
+  void enter  (Jump* jump);
+  void execute(Jump* jump);
+  void exit   (Jump* jump);
 };
 
-class No_Jump : public ServerSideJumpState
+class No_Jump : public JumpState
 {
 private:
   No_Jump(){}
 public:
   static No_Jump* Instance();
-  void enter  (ServerSideJump* jump);
-  void execute(ServerSideJump* jump);
-  void exit   (ServerSideJump* jump);
+  void enter  (Jump* jump);
+  void execute(Jump* jump);
+  void exit   (Jump* jump);
 };
 
 #endif

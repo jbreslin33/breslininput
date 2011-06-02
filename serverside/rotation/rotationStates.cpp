@@ -10,10 +10,10 @@ Normal_Rotation* Normal_Rotation::Instance()
   static Normal_Rotation instance;
   return &instance;
 }
-void Normal_Rotation::enter(ServerSideRotation* rotation)
+void Normal_Rotation::enter(Rotation* rotation)
 {
 }
-void Normal_Rotation::execute(ServerSideRotation* rotation)
+void Normal_Rotation::execute(Rotation* rotation)
 {
 	if (rotation->mCommand.mKey == 0)
 	{
@@ -61,7 +61,7 @@ void Normal_Rotation::execute(ServerSideRotation* rotation)
 	}               
     rotation->mSceneNode->yaw(Degree(yawToGoal));
 }
-void Normal_Rotation::exit(ServerSideRotation* rotation)
+void Normal_Rotation::exit(Rotation* rotation)
 {
 }
 
@@ -70,10 +70,10 @@ No_Rotation* No_Rotation::Instance()
   static No_Rotation instance;
   return &instance;
 }
-void No_Rotation::enter(ServerSideRotation* rotation)
+void No_Rotation::enter(Rotation* rotation)
 {
 }
-void No_Rotation::execute(ServerSideRotation* rotation)
+void No_Rotation::execute(Rotation* rotation)
 {
 	if (rotation->mCommand.mKey != 0)
 	{
@@ -81,7 +81,7 @@ void No_Rotation::execute(ServerSideRotation* rotation)
 		return;
 	}
 }
-void No_Rotation::exit(ServerSideRotation* rotation)
+void No_Rotation::exit(Rotation* rotation)
 {
 }
 

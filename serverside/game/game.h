@@ -27,7 +27,7 @@ class Command;
 class Server;
 class Client;
 
-class ServerSideGame
+class Game
 {
 public:
 
@@ -42,8 +42,8 @@ public:
 	//Network* mNetwork;
 
 public:
-	ServerSideGame();
-	~ServerSideGame();
+	Game();
+	~Game();
 
 	//player
 	void createPlayer(Client* client, int runningIndex);

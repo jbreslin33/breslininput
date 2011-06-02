@@ -2,49 +2,49 @@
 #define MOVESTATES_H
 #include "moveState.h"
 
-class ServerSideMove;
+class Move;
 
-class Normal_Move : public ServerSideMoveState
+class Normal_Move : public MoveState
 {
 private:
   Normal_Move(){}
 public:
   static Normal_Move* Instance();
-  void enter  (ServerSideMove* move);
-  void execute(ServerSideMove* move);
-  void exit   (ServerSideMove* move);
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
 };
 
-class No_Move : public ServerSideMoveState
+class No_Move : public MoveState
 {
 private:
   No_Move(){}
 public:
   static No_Move* Instance();
-  void enter  (ServerSideMove* move);
-  void execute(ServerSideMove* move);
-  void exit   (ServerSideMove* move);
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
 };
 
-class Accelerate_Move : public ServerSideMoveState
+class Accelerate_Move : public MoveState
 {
 private:
   Accelerate_Move(){}
 public:
   static Accelerate_Move* Instance();
-  void enter  (ServerSideMove* move);
-  void execute(ServerSideMove* move);
-  void exit   (ServerSideMove* move);
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
 };
 
-class Decelerate_Move : public ServerSideMoveState
+class Decelerate_Move : public MoveState
 {
 private:
   Decelerate_Move(){}
 public:
   static Decelerate_Move* Instance();
-  void enter  (ServerSideMove* move);
-  void execute(ServerSideMove* move);
-  void exit   (ServerSideMove* move);
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
 };
 #endif

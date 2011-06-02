@@ -14,16 +14,16 @@ using namespace Ogre;
 
 class Client;
 
-class ServerSideShape
+class Shape
 	:
-	public ServerSideMove ,
-	public ServerSideRotation ,
-	public ServerSideJump
+	public Move ,
+	public Rotation ,
+	public Jump
 {
 
 public:
-ServerSideShape(std::string name, Vector3D* position, Ogre::Root* root);
-~ServerSideShape();
+Shape(std::string name, Vector3D* position, Ogre::Root* root);
+~Shape();
 
 //ticks
 void processTick();
