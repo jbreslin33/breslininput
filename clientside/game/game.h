@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "BaseApplication.h"
+#include "../../game/BaseApplication.h"
 
-#include "../shape/Shape.h"
+#include "../../clientside/shape/shape.h"
 
 
 
@@ -40,6 +40,7 @@ class Network;
 class Message;
 class Client;
 class MovableTextOverlay;
+
 
 class Game : public BaseApplication
 {

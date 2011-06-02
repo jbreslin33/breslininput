@@ -1,14 +1,13 @@
 #include "ogreShape.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../math/vector3D.h"
+#include "../../math/vector3D.h"
 
 //billboard
-#include "../billboard/objectTitle.h"
+#include "../../billboard/objectTitle.h"
 
 OgreShape::OgreShape()
 {
-
 }
 //constructor for client side ogre shape
 OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
@@ -41,25 +40,6 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
     fontName, color);
 	//end billboard
-}
-
-//this is the contructor for server side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
-:
-	Shape(name,position)
-{
-
-	mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
-	mMeshName     = ""; //not used on server
-	mName         = ""; //not used on server
-	mEntity       = NULL; //not used on server
-
-	// create main model
-	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::ZERO);
-
-	//billboard
-	mObjectTitle       = NULL; //not used on server
-	mObjectTitleString = ""; //not used on server
 }
 
 OgreShape::~OgreShape()
