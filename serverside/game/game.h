@@ -1,5 +1,5 @@
-#ifndef SERVERSIDEGAME_H
-#define SERVERSIDEGAME_H
+#ifndef GAME_H
+#define GAME_H
 
 #include <string.h>
 

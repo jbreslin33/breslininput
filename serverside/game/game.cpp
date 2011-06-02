@@ -1,11 +1,11 @@
-#include "serverSideGame.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "game.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../server/server.h"
+#include "../../server/server.h"
 
-#include "../client/serverSideClient.h"
-#include "../shape/serverSideShape.h"
-#include "../command/command.h"
+#include "../../client/serverSideClient.h"
+#include "../../shape/serverSideShape.h"
+#include "../../command/command.h"
 
 ServerSideGame::ServerSideGame()
 {

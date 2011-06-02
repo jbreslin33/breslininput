@@ -1,10 +1,9 @@
-#include "serverSideMove.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "move.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../client/client.h"
+#include "../../client/client.h"
 
 #define MAX_RUN_SPEED 200           // character running speed in units per second
-
 
 #include <string>
 
@@ -13,8 +12,8 @@
 using namespace Ogre;
 
 //move states
-#include "serverSideMoveStateMachine.h"
-#include "serverSideMoveStates.h"
+#include "moveStateMachine.h"
+#include "moveStates.h"
 
 //key defines prob should be changed to a variable if possible
 #define KEY_UP					1
