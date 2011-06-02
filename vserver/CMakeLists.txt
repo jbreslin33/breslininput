@@ -91,7 +91,7 @@ set(HDRS
 	./main.h
 	
 	#game
-	../game/serverSideGame.h
+	../serverside/game/game.h
 	
 	#tdreamsock
 	../tdreamsock/dreamSockLog.h
@@ -101,34 +101,33 @@ set(HDRS
 	../network/network.h
 	
 	#shape
-	../shape/shape.h
-	../shape/ogreShape.h
-	../shape/serverSideShape.h
+	../serverside/shape/shape.h
+	../serverside/shape/ogreShape.h
 	
 	#move
-	../move/move.h
-	../move/serverSideMove.h
+	../serverside/move/move.h
+	../serverside/move/move.h
 	
 	#move states
-	../move/serverSideMoveStateMachine.h
-	../move/serverSideMoveState.h
-	../move/serverSideMoveStates.h
+	../serverside/move/moveStateMachine.h
+	../serverside/move/moveState.h
+	../serverside/move/moveStates.h
 	
 	#rotation
-	../rotation/serverSideRotation.h
+	../serverside/rotation/rotation.h
 	
 	#rotation states
-	../rotation/serverSideRotationStateMachine.h
-	../rotation/serverSideRotationState.h
-	../rotation/serverSideRotationStates.h	
+	../serverside/rotation/rotationStateMachine.h
+	../serverside/rotation/rotationState.h
+	../serverside/rotation/rotationStates.h	
 	
 	#jump
-	../jump/serverSideJump.h
+	../serverside/jump/jump.h
 	
 	#jump states
-	../jump/serverSideJumpStateMachine.h
-	../jump/serverSideJumpState.h
-	../jump/serverSideJumpStates.h	
+	../serverside/jump/jumpStateMachine.h
+	../serverside/jump/jumpState.h
+	../serverside/jump/jumpStates.h	
 	
 	#math
 	../math/vector3D.h
@@ -156,7 +155,7 @@ set(SRCS
 	./main.cpp
 
 	#game
-	../game/serverSideGame.cpp
+	../serverside/game/game.cpp
 	
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
@@ -166,28 +165,26 @@ set(SRCS
 	../network/network.cpp
 	
 	#shape
-	../shape/shape.cpp
-	../shape/ogreShape.cpp
-	../shape/serverSideShape.cpp
+	../serverside/shape/shape.cpp
+	../serverside/shape/ogreShape.cpp
 	
 	#move
-	../move/move.cpp
-	../move/serverSideMove.cpp
+	../serverside/move/move.cpp
 	
 	#move states
-	../move/serverSideMoveStates.cpp
+	../serverside/move/moveStates.cpp
 	
 	#rotation
-	../rotation/serverSideRotation.cpp
+	../serverside/rotation/rotation.cpp
 	
 	#rotation states
-	../rotation/serverSideRotationStates.cpp
+	../serverside/rotation/rotationStates.cpp
 	
 	#jump
-	../jump/serverSideJump.cpp
+	../serverside/jump/jump.cpp
 	
 	#jump states
-	../jump/serverSideJumpStates.cpp
+	../serverside/jump/jumpStates.cpp
 	
 	#math
 	../math/vector3D.cpp
@@ -217,7 +214,7 @@ set(HDRS
 	./main.h
 	
 	#game
-	../game/serverSideGame.h
+	../serverside/game/serverSideGame.h
 	
 	#network
 	../network/network.h
@@ -227,34 +224,33 @@ set(HDRS
 	../tdreamsock/dreamLinuxSock.h
 	
 	#shape
-	../shape/shape.h
-	../shape/ogreShape.h
-	../shape/serverSideShape.h
+	../serverside/shape/shape.h
+	../serverside/shape/ogreShape.h
 	
 	#move
-	../move/move.h
-	../move/serverSideMove.h
+	../serverside/move/move.h
+	../serverside/move/move.h
 	
 	#move states
-	../move/serverSideMoveStateMachine.h
-	../move/serverSideMoveState.h
-	../move/serverSideMoveStates.h
+	../serverside/move/moveStateMachine.h
+	../serverside/move/moveState.h
+	../serverside/move/moveStates.h
 	
 	#rotation
-	../rotation/serverSideRotation.h
+	../serverside/rotation/rotation.h
 	
 	#rotation states
-	../rotation/serverSideRotationStateMachine.h
-	../rotation/serverSideRotationState.h
-	../rotation/serverSideRotationStates.h	
+	../serverside/rotation/rotationStateMachine.h
+	../serverside/rotation/rotationState.h
+	../serverside/rotation/rotationStates.h	
 	
 	#jump
-	../jump/serverSideJump.h
+	../serverside/jump/jump.h
 	
 	#jump states
-	../jump/serverSideJumpStateMachine.h
-	../jump/serverSideJumpState.h
-	../jump/serverSideJumpStates.h	
+	../serverside/jump/jumpStateMachine.h
+	../serverside/jump/jumpState.h
+	../serverside/jump/jumpStates.h	
 	
 	#math
 	../math/vector3D.h
@@ -281,7 +277,7 @@ set(SRCS
 	./main.cpp
 	
 	#game
-	../game/serverSideGame.cpp
+	../serverside/game/serverSideGame.cpp
 
 	#dreamsock
 	../tdreamsock/dreamSockLog.cpp
@@ -291,28 +287,26 @@ set(SRCS
 	../network/network.cpp
 	
 	#shape
-	../shape/shape.cpp
-	../shape/ogreShape.cpp
-	../shape/serverSideShape.cpp
+	../serverside/shape/shape.cpp
+	../serverside/shape/ogreShape.cpp
 	
 	#move
-	../move/move.cpp
-	../move/serverSideMove.cpp
+	../serverside/move/move.cpp
 	
 	#move states
-	../move/serverSideMoveStates.cpp
+	../serverside/move/moveStates.cpp
 	
 	#rotation
-	../rotation/serverSideRotation.cpp
+	../serverside/rotation/rotation.cpp
 	
 	#rotation states
-	../rotation/serverSideRotationStates.cpp
+	../serverside/rotation/rotationStates.cpp
 	
 	#jump
-	../jump/serverSideJump.cpp
+	../serverside/jump/jump.cpp
 	
 	#jump states
-	../jump/serverSideJumpStates.cpp
+	../serverside/jump/jumpStates.cpp
 	
 	#math
 	../math/vector3D.cpp

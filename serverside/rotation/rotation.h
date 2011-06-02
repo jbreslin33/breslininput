@@ -2,7 +2,7 @@
 #define ROTATION_H
 
 //parents
-#include "../serverside/shape/ogreShape.h"
+#include "../../serverside/shape/ogreShape.h"
 
 //Ogre headers
 #include "Ogre.h"

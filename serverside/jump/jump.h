@@ -1,8 +1,8 @@
-#ifndef SERVERSIDEJUMP_H
-#define SERVERSIDEJUMP_H
+#ifndef JUMP_H
+#define JUMP_H
 
 //parents
-#include "../serverside/shape/ogreShape.h"
+#include "../../serverside/shape/ogreShape.h"
 
 //Ogre headers
 #include "Ogre.h"
