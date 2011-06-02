@@ -22,7 +22,7 @@
 #include <fcntl.h>
 #endif
 
-#include "../game/serverSideGame.h"
+#include "../serverside/game/game.h"
 #include "../server/server.h"
 #include "../network/network.h"
 #include "../tdreamsock/dreamSockLog.h"

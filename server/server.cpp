@@ -5,8 +5,8 @@
 #include "../network/network.h"
 #include "../client/client.h"
 #include "../message/message.h"
-#include "../shape/serverSideShape.h"
-#include "../game/serverSideGame.h"
+#include "../serverside/shape/shape.h"
+#include "../serverside/game/game.h"
 
 Server::Server(ServerSideGame* serverSideGame,const char *localIP, int serverPort)
 {

@@ -4,7 +4,7 @@
 #include "../../server/server.h"
 
 #include "../../client/serverSideClient.h"
-#include "../../shape/serverSideShape.h"
+#include "../../serverside/shape/shape.h"
 #include "../../command/command.h"
 
 ServerSideGame::ServerSideGame()
