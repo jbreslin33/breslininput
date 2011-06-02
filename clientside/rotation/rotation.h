@@ -28,7 +28,9 @@ void processTick    ();
 void interpolateTick    (float renderTime);
 
 Shape* mServerShape;
-RotationStateMachine* mRotationStateMachine;
+
+RotationStateMachine* mRotationProcessTickStateMachine;
+RotationStateMachine* mRotationInterpolateTickStateMachine;
 
 //vars
 float mServerRotSpeed;

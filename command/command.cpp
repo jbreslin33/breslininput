@@ -23,7 +23,6 @@ Command::Command()
 	mMilliseconds = 0;
 
 	mCatchup    = false;
-	mCatchupRot = false;
 	mStop       = true;
 
 	mClientFrametime = 0.0f;
