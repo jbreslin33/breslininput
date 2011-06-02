@@ -3,10 +3,6 @@
 
 // Common headers
 #include <stdio.h>
-//#include <stdarg.h>
-//#include <stdlib.h>
-//#include <ctype.h>
-//#include <time.h>
 
 void Message::Init(char *d, int length)
 {
