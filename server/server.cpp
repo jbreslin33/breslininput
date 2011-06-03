@@ -100,28 +100,32 @@ void Server::SendAddClient(Client *newClient)
 	}
 }
 
-void Server::SendRemoveClient(Client *client)
+void Server::SendRemoveShape(Shape* shape)
 {
-	int index = client->GetIndex();
+	
+	int index = shape->mIndex;
 
-	// Send 'Remove client' message to every client
+	// Send 'DREAMSOCK_MES_REMOVESHAPE' message to every client
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_REMOVECLIENT);	// type
+		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_REMOVESHAPE);	// type
 		mClientVector.at(i)->mMessage.WriteByte(index);							// index
 	}
 
 	SendPackets();
-
+	
+	//do i need this next bit?
+/*
 	// Send disconnection confirmation
-	client->mMessage.Init(client->mMessage.outgoingData,
-		sizeof(client->mMessage.outgoingData));
+	client->mMessage.Init(shape->mMessage.outgoingData,
+		sizeof(shape->mMessage.outgoingData));
 
 	client->mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
 	client->SendPacket();
+*/
 }
 
 void Server::SendPing(void)
@@ -163,7 +167,7 @@ void Server::RemoveClient(Client *client)
 	{
 		if (mClientVector.at(i) == client)
 		{
-			mGame->RemoveShape(client->mShape);
+			mGame->RemoveShape(client->mShape); //remove the shape associated with this client while your at it.
 			mClientVector.erase (mClientVector.begin()+i);
 		}
 	}

@@ -72,7 +72,7 @@ void Game::RemoveShape(int index)
 	{
 		if (mShapeVector.at(i)->mIndex == index)
 		{
-			delete mShapeVector.at(i);
+			//delete mShapeVector.at(i);
 			mShapeVector.erase (mShapeVector.begin()+i);
 			LogString("Just removed a shape on orders from server");
 		}
@@ -257,9 +257,9 @@ void Game::ReadPackets(void)
 			AddShape(local, ind, name);
 			break;
 
-		case DREAMSOCK_MES_REMOVECLIENT:
+		case DREAMSOCK_MES_REMOVESHAPE:
 			ind = mes.ReadByte();
-
+			RemoveShape(ind);
 			LogString("Got removeclient %d message", ind);
 			break;
 

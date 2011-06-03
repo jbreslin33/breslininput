@@ -24,19 +24,20 @@
 #define DREAMSOCK_MES_CONNECT		-101
 #define DREAMSOCK_MES_DISCONNECT	-102
 #define DREAMSOCK_MES_ADDCLIENT		-103
-#define DREAMSOCK_MES_REMOVECLIENT	-104
+#define DREAMSOCK_MES_REMOVESHAPE	-104
 #define DREAMSOCK_MES_PING			-105
 
 // Introduce classes
 class Network;
 class Client;
 class Game;
+class Shape;
 
 class Server
 {
 public:
 	void			SendAddClient(Client *newClient);
-	void			SendRemoveClient(Client *client);
+	void			SendRemoveShape(Shape* shape);
 	void			AddClient(struct sockaddr *address, char *name);
 
 	void			RemoveClient(Client *client);

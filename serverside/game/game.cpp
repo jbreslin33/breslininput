@@ -51,7 +51,9 @@ void Game::RemoveShape(Shape* shape)
 	{
 		if (mShapeVector.at(i) == shape)
 		{
+			mServer->SendRemoveShape(shape);
 			mShapeVector.erase (mShapeVector.begin()+i);
+
 		}
 	}
 }
