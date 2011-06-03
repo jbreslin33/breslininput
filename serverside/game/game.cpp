@@ -21,6 +21,8 @@ Game::Game()
 	mRealTime	= 0;
 	mServerTime	= 0;
 	mFramenum	= 0;
+
+	mRunningShapeIndex = 1;
 }
 
 Game::~Game()
@@ -34,15 +36,18 @@ void Game::ShutdownNetwork(void)
 	mServer->Uninitialise();
 }
 
-void Game::createShape(Client* client, int runningIndex)
+void Game::createShape(Client* client)
 {
-	Shape* shape = new Shape("shape" + runningIndex, new Vector3D(),mRoot); 
+	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 	if (client != NULL)
 	{
 		client->mShape = shape; 
 		client->mShape->mClient = client; //set client it could be NULL meaning just a serverside shape
 	}
+	shape->mIndex = mRunningShapeIndex++;
 	mShapeVector.push_back(shape); //either way add this to shape vector
+
+	mRunningShapeIndex++;
 }
 
 void Game::RemoveShape(Shape* shape)

@@ -77,7 +77,6 @@ public:
 
 	int				serverPort;				// Port
 	char			serverIP[32];			// IP address
-	int				index;					// Client index (starts from 1, running number)
 	char			name[32];				// Client name
 
 
@@ -113,9 +112,6 @@ public:
 	void			SetIncomingAcknowledged(unsigned short seq) { incomingAcknowledged = seq; }
 	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
 	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
-
-	int				GetIndex(void)			{ return index; }
-	void			SetIndex(int ind)		{ index = ind; }
 
 	char			*GetName(void)			{ return name; }
 

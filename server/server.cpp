@@ -16,7 +16,7 @@ Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 	mLocalIP = localIP;
 	port			= 0;
 	
-	runningIndex	= 1;
+	mRunningClientIndex	= 1;
 
 	// Store the server IP and port for later use
 	port = serverPort;
@@ -67,13 +67,13 @@ void Server::SendAddClient(Client *newClient)
 		if(mClientVector.at(i) == newClient)
 		{
 			newClient->mMessage.WriteByte(1);	// local client
-			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
+			newClient->mMessage.WriteByte(mClientVector.at(i)->mShape->mIndex);
 			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
 		}
 		else
 		{
 			newClient->mMessage.WriteByte(0);	// not-local client
-			newClient->mMessage.WriteByte(mClientVector.at(i)->GetIndex());
+			newClient->mMessage.WriteByte(mClientVector.at(i)->mShape->mIndex);
 			newClient->mMessage.WriteString(mClientVector.at(i)->GetName());
 		}
 
@@ -93,7 +93,7 @@ void Server::SendAddClient(Client *newClient)
 		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
 
 		mClientVector.at(i)->mMessage.WriteByte(0);
-		mClientVector.at(i)->mMessage.WriteByte(newClient->GetIndex());
+		mClientVector.at(i)->mMessage.WriteByte(newClient->mShape->mIndex);
 		mClientVector.at(i)->mMessage.WriteString(newClient->GetName());
 
 		mClientVector.at(i)->SendPacket();
@@ -140,7 +140,7 @@ void Server::SendPing(void)
 //called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
 void Server::AddClient(struct sockaddr *address, char *name)
 {
-	LogString("LIB: Adding client, index %d", runningIndex);
+	LogString("LIB: Adding client, index %d", mRunningClientIndex);
 	Client* client = new Client(mNetwork);
 	mClientVector.push_back(client);
 
@@ -149,14 +149,11 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	client->SetOutgoingSequence(1);
 	client->SetIncomingSequence(0);
 	client->SetIncomingAcknowledged(0);
-	client->SetIndex(runningIndex);
 	client->SetName(name);
 
 	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
-	mGame->createShape(client,runningIndex);
-
-	runningIndex++;
+	mGame->createShape(client);
 
 	SendAddClient(client);
 }
