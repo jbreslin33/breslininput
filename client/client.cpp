@@ -197,8 +197,8 @@ void Client::ParsePacket(Message *mes)
 		LogString("LIBRARY: Client: got disconnect confirmation");
 		break;
 
-	case DREAMSOCK_MES_ADDCLIENT:
-		LogString("LIBRARY: Client: adding a client");
+	case DREAMSOCK_MES_ADDSHAPE:
+		LogString("LIBRARY: Client: adding a shape");
 		break;
 
 	case DREAMSOCK_MES_REMOVESHAPE:

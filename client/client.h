@@ -46,7 +46,7 @@
 // negative = un-sequenced message
 #define DREAMSOCK_MES_CONNECT		-101
 #define DREAMSOCK_MES_DISCONNECT	-102
-#define DREAMSOCK_MES_ADDCLIENT		-103
+#define DREAMSOCK_MES_ADDSHAPE		-103
 #define DREAMSOCK_MES_REMOVESHAPE	-104
 #define DREAMSOCK_MES_PING			-105
 
@@ -70,7 +70,7 @@ public:
 
 	int				connectionState;		// Connecting, connected, disconnecting, disconnected
 
-	unsigned short	outgoingSequence;		// Outgoing packet sequence
+	unsigned short	outgoingSequence;		// OutFgoing packet sequence
 	unsigned short	incomingSequence;		// Incoming packet sequence
 	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
 	unsigned short	droppedPackets;			// Dropped packets

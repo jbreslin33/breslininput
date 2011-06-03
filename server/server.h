@@ -23,7 +23,7 @@
 // negative = un-sequenced message
 #define DREAMSOCK_MES_CONNECT		-101
 #define DREAMSOCK_MES_DISCONNECT	-102
-#define DREAMSOCK_MES_ADDCLIENT		-103
+#define DREAMSOCK_MES_ADDSHAPE		-103
 #define DREAMSOCK_MES_REMOVESHAPE	-104
 #define DREAMSOCK_MES_PING			-105
 
@@ -36,7 +36,7 @@ class Shape;
 class Server
 {
 public:
-	void			SendAddClient(Client *newClient);
+	void			SendAddShapes(Client *newClient);
 	void			SendRemoveShape(Shape* shape);
 	void			AddClient(struct sockaddr *address, char *name);
 
@@ -49,8 +49,6 @@ public:
 	std::vector<Client*> mClientVector;
 
 	int				port;					// Port
-
-	int				mRunningClientIndex;			// Running index numbers for new clients
 
 	bool			init;
 
