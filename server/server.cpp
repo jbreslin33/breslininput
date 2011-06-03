@@ -16,7 +16,7 @@ Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 	mLocalIP = localIP;
 	port			= 0;
 	
-	runningIndex	= 0;
+	runningIndex	= 1;
 
 	// Store the server IP and port for later use
 	port = serverPort;
