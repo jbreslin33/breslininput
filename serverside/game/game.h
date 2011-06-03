@@ -3,6 +3,8 @@
 
 #include <string.h>
 
+#include <vector>
+
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
@@ -26,6 +28,7 @@ class Message;
 class Command;
 class Server;
 class Client;
+class Shape;
 
 class Game
 {
@@ -39,22 +42,24 @@ public:
 	int		mServerTime;				// Server frame * 100 ms
 
 	long	mFramenum;
-	//Network* mNetwork;
+
+	std::vector<Shape*> mShapeVector;	//every tangible item in game world..
+
 
 public:
 	Game();
 	~Game();
 
 	//player
-	void createPlayer(Client* client, int runningIndex);
+	void createShape(Client* client, int runningIndex);
 
 	// Network.cpp
 
 	void	SendCommand(void);
 	void	SendExitNotification(void);
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);
-	void	BuildMoveCommand(Message *mes, Client *client);
-	void	BuildDeltaMoveCommand(Message *mes, Client *client);
+	void	BuildMoveCommand(Message *mes, Shape* shape);
+	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
 
 	// Server.cpp
 
