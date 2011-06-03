@@ -5,8 +5,6 @@
 
 #include "../../clientside/shape/shape.h"
 
-
-
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
 #define VK_DOWN 0x28

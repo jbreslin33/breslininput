@@ -19,6 +19,8 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 	mIndex  = 0;
    	mName = name;
 	mProcessedFrame = 0;
+
+	outgoingSequence		= 1;
 }
 
 OgreShape::~OgreShape()

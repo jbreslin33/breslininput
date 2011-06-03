@@ -34,10 +34,15 @@ void Game::ShutdownNetwork(void)
 	mServer->Uninitialise();
 }
 
-void Game::createPlayer(Client* client, int runningIndex)
+void Game::createShape(Client* client, int runningIndex)
 {
-	client->mShape = new Shape("oplayer" + runningIndex, new Vector3D(),mRoot);
-	client->mShape->mClient = client;
+	Shape* shape = new Shape("oplayer" + runningIndex, new Vector3D(),mRoot); 
+	if (client != NULL)
+	{
+		client->mShape = shape; 
+		client->mShape->mClient = client; //set client it could be NULL meaning just a serverside shape
+	}
+	mShapeVector.push_back(shape); //either way add this to shape vector
 }
 
 void Game::Frame(int msec)
@@ -71,7 +76,7 @@ void Game::Frame(int msec)
 
 void Game::SendCommand(void)
 {
-	// Fill messages
+	// Fill messages..for all clients
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
 		mServer->mClientVector.at(i)->mMessage.Init(mServer->mClientVector.at(i)->mMessage.outgoingData,
@@ -80,9 +85,16 @@ void Game::SendCommand(void)
 		mServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_FRAME);			// type
 		mServer->mClientVector.at(i)->mMessage.AddSequences(mServer->mClientVector.at(i));	// sequences
 
+		//put all client moves into mMessage
+		//for (unsigned int j = 0; j < mServer->mClientVector.size(); j++)
+		//{
+	//		BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mClientVector.at(j));
+	//	}
+
+		//put all shape moves into mClientVector.at(i)->mMessage
 		for (unsigned int j = 0; j < mServer->mClientVector.size(); j++)
-		{
-			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mClientVector.at(j));
+		{                         //the client to send to's message        //the shape command it's about
+			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
 		}
 	}
 
@@ -132,9 +144,9 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
 }
 
-void Game::BuildMoveCommand(Message *mes, Client *client)
+void Game::BuildMoveCommand(Message *mes, Shape* shape)
 {
-	Command* command = &client->mShape->mCommand;
+	Command* command = &shape->mCommand;
 	// Add to the message
 	// Key
 	mes->WriteByte(command->mKey);
@@ -148,23 +160,24 @@ void Game::BuildMoveCommand(Message *mes, Client *client)
 	mes->WriteByte(command->mMilliseconds);
 }
 
-void Game::BuildDeltaMoveCommand(Message *mes, Client *client)
+//does this even care that a client is passed it? other than that it needs it access mShape? which
+//i should already have?
+void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 {
-
-	Shape* player = client->mShape;
-	Command* command = &client->mShape->mCommand;
+	Command* command = &shape->mCommand;
+	
 	int flags = 0;
 
-	int last = (client->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+	int last = (shape->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(client->mShape->mFrame[last].mKey != command->mKey)
+	if(shape->mFrame[last].mKey != command->mKey)
 	{
 		flags |= CMD_KEY;
 	}
 
-	if(client->mShape->mFrame[last].mOrigin.x != command->mOrigin.x ||
-		client->mShape->mFrame[last].mOrigin.z != command->mOrigin.z)
+	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x ||
+		shape->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
 		flags |= CMD_ORIGIN;
 	}
@@ -182,7 +195,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Client *client)
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
-		mes->WriteByte(client->mShape->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
+		mes->WriteByte(shape->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
 	}
 
 	mes->WriteFloat(command->mOrigin.x);

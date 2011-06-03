@@ -7,6 +7,7 @@
 #include "../message/message.h"
 #include "../serverside/shape/shape.h"
 #include "../serverside/game/game.h"
+#include "../serverside/shape/shape.h"
 
 Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 {
@@ -40,6 +41,9 @@ void Server::Uninitialise(void)
 	init = false;
 }
 
+//when you get here to modify...you once again probably after the mClientVectorLoop than loop thru shapes.
+//actually this should just be renamed sendAddNewShape because the internet client doesn not
+//care what a serverClient is he only has a mShapeVector
 void Server::SendAddClient(Client *newClient)
 {
 	// Send connection confirmation
@@ -129,6 +133,7 @@ void Server::SendPing(void)
 	}
 }
 
+//called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
 void Server::AddClient(struct sockaddr *address, char *name)
 {
 	LogString("LIB: Adding client, index %d", runningIndex);
@@ -145,7 +150,7 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
-	mGame->createPlayer(client,runningIndex);
+	mGame->createShape(client,runningIndex);
 
 	runningIndex++;
 
@@ -331,8 +336,6 @@ void Server::SendPackets(void)
 
 void Server::ReadPackets(void)
 {
-
-	//LogString("REading packetsdfdfdfdd");
 	char data[1400];
 
 	int type;
@@ -402,9 +405,9 @@ void Server::ReadPackets(void)
 					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetOutgoingSequence());
 					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetIncomingSequence());
 
-					for (unsigned int j = 0; j < mClientVector.size(); j++)
+					for (unsigned int j = 0; j < mGame->mShapeVector.size(); j++)
 					{
-						mGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mClientVector.at(j));
+						mGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mGame->mShapeVector.at(j));
 					}
 					mClientVector.at(i)->SendPacket();
 				}
