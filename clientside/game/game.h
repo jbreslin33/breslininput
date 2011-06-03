@@ -51,7 +51,8 @@ public:
 	void	MoveServerPlayer(void);
 
 	//Game
-	void	AddPlayer   (int local, int index, char *name);
+	void	AddShape   (int local, int index, char *name);
+	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
 	void	Frame       (void);

@@ -36,7 +36,7 @@ void Game::ShutdownNetwork(void)
 
 void Game::createShape(Client* client, int runningIndex)
 {
-	Shape* shape = new Shape("oplayer" + runningIndex, new Vector3D(),mRoot); 
+	Shape* shape = new Shape("shape" + runningIndex, new Vector3D(),mRoot); 
 	if (client != NULL)
 	{
 		client->mShape = shape; 
@@ -85,12 +85,6 @@ void Game::SendCommand(void)
 		mServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_FRAME);			// type
 		mServer->mClientVector.at(i)->mMessage.AddSequences(mServer->mClientVector.at(i));	// sequences
 
-		//put all client moves into mMessage
-		//for (unsigned int j = 0; j < mServer->mClientVector.size(); j++)
-		//{
-	//		BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mClientVector.at(j));
-	//	}
-
 		//put all shape moves into mClientVector.at(i)->mMessage
 		for (unsigned int j = 0; j < mServer->mClientVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
@@ -102,13 +96,15 @@ void Game::SendCommand(void)
 	mServer->SendPackets();
 
 	// Store the sent command in history
-	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
+	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
 	{
-		int num = (mServer->mClientVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mServer->mClientVector.at(i)->mShape->mFrame[num], &mServer->mClientVector.at(i)->mShape->mCommand, sizeof(Command));
+		int num = (mServer->mGame->mShapeVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+		memcpy(&mServer->mGame->mShapeVector.at(i)->mFrame[num], &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
 	}
 }
 
+
+//this is the whole shabang server exit not a player or shape exit
 void Game::SendExitNotification(void)
 {
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
@@ -123,6 +119,7 @@ void Game::SendExitNotification(void)
 	mServer->SendPackets();
 }
 
+//this is just for clients right now, should i make another or hijack this function??
 void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 {
 	int flags = 0;
