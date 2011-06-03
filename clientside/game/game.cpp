@@ -45,6 +45,7 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
+	LogString("adding shape mIndex = %d",ind);
 	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	//mClient->mShape = new Shape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
