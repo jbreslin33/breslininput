@@ -44,7 +44,7 @@ void Game::createShape(Client* client)
 		client->mShape = shape; 
 		client->mShape->mClient = client; //set client it could be NULL meaning just a serverside shape
 	}
-	shape->mIndex = mRunningShapeIndex++;
+	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
 
 	mRunningShapeIndex++;
