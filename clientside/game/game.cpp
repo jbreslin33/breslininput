@@ -38,8 +38,6 @@ Game::Game(const char* serverIP)
 
 Game::~Game()
 {
-
-
 	delete mClient;
 }
 
@@ -75,7 +73,7 @@ void Game::RemoveShape(int index)
 		LogString("mIndex:%d",mShapeVector.at(i)->mIndex);
 		if (mShapeVector.at(i)->mIndex == index)
 		{
-			//delete mShapeVector.at(i);
+			delete mShapeVector.at(i);
 			mShapeVector.erase (mShapeVector.begin()+i);
 			LogString("Just removed a shape on orders from server");
 		}
