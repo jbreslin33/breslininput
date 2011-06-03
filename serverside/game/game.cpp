@@ -45,6 +45,17 @@ void Game::createShape(Client* client, int runningIndex)
 	mShapeVector.push_back(shape); //either way add this to shape vector
 }
 
+void Game::RemoveShape(Shape* shape)
+{
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		if (mShapeVector.at(i) == shape)
+		{
+			mShapeVector.erase (mShapeVector.begin()+i);
+		}
+	}
+}
+
 void Game::Frame(int msec)
 {
 	mRealTime += msec;
