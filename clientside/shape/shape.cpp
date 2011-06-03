@@ -18,6 +18,7 @@ Shape::Shape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr
 
 Shape::~Shape()
 {
+	delete mServerShape;
 }
 
 void Shape::processTick()
