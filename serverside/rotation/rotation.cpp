@@ -26,10 +26,6 @@ Rotation::Rotation(std::string name, Vector3D* position,
 :
 	OgreShape(name,position,root)
 {
-	//keys
-    mKeyDirection = Vector3::ZERO;
-	mGoalDirection = Vector3::ZERO;
-
 	//rotation states
 	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine
 	mRotationStateMachine->setCurrentState      (Normal_Rotation::Instance());

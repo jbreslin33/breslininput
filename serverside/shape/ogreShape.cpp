@@ -21,6 +21,10 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 	mProcessedFrame = 0;
 
 	outgoingSequence		= 1;
+
+	//keys
+    mKeyDirection = Vector3::ZERO;
+	mGoalDirection = Vector3::ZERO;
 }
 
 OgreShape::~OgreShape()

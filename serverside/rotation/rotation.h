@@ -25,9 +25,7 @@ void processTick    ();
 void setKeyDirection();
 RotationStateMachine* mRotationStateMachine;
 
-//keys
-Vector3 mKeyDirection;
-Vector3 mGoalDirection;
+
 };
 
 #endif
