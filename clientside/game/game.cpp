@@ -253,7 +253,7 @@ void Game::ReadPackets(void)
 
 		switch(type)
 		{
-		case DREAMSOCK_MES_ADDCLIENT:
+		case DREAMSOCK_MES_ADDSHAPE:
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());

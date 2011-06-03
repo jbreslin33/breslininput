@@ -16,8 +16,6 @@ Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 	mLocalIP = localIP;
 	port			= 0;
 	
-	mRunningClientIndex	= 1;
-
 	// Store the server IP and port for later use
 	port = serverPort;
 
@@ -44,7 +42,7 @@ void Server::Uninitialise(void)
 //when you get here to modify...you once again probably after the mClientVectorLoop than loop thru shapes.
 //actually this should just be renamed sendAddNewShape because the internet client doesn not
 //care what a serverClient is he only has a mShapeVector
-void Server::SendAddClient(Client *newClient)
+void Server::SendAddShapes(Client *newClient)
 {
 	// Send connection confirmation
 	newClient->mMessage.Init(newClient->mMessage.outgoingData,
@@ -53,7 +51,7 @@ void Server::SendAddClient(Client *newClient)
 	newClient->mMessage.WriteByte(DREAMSOCK_MES_CONNECT);	// type
 	newClient->SendPacket();
 
-	// Send 'Add client' message to every client
+	// Send 'Add Shape' message to every client
 
 	// First inform the new client of the other clients
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
@@ -62,7 +60,7 @@ void Server::SendAddClient(Client *newClient)
 		newClient->mMessage.Init(newClient->mMessage.outgoingData,
 			sizeof(newClient->mMessage.outgoingData));
 
-		newClient->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
+		newClient->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
 
 		if(mClientVector.at(i) == newClient)
 		{
@@ -90,7 +88,7 @@ void Server::SendAddClient(Client *newClient)
 		mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDCLIENT); // type
+		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
 
 		mClientVector.at(i)->mMessage.WriteByte(0);
 		mClientVector.at(i)->mMessage.WriteByte(newClient->mShape->mIndex);
@@ -140,7 +138,6 @@ void Server::SendPing(void)
 //called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
 void Server::AddClient(struct sockaddr *address, char *name)
 {
-	LogString("LIB: Adding client, index %d", mRunningClientIndex);
 	Client* client = new Client(mNetwork);
 	mClientVector.push_back(client);
 
@@ -155,7 +152,9 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	mGame->createShape(client);
 
-	SendAddClient(client);
+	LogString("LIB: Adding client with shape index %d", client->mShape->mIndex);
+
+	SendAddShapes(client);  
 }
 
 void Server::RemoveClient(Client *client)
