@@ -50,6 +50,10 @@ long mProcessedFrame;
 
 Message	mMessage; //is this all i need to get information over the internets?
 
+//keys
+Vector3 mKeyDirection;
+Vector3 mGoalDirection;
+
 };
 
 #endif
