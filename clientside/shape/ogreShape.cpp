@@ -44,5 +44,8 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 
 OgreShape::~OgreShape()
 {
+	LogString("destructor OgreShape");
+	delete mEntity;
+	delete mSceneNode;
 }
 
