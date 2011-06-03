@@ -38,7 +38,10 @@ public:
 	void			SendAddClient(Client *newClient);
 	void			SendRemoveClient(Client *client);
 	void			AddClient(struct sockaddr *address, char *name);
+
 	void			RemoveClient(Client *client);
+
+	
 	void			ParsePacket(Message *mes, struct sockaddr *address);
 	int				CheckForTimeout(char *data, struct sockaddr *from);
 

@@ -163,10 +163,13 @@ void Server::RemoveClient(Client *client)
 	{
 		if (mClientVector.at(i) == client)
 		{
+			mGame->RemoveShape(client->mShape);
 			mClientVector.erase (mClientVector.begin()+i);
 		}
 	}
 }
+
+
 
 void Server::ParsePacket(Message *mes, struct sockaddr *address)
 {

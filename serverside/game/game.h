@@ -52,7 +52,7 @@ public:
 
 	//player
 	void createShape(Client* client, int runningIndex);
-
+	void			RemoveShape (Shape* shape);
 	// Network.cpp
 
 	void	SendCommand(void);
