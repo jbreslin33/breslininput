@@ -25,5 +25,7 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 
 OgreShape::~OgreShape()
 {
+	//delete mSceneManager;
+	delete mSceneNode;
 }
 

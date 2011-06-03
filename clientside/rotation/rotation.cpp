@@ -55,6 +55,8 @@ Rotation::Rotation(std::string name, Vector3D* position,
 
 Rotation::~Rotation()
 {
+	delete mRotationProcessTickStateMachine;
+	delete mRotationInterpolateTickStateMachine;
 }
 
 void Rotation::processTick()

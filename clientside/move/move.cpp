@@ -47,6 +47,7 @@ Move::Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 
 Move::~Move()
 {
+	delete mMoveStateMachine;
 }
 
 void Move::processTick()
