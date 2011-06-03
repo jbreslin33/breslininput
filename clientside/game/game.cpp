@@ -73,6 +73,7 @@ void Game::RemoveShape(int index)
 		if (mShapeVector.at(i)->mIndex == index)
 		{
 			mShapeVector.erase (mShapeVector.begin()+i);
+			LogString("Just removed a shape on orders from server");
 		}
 	}
 }
