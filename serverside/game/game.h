@@ -43,6 +43,8 @@ public:
 
 	long	mFramenum;
 
+	int mRunningShapeIndex;
+
 	std::vector<Shape*> mShapeVector;	//every tangible item in game world..
 
 
@@ -51,7 +53,7 @@ public:
 	~Game();
 
 	//player
-	void createShape(Client* client, int runningIndex);
+	void createShape(Client* client);
 	void			RemoveShape (Shape* shape);
 	// Network.cpp
 

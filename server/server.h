@@ -50,7 +50,7 @@ public:
 
 	int				port;					// Port
 
-	int				runningIndex;			// Running index numbers for new clients
+	int				mRunningClientIndex;			// Running index numbers for new clients
 
 	bool			init;
 
