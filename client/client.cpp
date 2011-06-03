@@ -85,7 +85,9 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 
 Client::~Client()
 {
+	//delete mShape;
 	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
+	delete mNetwork;
 }
 
 void Client::Uninitialise(void)

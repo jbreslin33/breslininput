@@ -36,6 +36,7 @@ Jump::Jump(std::string name, Vector3D* position, Ogre::Root* root)
 
 Jump::~Jump()
 {
+	delete mJumpStateMachine;
 }
 void Jump::processTick()
 {

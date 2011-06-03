@@ -132,7 +132,7 @@ public:
 
 	Message	mMessage;
 
-Shape* mShape;
+    Shape* mShape;  //this will be NULL on client use of this class. otherwise it should have an associated shape.
 
 Network* mNetwork;
 
