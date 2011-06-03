@@ -43,7 +43,7 @@ Game::~Game()
 	delete mClient;
 }
 
-void Game::AddPlayer(int local, int ind, char *name)
+void Game::AddShape(int local, int ind, char *name)
 {
 	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	//mClient->mShape = new Shape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
@@ -63,6 +63,17 @@ void Game::AddPlayer(int local, int ind, char *name)
 		mInputShape = shape;
 		
 		SendRequestNonDeltaFrame();
+	}
+}
+
+void Game::RemoveShape(int index)
+{
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		if (mShapeVector.at(i)->mIndex == index)
+		{
+			mShapeVector.erase (mShapeVector.begin()+i);
+		}
 	}
 }
 
@@ -241,7 +252,7 @@ void Game::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-			AddPlayer(local, ind, name);
+			AddShape(local, ind, name);
 			break;
 
 		case DREAMSOCK_MES_REMOVECLIENT:
