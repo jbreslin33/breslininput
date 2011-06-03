@@ -71,6 +71,7 @@ void Game::RemoveShape(int index)
 	LogString("did i make it here atleast?");
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
+		LogString("mIndex:%d",mShapeVector.at(i)->mIndex);
 		if (mShapeVector.at(i)->mIndex == index)
 		{
 			//delete mShapeVector.at(i);
