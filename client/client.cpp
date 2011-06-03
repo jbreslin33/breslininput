@@ -201,7 +201,7 @@ void Client::ParsePacket(Message *mes)
 		LogString("LIBRARY: Client: adding a client");
 		break;
 
-	case DREAMSOCK_MES_REMOVECLIENT:
+	case DREAMSOCK_MES_REMOVESHAPE:
 		LogString("LIBRARY: Client: removing a client");
 		break;
 
