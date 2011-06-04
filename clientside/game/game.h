@@ -64,7 +64,7 @@ public:
 	void	SendRequestNonDeltaFrame(void);
 	void	ReadMoveCommand         (Message *mes, Shape *player);
 	void	ReadDeltaMoveCommand    (Message *mes, Shape *player);
-	void	BuildDeltaMoveCommand   (Message *mes, Shape *player);
+	void	BuildDeltaMoveCommand   (Message *mes);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
@@ -78,8 +78,8 @@ public:
 	const char*  mServerIP;
 
 	//client Variables
-	Shape* mLocalShape;		// Pointer to the local shape 
-	Shape* mInputShape;			// Handles all keyboard input
+	//Shape* mLocalShape;		// Pointer to the local shape 
+	//Shape* mInputShape;			// Handles all keyboard input
 	std::vector<Shape*> mShapeVector;	
 	vector<MovableTextOverlay*> myVect;
 	

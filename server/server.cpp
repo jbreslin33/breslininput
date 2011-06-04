@@ -66,17 +66,20 @@ void Server::SendAddShape(Client* client)
 
 		if (mGame->mShapeVector.at(i) == client->mShape)
 		{
-			LogString("LOCALCLIENT!!!!!!!!!!");
+			LogString("to new client: SendAddShape Local");
 			client->mMessage.WriteByte(1);	// local client
 			client->mMessage.WriteByte(mGame->mShapeVector.at(i)->mIndex);
 			client->mMessage.WriteString(mGame->mShapeVector.at(i)->mClient->GetName());
 		}
 		else
 		{
-			LogString("NON LOCAL~!!!!!!!!!!!!!!!!!!!");
+			LogString("to new client: SendAddShape Non-Local");
 			client->mMessage.WriteByte(0);	// not-local client
 			client->mMessage.WriteByte(mGame->mShapeVector.at(i)->mIndex);
-			client->mMessage.WriteString(mGame->mShapeVector.at(i)->mClient->GetName());
+			LogString("before");
+			//client->mMessage.WriteString(mGame->mShapeVector.at(i)->mClient->GetName());
+			client->mMessage.WriteString("shape" + client->mShape->mIndex);
+			LogString("after");
 		}
 		client->SendPacket(&client->mMessage);
 	}
@@ -95,7 +98,7 @@ void Server::SendAddShape(Client* client)
 			mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 				sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-			LogString("NON LOCAL~!!!!!!!!!!!!!!!!!!!");
+			LogString("to everyone: SendAddShape Non-Local");
 			mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
 			mClientVector.at(i)->mMessage.WriteByte(0);
 			mClientVector.at(i)->mMessage.WriteByte(client->mShape->mIndex);
@@ -116,7 +119,7 @@ void Server::SendAddAIShape(Shape* shape)
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
 		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
-		LogString("NON LOCAL~!!!!!!!!!!!!!!!!!!!");
+		LogString("to everyone: SendAddAIShape Non-Local");
 		mClientVector.at(i)->mMessage.WriteByte(0);
 		mClientVector.at(i)->mMessage.WriteByte(shape->mIndex);
 		//mClientVector.at(i)->mMessage.WriteString(shape->GetName());

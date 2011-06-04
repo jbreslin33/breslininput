@@ -2,6 +2,7 @@
 #include "../../tdreamsock/dreamSockLog.h"
 
 #include "../../server/server.h"
+#include "../../network/network.h"
 
 #include "../../client/serverSideClient.h"
 #include "../../serverside/shape/shape.h"
@@ -23,7 +24,7 @@ Game::Game()
 	mFramenum	= 0;
 
 	mRunningShapeIndex = 1;
-	//LogString("in gamecreateshahpe");
+	
 	//createAIShape();
 }
 
@@ -55,7 +56,7 @@ void Game::createShape(Client* client)
 
 void Game::createAIShape()
 {
-	LogString("CreateAIShape");
+	LogString("createAIShape");
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 
 	shape->mIndex = mRunningShapeIndex;
@@ -175,7 +176,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	{
 		client->mShape->mCommand.mKey = mes->ReadByte();
 
-		//LogString("Client %d: read CMD_KEY (%d)", client->netClient->GetIndex(), client->mCommand.mKey);
+		LogString("Client %d: read CMD_KEY (%d)", client->mShape->mIndex, client->mShape->mCommand.mKey);
 	}
 
 	// Read time to run command
