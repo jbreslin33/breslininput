@@ -17,7 +17,6 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 	mIndex  = 0;
 	mProcessedFrame = 0;
 
-	LogString("OgreShape Constructor");
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
@@ -44,7 +43,6 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
 
 OgreShape::~OgreShape()
 {
-	LogString("destructor OgreShape");
 	delete mObjectTitle;
 	delete mEntity;
 	delete mSceneNode;

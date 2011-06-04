@@ -25,7 +25,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	createAIShape();
+	createAIShape(); //this will create 1 ai shape to crash into
 }
 
 Game::~Game()
@@ -56,7 +56,6 @@ void Game::createShape(Client* client)
 
 void Game::createAIShape()
 {
-	LogString("createAIShape");
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 
 	shape->mIndex = mRunningShapeIndex;
@@ -117,7 +116,8 @@ void Game::runAI()
 {
 //need to put a message together for all non-clent shapes for SendCommand...
 }
-//this is the problem!
+
+//send to updates to all clients about all shapes
 void Game::SendCommand(void)
 {
 	// Fill messages..for all clients
@@ -137,8 +137,6 @@ void Game::SendCommand(void)
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
 		}
 	}
-
-
 
 	// Send messages to all clients
 	mServer->SendPackets();
@@ -180,7 +178,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	{
 		client->mShape->mCommand.mKey = mes->ReadByte();
 
-		LogString("Client %d: read CMD_KEY (%d)", client->mShape->mIndex, client->mShape->mCommand.mKey);
+		//LogString("Client %d: read CMD_KEY (%d)", client->mShape->mIndex, client->mShape->mCommand.mKey);
 	}
 
 	// Read time to run command

@@ -15,7 +15,7 @@ Client::Client(Network* network)
 {
 	mNetwork = network;
 
-	mShape = NULL;
+	mShape = NULL; //to be filled when we actually create the shape
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
@@ -30,15 +30,12 @@ Client::Client(Network* network)
 	ping					= 0;
 
 	lastMessageTime			= 0;
-
 }
 
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int port)
 {
-
-
-	mShape = NULL;
+	mShape = NULL; //to be filled when we actually create the shape
 
 	connectionState	= DREAMSOCK_DISCONNECTED;
 
@@ -66,8 +63,7 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
 
 	// Create client socket
-		mNetwork = new Network(localIP, 0);
-	//mSocket = mNetwork->dreamSock_OpenUDPSocket(localIP, 0);
+	mNetwork = new Network(localIP, 0);
 
 	// Check that the address is not empty
 	u_long inetAddr = inet_addr(serverIP);
@@ -85,7 +81,6 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 
 Client::~Client()
 {
-	//delete mShape;
 	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 	delete mNetwork;
 }
@@ -93,7 +88,6 @@ Client::~Client()
 void Client::Uninitialise(void)
 {
 	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
-
 	Reset();
 }
 

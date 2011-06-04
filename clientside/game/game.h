@@ -47,8 +47,8 @@ public:
 	Game(const char* serverIP);
 	~Game();
 
-	//Players
-	void	MoveServerPlayer(void);
+	//Server player 
+	void	MoveServerPlayer(void); //for debugging and still some actual functionality
 
 	//Game
 	void	AddShape   (int local, int index, char *name);
@@ -77,11 +77,9 @@ public:
 	Client* mClient;
 	const char*  mServerIP;
 
-	//client Variables
-	//Shape* mLocalShape;		// Pointer to the local shape 
-	//Shape* mInputShape;			// Handles all keyboard input
-	std::vector<Shape*> mShapeVector;	
-	vector<MovableTextOverlay*> myVect;
+	//Shapes
+	std::vector<Shape*> mShapeVector;	 //all shapes in the client world
+	vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 	
 	//time
 	float mFrameTime;
@@ -91,6 +89,7 @@ public:
 	//initialize
 	bool mInit;
 	bool mNetworkShutdown;
+
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;
 #endif

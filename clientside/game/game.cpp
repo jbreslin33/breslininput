@@ -21,9 +21,6 @@ Game::Game(const char* serverIP)
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
 
-	//mLocalShape		= NULL;
- 	//mInputShape        = NULL;
-
 	mFrameTime		= 0.0f;
  	mRenderTime		= 0.0f;
 	mOldTime = 0;
@@ -43,9 +40,7 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
-	LogString("adding shape mIndex = %d",ind);
 	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
-	//mClient->mShape = new Shape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
@@ -53,14 +48,10 @@ void Game::AddShape(int local, int ind, char *name)
 	shape->mServerShape = new Shape(" silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->setServerShape(shape->mServerShape);
 	shape->mServerShape->getSceneNode()->scale(30,30,30);
-	//Shape->mServerShape->getSceneNode()->setVisible(false);
 	mShapeVector.push_back(shape);
 	
 	if(local)
 	{
-		LogString("set Local vars cause this one's local");
-//		mLocalShape = shape;
-//		mInputShape = shape;
 		mClient->mShape = shape;	
 		SendRequestNonDeltaFrame();
 	}
@@ -68,15 +59,12 @@ void Game::AddShape(int local, int ind, char *name)
 
 void Game::RemoveShape(int index)
 {
-	LogString("did i make it here atleast?");
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		LogString("mIndex:%d",mShapeVector.at(i)->mIndex);
 		if (mShapeVector.at(i)->mIndex == index)
 		{
 			delete mShapeVector.at(i);
 			mShapeVector.erase (mShapeVector.begin()+i);
-			LogString("Just removed a shape on orders from server");
 		}
 	}
 }
@@ -184,14 +172,12 @@ void Game::CheckKeys(void)
 	mClient->mShape->mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
  	{
-		LogString("esc");
 		mNetworkShutdown = true;
  	}
 	
  	if(keys[VK_DOWN])
  	{
  		mClient->mShape->mCommand.mKey |= KEY_DOWN;
-		//LogString("down");
  	}
  	if(keys[VK_UP])
  	{
@@ -261,9 +247,7 @@ void Game::ReadPackets(void)
 
 		case DREAMSOCK_MES_REMOVESHAPE:
 			ind = mes.ReadByte();
-			LogString("Got removeclient %d message", ind);
 			RemoveShape(ind);
-			LogString("just called RemoveShape on:%d",ind);
 
 			break;
 
@@ -296,7 +280,7 @@ void Game::ReadPackets(void)
 
 			for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			{
-				LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
+				//LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
 				ReadMoveCommand(&mes, mShapeVector.at(i));
 			}
 
@@ -361,8 +345,6 @@ void Game::Disconnect(void)
 	LogString("Game::Disconnect");
 
 	mInit = false;
-//	mLocalShape = NULL;
-//	mInputShape = NULL;
 
 	mClient->SendDisconnect();
 }
@@ -403,10 +385,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	if(flags & CMD_KEY)
 	{
 		shape->mServerFrame.mKey = mes->ReadByte();
-		if(shape == mClient->mShape)
-		{
-			LogString("reading delta mKey:%d",shape->mServerFrame.mKey);
-		}
 		shape->mCommand.mKey = shape->mServerFrame.mKey;
 		//LogString("Client %d: Read key %d", shape->mIndex, shape->mCommand.mKey);
 	}
@@ -443,14 +421,14 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
 	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-	//LogString("last:%d",last);
+
 	// Check what needs to be updated
-	LogString("curKey:%d",mClient->mShape->mCommand.mKey);
 	if(mClient->mShape->mFrame[last].mKey != mClient->mShape->mCommand.mKey)
 		flags |= CMD_KEY;
 
 	// Add to the message
-	// Flags
+	
+	//Flags
 	mes->WriteByte(flags);
 
 	// Key
@@ -498,15 +476,12 @@ extern "C" {
     int main(int argc, char *argv[])
 #endif
     {
-
-        //BaseGame* mBaseGame;
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 		StartLogConsole();
         game = new Game(strCmdLine);
 #else
         game = new Game(argv[1]);
 #endif
-
         try {
             game->go();
         } catch( Ogre::Exception& e ) {
@@ -517,7 +492,6 @@ extern "C" {
                 e.getFullDescription().c_str() << std::endl;
 #endif
         }
-
         return 0;
     }
 
