@@ -25,7 +25,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	//createAIShape();
+	createAIShape();
 }
 
 Game::~Game()
@@ -117,24 +117,28 @@ void Game::runAI()
 {
 //need to put a message together for all non-clent shapes for SendCommand...
 }
-
+//this is the problem!
 void Game::SendCommand(void)
 {
 	// Fill messages..for all clients
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
+		//standard initialize of mMessage for client in this case
 		mServer->mClientVector.at(i)->mMessage.Init(mServer->mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mServer->mClientVector.at(i)->mMessage.outgoingData));
 
+		//start filling said mMessage that belongs to client
 		mServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_FRAME);			// type
 		mServer->mClientVector.at(i)->mMessage.AddSequences(mServer->mClientVector.at(i));	// sequences
 
-		//put all shape moves into mClientVector.at(i)->mMessage
-		for (unsigned int j = 0; j < mServer->mClientVector.size(); j++)
+		//this is where you need to actually loop thru the shapes not the clients but put write to client mMessage
+		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
 		}
 	}
+
+
 
 	// Send messages to all clients
 	mServer->SendPackets();
