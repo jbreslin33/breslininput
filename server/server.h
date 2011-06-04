@@ -36,7 +36,8 @@ class Shape;
 class Server
 {
 public:
-	void			SendAddShapes(Client *newClient);
+	void			SendAddAIShape(Shape* shape);
+	void			SendAddShape(Client* client);
 	void			SendRemoveShape(Shape* shape);
 	void			AddClient(struct sockaddr *address, char *name);
 

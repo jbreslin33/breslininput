@@ -23,6 +23,8 @@ Game::Game()
 	mFramenum	= 0;
 
 	mRunningShapeIndex = 1;
+	//LogString("in gamecreateshahpe");
+	//createAIShape();
 }
 
 Game::~Game()
@@ -38,6 +40,7 @@ void Game::ShutdownNetwork(void)
 
 void Game::createShape(Client* client)
 {
+
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 	if (client != NULL)
 	{
@@ -48,6 +51,19 @@ void Game::createShape(Client* client)
 	mShapeVector.push_back(shape); //either way add this to shape vector
 
 	mRunningShapeIndex++;
+}
+
+void Game::createAIShape()
+{
+	LogString("CreateAIShape");
+	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
+
+	shape->mIndex = mRunningShapeIndex;
+	mShapeVector.push_back(shape); //either way add this to shape vector
+
+	mRunningShapeIndex++;
+
+	mServer->SendAddAIShape(shape);
 }
 
 void Game::RemoveShape(Shape* shape)
@@ -70,6 +86,10 @@ void Game::Frame(int msec)
 	// Read packets from clients
 	mServer->ReadPackets();
 
+	//run ai
+	runAI();
+
+
 	// Wait full 100 ms before allowing to send
 	if(mRealTime < mServerTime)
 	{
@@ -90,6 +110,11 @@ void Game::Frame(int msec)
 		mRealTime = mServerTime;
 
 	SendCommand();
+}
+
+void Game::runAI()
+{
+//need to put a message together for all non-clent shapes for SendCommand...
 }
 
 void Game::SendCommand(void)
