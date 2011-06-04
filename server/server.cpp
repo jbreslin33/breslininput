@@ -84,19 +84,21 @@ void Server::SendAddShape(Client* client)
 	// Then tell the others about the new shape
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
+		//don't send to the client you allready sent to above...
 		if(mClientVector.at(i) == client)
 		{
 			continue;
 		}
-		else
+		else //inform everyone else
 		{
 			//init mMessage for client
 			mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 				sizeof(mClientVector.at(i)->mMessage.outgoingData));
+
 			LogString("NON LOCAL~!!!!!!!!!!!!!!!!!!!");
 			mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
 			mClientVector.at(i)->mMessage.WriteByte(0);
-			mClientVector.at(i)->mMessage.WriteByte(mClientVector.at(i)->mShape->mIndex);
+			mClientVector.at(i)->mMessage.WriteByte(client->mShape->mIndex);
 			mClientVector.at(i)->mMessage.WriteString(client->GetName());
 			mClientVector.at(i)->SendPacket();
 		}
