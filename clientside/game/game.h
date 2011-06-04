@@ -78,7 +78,7 @@ public:
 	const char*  mServerIP;
 
 	//client Variables
-	Shape* mLocalShape;		// Pointer to the local client in the client list
+	Shape* mLocalShape;		// Pointer to the local shape 
 	Shape* mInputShape;			// Handles all keyboard input
 	std::vector<Shape*> mShapeVector;	
 	vector<MovableTextOverlay*> myVect;

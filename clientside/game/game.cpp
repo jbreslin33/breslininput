@@ -153,7 +153,6 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	{
 		if (mShapeVector.size() > 0)
 		{
-			//LogString("good");
 			game->CheckKeys();
 		}
 		if (mNetworkShutdown == true)
@@ -366,33 +365,33 @@ void Game::Disconnect(void)
 	mClient->SendDisconnect();
 }
 
-void Game::ReadMoveCommand(Message *mes, Shape *client)
+void Game::ReadMoveCommand(Message *mes, Shape *shape)
 {
 	// Key
-	client->mServerFrame.mKey			= mes->ReadByte();
+	shape->mServerFrame.mKey			= mes->ReadByte();
 
 	// Origin
-	client->mServerFrame.mOrigin.x		= mes->ReadFloat();
-	client->mServerFrame.mOrigin.z		= mes->ReadFloat();
-	client->mServerFrame.mVelocity.x		= mes->ReadFloat();
-	client->mServerFrame.mVelocity.z		= mes->ReadFloat();
+	shape->mServerFrame.mOrigin.x		= mes->ReadFloat();
+	shape->mServerFrame.mOrigin.z		= mes->ReadFloat();
+	shape->mServerFrame.mVelocity.x		= mes->ReadFloat();
+	shape->mServerFrame.mVelocity.z		= mes->ReadFloat();
 
 	// Read time to run command
-	client->mServerFrame.mMilliseconds = mes->ReadByte();
+	shape->mServerFrame.mMilliseconds = mes->ReadByte();
 
-	memcpy(&client->mCommand, &client->mServerFrame, sizeof(Command));
+	memcpy(&shape->mCommand, &shape->mServerFrame, sizeof(Command));
 
 	// Fill the history array with the position we got
 	for(int f = 0; f < COMMAND_HISTORY_SIZE; f++)
 	{
-		client->mFrame[f].mPredictedOrigin.x = client->mCommand.mOrigin.x;
-		client->mFrame[f].mPredictedOrigin.z = client->mCommand.mOrigin.z;
+		shape->mFrame[f].mPredictedOrigin.x = shape->mCommand.mOrigin.x;
+		shape->mFrame[f].mPredictedOrigin.z = shape->mCommand.mOrigin.z;
 	}
 }
 
-void Game::ReadDeltaMoveCommand(Message *mes, Shape *client)
+void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
-	client->mProcessedFrame;
+	shape->mProcessedFrame;
 	int flags = 0;
 
 	// Flags
@@ -401,38 +400,38 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *client)
 	// Key
 	if(flags & CMD_KEY)
 	{
-		client->mServerFrame.mKey = mes->ReadByte();
+		shape->mServerFrame.mKey = mes->ReadByte();
 
-		client->mCommand.mKey = client->mServerFrame.mKey;
-		//LogString("Client %d: Read key %d", client->mIndex, client->mCommand.mKey);
+		shape->mCommand.mKey = shape->mServerFrame.mKey;
+		//LogString("Client %d: Read key %d", shape->mIndex, shape->mCommand.mKey);
 	}
 
 	// Origin
 	if(flags & CMD_ORIGIN)
 	{
-		client->mProcessedFrame = mes->ReadByte();
+		shape->mProcessedFrame = mes->ReadByte();
 	}
 
 	// Read time to run command
-	client->mServerFrame.mOrigin.x = mes->ReadFloat();
-	client->mServerFrame.mOrigin.z = mes->ReadFloat();
-	client->mServerFrame.mOrigin.y = mes->ReadFloat();
+	shape->mServerFrame.mOrigin.x = mes->ReadFloat();
+	shape->mServerFrame.mOrigin.z = mes->ReadFloat();
+	shape->mServerFrame.mOrigin.y = mes->ReadFloat();
 
-	client->mServerFrame.mVelocity.x = mes->ReadFloat();
-	client->mServerFrame.mVelocity.z = mes->ReadFloat();
-	client->mServerFrame.mVelocity.y = mes->ReadFloat();
+	shape->mServerFrame.mVelocity.x = mes->ReadFloat();
+	shape->mServerFrame.mVelocity.z = mes->ReadFloat();
+	shape->mServerFrame.mVelocity.y = mes->ReadFloat();
 
-	//LogString("x %f", client->mServerFrame.mVelocity.x);
-    //LogString("z %f", client->mServerFrame.mVelocity.z);
-    //LogString("y %f", client->mServerFrame.mVelocity.y);
+	//LogString("x %f", shape->mServerFrame.mVelocity.x);
+    //LogString("z %f", shape->mServerFrame.mVelocity.z);
+    //LogString("y %f", shape->mServerFrame.mVelocity.y);
 
-	client->mServerFrame.mRotOld.x = client->mServerFrame.mRot.x;
-	client->mServerFrame.mRotOld.z = client->mServerFrame.mRot.z;
+	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
+	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
 
-	client->mServerFrame.mRot.x = mes->ReadFloat();
-	client->mServerFrame.mRot.z = mes->ReadFloat();
+	shape->mServerFrame.mRot.x = mes->ReadFloat();
+	shape->mServerFrame.mRot.z = mes->ReadFloat();
 
-	client->mCommand.mMilliseconds = mes->ReadByte();
+	shape->mCommand.mMilliseconds = mes->ReadByte();
 }
 
 //-----------------------------------------------------------------------------

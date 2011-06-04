@@ -52,16 +52,18 @@ public:
 	Game();
 	~Game();
 
-	//player
+	//shapes
 	void createShape(Client* client);
-	void			RemoveShape (Shape* shape);
+	void createAIShape();
+	void RemoveShape (Shape* shape);
+	
 	// Network.cpp
-
 	void	SendCommand(void);
 	void	SendExitNotification(void);
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);
 	void	BuildMoveCommand(Message *mes, Shape* shape);
 	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
+	void    runAI();
 
 	// Server.cpp
 
