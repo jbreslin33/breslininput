@@ -89,35 +89,3 @@ void Move::interpolateTick(float renderTime)
 	}
 }
 
-
-void Move::calculateVelocity(Command* command, float frametime)
-{
-	command->mVelocity.x = 0.0f;
-    command->mVelocity.z = 0.0f;
-
-    if(command->mKey & KEY_UP)
-    {
-		command->mVelocity.z += -1;
-    }
-
-    if(command->mKey & KEY_DOWN)
-    {
-		command->mVelocity.z += 1;
-    }
-    if(command->mKey & KEY_LEFT)
-    {
-		command->mVelocity.x += -1;
-    }
-    if(command->mKey & KEY_RIGHT)
-    {
-        command->mVelocity.x += 1;
-    }
-
-	float length = sqrt(pow(command->mVelocity.x, 2) + pow(command->mVelocity.z, 2));
-    if(length != 0.0)
-    {
-		command->mVelocity.x = command->mVelocity.x/length * mRunSpeed * frametime;
-        command->mVelocity.z = command->mVelocity.z/length * mRunSpeed * frametime;
-    }
-}
-

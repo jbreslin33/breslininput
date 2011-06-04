@@ -21,8 +21,8 @@ Game::Game(const char* serverIP)
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
 
-	mLocalShape		= NULL;
- 	mInputShape        = NULL;
+	//mLocalShape		= NULL;
+ 	//mInputShape        = NULL;
 
 	mFrameTime		= 0.0f;
  	mRenderTime		= 0.0f;
@@ -58,9 +58,10 @@ void Game::AddShape(int local, int ind, char *name)
 	
 	if(local)
 	{
-		mLocalShape = shape;
-		mInputShape = shape;
-		
+		LogString("set Local vars cause this one's local");
+//		mLocalShape = shape;
+//		mInputShape = shape;
+		mClient->mShape = shape;	
 		SendRequestNonDeltaFrame();
 	}
 }
@@ -180,7 +181,7 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void Game::CheckKeys(void)
 {
-	mInputShape->mCommand.mKey = 0;
+	mClient->mShape->mCommand.mKey = 0;
  	if(keys[VK_ESCAPE])
  	{
 		LogString("esc");
@@ -189,38 +190,39 @@ void Game::CheckKeys(void)
 	
  	if(keys[VK_DOWN])
  	{
- 		mInputShape->mCommand.mKey |= KEY_DOWN;
+ 		mClient->mShape->mCommand.mKey |= KEY_DOWN;
+		//LogString("down");
  	}
  	if(keys[VK_UP])
  	{
- 		mInputShape->mCommand.mKey |= KEY_UP;
+ 		mClient->mShape->mCommand.mKey |= KEY_UP;
  	}
  	if(keys[VK_LEFT])
  	{
- 		mInputShape->mCommand.mKey |= KEY_LEFT;
+ 		mClient->mShape->mCommand.mKey |= KEY_LEFT;
  	}
  	if(keys[VK_RIGHT])
  	{
- 		mInputShape->mCommand.mKey |= KEY_RIGHT;
+ 		mClient->mShape->mCommand.mKey |= KEY_RIGHT;
  	}
 	if(keys[VK_SPACE])
  	{
- 		mInputShape->mCommand.mKey |= KEY_SPACE;
+ 		mClient->mShape->mCommand.mKey |= KEY_SPACE;
  	}
 
- 	mInputShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+ 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
 
 void Game::MoveServerPlayer(void)
 {
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
-	transVector.x = mLocalShape->mServerFrame.mOrigin.x;
-	transVector.z = mLocalShape->mServerFrame.mOrigin.z;
+	transVector.x = mClient->mShape->mServerFrame.mOrigin.x;
+	transVector.z = mClient->mShape->mServerFrame.mOrigin.z;
 
-	if (mLocalShape->mServerShape)
+	if (mClient->mShape->mServerShape)
 	{
-		mLocalShape->mServerShape->getSceneNode()->setPosition(transVector);
+		mClient->mShape->mServerShape->getSceneNode()->setPosition(transVector);
 	}
 }
 
@@ -294,7 +296,7 @@ void Game::ReadPackets(void)
 
 			for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			{
-				//LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
+				LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
 				ReadMoveCommand(&mes, mShapeVector.at(i));
 			}
 
@@ -323,13 +325,13 @@ void Game::SendCommand(void)
 	message.AddSequences(mClient);					// sequences
 
 	// Build delta-compressed move command
-	BuildDeltaMoveCommand(&message, mInputShape);
+	BuildDeltaMoveCommand(&message);
 
 	// Send the packet
 	mClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mInputShape->mFrame[i], &mInputShape->mCommand, sizeof(Command));
+	memcpy(&mClient->mShape->mFrame[i], &mClient->mShape->mCommand, sizeof(Command));
 
 	// Store the commands to the clients' history
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
@@ -359,8 +361,8 @@ void Game::Disconnect(void)
 	LogString("Game::Disconnect");
 
 	mInit = false;
-	mLocalShape = NULL;
-	mInputShape = NULL;
+//	mLocalShape = NULL;
+//	mInputShape = NULL;
 
 	mClient->SendDisconnect();
 }
@@ -391,7 +393,7 @@ void Game::ReadMoveCommand(Message *mes, Shape *shape)
 
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
-	shape->mProcessedFrame;
+	//shape->mProcessedFrame;
 	int flags = 0;
 
 	// Flags
@@ -401,7 +403,10 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	if(flags & CMD_KEY)
 	{
 		shape->mServerFrame.mKey = mes->ReadByte();
-
+		if(shape == mClient->mShape)
+		{
+			LogString("reading delta mKey:%d",shape->mServerFrame.mKey);
+		}
 		shape->mCommand.mKey = shape->mServerFrame.mKey;
 		//LogString("Client %d: Read key %d", shape->mIndex, shape->mCommand.mKey);
 	}
@@ -421,10 +426,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	shape->mServerFrame.mVelocity.z = mes->ReadFloat();
 	shape->mServerFrame.mVelocity.y = mes->ReadFloat();
 
-	//LogString("x %f", shape->mServerFrame.mVelocity.x);
-    //LogString("z %f", shape->mServerFrame.mVelocity.z);
-    //LogString("y %f", shape->mServerFrame.mVelocity.y);
-
 	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
 	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
 
@@ -438,13 +439,14 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 // Name: empty()
 // Desc:
 //-----------------------------------------------------------------------------
-void Game::BuildDeltaMoveCommand(Message *mes, Shape *theClient)
+void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
 	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
-
+	//LogString("last:%d",last);
 	// Check what needs to be updated
-	if(theClient->mFrame[last].mKey != theClient->mCommand.mKey)
+	LogString("curKey:%d",mClient->mShape->mCommand.mKey);
+	if(mClient->mShape->mFrame[last].mKey != mClient->mShape->mCommand.mKey)
 		flags |= CMD_KEY;
 
 	// Add to the message
@@ -454,10 +456,10 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape *theClient)
 	// Key
 	if(flags & CMD_KEY)
 	{
-		mes->WriteByte(theClient->mCommand.mKey);
+		mes->WriteByte(mClient->mShape->mCommand.mKey);
 	}
 
-	mes->WriteByte(theClient->mCommand.mMilliseconds);
+	mes->WriteByte(mClient->mShape->mCommand.mMilliseconds);
 }
 
 void Game::RunNetwork(int msec)
