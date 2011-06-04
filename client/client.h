@@ -132,8 +132,7 @@ public:
 
 	Message	mMessage;
 
-    Shape* mShape;  //this will be NULL on client use of this class. otherwise it should have an associated shape.
-	//scatch that i am going to use it store the avatar..
+    Shape* mShape;  //on server: everybody's got one ...same on clientside mShape is the clients personal avatar..
 
 Network* mNetwork;
 

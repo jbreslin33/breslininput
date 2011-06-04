@@ -36,11 +36,10 @@ public:
 
 	Ogre::Root* mRoot;
 	
-	Server	*mServer;
+	Server	*mServer;  //go between for game(contains game logic) and Network(handles sending message across internets)
 
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms
-
 	long	mFramenum;
 
 	int mRunningShapeIndex;
@@ -57,7 +56,7 @@ public:
 	void createAIShape();
 	void RemoveShape (Shape* shape);
 	
-	// Network.cpp
+	// Network
 	void	SendCommand(void);
 	void	SendExitNotification(void);
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);
@@ -65,9 +64,10 @@ public:
 	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
 	void    runAI();
 
-	// Server.cpp
-
+	// Server
 	void	ShutdownNetwork(void);
+
+	//time
 	void	Frame(int msec);
 
 };

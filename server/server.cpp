@@ -14,13 +14,11 @@ Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 	init			= false;
 	mGame = serverSideGame;
 	mLocalIP = localIP;
-	port			= 0;
 	
 	// Store the server IP and port for later use
 	port = serverPort;
 
-	// Create server socket
-
+	// Create network
 	mNetwork = new Network(localIP, port);
 
 	init = true;
@@ -39,20 +37,17 @@ void Server::Uninitialise(void)
 	init = false;
 }
 
-//when you get here to modify...you once again probably after the mClientVectorLoop than loop thru shapes.
-//actually this should just be renamed sendAddNewShape because the internet client doesn not
-//care what a serverClient is he only has a mShapeVector
+//send a shape that has a client. i.e. a new human player
 void Server::SendAddShape(Client* client)
 {
-	//if this a new client then let him change to connectionState = DREAMSOCK_CONNECTED; otherwise proceed
+
 	// init mMessage for client
 	client->mMessage.Init(client->mMessage.outgoingData,
 		sizeof(client->mMessage.outgoingData));
 
+	//this a new client so let him change to connectionState = DREAMSOCK_CONNECTED; 
 	client->mMessage.WriteByte(DREAMSOCK_MES_CONNECT);	// type
 	client->SendPacket();
-
-	// Send 'Add Shape' message to every client
 
 	// First inform the new client of the other shapes by looping thru entire
 	//mShapeVector one by one and sending out client->SendPacket();
@@ -62,24 +57,19 @@ void Server::SendAddShape(Client* client)
 		client->mMessage.Init(client->mMessage.outgoingData,
 			sizeof(client->mMessage.outgoingData));
 
-		client->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
+		client->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // tell internet clients to add a shape
 
 		if (mGame->mShapeVector.at(i) == client->mShape)
 		{
-			LogString("to new client: SendAddShape Local");
-			client->mMessage.WriteByte(1);	// local client
+			client->mMessage.WriteByte(1);	// local shape
 			client->mMessage.WriteByte(mGame->mShapeVector.at(i)->mIndex);
 			client->mMessage.WriteString(mGame->mShapeVector.at(i)->mClient->GetName());
 		}
 		else
 		{
-			LogString("to new client: SendAddShape Non-Local");
-			client->mMessage.WriteByte(0);	// not-local client
+			client->mMessage.WriteByte(0);	// not-local shape
 			client->mMessage.WriteByte(mGame->mShapeVector.at(i)->mIndex);
-			LogString("before");
-			//client->mMessage.WriteString(mGame->mShapeVector.at(i)->mClient->GetName());
 			client->mMessage.WriteString("shape" + client->mShape->mIndex);
-			LogString("after");
 		}
 		client->SendPacket(&client->mMessage);
 	}
@@ -98,7 +88,6 @@ void Server::SendAddShape(Client* client)
 			mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 				sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
-			LogString("to everyone: SendAddShape Non-Local");
 			mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
 			mClientVector.at(i)->mMessage.WriteByte(0);
 			mClientVector.at(i)->mMessage.WriteByte(client->mShape->mIndex);
@@ -108,6 +97,7 @@ void Server::SendAddShape(Client* client)
 	}
 }
 
+//this is your serverside guy. he has no client, but we still need to tell everyone about the chap
 void Server::SendAddAIShape(Shape* shape)
 {
 	// Send 'Add Shape' message to every client
@@ -119,11 +109,8 @@ void Server::SendAddAIShape(Shape* shape)
 			sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
 		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_ADDSHAPE); // type
-		LogString("to everyone: SendAddAIShape Non-Local");
 		mClientVector.at(i)->mMessage.WriteByte(0);
 		mClientVector.at(i)->mMessage.WriteByte(shape->mIndex);
-		//mClientVector.at(i)->mMessage.WriteString(shape->GetName());
-
 		mClientVector.at(i)->mMessage.WriteString("shape" + shape->mIndex);
 		mClientVector.at(i)->SendPacket();
 	}
