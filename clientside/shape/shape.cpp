@@ -25,20 +25,23 @@ void Shape::processTick()
 {
 	mObjectTitleString.clear(); //empty title string so it can be filled anew
 
+	//call parent processTicks since you overrode them
 	Move::processTick(); 
 	Rotation::processTick();
 
+	//run billboard here for now.
 	mObjectTitle->setTitle(mObjectTitleString); //fill title with mObjectTitleString which we have appended from all states we want info on.
-
 	mObjectTitle->update(); //draw title for shape
 
 }
 void Shape::interpolateTick(float renderTime)
 {
+	//call parent interpolateTicks since you overrode them
 	Move::interpolateTick(renderTime);
 	Rotation::interpolateTick(renderTime);
-	float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 
+	//run animations here for now.
+	float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 	float yVelocity = mServerFrame.mVelocity.y;
-	OgreAnimation::updateAnimations(yVelocity, renderTime, mCommand.mStop, animSpeed);
+	OgreAnimation::updateAnimations(yVelocity, renderTime, mServerFrame.mVelocity.isZero(), animSpeed);
 }

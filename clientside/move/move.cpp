@@ -59,16 +59,6 @@ void Move::processTick()
     //distance we are off from server
     mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
 
-    // if server has come to a stop
-    if(mServerFrame.mVelocity.x == 0.0 && mServerFrame.mVelocity.z == 0.0
-		&& mServerFrame.mVelocity.y == 0.0)
-    {
-		mCommand.mStop = true;
-    }
-    else //server still moving
-    {
-		mCommand.mStop = false;
-    }
     mMoveStateMachine->update();
 }
 

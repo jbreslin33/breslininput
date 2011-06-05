@@ -17,3 +17,15 @@ double Vector3D::length()
 	return sqrt(x*x + y*y + z*z);
 }
 
+bool Vector3D::isZero()
+{
+	if (x == 0.0 && y == 0.0 && z == 0.0)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+

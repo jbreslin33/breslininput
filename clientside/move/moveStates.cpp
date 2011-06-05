@@ -15,9 +15,10 @@ void Normal_Move::enter(Move* move)
 void Normal_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Normal ");
-	// if distance exceeds threshold
-    if(move->mDeltaPosition > move->mPosInterpLimitHigh && move->mCommand.mStop == false)
-    {
+
+	// if distance exceeds threshold && server velocity is zero
+	if(move->mDeltaPosition > move->mPosInterpLimitHigh && !move->mServerFrame.mVelocity.isZero())
+	{
 		move->mMoveStateMachine->changeState(Catchup_Move::Instance());
     }
     else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
@@ -61,7 +62,7 @@ void Catchup_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
-    if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mCommand.mStop == true)
+    if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mServerFrame.mVelocity.isZero())
     {
 		move->mMoveStateMachine->changeState(Normal_Move::Instance());
     }

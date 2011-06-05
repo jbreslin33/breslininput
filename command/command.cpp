@@ -22,9 +22,6 @@ Command::Command()
 
 	mMilliseconds = 0;
 
-	mCatchup    = false;
-	mStop       = true;
-
 	mClientFrametime = 0.0f;
 }
 
