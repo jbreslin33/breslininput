@@ -53,7 +53,7 @@ void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, 
 
 	mTimer += deltaTime;
 
-	if (mCommand.mStop == false)
+	if (stop == false)
 	{
 		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
 		{

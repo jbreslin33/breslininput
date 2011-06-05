@@ -14,5 +14,7 @@ float x;
 float y;
 float z;
 
+bool isZero();
+
 };
 #endif

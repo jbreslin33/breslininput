@@ -265,7 +265,7 @@ void Game::ReadPackets(void)
 				if (mNetworkShutdown)
 					return;
 				ReadDeltaMoveCommand(&mes, mShapeVector.at(i));
-				mShapeVector.at(i)->processTick();
+				mShapeVector.at(i)->processTick(); //when you read packets??
 
 				MoveServerPlayer();
 			}
