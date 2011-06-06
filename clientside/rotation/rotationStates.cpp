@@ -5,6 +5,25 @@
 
 #include "../../billboard/objectTitle.h"
 
+
+
+Global_ProcessTick_Rotation* Global_ProcessTick_Rotation::Instance()
+{
+  static Global_ProcessTick_Rotation instance;
+  return &instance;
+}
+void Global_ProcessTick_Rotation::enter(Rotation* rotation)
+{
+}
+void Global_ProcessTick_Rotation::execute(Rotation* rotation)
+{
+	
+}
+void Global_ProcessTick_Rotation::exit(Rotation* rotation)
+{
+}
+
+
 Normal_ProcessTick_Rotation* Normal_ProcessTick_Rotation::Instance()
 {
   static Normal_ProcessTick_Rotation instance;
@@ -105,6 +124,23 @@ void Catchup_ProcessTick_Rotation::exit(Rotation* rotation)
 }
 
 /****************************InterpolateTick************************/
+
+
+Global_InterpolateTick_Rotation* Global_InterpolateTick_Rotation::Instance()
+{
+  static Global_InterpolateTick_Rotation instance;
+  return &instance;
+}
+void Global_InterpolateTick_Rotation::enter(Rotation* rotation)
+{
+}
+void Global_InterpolateTick_Rotation::execute(Rotation* rotation)
+{
+	
+}
+void Global_InterpolateTick_Rotation::exit(Rotation* rotation)
+{
+}
 
 Normal_InterpolateTick_Rotation* Normal_InterpolateTick_Rotation::Instance()
 {
