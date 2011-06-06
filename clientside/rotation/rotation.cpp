@@ -86,3 +86,35 @@ Real Rotation::getDegreesToServer()
 
 	return degreesToServer;
 }
+
+void Rotation::calculateServerRotationSpeed()
+{
+    mServerRotOld  = Ogre::Vector3::ZERO;
+    mServerRotNew  = Ogre::Vector3::ZERO;
+
+    mServerRotOld.x = mServerFrame.mRotOld.x;
+    mServerRotOld.z = mServerFrame.mRotOld.z;
+
+    mServerRotNew.x = mServerFrame.mRot.x;
+    mServerRotNew.z = mServerFrame.mRot.z;
+
+    mServerRotNew.normalise();
+    mServerRotOld.normalise();
+
+    //calculate how far off we are from server
+    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
+
+    // convert to degrees
+    mDegreesToServer = toServer.getYaw().valueDegrees();
+
+    //calculate server rotation from last tick to new one
+    Quaternion serverRot = mServerShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
+
+    // convert to degrees
+    mServerRotSpeed = serverRot.getYaw().valueDegrees();
+
+    if(abs(mServerRotSpeed) < 0.01)
+    {
+		mServerRotSpeed = 0.0;
+    }
+}
