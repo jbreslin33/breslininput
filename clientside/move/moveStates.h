@@ -60,12 +60,12 @@ public:
   void exit   (Move* move);
 };
 
-class Catchup_InterpolateTick_Move : public MoveState
+class Off_InterpolateTick_Move : public MoveState
 {
 private:
-  Catchup_InterpolateTick_Move(){}
+  Off_InterpolateTick_Move(){}
 public:
-  static Catchup_InterpolateTick_Move* Instance();
+  static Off_InterpolateTick_Move* Instance();
   void enter  (Move* move);
   void execute(Move* move);
   void exit   (Move* move);
