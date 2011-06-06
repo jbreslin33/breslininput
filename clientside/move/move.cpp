@@ -38,24 +38,31 @@ Move::Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 	mDeltaY        = 0.0;
 	mDeltaPosition = 0.0;
 
-	//move states
-	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
-	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
-	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
-	mMoveStateMachine->setGlobalState       (Global_Move::Instance());
+	//move processTick states
+	mMoveProcessTickStateMachine = new MoveStateMachine(this);    //setup the state machine
+	mMoveProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
+
+	//move interpolateTick states
+	mMoveInterpolateTickStateMachine = new MoveStateMachine(this);    //setup the state machine
+	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
 }
 
 Move::~Move()
 {
-	delete mMoveStateMachine;
+	delete mMoveProcessTickStateMachine;
+	delete mMoveInterpolateTickStateMachine;
 }
 
 void Move::processTick()
 {
-    mMoveStateMachine->update();
+    mMoveProcessTickStateMachine->update();
 }
 
-void Move::interpolateTick(float renderTime)
+void Move::interpolateTick()
 {
 	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
@@ -63,11 +70,12 @@ void Move::interpolateTick(float renderTime)
     transVector.z = mCommand.mVelocity.z;
     transVector.y = mCommand.mVelocity.y;
         
-    getSceneNode()->translate(transVector * renderTime * 1000, Ogre::Node::TS_WORLD);
+    getSceneNode()->translate(transVector * mRenderTime * 1000, Ogre::Node::TS_WORLD);
 
     if(getSceneNode()->getPosition().y < 0.0)
 	{	
 		getSceneNode()->setPosition(getSceneNode()->getPosition().x, 0.0 , getSceneNode()->getPosition().z);
 	}
+	
 }
 

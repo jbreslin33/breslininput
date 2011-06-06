@@ -61,63 +61,10 @@ Rotation::~Rotation()
 
 void Rotation::processTick()
 {
-    mServerRotOld  = Ogre::Vector3::ZERO;
-    mServerRotNew  = Ogre::Vector3::ZERO;
-
-    mServerRotOld.x = mServerFrame.mRotOld.x;
-    mServerRotOld.z = mServerFrame.mRotOld.z;
-
-    mServerRotNew.x = mServerFrame.mRot.x;
-    mServerRotNew.z = mServerFrame.mRot.z;
-
-    mServerRotNew.normalise();
-    mServerRotOld.normalise();
-
-    //calculate how far off we are from server
-    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
-
-    // convert to degrees
-    mDegreesToServer = toServer.getYaw().valueDegrees();
-
-    //calculate server rotation from last tick to new one
-    Quaternion serverRot = mServerShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
-
-    // convert to degrees
-    mServerRotSpeed = serverRot.getYaw().valueDegrees();
-
-    if(abs(mServerRotSpeed) < 0.01)
-    {
-		mServerRotSpeed = 0.0;
-    }
-    
-	// yaw server guy to new rot
-    mServerShape->getSceneNode()->yaw(Degree(mServerRotSpeed));
-
     mRotationProcessTickStateMachine->update();
-    mRotationInterpolateTickStateMachine->update();	
 }
 
-void Rotation::interpolateTick(float renderTime)
+void Rotation::interpolateTick()
 {
-    float rotSpeed = mCommand.mRotSpeed * renderTime;
-    getSceneNode()->yaw(Degree(rotSpeed));
-
-    Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
-
-    serverRotNew.x = mServerFrame.mRot.x;
-    serverRotNew.z = mServerFrame.mRot.z;
-
-    serverRotNew.normalise();
-
-    //calculate how far off we are from server
-    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
-    // convert to degrees
-    Real mDegreesToServer = toServer.getYaw().valueDegrees();
-
-    // are we back in sync
-    if (mServerRotSpeed == 0.0 && abs(mDegreesToServer) < mRotInterpLimitLow)
-    {
-		mCommand.mRotSpeed = 0.0;
-    }
+	mRotationInterpolateTickStateMachine->update();	
 }

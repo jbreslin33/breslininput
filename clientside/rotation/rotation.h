@@ -25,7 +25,7 @@ void setServerShape(Shape* serverShape) { mServerShape = serverShape; }
 //movement
 void processTick    ();
 
-void interpolateTick    (float renderTime);
+void interpolateTick    ();
 
 Shape* mServerShape;
 

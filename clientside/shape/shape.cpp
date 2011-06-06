@@ -36,9 +36,11 @@ void Shape::processTick()
 }
 void Shape::interpolateTick(float renderTime)
 {
+	mRenderTime = renderTime;
+
 	//call parent interpolateTicks since you overrode them
-	Move::interpolateTick(renderTime);
-	Rotation::interpolateTick(renderTime);
+	Move::interpolateTick();
+	Rotation::interpolateTick();
 
 	//run animations here for now.
 	float animSpeed = mRunSpeed * 1000/mRunSpeedMax;

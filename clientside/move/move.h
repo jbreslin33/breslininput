@@ -21,9 +21,10 @@ Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::s
 
 //ticks
 void processTick    ();
-void interpolateTick    (float renderTime);
+void interpolateTick    ();
 
-MoveStateMachine* mMoveStateMachine;
+MoveStateMachine* mMoveProcessTickStateMachine;
+MoveStateMachine* mMoveInterpolateTickStateMachine;
 
 //run speed
 float mRunSpeed;
