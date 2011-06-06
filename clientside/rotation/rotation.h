@@ -27,6 +27,8 @@ void processTick    ();
 
 void interpolateTick    ();
 Real getDegreesToServer();
+void calculateServerRotationSpeed();
+
 Shape* mServerShape;
 
 RotationStateMachine* mRotationProcessTickStateMachine;
