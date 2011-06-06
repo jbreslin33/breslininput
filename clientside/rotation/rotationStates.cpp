@@ -104,3 +104,37 @@ void Catchup_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
 
+/****************************InterpolateTick************************/
+
+Normal_InterpolateTick_Rotation* Normal_InterpolateTick_Rotation::Instance()
+{
+  static Normal_InterpolateTick_Rotation instance;
+  return &instance;
+}
+void Normal_InterpolateTick_Rotation::enter(Rotation* rotation)
+{
+}
+void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
+{
+	
+}
+void Normal_InterpolateTick_Rotation::exit(Rotation* rotation)
+{
+}
+
+Catchup_InterpolateTick_Rotation* Catchup_InterpolateTick_Rotation::Instance()
+{
+  static Catchup_InterpolateTick_Rotation instance;
+  return &instance;
+}
+void Catchup_InterpolateTick_Rotation::enter(Rotation* rotation)
+{
+}
+void Catchup_InterpolateTick_Rotation::execute(Rotation* rotation)
+{
+	
+}
+void Catchup_InterpolateTick_Rotation::exit(Rotation* rotation)
+{
+}
+

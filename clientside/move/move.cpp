@@ -42,7 +42,7 @@ Move::Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine
 	mMoveStateMachine->setCurrentState      (Normal_Move::Instance());
 	mMoveStateMachine->setPreviousState     (Normal_Move::Instance());
-	mMoveStateMachine->setGlobalState       (NULL);
+	mMoveStateMachine->setGlobalState       (Global_Move::Instance());
 }
 
 Move::~Move()
@@ -52,13 +52,6 @@ Move::~Move()
 
 void Move::processTick()
 {
-	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
-    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
-    mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
-
-    //distance we are off from server
-    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
-
     mMoveStateMachine->update();
 }
 
@@ -74,8 +67,7 @@ void Move::interpolateTick(float renderTime)
 
     if(getSceneNode()->getPosition().y < 0.0)
 	{	
-		getSceneNode()->setPosition(getSceneNode()->getPosition().x,
-			0.0, getSceneNode()->getPosition().z);
+		getSceneNode()->setPosition(getSceneNode()->getPosition().x, 0.0 , getSceneNode()->getPosition().z);
 	}
 }
 

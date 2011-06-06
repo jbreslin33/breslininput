@@ -62,3 +62,29 @@ void Shape::processTick()
 		mProcessedFrame = f;
 	}
 }
+
+void Shape::setKeyDirection()
+{
+	mKeyDirection.x = 0;
+    mKeyDirection.z = 0;
+    mKeyDirection.y = 0;
+                
+    // keep track of the player's intended direction
+    if(mCommand.mKey & KEY_UP) 
+	{
+		mKeyDirection.z += -1;
+	}
+    if(mCommand.mKey & KEY_LEFT) 
+	{
+		mKeyDirection.x += -1;
+	}
+                
+    if(mCommand.mKey & KEY_DOWN) 
+	{
+        mKeyDirection.z += 1;
+	}
+    if(mCommand.mKey & KEY_RIGHT) 
+	{
+		mKeyDirection.x += 1;
+	}
+}

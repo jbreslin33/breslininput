@@ -1,7 +1,33 @@
 #include "moveStates.h"
 #include "moveStateMachine.h"
 
+#include "../../tdreamsock/dreamSockLog.h"
+
 #include "move.h"
+
+
+Global_Move* Global_Move::Instance()
+{
+  static Global_Move instance;
+  return &instance;
+}
+void Global_Move::enter(Move* move)
+{
+
+}
+void Global_Move::execute(Move* move)
+{
+	move->mDeltaX = move->mServerFrame.mOrigin.x - move->getSceneNode()->getPosition().x;
+    move->mDeltaZ = move->mServerFrame.mOrigin.z - move->getSceneNode()->getPosition().z;
+    move->mDeltaY = move->mServerFrame.mOrigin.y - move->getSceneNode()->getPosition().y;
+
+    //distance we are off from server
+    move->mDeltaPosition = sqrt(pow(move->mDeltaX, 2) + pow(move->mDeltaZ, 2) + pow(move->mDeltaY, 2));
+}
+void Global_Move::exit(Move* move)
+{
+}
+
 
 Normal_Move* Normal_Move::Instance()
 {

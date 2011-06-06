@@ -12,6 +12,12 @@ using namespace Ogre;
 
 #include <string>
 
+//key defines prob should be changed to a variable if possible
+#define KEY_UP					1
+#define KEY_DOWN				2
+#define KEY_LEFT				4
+#define KEY_RIGHT				8
+
 class Client;
 
 class Shape
@@ -27,6 +33,8 @@ Shape(std::string name, Vector3D* position, Ogre::Root* root);
 
 //ticks
 void processTick();
+
+void setKeyDirection();
 
 //associated client if any
 Client* mClient;

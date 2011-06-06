@@ -4,6 +4,17 @@
 
 class Move;
 
+class Global_Move : public MoveState
+{
+private:
+  Global_Move(){}
+public:
+  static Global_Move* Instance();
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
+};
+
 class Normal_Move : public MoveState
 {
 private:

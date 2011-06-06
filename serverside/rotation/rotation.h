@@ -22,7 +22,7 @@ Rotation(std::string name, Vector3D* position, Ogre::Root* root);
 
 //movement
 void processTick    ();
-void setKeyDirection();
+
 RotationStateMachine* mRotationStateMachine;
 
 
