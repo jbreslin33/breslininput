@@ -5,6 +5,7 @@
 
 #include "move.h"
 
+/******************** Global_ProcessTick_Move *****************/
 
 Global_ProcessTick_Move* Global_ProcessTick_Move::Instance()
 {
@@ -17,17 +18,13 @@ void Global_ProcessTick_Move::enter(Move* move)
 }
 void Global_ProcessTick_Move::execute(Move* move)
 {
-	move->mDeltaX = move->mServerFrame.mOrigin.x - move->getSceneNode()->getPosition().x;
-    move->mDeltaZ = move->mServerFrame.mOrigin.z - move->getSceneNode()->getPosition().z;
-    move->mDeltaY = move->mServerFrame.mOrigin.y - move->getSceneNode()->getPosition().y;
-
-    //distance we are off from server
-    move->mDeltaPosition = sqrt(pow(move->mDeltaX, 2) + pow(move->mDeltaZ, 2) + pow(move->mDeltaY, 2));
+	move->calculateDeltaPosition();
 }
 void Global_ProcessTick_Move::exit(Move* move)
 {
 }
 
+/******************** Normal_ProcessTick_Move *****************/
 
 Normal_ProcessTick_Move* Normal_ProcessTick_Move::Instance()
 {
@@ -75,6 +72,8 @@ void Normal_ProcessTick_Move::execute(Move* move)
 void Normal_ProcessTick_Move::exit(Move* move)
 {
 }
+
+/******************** Catchup_ProcessTick_Move *****************/
 
 Catchup_ProcessTick_Move* Catchup_ProcessTick_Move::Instance()
 {
@@ -139,7 +138,7 @@ void Catchup_ProcessTick_Move::exit(Move* move)
 }
 
 
-/*************************Interpolate***************/
+/******************** Global_InterpolateTick_Move *****************/
 
 Global_InterpolateTick_Move* Global_InterpolateTick_Move::Instance()
 {
@@ -158,6 +157,7 @@ void Global_InterpolateTick_Move::exit(Move* move)
 {
 }
 
+/******************** Normal_InterpolateTick_Move *****************/
 
 Normal_InterpolateTick_Move* Normal_InterpolateTick_Move::Instance()
 {
@@ -188,6 +188,8 @@ void Normal_InterpolateTick_Move::execute(Move* move)
 void Normal_InterpolateTick_Move::exit(Move* move)
 {
 }
+
+/******************** Off_InterpolateTick_Move *****************/
 
 Off_InterpolateTick_Move* Off_InterpolateTick_Move::Instance()
 {

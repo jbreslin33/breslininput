@@ -8,7 +8,7 @@
 #include "../../billboard/objectTitle.h"
 
 
-
+/******************** Global_ProcessTick_Rotation *****************/
 Global_ProcessTick_Rotation* Global_ProcessTick_Rotation::Instance()
 {
   static Global_ProcessTick_Rotation instance;
@@ -28,6 +28,7 @@ void Global_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
 
+/******************** Normal_ProcessTick_Rotation *****************/
 
 Normal_ProcessTick_Rotation* Normal_ProcessTick_Rotation::Instance()
 {
@@ -41,7 +42,7 @@ void Normal_ProcessTick_Rotation::execute(Rotation* rotation)
 {
 	rotation->mObjectTitleString.append("R:Normal");
 	
-	// are we too far off
+	// are we too far off you need to change to catchup state
     if(abs(rotation->mDegreesToServer) > rotation->mRotInterpLimitHigh)
     {
         rotation->mRotationProcessTickStateMachine->changeState(Catchup_ProcessTick_Rotation::Instance());
@@ -70,6 +71,8 @@ void Normal_ProcessTick_Rotation::execute(Rotation* rotation)
 void Normal_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
+
+/******************** Catchup_ProcessTick_Rotation *****************/
 
 Catchup_ProcessTick_Rotation* Catchup_ProcessTick_Rotation::Instance()
 {
@@ -128,7 +131,7 @@ void Catchup_ProcessTick_Rotation::exit(Rotation* rotation)
 {
 }
 
-/****************************InterpolateTick************************/
+/******************** Global_InterpolateTick_Rotation *****************/
 
 
 Global_InterpolateTick_Rotation* Global_InterpolateTick_Rotation::Instance()
@@ -146,6 +149,8 @@ void Global_InterpolateTick_Rotation::execute(Rotation* rotation)
 void Global_InterpolateTick_Rotation::exit(Rotation* rotation)
 {
 }
+
+/******************** Normal_InterpolateTick_Rotation *****************/
 
 Normal_InterpolateTick_Rotation* Normal_InterpolateTick_Rotation::Instance()
 {
@@ -169,6 +174,8 @@ void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
 void Normal_InterpolateTick_Rotation::exit(Rotation* rotation)
 {
 }
+
+/******************** Off_InterpolateTick_Rotation *****************/
 
 Off_InterpolateTick_Rotation* Off_InterpolateTick_Rotation::Instance()
 {
