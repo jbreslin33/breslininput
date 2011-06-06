@@ -22,6 +22,7 @@ Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::s
 //ticks
 void processTick    ();
 void interpolateTick    ();
+void calculateDeltaPosition();
 
 MoveStateMachine* mMoveProcessTickStateMachine;
 MoveStateMachine* mMoveInterpolateTickStateMachine;

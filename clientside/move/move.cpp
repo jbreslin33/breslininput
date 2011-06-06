@@ -68,3 +68,12 @@ void Move::interpolateTick()
 	mMoveInterpolateTickStateMachine->update();
 }
 
+void Move::calculateDeltaPosition()
+{
+	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
+    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
+    mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
+
+    //distance we are off from server
+    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
+}
