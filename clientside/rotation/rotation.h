@@ -26,7 +26,7 @@ void setServerShape(Shape* serverShape) { mServerShape = serverShape; }
 void processTick    ();
 
 void interpolateTick    ();
-
+Real getDegreesToServer();
 Shape* mServerShape;
 
 RotationStateMachine* mRotationProcessTickStateMachine;

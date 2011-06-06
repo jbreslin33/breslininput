@@ -68,3 +68,21 @@ void Rotation::interpolateTick()
 {
 	mRotationInterpolateTickStateMachine->update();	
 }
+
+Real Rotation::getDegreesToServer()
+{
+    Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+
+    serverRotNew.x = mServerFrame.mRot.x;
+    serverRotNew.z = mServerFrame.mRot.z;
+
+    serverRotNew.normalise();
+
+    //calculate how far off we are from server
+    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+
+    // convert to degrees
+    Real degreesToServer = toServer.getYaw().valueDegrees();
+
+	return degreesToServer;
+}
