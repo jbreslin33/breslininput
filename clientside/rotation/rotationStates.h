@@ -60,12 +60,12 @@ public:
   void exit   (Rotation* rotation);
 };
 
-class Catchup_InterpolateTick_Rotation : public RotationState
+class Off_InterpolateTick_Rotation : public RotationState
 {
 private:
-  Catchup_InterpolateTick_Rotation(){}
+  Off_InterpolateTick_Rotation(){}
 public:
-  static Catchup_InterpolateTick_Rotation* Instance();
+  static Off_InterpolateTick_Rotation* Instance();
   void enter  (Rotation* rotation);
   void execute(Rotation* rotation);
   void exit   (Rotation* rotation);

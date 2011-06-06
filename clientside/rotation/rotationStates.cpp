@@ -184,45 +184,36 @@ void Normal_InterpolateTick_Rotation::enter(Rotation* rotation)
 }
 void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
 {
-    float rotSpeed = rotation->mCommand.mRotSpeed * rotation->mRenderTime;
+	float rotSpeed = rotation->mCommand.mRotSpeed * rotation->mRenderTime;
     rotation->getSceneNode()->yaw(Degree(rotSpeed));
 
-    Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
-
-    serverRotNew.x = rotation->mServerFrame.mRot.x;
-    serverRotNew.z = rotation->mServerFrame.mRot.z;
-
-    serverRotNew.normalise();
-
-    //calculate how far off we are from server
-    Quaternion toServer = rotation->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
-    // convert to degrees
-    Real degreesToServer = toServer.getYaw().valueDegrees();
-
-    // are we back in sync
-    if (rotation->mServerRotSpeed == 0.0 && abs(degreesToServer) < rotation->mRotInterpLimitLow)
+    if (rotation->mServerRotSpeed == 0.0 && abs(rotation->getDegreesToServer()) < rotation->mRotInterpLimitLow)
     {
-		rotation->mCommand.mRotSpeed = 0.0;
+		rotation->mRotationInterpolateTickStateMachine->changeState(Off_InterpolateTick_Rotation::Instance());
     }
+
 }
 void Normal_InterpolateTick_Rotation::exit(Rotation* rotation)
 {
 }
 
-Catchup_InterpolateTick_Rotation* Catchup_InterpolateTick_Rotation::Instance()
+Off_InterpolateTick_Rotation* Off_InterpolateTick_Rotation::Instance()
 {
-  static Catchup_InterpolateTick_Rotation instance;
+  static Off_InterpolateTick_Rotation instance;
   return &instance;
 }
-void Catchup_InterpolateTick_Rotation::enter(Rotation* rotation)
+void Off_InterpolateTick_Rotation::enter(Rotation* rotation)
 {
+	rotation->mCommand.mRotSpeed = 0.0;
 }
-void Catchup_InterpolateTick_Rotation::execute(Rotation* rotation)
-{
-	
+void Off_InterpolateTick_Rotation::execute(Rotation* rotation)
+{		
+	if (abs(rotation->getDegreesToServer()) > rotation->mRotInterpLimitLow)
+    {
+		rotation->mRotationInterpolateTickStateMachine->changeState(Normal_InterpolateTick_Rotation::Instance());
+    }
 }
-void Catchup_InterpolateTick_Rotation::exit(Rotation* rotation)
+void Off_InterpolateTick_Rotation::exit(Rotation* rotation)
 {
 }
 
