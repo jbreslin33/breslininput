@@ -170,7 +170,19 @@ void Normal_InterpolateTick_Move::enter(Move* move)
 }
 void Normal_InterpolateTick_Move::execute(Move* move)
 {
+	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
+    transVector.x = move->mCommand.mVelocity.x;
+    transVector.z = move->mCommand.mVelocity.z;
+    transVector.y = move->mCommand.mVelocity.y;
+        
+    move->getSceneNode()->translate(transVector * move->mRenderTime * 1000, Ogre::Node::TS_WORLD);
+
+    if(move->getSceneNode()->getPosition().y < 0.0)
+	{	
+		move->getSceneNode()->setPosition(move->getSceneNode()->getPosition().x, 0.0 ,
+			move->getSceneNode()->getPosition().z);
+	}
 }
 void Normal_InterpolateTick_Move::exit(Move* move)
 {
