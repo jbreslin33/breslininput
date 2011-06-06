@@ -46,9 +46,10 @@ Move::Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 
 	//move interpolateTick states
 	mMoveInterpolateTickStateMachine = new MoveStateMachine(this);    //setup the state machine
-	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_InterpolateTick_Move::Instance());
+	//mMoveInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setGlobalState       (NULL);
 }
 
 Move::~Move()
@@ -64,18 +65,6 @@ void Move::processTick()
 
 void Move::interpolateTick()
 {
-	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
-
-    transVector.x = mCommand.mVelocity.x;
-    transVector.z = mCommand.mVelocity.z;
-    transVector.y = mCommand.mVelocity.y;
-        
-    getSceneNode()->translate(transVector * mRenderTime * 1000, Ogre::Node::TS_WORLD);
-
-    if(getSceneNode()->getPosition().y < 0.0)
-	{	
-		getSceneNode()->setPosition(getSceneNode()->getPosition().x, 0.0 , getSceneNode()->getPosition().z);
-	}
-	
+	mMoveInterpolateTickStateMachine->update();
 }
 
