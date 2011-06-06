@@ -449,6 +449,7 @@ void Game::RunNetwork(int msec)
 	
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
+		//mShapeVector.at(i)->mRenderTime = mRenderTime;
 		mShapeVector.at(i)->interpolateTick(mRenderTime);
 	}
 

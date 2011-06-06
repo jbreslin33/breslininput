@@ -1,6 +1,8 @@
 #include "rotationStates.h"
 #include "rotationStateMachine.h"
 
+#include "../../clientside/shape/shape.h"
+
 #include "rotation.h"
 
 #include "../../billboard/objectTitle.h"
@@ -17,7 +19,37 @@ void Global_ProcessTick_Rotation::enter(Rotation* rotation)
 }
 void Global_ProcessTick_Rotation::execute(Rotation* rotation)
 {
-	
+    rotation->mServerRotOld  = Ogre::Vector3::ZERO;
+    rotation->mServerRotNew  = Ogre::Vector3::ZERO;
+
+    rotation->mServerRotOld.x = rotation->mServerFrame.mRotOld.x;
+    rotation->mServerRotOld.z = rotation->mServerFrame.mRotOld.z;
+
+    rotation->mServerRotNew.x = rotation->mServerFrame.mRot.x;
+    rotation->mServerRotNew.z = rotation->mServerFrame.mRot.z;
+
+    rotation->mServerRotNew.normalise();
+    rotation->mServerRotOld.normalise();
+
+    //calculate how far off we are from server
+    Quaternion toServer = rotation->getSceneNode()->getOrientation().zAxis().getRotationTo(rotation->mServerRotNew,Vector3::UNIT_Y);
+
+    // convert to degrees
+    rotation->mDegreesToServer = toServer.getYaw().valueDegrees();
+
+    //calculate server rotation from last tick to new one
+    Quaternion serverRot = rotation->mServerShape->getSceneNode()->getOrientation().zAxis().getRotationTo(rotation->mServerRotNew, Vector3::UNIT_Y);
+
+    // convert to degrees
+    rotation->mServerRotSpeed = serverRot.getYaw().valueDegrees();
+
+    if(abs(rotation->mServerRotSpeed) < 0.01)
+    {
+		rotation->mServerRotSpeed = 0.0;
+    }
+    
+	// yaw server guy to new rot
+    rotation->mServerShape->getSceneNode()->yaw(Degree(rotation->mServerRotSpeed));	
 }
 void Global_ProcessTick_Rotation::exit(Rotation* rotation)
 {
@@ -152,7 +184,27 @@ void Normal_InterpolateTick_Rotation::enter(Rotation* rotation)
 }
 void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
 {
-	
+    float rotSpeed = rotation->mCommand.mRotSpeed * rotation->mRenderTime;
+    rotation->getSceneNode()->yaw(Degree(rotSpeed));
+
+    Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+
+    serverRotNew.x = rotation->mServerFrame.mRot.x;
+    serverRotNew.z = rotation->mServerFrame.mRot.z;
+
+    serverRotNew.normalise();
+
+    //calculate how far off we are from server
+    Quaternion toServer = rotation->getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+
+    // convert to degrees
+    Real degreesToServer = toServer.getYaw().valueDegrees();
+
+    // are we back in sync
+    if (rotation->mServerRotSpeed == 0.0 && abs(degreesToServer) < rotation->mRotInterpLimitLow)
+    {
+		rotation->mCommand.mRotSpeed = 0.0;
+    }
 }
 void Normal_InterpolateTick_Rotation::exit(Rotation* rotation)
 {

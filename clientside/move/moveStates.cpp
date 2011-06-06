@@ -6,16 +6,16 @@
 #include "move.h"
 
 
-Global_Move* Global_Move::Instance()
+Global_ProcessTick_Move* Global_ProcessTick_Move::Instance()
 {
-  static Global_Move instance;
+  static Global_ProcessTick_Move instance;
   return &instance;
 }
-void Global_Move::enter(Move* move)
+void Global_ProcessTick_Move::enter(Move* move)
 {
 
 }
-void Global_Move::execute(Move* move)
+void Global_ProcessTick_Move::execute(Move* move)
 {
 	move->mDeltaX = move->mServerFrame.mOrigin.x - move->getSceneNode()->getPosition().x;
     move->mDeltaZ = move->mServerFrame.mOrigin.z - move->getSceneNode()->getPosition().z;
@@ -24,28 +24,28 @@ void Global_Move::execute(Move* move)
     //distance we are off from server
     move->mDeltaPosition = sqrt(pow(move->mDeltaX, 2) + pow(move->mDeltaZ, 2) + pow(move->mDeltaY, 2));
 }
-void Global_Move::exit(Move* move)
+void Global_ProcessTick_Move::exit(Move* move)
 {
 }
 
 
-Normal_Move* Normal_Move::Instance()
+Normal_ProcessTick_Move* Normal_ProcessTick_Move::Instance()
 {
-  static Normal_Move instance;
+  static Normal_ProcessTick_Move instance;
   return &instance;
 }
-void Normal_Move::enter(Move* move)
+void Normal_ProcessTick_Move::enter(Move* move)
 {
 
 }
-void Normal_Move::execute(Move* move)
+void Normal_ProcessTick_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Normal ");
 
 	// if distance exceeds threshold && server velocity is zero
 	if(move->mDeltaPosition > move->mPosInterpLimitHigh && !move->mServerFrame.mVelocity.isZero())
 	{
-		move->mMoveStateMachine->changeState(Catchup_Move::Instance());
+		move->mMoveProcessTickStateMachine->changeState(Catchup_ProcessTick_Move::Instance());
     }
     else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
     {
@@ -72,25 +72,25 @@ void Normal_Move::execute(Move* move)
         move->mCommand.mVelocity.y = serverDest.y;
 	}
 }
-void Normal_Move::exit(Move* move)
+void Normal_ProcessTick_Move::exit(Move* move)
 {
 }
 
-Catchup_Move* Catchup_Move::Instance()
+Catchup_ProcessTick_Move* Catchup_ProcessTick_Move::Instance()
 {
-	static Catchup_Move instance;
+	static Catchup_ProcessTick_Move instance;
 	return &instance;
 }
-void Catchup_Move::enter(Move* move)
+void Catchup_ProcessTick_Move::enter(Move* move)
 {
 }
-void Catchup_Move::execute(Move* move)
+void Catchup_ProcessTick_Move::execute(Move* move)
 {
 	move->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
     if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mServerFrame.mVelocity.isZero())
     {
-		move->mMoveStateMachine->changeState(Normal_Move::Instance());
+		move->mMoveProcessTickStateMachine->changeState(Normal_ProcessTick_Move::Instance());
     }
     else
     {
@@ -134,7 +134,61 @@ void Catchup_Move::execute(Move* move)
         move->mCommand.mVelocity.y = myDest.y;
 	}
 }
-void Catchup_Move::exit(Move* move)
+void Catchup_ProcessTick_Move::exit(Move* move)
+{
+}
+
+
+/*************************Interpolate***************/
+
+Global_InterpolateTick_Move* Global_InterpolateTick_Move::Instance()
+{
+  static Global_InterpolateTick_Move instance;
+  return &instance;
+}
+void Global_InterpolateTick_Move::enter(Move* move)
+{
+
+}
+void Global_InterpolateTick_Move::execute(Move* move)
+{
+
+}
+void Global_InterpolateTick_Move::exit(Move* move)
+{
+}
+
+
+Normal_InterpolateTick_Move* Normal_InterpolateTick_Move::Instance()
+{
+  static Normal_InterpolateTick_Move instance;
+  return &instance;
+}
+void Normal_InterpolateTick_Move::enter(Move* move)
+{
+
+}
+void Normal_InterpolateTick_Move::execute(Move* move)
+{
+
+}
+void Normal_InterpolateTick_Move::exit(Move* move)
+{
+}
+
+Catchup_InterpolateTick_Move* Catchup_InterpolateTick_Move::Instance()
+{
+	static Catchup_InterpolateTick_Move instance;
+	return &instance;
+}
+void Catchup_InterpolateTick_Move::enter(Move* move)
+{
+}
+void Catchup_InterpolateTick_Move::execute(Move* move)
+{
+
+}
+void Catchup_InterpolateTick_Move::exit(Move* move)
 {
 }
 

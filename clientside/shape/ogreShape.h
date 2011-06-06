@@ -51,6 +51,7 @@ Command	mCommand;						// current frame's commands
 
 long mProcessedFrame;
  
+float mRenderTime;
 
 };
 

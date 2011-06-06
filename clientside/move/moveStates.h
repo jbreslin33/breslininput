@@ -4,37 +4,72 @@
 
 class Move;
 
-class Global_Move : public MoveState
+class Global_ProcessTick_Move : public MoveState
 {
 private:
-  Global_Move(){}
+  Global_ProcessTick_Move(){}
 public:
-  static Global_Move* Instance();
+  static Global_ProcessTick_Move* Instance();
   void enter  (Move* move);
   void execute(Move* move);
   void exit   (Move* move);
 };
 
-class Normal_Move : public MoveState
+class Normal_ProcessTick_Move : public MoveState
 {
 private:
-  Normal_Move(){}
+  Normal_ProcessTick_Move(){}
 public:
-  static Normal_Move* Instance();
+  static Normal_ProcessTick_Move* Instance();
   void enter  (Move* move);
   void execute(Move* move);
   void exit   (Move* move);
 };
 
-class Catchup_Move : public MoveState
+class Catchup_ProcessTick_Move : public MoveState
 {
 private:
-  Catchup_Move(){}
+  Catchup_ProcessTick_Move(){}
 public:
-  static Catchup_Move* Instance();
+  static Catchup_ProcessTick_Move* Instance();
   void enter  (Move* move);
   void execute(Move* move);
   void exit   (Move* move);
 };
+
+
+class Global_InterpolateTick_Move : public MoveState
+{
+private:
+  Global_InterpolateTick_Move(){}
+public:
+  static Global_InterpolateTick_Move* Instance();
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
+};
+
+class Normal_InterpolateTick_Move : public MoveState
+{
+private:
+  Normal_InterpolateTick_Move(){}
+public:
+  static Normal_InterpolateTick_Move* Instance();
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
+};
+
+class Catchup_InterpolateTick_Move : public MoveState
+{
+private:
+  Catchup_InterpolateTick_Move(){}
+public:
+  static Catchup_InterpolateTick_Move* Instance();
+  void enter  (Move* move);
+  void execute(Move* move);
+  void exit   (Move* move);
+};
+
 
 #endif
