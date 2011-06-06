@@ -36,7 +36,7 @@ public:
   void  update()const
   {
     //if a global state exists, call its execute method, else do nothing
-    //if(m_pGlobalState)   m_pGlobalState->Execute(m_pOwner);
+    if(m_pGlobalState)   m_pGlobalState->execute(m_pOwner);
     //same for the current state
 	    //Con::errorf("fieldPlayerStateMachine update");
     if (m_pCurrentState) m_pCurrentState->execute(m_pOwner);

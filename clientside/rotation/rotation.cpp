@@ -44,13 +44,13 @@ Rotation::Rotation(std::string name, Vector3D* position,
 	mRotationProcessTickStateMachine = new RotationStateMachine(this);    //setup the state machine
 	mRotationProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Rotation::Instance());
 	mRotationProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
-	mRotationProcessTickStateMachine->setGlobalState       (NULL);
+	mRotationProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Rotation::Instance());
 
 	//interpolate tick rotation states
 	mRotationInterpolateTickStateMachine = new RotationStateMachine(this);    //setup the state machine
-	mRotationInterpolateTickStateMachine->setCurrentState      (Normal_ProcessTick_Rotation::Instance());
+	mRotationInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Rotation::Instance());
 	mRotationInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
-	mRotationInterpolateTickStateMachine->setGlobalState       (NULL);
+	mRotationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Rotation::Instance());
 }
 
 Rotation::~Rotation()
