@@ -178,6 +178,7 @@ void Normal_InterpolateTick_Move::execute(Move* move)
         
     move->getSceneNode()->translate(transVector * move->mRenderTime * 1000, Ogre::Node::TS_WORLD);
 
+	//does this just prevent you from going below 0 up and down?
     if(move->getSceneNode()->getPosition().y < 0.0)
 	{	
 		move->getSceneNode()->setPosition(move->getSceneNode()->getPosition().x, 0.0 ,
@@ -188,19 +189,19 @@ void Normal_InterpolateTick_Move::exit(Move* move)
 {
 }
 
-Catchup_InterpolateTick_Move* Catchup_InterpolateTick_Move::Instance()
+Off_InterpolateTick_Move* Off_InterpolateTick_Move::Instance()
 {
-	static Catchup_InterpolateTick_Move instance;
+	static Off_InterpolateTick_Move instance;
 	return &instance;
 }
-void Catchup_InterpolateTick_Move::enter(Move* move)
+void Off_InterpolateTick_Move::enter(Move* move)
 {
 }
-void Catchup_InterpolateTick_Move::execute(Move* move)
+void Off_InterpolateTick_Move::execute(Move* move)
 {
 
 }
-void Catchup_InterpolateTick_Move::exit(Move* move)
+void Off_InterpolateTick_Move::exit(Move* move)
 {
 }
 
