@@ -27,9 +27,10 @@ void Normal_AI::execute(AI* ai)
 	int direction;
 
 	/* initialize random seed: */
-	srand ( time(NULL) );
+	srand ( time(NULL) + ai->mIndex);
 
 	direction = rand() % 16 + 1;
+
 
 	ai->mCommand.mKey = direction;
 	ai->mCommand.mMilliseconds = 17;

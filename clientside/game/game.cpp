@@ -40,13 +40,17 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
+	LogString("shape ind:%d",ind);
 	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
+	
+
 	shape->mServerShape = new Shape(" silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->setServerShape(shape->mServerShape);
+	//shape->mServerShape->mIndex = ind;
 	shape->mServerShape->getSceneNode()->scale(30,30,30);
 	mShapeVector.push_back(shape);
 	

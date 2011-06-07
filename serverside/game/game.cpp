@@ -25,10 +25,17 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for (int i = 0; i < 10; i++)
-	{
-		createAIShape(); //this will create 1 ai shape to crash into
-	}
+	createAIShape();
+	createAIShape();
+	createAIShape();
+	createAIShape();
+	/*
+	createAIShape();
+	createAIShape();
+	createAIShape();
+	createAIShape();
+	createAIShape();
+	*/
 }
 
 Game::~Game()
@@ -44,29 +51,29 @@ void Game::ShutdownNetwork(void)
 
 void Game::createShape(Client* client)
 {
-
+	LogString("mRunningShapeIndexn:%d",mRunningShapeIndex);
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
+	shape->mIndex = mRunningShapeIndex;
+	mShapeVector.push_back(shape); //either way add this to shape vector
+	mRunningShapeIndex++;
+
 	if (client != NULL)
 	{
 		client->mShape = shape; 
 		client->mShape->mClient = client; //set client it could be NULL meaning just a serverside shape
 	}
-	shape->mIndex = mRunningShapeIndex;
-	mShapeVector.push_back(shape); //either way add this to shape vector
 
-	mRunningShapeIndex++;
+
 }
 
 void Game::createAIShape()
 {
-	LogString("mRunningShapeIndex:%d",mRunningShapeIndex);
+	LogString("mRunningShapeIndexai:%d",mRunningShapeIndex);
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
-
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
-
 	mRunningShapeIndex++;
 
 	mServer->SendAddAIShape(shape);
