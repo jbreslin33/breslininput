@@ -25,7 +25,10 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	createAIShape(); //this will create 1 ai shape to crash into
+	for (int i = 0; i < 10; i++)
+	{
+		createAIShape(); //this will create 1 ai shape to crash into
+	}
 }
 
 Game::~Game()
@@ -57,6 +60,7 @@ void Game::createShape(Client* client)
 
 void Game::createAIShape()
 {
+	LogString("mRunningShapeIndex:%d",mRunningShapeIndex);
 	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 
