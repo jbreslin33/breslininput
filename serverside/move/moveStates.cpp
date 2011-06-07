@@ -18,7 +18,7 @@ void Normal_Move::enter(Move* move)
 }
 void Normal_Move::execute(Move* move)
 {
-    if (move->mCommand.mKey == 0) 
+    if (move->mKeyDirection.isZeroLength()) 
 	{
 		if(move->mRunSpeed > 0.0) //Decelerate_Move
 		{
@@ -57,7 +57,7 @@ void No_Move::enter(Move* move)
 }
 void No_Move::execute(Move* move)
 {
-    if (move->mCommand.mKey == 0) 
+    if (move->mKeyDirection.isZeroLength()) 
 	{
 		if(move->mRunSpeed > 0.0) //Decelerate_Move
 		{
@@ -97,7 +97,7 @@ void Accelerate_Move::enter(Move* move)
 }
 void Accelerate_Move::execute(Move* move)
 {
-    if (move->mCommand.mKey == 0) 
+    if (move->mKeyDirection.isZeroLength()) 
 	{
 		if(move->mRunSpeed > 0.0) //Decelerate_Move
 		{
@@ -140,7 +140,7 @@ void Decelerate_Move::enter(Move* move)
 }
 void Decelerate_Move::execute(Move* move)
 {
-    if (move->mCommand.mKey == 0) 
+    if (move->mKeyDirection.isZeroLength()) 
 	{
 		if(move->mRunSpeed > 0.0) //Decelerate_Move
 		{
