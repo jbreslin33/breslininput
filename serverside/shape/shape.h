@@ -5,6 +5,7 @@
 #include "../../serverside/rotation/rotation.h"
 #include "../../serverside/move/move.h"
 #include "../../serverside/jump/jump.h"
+#include "../../serverside/ai/ai.h"
 
 //Ogre headers
 #include "Ogre.h"
@@ -24,7 +25,8 @@ class Shape
 	:
 	public Move ,
 	public Rotation ,
-	public Jump
+	public Jump,
+	public AI
 {
 
 public:

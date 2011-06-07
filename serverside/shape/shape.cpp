@@ -10,6 +10,7 @@ Shape::Shape(std::string name, Vector3D* position, Ogre::Root* root)
 	Rotation(name,position,root),
 	Move    (name,position,root),
 	Jump    (name,position,root),
+	AI      (name,position,root),
 	OgreShape		  (name,position,root)
 {
 	//client if this shape has associated with it
@@ -23,6 +24,13 @@ Shape::~Shape()
 void Shape::processTick()
 {
 	setKeyDirection();
+
+	//give ai a chance to jump in if this shape has not client
+	if (mClient == NULL)
+	{
+		AI::processTick();
+		//LogString("run ai for:%d",mIndex);
+	}
 
 	//don't do any rotation if there is no mKey set
 	//should we though? we do it for movement below
@@ -38,6 +46,8 @@ void Shape::processTick()
 
 	//jump is a good work in progress but it's now it's own thing
 	Jump::processTick();
+
+
 
 	//set all vars to be sent off to clients playing on internets
 	//none of this actually moves anything on server it is what is

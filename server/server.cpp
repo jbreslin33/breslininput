@@ -415,11 +415,13 @@ void Server::ReadPackets(void)
 							break;
 						}
 					}
+					
 					else
 					{
-						mGame->fakeReadDeltaMoveCommand(mGame->mShapeVector.at(i));
+						//mGame->fakeReadDeltaMoveCommand(mGame->mShapeVector.at(i));
 						mGame->mShapeVector.at(i)->processTick();
 					}
+					
 				}
 
 
