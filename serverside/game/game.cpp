@@ -117,6 +117,13 @@ void Game::Frame(int msec)
 void Game::runAI()
 {
 //need to put a message together for all non-clent shapes for SendCommand...
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		if (mShapeVector.at(i)->mClient == NULL)
+		{
+			fakeReadDeltaMoveCommand(mShapeVector.at(i));
+		}
+	}
 }
 
 //send to updates to all clients about all shapes
@@ -136,6 +143,7 @@ void Game::SendCommand(void)
 		//this is where you need to actually loop thru the shapes not the clients but put write to client mMessage
 		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
+			
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
 		}
 	}
@@ -185,8 +193,17 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 
 	// Read time to run command
 	client->mShape->mCommand.mMilliseconds = mes->ReadByte();
+	//LogString("msec:%d",client->mShape->mCommand.mMilliseconds);
 	//let's set the shape's clientFrameTime right here.....
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
+}
+
+void Game::fakeReadDeltaMoveCommand(Shape* shape)
+{
+	shape->mCommand.mKey = 1;
+	shape->mCommand.mMilliseconds = 17;
+	shape->mCommand.mClientFrametime = shape->mCommand.mMilliseconds / 1000.0f;
+	//shape->mCommand
 }
 
 void Game::BuildMoveCommand(Message *mes, Shape* shape)
@@ -253,7 +270,6 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 
     mes->WriteFloat(command->mRot.x);
 	mes->WriteFloat(command->mRot.z);
-
 
 	mes->WriteByte(command->mMilliseconds);
 }

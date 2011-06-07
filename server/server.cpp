@@ -401,17 +401,27 @@ void Server::ReadPackets(void)
 				// Skip sequences
 				mes.ReadShort();
 				mes.ReadShort();
-
-				for (unsigned int i = 0; i < mClientVector.size(); i++)
+				
+				//let's try this with shapes instead.....
+				for (unsigned int i = 0; i < mGame->mShapeVector.size(); i++)
 				{
-					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
+					if (mGame->mShapeVector.at(i)->mClient != NULL)
 					{
-						mGame->ReadDeltaMoveCommand(&mes, mClientVector.at(i));
-						mClientVector.at(i)->mShape->processTick();
+						if(memcmp(&mGame->mShapeVector.at(i)->mClient->myaddress, &address, sizeof(address)) == 0)
+						{
+							mGame->ReadDeltaMoveCommand(&mes, mGame->mShapeVector.at(i)->mClient);
+							mGame->mShapeVector.at(i)->processTick();
 
-						break;
+							break;
+						}
+					}
+					else
+					{
+						mGame->fakeReadDeltaMoveCommand(mGame->mShapeVector.at(i));
+						mGame->mShapeVector.at(i)->processTick();
 					}
 				}
+
 
 				break;
 
