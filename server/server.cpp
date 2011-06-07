@@ -418,7 +418,7 @@ void Server::ReadPackets(void)
 					
 					else
 					{
-						//mGame->fakeReadDeltaMoveCommand(mGame->mShapeVector.at(i));
+						//just processtick for ai guys because their moves come from ai class/states
 						mGame->mShapeVector.at(i)->processTick();
 					}
 					

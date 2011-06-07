@@ -24,11 +24,14 @@ void Normal_AI::enter(AI* ai)
 }
 void Normal_AI::execute(AI* ai)
 {
+	int direction;
+
 	/* initialize random seed: */
 	srand ( time(NULL) );
 
+	direction = rand() % 16 + 1;
 
-	ai->mCommand.mKey = 5;
+	ai->mCommand.mKey = direction;
 	ai->mCommand.mMilliseconds = 17;
 	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
 

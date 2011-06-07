@@ -60,7 +60,6 @@ public:
 	void	SendCommand(void);
 	void	SendExitNotification(void);
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);
-	void    fakeReadDeltaMoveCommand(Shape* shape);
 	void	BuildMoveCommand(Message *mes, Shape* shape);
 	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
 
