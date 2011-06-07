@@ -182,16 +182,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
 }
 
-void Game::fakeReadDeltaMoveCommand(Shape* shape)
-{
-	/*
-	shape->mCommand.mKey = 1;
-	shape->mCommand.mMilliseconds = 17;
-	shape->mCommand.mClientFrametime = shape->mCommand.mMilliseconds / 1000.0f;
-	//shape->mCommand
-	*/
-}
-
 void Game::BuildMoveCommand(Message *mes, Shape* shape)
 {
 	Command* command = &shape->mCommand;
