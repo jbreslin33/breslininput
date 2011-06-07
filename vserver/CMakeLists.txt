@@ -113,6 +113,15 @@ set(HDRS
 	../serverside/move/moveState.h
 	../serverside/move/moveStates.h
 	
+	#ai
+	../serverside/ai/ai.h
+	../serverside/ai/ai.h
+	
+	#ai states
+	../serverside/ai/aiStateMachine.h
+	../serverside/ai/aiState.h
+	../serverside/ai/aiStates.h	
+
 	#rotation
 	../serverside/rotation/rotation.h
 	
@@ -173,6 +182,12 @@ set(SRCS
 	
 	#move states
 	../serverside/move/moveStates.cpp
+	
+	#ai
+	../serverside/ai/ai.cpp
+	
+	#ai states
+	../serverside/ai/aiStates.cpp
 	
 	#rotation
 	../serverside/rotation/rotation.cpp
@@ -236,6 +251,15 @@ set(HDRS
 	../serverside/move/moveState.h
 	../serverside/move/moveStates.h
 	
+	#ai
+	../serverside/ai/ai.h
+	../serverside/ai/ai.h
+	
+	#ai states
+	../serverside/ai/aiStateMachine.h
+	../serverside/ai/aiState.h
+	../serverside/ai/aiStates.h	
+	
 	#rotation
 	../serverside/rotation/rotation.h
 	
@@ -295,6 +319,12 @@ set(SRCS
 	
 	#move states
 	../serverside/move/moveStates.cpp
+	
+	#ai
+	../serverside/ai/ai.cpp
+	
+	#ai states
+	../serverside/ai/aiStates.cpp
 	
 	#rotation
 	../serverside/rotation/rotation.cpp

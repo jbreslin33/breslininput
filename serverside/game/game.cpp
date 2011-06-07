@@ -88,10 +88,6 @@ void Game::Frame(int msec)
 	// Read packets from clients
 	mServer->ReadPackets();
 
-	//run ai
-	runAI();
-
-
 	// Wait full 100 ms before allowing to send
 	if(mRealTime < mServerTime)
 	{
@@ -112,18 +108,6 @@ void Game::Frame(int msec)
 		mRealTime = mServerTime;
 
 	SendCommand();
-}
-
-void Game::runAI()
-{
-//need to put a message together for all non-clent shapes for SendCommand...
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		if (mShapeVector.at(i)->mClient == NULL)
-		{
-			fakeReadDeltaMoveCommand(mShapeVector.at(i));
-		}
-	}
 }
 
 //send to updates to all clients about all shapes
@@ -200,10 +184,12 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 
 void Game::fakeReadDeltaMoveCommand(Shape* shape)
 {
+	/*
 	shape->mCommand.mKey = 1;
 	shape->mCommand.mMilliseconds = 17;
 	shape->mCommand.mClientFrametime = shape->mCommand.mMilliseconds / 1000.0f;
 	//shape->mCommand
+	*/
 }
 
 void Game::BuildMoveCommand(Message *mes, Shape* shape)

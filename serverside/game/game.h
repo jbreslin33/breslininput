@@ -63,7 +63,6 @@ public:
 	void    fakeReadDeltaMoveCommand(Shape* shape);
 	void	BuildMoveCommand(Message *mes, Shape* shape);
 	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
-	void    runAI();
 
 	// Server
 	void	ShutdownNetwork(void);
