@@ -7,6 +7,9 @@
 //command
 #include "../../command/command.h"
 
+//game
+#include "../../serverside/game/game.h"
+
 //Ogre headers
 #include "Ogre.h"
 using namespace Ogre;
@@ -53,6 +56,8 @@ Message	mMessage; //is this all i need to get information over the internets?
 //keys
 Vector3 mKeyDirection;
 Vector3 mGoalDirection;
+
+Game* mGame;
 
 };
 
