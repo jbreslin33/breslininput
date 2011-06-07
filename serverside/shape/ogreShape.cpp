@@ -25,6 +25,8 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 	//keys
     mKeyDirection = Vector3::ZERO;
 	mGoalDirection = Vector3::ZERO;
+
+	mGame = NULL;
 }
 
 OgreShape::~OgreShape()
