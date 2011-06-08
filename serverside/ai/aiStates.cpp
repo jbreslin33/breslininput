@@ -20,36 +20,10 @@ Normal_AI* Normal_AI::Instance()
 }
 void Normal_AI::enter(AI* ai)
 {
-	/*
-	ai->mCommand.mOrigin.x = 200;
-	ai->mCommand.mOrigin.z = 0;
-	ai->mCommand.mOrigin.y = 0;
-
-	ai->mCommand.mVelocity.x = 0;
-	ai->mCommand.mVelocity.z = 0;
-	ai->mCommand.mVelocity.y = 0; 
-
-    ai->mCommand.mRot.x = 0;
-	ai->mCommand.mRot.z = 0;
-	*/
-
 }
 void Normal_AI::execute(AI* ai)
 {
 	int direction = 0;
-
-	/* initialize random seed: */
-	
-	srand ( time(NULL) + ai->mIndex);
-
-	direction = rand() % 16 + 1;
-
-
-/**/
-
-	//mes->WriteByte(command->mMilliseconds);
-	/**/
-
 
 	ai->mCommand.mKey = direction;
 	ai->mCommand.mMilliseconds = 17;
@@ -57,6 +31,32 @@ void Normal_AI::execute(AI* ai)
 
 }
 void Normal_AI::exit(AI* ai)
+{
+}
+
+
+Random_AI* Random_AI::Instance()
+{
+  static Random_AI instance;
+  return &instance;
+}
+void Random_AI::enter(AI* ai)
+{
+
+}
+void Random_AI::execute(AI* ai)
+{
+	int direction = 0;
+
+	srand ( time(NULL) + ai->mIndex);	/* initialize random seed: */
+	direction = rand() % 16 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
+
+	ai->mCommand.mKey = direction;
+	ai->mCommand.mMilliseconds = 17;
+	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
+
+}
+void Random_AI::exit(AI* ai)
 {
 }
 

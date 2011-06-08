@@ -77,7 +77,7 @@ OgreShape* Game::AddGhostShape(int ind)
 	shape->mIndex = ind;
 
 	mShapeGhostVector.push_back(shape);
-	//shape->getSceneNode()->setVisible(false);
+	shape->getSceneNode()->setVisible(false);
 	return shape;
 }
 
