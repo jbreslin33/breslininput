@@ -16,7 +16,7 @@ class Shape : public Move , public Rotation, public OgreAnimation
 {
 
 public:
-Shape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+Shape(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Shape();
 
 Shape* mServerShape;

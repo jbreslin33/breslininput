@@ -16,7 +16,7 @@ class Move : public virtual OgreShape
 
 public:
 
-Move(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+Move(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Move();
 
 //ticks

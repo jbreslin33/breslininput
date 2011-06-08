@@ -41,13 +41,13 @@ Game::~Game()
 void Game::AddShape(int local, int ind, char *name)
 {
 	LogString("regshape ind:%d",ind);
-	Shape* shape = new Shape(" jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	Shape* shape = new Shape("jay" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
 	LogString("servershape ind:%d",ind);
-	shape->mServerShape = new Shape(" silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
+	shape->mServerShape = new Shape("silentBob" + ind,new Vector3D(),mSceneMgr,"sinbad.mesh");
 	shape->setServerShape(shape->mServerShape);
 	//shape->mServerShape->mIndex = ind;
 	shape->mServerShape->getSceneNode()->scale(30,30,30);
@@ -245,6 +245,8 @@ void Game::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
+			LogString("ds_ind:%d",ind);
+			LogString("ds_nam:%s",name);
 			AddShape(local, ind, name);
 			break;
 

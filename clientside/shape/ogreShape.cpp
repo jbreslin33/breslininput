@@ -10,7 +10,7 @@ OgreShape::OgreShape()
 {
 }
 //constructor for client side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
+OgreShape::OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
 {
 
  	mPosition = position;
@@ -28,12 +28,13 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::SceneManager* m
     mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
 
 	// create entity and attach mesh to it
+	LogString("mName:%s",mName);
     mEntity = mSceneManager->createEntity(mName, mMeshName);
     mSceneNode->attachObject(mEntity);
 
 	//billboard
-	const Ogre::String& titlename = mName + "me";
-	const Ogre::String& title = mName + ":state";
+	const Ogre::String& titlename = mName;
+	const Ogre::String& title = mName;
 	const Ogre::String& fontName = "SdkTrays/Caption";
 	const Ogre::ColourValue& color = Ogre::ColourValue::White;
 	mObjectTitle = new ObjectTitle
