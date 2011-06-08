@@ -13,12 +13,12 @@ Shape::Shape(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 	OgreAnimation     (position,mSceneMgr,mesh),
 	OgreShape         (position,mSceneMgr,mesh)
 {
-	mServerShape = NULL;
+
 }
 
 Shape::~Shape()
 {
-	delete mServerShape;
+
 }
 
 void Shape::processTick()

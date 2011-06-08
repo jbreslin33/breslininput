@@ -36,14 +36,14 @@ void Normal_AI::enter(AI* ai)
 }
 void Normal_AI::execute(AI* ai)
 {
-	int direction = 1;
+	int direction = 0;
 
 	/* initialize random seed: */
-	/*
+	
 	srand ( time(NULL) + ai->mIndex);
 
 	direction = rand() % 16 + 1;
-*/
+
 
 /**/
 

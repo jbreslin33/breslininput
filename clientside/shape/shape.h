@@ -19,8 +19,6 @@ public:
 Shape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Shape();
 
-Shape* mServerShape;
-
 //ticks
 void processTick();
 void interpolateTick(float renderTime);

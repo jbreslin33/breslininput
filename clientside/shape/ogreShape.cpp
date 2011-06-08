@@ -44,6 +44,9 @@ OgreShape::OgreShape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::str
 	//end billboard
 
 	number_of_times++;
+
+	mGame = NULL;
+	mGhost = NULL;
 }
 
 OgreShape::~OgreShape()

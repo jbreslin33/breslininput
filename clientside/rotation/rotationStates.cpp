@@ -22,7 +22,8 @@ void Global_ProcessTick_Rotation::execute(Rotation* rotation)
 	rotation->calculateServerRotationSpeed();
 
 	// yaw server guy to new rot
-    rotation->mServerShape->getSceneNode()->yaw(Degree(rotation->mServerRotSpeed));	
+	//rotation->mGame->mShapeGhostVector.at
+    rotation->mGhost->getSceneNode()->yaw(Degree(rotation->mServerRotSpeed));	
 }
 void Global_ProcessTick_Rotation::exit(Rotation* rotation)
 {

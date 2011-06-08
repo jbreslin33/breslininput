@@ -20,16 +20,12 @@ public:
 Rotation(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Rotation();
 
-void setServerShape(Shape* serverShape) { mServerShape = serverShape; }
-
 //movement
 void processTick    ();
 
 void interpolateTick    ();
 Real getDegreesToServer();
 void calculateServerRotationSpeed();
-
-Shape* mServerShape;
 
 RotationStateMachine* mRotationProcessTickStateMachine;
 RotationStateMachine* mRotationInterpolateTickStateMachine;
