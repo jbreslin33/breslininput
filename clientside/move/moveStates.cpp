@@ -18,6 +18,7 @@ void Global_ProcessTick_Move::enter(Move* move)
 }
 void Global_ProcessTick_Move::execute(Move* move)
 {
+	move->mObjectTitleString.append(StringConverter::toString(move->mIndex));
 	move->calculateDeltaPosition();
 }
 void Global_ProcessTick_Move::exit(Move* move)
@@ -37,7 +38,7 @@ void Normal_ProcessTick_Move::enter(Move* move)
 }
 void Normal_ProcessTick_Move::execute(Move* move)
 {
-	move->mObjectTitleString.append("M:Normal ");
+	//move->mObjectTitleString.append("M:Normal ");
 
 	// if distance exceeds threshold && server velocity is zero
 	if(move->mDeltaPosition > move->mPosInterpLimitHigh && !move->mServerFrame.mVelocity.isZero())
@@ -85,7 +86,7 @@ void Catchup_ProcessTick_Move::enter(Move* move)
 }
 void Catchup_ProcessTick_Move::execute(Move* move)
 {
-	move->mObjectTitleString.append("M:Catchup ");
+	//move->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
     if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mServerFrame.mVelocity.isZero())
     {
