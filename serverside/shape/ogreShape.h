@@ -27,7 +27,7 @@ class OgreShape
 
 public:
 OgreShape();
-OgreShape(std::string name, Vector3D* position, Ogre::Root* root);
+OgreShape(Vector3D* position, Ogre::Root* root);
 ~OgreShape();
 
 //for tracking what we last sent to internets clients
@@ -43,7 +43,6 @@ SceneNode*          mSceneNode;
 Vector3D* mPosition;
 
 int			mIndex;
-std::string mName;
 
 Command mFrame[COMMAND_HISTORY_SIZE];
 Command	mServerFrame;					// the latest frame from server

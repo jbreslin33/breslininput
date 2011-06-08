@@ -5,13 +5,13 @@
 
 #include <string>
 
-Shape::Shape(std::string name, Vector3D* position, Ogre::Root* root)
+Shape::Shape(Vector3D* position, Ogre::Root* root)
 :
-	Rotation(name,position,root),
-	Move    (name,position,root),
-	Jump    (name,position,root),
-	AI      (name,position,root),
-	OgreShape		  (name,position,root)
+	Rotation(position,root),
+	Move    (position,root),
+	Jump    (position,root),
+	AI      (position,root),
+	OgreShape		  (position,root)
 {
 	//client if this shape has associated with it
 	mClient = NULL;

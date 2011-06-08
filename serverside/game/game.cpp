@@ -44,8 +44,7 @@ void Game::ShutdownNetwork(void)
 
 void Game::createShape(Client* client)
 {
-	LogString("mRunningShapeIndexn:%d",mRunningShapeIndex);
-	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
+	Shape* shape = new Shape(new Vector3D(),mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
@@ -56,14 +55,11 @@ void Game::createShape(Client* client)
 		client->mShape = shape; 
 		client->mShape->mClient = client; //set client it could be NULL meaning just a serverside shape
 	}
-
-
 }
 
 void Game::createAIShape()
 {
-	LogString("mRunningShapeIndexai:%d",mRunningShapeIndex);
-	Shape* shape = new Shape("shape" + mRunningShapeIndex, new Vector3D(),mRoot); 
+	Shape* shape = new Shape(new Vector3D(),mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
@@ -200,7 +196,6 @@ void Game::BuildMoveCommand(Message *mes, Shape* shape)
 	mes->WriteFloat(command->mVelocity.z);
 
 	mes->WriteByte(command->mMilliseconds);
-	LogString("BuildMoveCommand:%d",shape->mIndex);
 }
 
 //does this even care that a client is passed it? other than that it needs it access mShape? which

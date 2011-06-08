@@ -16,7 +16,7 @@ class AI : public virtual OgreShape
 
 public:
 
-AI(std::string name, Vector3D* position, Ogre::Root* root);
+AI(Vector3D* position, Ogre::Root* root);
 ~AI();
 
 //ticks

@@ -20,10 +20,10 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-Rotation::Rotation(const char*  name, Vector3D* position,
+Rotation::Rotation(Vector3D* position,
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
 :
-	OgreShape(name, position,mSceneMgr,mesh)
+	OgreShape(position,mSceneMgr,mesh)
 {
 	mServerShape = NULL;
 

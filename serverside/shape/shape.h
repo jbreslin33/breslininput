@@ -30,7 +30,7 @@ class Shape
 {
 
 public:
-Shape(std::string name, Vector3D* position, Ogre::Root* root);
+Shape(Vector3D* position, Ogre::Root* root);
 ~Shape();
 
 //ticks

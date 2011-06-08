@@ -17,7 +17,7 @@ class Rotation :  public virtual OgreShape
 
 public:
 
-Rotation(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+Rotation(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Rotation();
 
 void setServerShape(Shape* serverShape) { mServerShape = serverShape; }

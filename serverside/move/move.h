@@ -16,7 +16,7 @@ class Move : public virtual OgreShape
 
 public:
 
-Move(std::string name, Vector3D* position, Ogre::Root* root);
+Move(Vector3D* position, Ogre::Root* root);
 ~Move();
 
 //ticks

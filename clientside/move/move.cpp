@@ -18,9 +18,9 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-Move::Move(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+Move::Move(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 							   std::string mesh)
- : OgreShape(name,position,mSceneMgr,mesh)
+ : OgreShape(position,mSceneMgr,mesh)
 {
 	//run speed
 	mRunSpeed     = 0.0;
