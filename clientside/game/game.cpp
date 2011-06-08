@@ -40,12 +40,18 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
-	Shape* shape = new Shape(new Vector3D(),mSceneMgr,"sinbad.mesh");
+
+	Vector3D* pos = new Vector3D();
+	pos->x = ind * 300;
+	pos->y = 0;
+	pos->z = 0;
+
+	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
-	shape->mServerShape = new Shape(new Vector3D(),mSceneMgr,"sinbad.mesh");
+	shape->mServerShape = new Shape(pos,mSceneMgr,"sinbad.mesh");
 	shape->setServerShape(shape->mServerShape);
 	//shape->mServerShape->mIndex = ind;
 	shape->mServerShape->getSceneNode()->scale(30,30,30);
