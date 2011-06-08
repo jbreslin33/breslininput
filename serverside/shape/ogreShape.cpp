@@ -13,7 +13,13 @@ OgreShape::OgreShape(Vector3D* position, Ogre::Root* root)
 	Ogre::SceneManager* mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 
 	// create main model
-	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(Vector3::ZERO);
+
+	Vector3 spawnPoint;
+	spawnPoint.x = position->x;
+	spawnPoint.y = position->y;
+	spawnPoint.z = position->z;
+
+	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(spawnPoint);
 
  	mPosition = position;
 	mIndex  = 0;

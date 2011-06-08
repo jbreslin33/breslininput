@@ -44,7 +44,13 @@ void Game::ShutdownNetwork(void)
 
 void Game::createShape(Client* client)
 {
-	Shape* shape = new Shape(new Vector3D(),mRoot); 
+
+	Vector3D* pos = new Vector3D();
+	pos->x = mRunningShapeIndex * 300;
+	pos->y = 0;
+	pos->z = 0;
+
+	Shape* shape = new Shape(pos,mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
@@ -76,7 +82,6 @@ void Game::RemoveShape(Shape* shape)
 		{
 			mServer->SendRemoveShape(shape);
 			mShapeVector.erase (mShapeVector.begin()+i);
-
 		}
 	}
 }

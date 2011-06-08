@@ -20,16 +20,35 @@ Normal_AI* Normal_AI::Instance()
 }
 void Normal_AI::enter(AI* ai)
 {
+	/*
+	ai->mCommand.mOrigin.x = 200;
+	ai->mCommand.mOrigin.z = 0;
+	ai->mCommand.mOrigin.y = 0;
+
+	ai->mCommand.mVelocity.x = 0;
+	ai->mCommand.mVelocity.z = 0;
+	ai->mCommand.mVelocity.y = 0; 
+
+    ai->mCommand.mRot.x = 0;
+	ai->mCommand.mRot.z = 0;
+	*/
 
 }
 void Normal_AI::execute(AI* ai)
 {
-	int direction;
+	int direction = 1;
 
 	/* initialize random seed: */
+	/*
 	srand ( time(NULL) + ai->mIndex);
 
 	direction = rand() % 16 + 1;
+*/
+
+/**/
+
+	//mes->WriteByte(command->mMilliseconds);
+	/**/
 
 
 	ai->mCommand.mKey = direction;
