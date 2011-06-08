@@ -25,17 +25,10 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	createAIShape();
-	createAIShape();
-	createAIShape();
-	createAIShape();
-	/*
-	createAIShape();
-	createAIShape();
-	createAIShape();
-	createAIShape();
-	createAIShape();
-	*/
+	for(int i = 0; i < 20; i++)
+	{
+		createAIShape();
+	}
 }
 
 Game::~Game()

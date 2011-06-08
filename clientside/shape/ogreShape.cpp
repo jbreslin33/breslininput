@@ -12,6 +12,7 @@ OgreShape::OgreShape()
 //constructor for client side ogre shape
 OgreShape::OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
 {
+	static int number_of_times = 0;
 
  	mPosition = position;
 	mIndex  = 0;
@@ -27,20 +28,22 @@ OgreShape::OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* 
 	// put character in starting spawn spot
     mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
 
-	// create entity and attach mesh to it
-	LogString("mName:%s",mName);
-    mEntity = mSceneManager->createEntity(mName, mMeshName);
+	mEntity = mSceneManager->createEntity("oshape" + StringConverter::toString(number_of_times),
+		mMeshName);
     mSceneNode->attachObject(mEntity);
 
+
 	//billboard
-	const Ogre::String& titlename = mName;
-	const Ogre::String& title = mName;
+	const Ogre::String& titlename = "tn" + StringConverter::toString(number_of_times);
+	const Ogre::String& title = "ti" + StringConverter::toString(number_of_times);
 	const Ogre::String& fontName = "SdkTrays/Caption";
 	const Ogre::ColourValue& color = Ogre::ColourValue::White;
 	mObjectTitle = new ObjectTitle
 	(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
     fontName, color);
 	//end billboard
+
+	number_of_times++;
 }
 
 OgreShape::~OgreShape()
