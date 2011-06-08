@@ -5,7 +5,7 @@
 
 #include <string.h>
 
-Shape::Shape(std::string name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+Shape::Shape(const char* name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								 std::string mesh)
 :
 	Move    (name,position,mSceneMgr,mesh),
