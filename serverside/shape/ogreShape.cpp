@@ -8,7 +8,7 @@ OgreShape::OgreShape()
 }
 
 //this is the contructor for server side ogre shape
-OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
+OgreShape::OgreShape(Vector3D* position, Ogre::Root* root)
 {
 	Ogre::SceneManager* mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 
@@ -17,7 +17,6 @@ OgreShape::OgreShape(std::string name, Vector3D* position, Ogre::Root* root)
 
  	mPosition = position;
 	mIndex  = 0;
-   	mName = name;
 	mProcessedFrame = 0;
 
 	outgoingSequence		= 1;

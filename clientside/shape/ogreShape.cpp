@@ -10,7 +10,7 @@ OgreShape::OgreShape()
 {
 }
 //constructor for client side ogre shape
-OgreShape::OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
+OgreShape::OgreShape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh)
 {
 	static int number_of_times = 0;
 
@@ -22,13 +22,13 @@ OgreShape::OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* 
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
-	mName         = name;
+	mName         = StringConverter::toString(number_of_times);
     mSceneNode    = mSceneManager->getRootSceneNode()->createChildSceneNode();
 
 	// put character in starting spawn spot
     mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
 
-	mEntity = mSceneManager->createEntity("oshape" + StringConverter::toString(number_of_times),
+	mEntity = mSceneManager->createEntity(mName,
 		mMeshName);
     mSceneNode->attachObject(mEntity);
 

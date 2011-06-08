@@ -5,13 +5,13 @@
 
 #include <string.h>
 
-Shape::Shape(const char* name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+Shape::Shape(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								 std::string mesh)
 :
-	Move    (name,position,mSceneMgr,mesh),
-	Rotation(name,position,mSceneMgr,mesh),
-	OgreAnimation     (name,position,mSceneMgr,mesh),
-	OgreShape         (name,position,mSceneMgr,mesh)
+	Move    (position,mSceneMgr,mesh),
+	Rotation(position,mSceneMgr,mesh),
+	OgreAnimation     (position,mSceneMgr,mesh),
+	OgreShape         (position,mSceneMgr,mesh)
 {
 	mServerShape = NULL;
 }

@@ -22,7 +22,7 @@ class OgreShape
 {
 
 public:
-OgreShape(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+OgreShape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
 OgreShape();
 ~OgreShape();
 
@@ -45,7 +45,7 @@ Vector3D* mPosition;
 
 //id
 int			mIndex;
-const char*  mName;
+std::string  mName;
 
 Command mFrame[COMMAND_HISTORY_SIZE];
 Command	mServerFrame;					// the latest frame from server

@@ -21,9 +21,9 @@ using namespace Ogre;
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-AI::AI(std::string name, Vector3D* position, Ogre::Root* root)
+AI::AI(Vector3D* position, Ogre::Root* root)
 :
-	OgreShape(name,position,root)
+	OgreShape(position,root)
 {
 	//runSpeed
 	mRunSpeed     = 0.0;

@@ -35,7 +35,7 @@ class OgreAnimation : public virtual OgreShape
 {
 
 public:
-	OgreAnimation(const char*  name, Vector3D* position, Ogre::SceneManager* mSceneMgr,
+	OgreAnimation(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 								   std::string mesh);
 	~OgreAnimation();
 

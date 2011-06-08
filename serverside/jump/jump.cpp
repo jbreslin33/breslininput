@@ -18,9 +18,9 @@ using namespace Ogre;
 //key defines prob should be changed to a variable if possible
 #define KEY_SPACE				16
 
-Jump::Jump(std::string name, Vector3D* position, Ogre::Root* root)
+Jump::Jump(Vector3D* position, Ogre::Root* root)
 :
-	OgreShape(name,position,root)
+	OgreShape(position,root)
 {
 	//jumping
 	mVerticalVelocity = 0.0;
