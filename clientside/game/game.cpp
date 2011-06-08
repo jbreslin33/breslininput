@@ -51,10 +51,6 @@ void Game::AddShape(int local, int ind, char *name)
 	
 	shape->mIndex = ind;
 
-	shape->mServerShape = new Shape(pos,mSceneMgr,"sinbad.mesh");
-	shape->setServerShape(shape->mServerShape);
-	//shape->mServerShape->mIndex = ind;
-	shape->mServerShape->getSceneNode()->scale(30,30,30);
 	mShapeVector.push_back(shape);
 	
 	if(local)
@@ -62,7 +58,29 @@ void Game::AddShape(int local, int ind, char *name)
 		mClient->mShape = shape;	
 		SendRequestNonDeltaFrame();
 	}
+
+	shape->mGame = this;
+	
+	shape->mGhost = AddGhostShape(ind);
 }
+
+OgreShape* Game::AddGhostShape(int ind)
+{
+	Vector3D* pos = new Vector3D();
+	pos->x = ind * 300;
+	pos->y = 0;
+	pos->z = 0;
+
+	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
+	shape->getSceneNode()->scale(30,30,30);
+	
+	shape->mIndex = ind;
+
+	mShapeGhostVector.push_back(shape);
+	//shape->getSceneNode()->setVisible(false);
+	return shape;
+}
+
 
 void Game::RemoveShape(int index)
 {
@@ -205,7 +223,7 @@ void Game::CheckKeys(void)
 
  	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
  }
-
+/*
 void Game::MoveServerPlayer(void)
 {
     Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
@@ -218,7 +236,23 @@ void Game::MoveServerPlayer(void)
 		mClient->mShape->mServerShape->getSceneNode()->setPosition(transVector);
 	}
 }
+*/
 
+void Game::moveGhostShapes()
+{
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+
+		transVector.x = mShapeVector.at(i)->mServerFrame.mOrigin.x;
+		transVector.z = mShapeVector.at(i)->mServerFrame.mOrigin.z;
+
+		//if (mShapeGhostVector.at(i))
+		//{
+			mShapeVector.at(i)->mGhost->getSceneNode()->setPosition(transVector);
+		//}
+	}
+}
 void Game::ReadPackets(void)
 {
 	char data[1400];
@@ -274,7 +308,7 @@ void Game::ReadPackets(void)
 				ReadDeltaMoveCommand(&mes, mShapeVector.at(i));
 				mShapeVector.at(i)->processTick(); //when you read packets??
 
-				MoveServerPlayer();
+				moveGhostShapes(); //let the ghosts move since we just got the update..
 			}
 			break;
 

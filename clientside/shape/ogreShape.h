@@ -17,6 +17,7 @@ using namespace Ogre;
 #define COMMAND_HISTORY_SIZE		64
 
 class ObjectTitle;
+class Game;
 
 class OgreShape
 {
@@ -54,6 +55,10 @@ Command	mCommand;						// current frame's commands
 long mProcessedFrame;
  
 float mRenderTime;
+
+Game* mGame;
+OgreShape* mGhost;
+
 
 };
 

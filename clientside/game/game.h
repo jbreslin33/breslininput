@@ -48,10 +48,12 @@ public:
 	~Game();
 
 	//Server player 
-	void	MoveServerPlayer(void); //for debugging and still some actual functionality
-
+	//void	MoveServerPlayer(void); //for debugging and still some actual functionality
+	void moveGhostShapes();
+	
 	//Game
-	void	AddShape   (int local, int index, char *name);
+	void       AddShape   (int local, int index, char *name);
+	OgreShape* AddGhostShape(int index);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
@@ -79,6 +81,8 @@ public:
 
 	//Shapes
 	std::vector<Shape*> mShapeVector;	 //all shapes in the client world
+	std::vector<Shape*> mShapeGhostVector;	 //all shapes in the client world's ghost 
+
 	vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 	
 	//time

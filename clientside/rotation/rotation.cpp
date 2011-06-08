@@ -25,8 +25,6 @@ Rotation::Rotation(Vector3D* position,
 :
 	OgreShape(position,mSceneMgr,mesh)
 {
-	mServerShape = NULL;
-
 	//vars
 	mTurnSpeed = 250.0;
 
@@ -108,7 +106,8 @@ void Rotation::calculateServerRotationSpeed()
     mDegreesToServer = toServer.getYaw().valueDegrees();
 
     //calculate server rotation from last tick to new one
-    Quaternion serverRot = mServerShape->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
+	
+    Quaternion serverRot = mGhost->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
     mServerRotSpeed = serverRot.getYaw().valueDegrees();

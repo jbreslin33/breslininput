@@ -46,7 +46,6 @@ public:
 
 	std::vector<Shape*> mShapeVector;	//every tangible item in game world..
 
-
 public:
 	Game();
 	~Game();
