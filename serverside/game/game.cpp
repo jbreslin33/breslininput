@@ -200,6 +200,7 @@ void Game::BuildMoveCommand(Message *mes, Shape* shape)
 	mes->WriteFloat(command->mVelocity.z);
 
 	mes->WriteByte(command->mMilliseconds);
+	LogString("BuildMoveCommand:%d",shape->mIndex);
 }
 
 //does this even care that a client is passed it? other than that it needs it access mShape? which
