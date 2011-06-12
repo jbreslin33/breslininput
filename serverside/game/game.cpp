@@ -46,7 +46,7 @@ void Game::createShape(Client* client)
 {
 
 	Vector3D* pos = new Vector3D();
-	pos->x = mRunningShapeIndex * 300;
+	pos->x = 0;
 	pos->y = 0;
 	pos->z = 0;
 
@@ -66,7 +66,7 @@ void Game::createShape(Client* client)
 void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
-	pos->x = mRunningShapeIndex * 300;
+	pos->x = 0;
 	pos->y = 0;
 	pos->z = 0;
 
