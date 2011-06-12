@@ -71,7 +71,7 @@ public:
 	void	SendStartGame           (void);
 
 	//Ogre
-	bool         processUnbufferedInput(const Ogre::FrameEvent& evt);
+	void         processUnbufferedInput();
     virtual void createScene           (void);
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 
@@ -97,6 +97,8 @@ public:
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;
 #endif
+
+	void gameLoop();
 };
 
 #endif

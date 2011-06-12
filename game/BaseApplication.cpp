@@ -215,10 +215,10 @@ void BaseApplication::go(void)
     if (!setup())
         return;
 
-    mRoot->startRendering();
+    //mRoot->startRendering();
 
     // clean up
-    destroyScene();
+    //destroyScene();
 }
 //-------------------------------------------------------------------------------------
 bool BaseApplication::setup(void)

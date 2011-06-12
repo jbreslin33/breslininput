@@ -42,7 +42,7 @@ void Game::AddShape(int local, int ind, char *name)
 {
 
 	Vector3D* pos = new Vector3D();
-	pos->x = ind * 300;
+	pos->x = 0;
 	pos->y = 0;
 	pos->z = 0;
 
@@ -67,7 +67,7 @@ void Game::AddShape(int local, int ind, char *name)
 OgreShape* Game::AddGhostShape(int ind)
 {
 	Vector3D* pos = new Vector3D();
-	pos->x = ind * 300;
+	pos->x = 0;
 	pos->y = 0;
 	pos->z = 0;
 
@@ -105,87 +105,7 @@ void Game::createScene(void)
     pointLight->setSpecularColour(Ogre::ColourValue::White);
 }
 
-bool Game::processUnbufferedInput(const Ogre::FrameEvent& evt)
-{
-    if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
-    {
-		keys[VK_ESCAPE] = TRUE;
-    }
-	else
-	{
-		keys[VK_ESCAPE] = FALSE;
-	}
-    if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
-    {
-		keys[VK_UP] = TRUE;
-    }
-	else
-	{
-        keys[VK_UP] = FALSE;
-	}
-    if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
-    {
-		keys[VK_DOWN] = TRUE;
-    }
-	else
-	{
-        keys[VK_DOWN] = FALSE;
-	}
-    if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
-    {
-		keys[VK_LEFT] = TRUE;
-    }
-	else
-	{
-        keys[VK_LEFT] = FALSE;
-	}
-    if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
-    {
-		keys[VK_RIGHT] = TRUE;
-    }
-	else
-	{
-        keys[VK_RIGHT] = FALSE;
-	}
-	if (mKeyboard->isKeyDown(OIS::KC_SPACE)) // Right - yaw or strafe
-    {
-		keys[VK_SPACE] = TRUE;
-    }
-	else
-	{
-        keys[VK_SPACE] = FALSE;
-	}
 
-    return true;
-}
-
-bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-    if(!processUnbufferedInput(evt)) return false;
-
-	if(game != NULL)
-	{
-		if (mShapeVector.size() > 0)
-		{
-			game->CheckKeys();
-		}
-		if (mNetworkShutdown == true)
-		{
-			Shutdown();
-		}
-		game->RunNetwork(evt.timeSinceLastFrame * 1000);
-		mRenderTime = evt.timeSinceLastFrame;
-
-	}
-	if (mNetworkShutdown == true)
-	{
-		mShutDown = true;
-	}
-
-    bool ret = BaseApplication::frameRenderingQueued(evt);
-	
-	return ret;
-}
 
  void Game::Shutdown(void)
  {
@@ -503,6 +423,100 @@ void Game::RunNetwork(int msec)
 	}
 }
 
+void Game::processUnbufferedInput()
+{
+    if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
+    {
+		keys[VK_ESCAPE] = TRUE;
+    }
+	else
+	{
+		keys[VK_ESCAPE] = FALSE;
+	}
+    if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
+    {
+		keys[VK_UP] = TRUE;
+    }
+	else
+	{
+        keys[VK_UP] = FALSE;
+	}
+    if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
+    {
+		keys[VK_DOWN] = TRUE;
+    }
+	else
+	{
+        keys[VK_DOWN] = FALSE;
+	}
+    if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
+    {
+		keys[VK_LEFT] = TRUE;
+    }
+	else
+	{
+        keys[VK_LEFT] = FALSE;
+	}
+    if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
+    {
+		keys[VK_RIGHT] = TRUE;
+    }
+	else
+	{
+        keys[VK_RIGHT] = FALSE;
+	}
+	if (mKeyboard->isKeyDown(OIS::KC_SPACE)) // Right - yaw or strafe
+    {
+		keys[VK_SPACE] = TRUE;
+    }
+	else
+	{
+        keys[VK_SPACE] = FALSE;
+	}
+}
+
+bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+	mRenderTime = evt.timeSinceLastFrame;
+
+    bool ret = BaseApplication::frameRenderingQueued(evt);
+	
+	return ret;
+}
+
+void Game::gameLoop()
+{
+	while(true)
+    {
+
+		processUnbufferedInput();
+		if(game != NULL)
+		{
+			if (mShapeVector.size() > 0)
+			{
+				game->CheckKeys();
+			}
+			if (mNetworkShutdown == true)
+			{
+				Shutdown();
+			}
+			game->RunNetwork(mRenderTime * 1000);
+		}
+
+		if (mNetworkShutdown == true)
+		{
+			mShutDown = true;
+		}
+
+		
+		//Pump messages in all registered RenderWindow windows
+		WindowEventUtilities::messagePump();
+
+		if (!mRoot->renderOneFrame())
+			break;
+	}
+}
+
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
@@ -526,6 +540,7 @@ extern "C" {
 #endif
         try {
             game->go();
+			game->gameLoop();
         } catch( Ogre::Exception& e ) {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
             MessageBox( NULL, e.getFullDescription().c_str(), "An exception has occured!", MB_OK | MB_ICONERROR | MB_TASKMODAL);
