@@ -216,13 +216,14 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 	int ret;
 
 	Message mes;
+	//LogString("sizeOfData:%d",sizeof(data));
 	mes.Init(data, sizeof(data));
 
 	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data, from);
 
 	if(ret <= 0)
 		return 0;
-
+	//LogString("size:%d",mes.GetSize());
 	mes.SetSize(ret);
 
 	// Parse system messages

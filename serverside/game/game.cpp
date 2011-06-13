@@ -25,7 +25,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for(int i = 0; i < 20; i++)
+	for(int i = 0; i < 30; i++)
 	{
 		createAIShape();
 	}
@@ -139,7 +139,9 @@ void Game::SendCommand(void)
 		{                         //the client to send to's message        //the shape command it's about
 			
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
+			//LogString("s:%d",mServer->mClientVector.at(i)->mMessage.GetSize());
 		}
+			//LogString("ts:%d",mServer->mClientVector.at(i)->mMessage.GetSize());
 	}
 
 	// Send messages to all clients
