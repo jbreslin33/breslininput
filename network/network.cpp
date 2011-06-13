@@ -61,6 +61,25 @@ Network::Network(Client* client, const char netInterface[32], int port)
 	}
 }
 
+Network::Network(const char netInterface[32], int port)
+{
+	mClient = NULL;
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
+	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
+
+
+	if(mSocket == DREAMSOCK_INVALID_SOCKET)
+	{
+		//return DREAMSOCK_SERVER_ERROR;
+		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
+	}
+}
+
 Network::~Network()
 {
 }
@@ -276,9 +295,8 @@ int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 			return ret;
 		}
 		size_t t = 256;
-LogString("helere");
-
-if (mClient->connectionState == 1)
+if (mClient)
+	if (mClient->connectionState == 1)
 		LogString("Error code %d: recvfrom() : %s", errno, strerror_s("error",t,errno));
 #else
 		// Silently handle wouldblock
