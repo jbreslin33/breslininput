@@ -46,8 +46,8 @@ void Game::AddShape(int local, int ind, char *name)
 	pos->y = 0;
 	pos->z = 0;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"cube.mesh");
-	//shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
+	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
@@ -71,8 +71,8 @@ OgreShape* Game::AddGhostShape(int ind)
 	pos->y = 0;
 	pos->z = 0;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"cube.mesh");
-	//shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
+	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
@@ -413,13 +413,15 @@ void Game::RunNetwork(int msec)
 		//mShapeVector.at(i)->mRenderTime = mRenderTime;
 		mShapeVector.at(i)->interpolateTick(mRenderTime);
 	}
-
-	// Framerate is too high
-	if(time > (1000 / 60)) {
+	if (mClient->connectionState == 1)
+	{
+		// Framerate is too high
+		if(time > (1000 / 60)) {
 		
-		SendCommand();
-		mFrameTime = time / 1000.0f;
-	    time = 0;
+			SendCommand();
+			mFrameTime = time / 1000.0f;
+			time = 0;
+		}
 	}
 }
 
@@ -486,8 +488,12 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 
 void Game::gameLoop()
 {
+
+		LogString("connectionState=%d",mClient->connectionState);
 	while(true)
     {
+
+		LogString("connectionState=%d",mClient->connectionState);
 
 		processUnbufferedInput();
 		if(game != NULL)

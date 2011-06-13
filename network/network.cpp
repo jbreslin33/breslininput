@@ -2,6 +2,9 @@
 
 #include "../message/message.h"
 #include "../tdreamsock/dreamSockLog.h"
+
+
+
 #ifdef WIN32
 #include "../tdreamsock/dreamWinSock.h"
 #else
@@ -23,9 +26,13 @@
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
+#include "../client/client.h"
+
+
 Network::Network()
 {
 
+	mClient = NULL;
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #else
@@ -35,9 +42,9 @@ Network::Network()
 	mSocket = 0;
 }
 
-Network::Network(const char netInterface[32], int port)
+Network::Network(Client* client, const char netInterface[32], int port)
 {
-
+	mClient = client;
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #else
@@ -269,6 +276,9 @@ int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 			return ret;
 		}
 		size_t t = 256;
+LogString("helere");
+
+if (mClient->connectionState == 1)
 		LogString("Error code %d: recvfrom() : %s", errno, strerror_s("error",t,errno));
 #else
 		// Silently handle wouldblock
