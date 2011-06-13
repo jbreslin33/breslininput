@@ -52,6 +52,7 @@ class Network
 public:
 Network();
 Network(Client* client,const char netInterface[32], int port);
+Network(const char netInterface[32], int port);
 ~Network();
 
 #ifdef WIN32

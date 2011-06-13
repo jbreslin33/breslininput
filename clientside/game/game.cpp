@@ -29,8 +29,6 @@ Game::Game(const char* serverIP)
 
 	mInit = true;
 
-	mClient->SendConnect("myname");
-
  }
 
 Game::~Game()
@@ -114,49 +112,50 @@ void Game::createScene(void)
 
 void Game::CheckKeys(void)
 {
-	mClient->mShape->mCommand.mKey = 0;
- 	if(keys[VK_ESCAPE])
- 	{
-		mNetworkShutdown = true;
- 	}
-	
- 	if(keys[VK_DOWN])
- 	{
- 		mClient->mShape->mCommand.mKey |= KEY_DOWN;
- 	}
- 	if(keys[VK_UP])
- 	{
- 		mClient->mShape->mCommand.mKey |= KEY_UP;
- 	}
- 	if(keys[VK_LEFT])
- 	{
- 		mClient->mShape->mCommand.mKey |= KEY_LEFT;
- 	}
- 	if(keys[VK_RIGHT])
- 	{
- 		mClient->mShape->mCommand.mKey |= KEY_RIGHT;
- 	}
-	if(keys[VK_SPACE])
- 	{
- 		mClient->mShape->mCommand.mKey |= KEY_SPACE;
- 	}
 
- 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
- }
-/*
-void Game::MoveServerPlayer(void)
-{
-    Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
-
-	transVector.x = mClient->mShape->mServerFrame.mOrigin.x;
-	transVector.z = mClient->mShape->mServerFrame.mOrigin.z;
-
-	if (mClient->mShape->mServerShape)
+	if (mClient->mShape) 
 	{
-		mClient->mShape->mServerShape->getSceneNode()->setPosition(transVector);
+		mClient->mShape->mCommand.mKey = 0;
+ 		if(keys[VK_ESCAPE])
+ 		{
+			mNetworkShutdown = true;
+ 		}
+	
+ 		if(keys[VK_DOWN])
+ 		{
+ 			mClient->mShape->mCommand.mKey |= KEY_DOWN;
+ 		}
+ 		if(keys[VK_UP])
+ 		{
+ 			mClient->mShape->mCommand.mKey |= KEY_UP;
+ 		}
+ 		if(keys[VK_LEFT])
+ 		{
+ 			mClient->mShape->mCommand.mKey |= KEY_LEFT;
+ 		}
+ 		if(keys[VK_RIGHT])
+ 		{
+ 			mClient->mShape->mCommand.mKey |= KEY_RIGHT;
+ 		}
+		if(keys[VK_SPACE])
+		{
+	 		mClient->mShape->mCommand.mKey |= KEY_SPACE;
+	 	}
+
+	 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+	}
+	else
+	{
+		if(keys[VK_SPACE])
+	 	{
+			if (mClient->connectionState == DREAMSOCK_DISCONNECTED)
+			{
+				LogString("send a connect dude");
+				mClient->SendConnect("myname");
+			}
+		}
 	}
 }
-*/
 
 void Game::moveGhostShapes()
 {
@@ -401,29 +400,7 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 	mes->WriteByte(mClient->mShape->mCommand.mMilliseconds);
 }
 
-void Game::RunNetwork(int msec)
-{
-	static int time = 0;
-	time += msec;
 
-	ReadPackets();
-	
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		//mShapeVector.at(i)->mRenderTime = mRenderTime;
-		mShapeVector.at(i)->interpolateTick(mRenderTime);
-	}
-	if (mClient->connectionState == 1)
-	{
-		// Framerate is too high
-		if(time > (1000 / 60)) {
-		
-			SendCommand();
-			mFrameTime = time / 1000.0f;
-			time = 0;
-		}
-	}
-}
 
 void Game::processUnbufferedInput()
 {
@@ -486,22 +463,39 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	return ret;
 }
 
+void Game::RunNetwork(int msec)
+{
+	static int time = 0;
+	time += msec;
+
+	ReadPackets();
+	
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		//mShapeVector.at(i)->mRenderTime = mRenderTime;
+		mShapeVector.at(i)->interpolateTick(mRenderTime);
+	}
+	//if (mClient->connectionState == 1)
+	//{
+		// Framerate is too high
+		if(time > (1000 / 60)) {
+		
+			SendCommand();
+			mFrameTime = time / 1000.0f;
+			time = 0;
+		}
+	//}
+}
+
 void Game::gameLoop()
 {
-
-		LogString("connectionState=%d",mClient->connectionState);
 	while(true)
     {
-
-		LogString("connectionState=%d",mClient->connectionState);
-
 		processUnbufferedInput();
 		if(game != NULL)
 		{
-			if (mShapeVector.size() > 0)
-			{
-				game->CheckKeys();
-			}
+			game->CheckKeys();
+
 			if (mNetworkShutdown == true)
 			{
 				Shutdown();
