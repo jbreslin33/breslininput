@@ -29,6 +29,7 @@ Game::Game(const char* serverIP)
 
 	mInit = true;
 
+	mClient->SendConnect("myname");
  }
 
 Game::~Game()
@@ -38,7 +39,7 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
-
+	LogString("adding shape just clientside");
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
 	pos->y = 0;
@@ -152,6 +153,10 @@ void Game::CheckKeys(void)
 			{
 				LogString("send a connect dude");
 				mClient->SendConnect("myname");
+				//for (int i = 1; i < 20; i++)
+				//{
+				//	AddShape(0,i,"a");
+				//}
 			}
 		}
 	}
