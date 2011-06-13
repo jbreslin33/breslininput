@@ -63,7 +63,7 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
 
 	// Create client socket
-	mNetwork = new Network(localIP, 0);
+	mNetwork = new Network(this,localIP, 0);
 
 	// Check that the address is not empty
 	u_long inetAddr = inet_addr(serverIP);

@@ -45,11 +45,13 @@ class DreamWinSock;
 class DreamLinuxSock;
 #endif
 
+class Client;
+
 class Network 
 {
 public:
 Network();
-Network(const char netInterface[32], int port);
+Network(Client* client,const char netInterface[32], int port);
 ~Network();
 
 #ifdef WIN32
@@ -81,5 +83,6 @@ int dreamSock_GetCurrentSystemTime(void);
 
 SOCKET mSocket;
 
+Client* mClient;
 };
 #endif

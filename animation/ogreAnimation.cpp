@@ -8,7 +8,7 @@ OgreAnimation::OgreAnimation(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 :
 	OgreShape(position,mSceneMgr,mesh)
 {
-	//setupAnimations();
+	setupAnimations();
 }
 
 OgreAnimation::~OgreAnimation()
