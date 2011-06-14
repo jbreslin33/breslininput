@@ -39,7 +39,6 @@ Game::~Game()
 
 void Game::AddShape(int local, int ind, char *name)
 {
-	LogString("adding shape just clientside");
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
 	pos->y = 0;
@@ -238,14 +237,15 @@ void Game::ReadPackets(void)
 
 		case USER_MES_NONDELTAFRAME:
 			// Skip sequences
-			mes.ReadShort();
-			mes.ReadShort();
+			LogString("USER_MES_NONDELTAFRAME");
+			//mes.ReadShort();
+		//	mes.ReadShort();
 
 			mOldTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 
 			for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			{
-				//LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
+				LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
 				ReadMoveCommand(&mes, mShapeVector.at(i));
 			}
 
@@ -291,6 +291,7 @@ void Game::SendCommand(void)
 
 void Game::SendRequestNonDeltaFrame(void)
 {
+	LogString("sendReq");
 	char data[1400];
 	Message message;
 	message.Init(data, sizeof(data));
@@ -336,6 +337,7 @@ void Game::ReadMoveCommand(Message *mes, Shape *shape)
 		shape->mFrame[f].mPredictedOrigin.x = shape->mCommand.mOrigin.x;
 		shape->mFrame[f].mPredictedOrigin.z = shape->mCommand.mOrigin.z;
 	}
+	LogString("read move command");
 }
 
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
