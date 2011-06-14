@@ -25,13 +25,6 @@ AI::AI(Vector3D* position, Ogre::Root* root)
 :
 	OgreShape(position,root)
 {
-	//runSpeed
-	mRunSpeed     = 0.0;
-
-	//run acceleration
-    mRunAccel    = 5.0;
-    mRunDecel    = 5.0;
-
  	//ai states
 	mAIStateMachine = new AIStateMachine(this);    //setup the state machine
 	mAIStateMachine->setCurrentState      (Random_AI::Instance());

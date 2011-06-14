@@ -24,13 +24,6 @@ void processTick    ();
 
 AIStateMachine* mAIStateMachine;
 
-//run speed
-float mRunSpeed;
-
-//run acceleration
-float mRunDecel;
-float mRunAccel;
-
 };
 
 #endif
