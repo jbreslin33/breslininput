@@ -47,8 +47,8 @@ void Game::createShape(Client* client)
 
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->y = 0;
 	pos->z = 0;
+	pos->y = 0;
 
 	Shape* shape = new Shape(pos,mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
@@ -67,8 +67,10 @@ void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
+	pos->z = 30 * mRunningShapeIndex;
 	pos->y = 0;
-	pos->z = 0;
+
+	
 
 	Shape* shape = new Shape(pos,mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess

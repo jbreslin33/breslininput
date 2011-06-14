@@ -37,14 +37,14 @@ Game::~Game()
 	delete mClient;
 }
 
-void Game::AddShape(int local, int ind, char *name)
+void Game::AddShape(int local, int ind, char *name, float x, float y, float z)
 {
-	Vector3D* pos = new Vector3D();
-	pos->x = 0;
-	pos->y = 0;
-	pos->z = 0;
+	Vector3D* position = new Vector3D();
+	position->x = x;
+	position->z = z;
+	position->y = y;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
+	Shape* shape = new Shape(position,mSceneMgr,"sinbad.mesh");
 	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
@@ -55,22 +55,18 @@ void Game::AddShape(int local, int ind, char *name)
 	{
 		mClient->mShape = shape;	
 		LogString("call SendReq");
-		SendRequestNonDeltaFrame();
+		//SendRequestNonDeltaFrame();
 	}
 
 	shape->mGame = this;
 	
-	shape->mGhost = AddGhostShape(ind);
+	shape->mGhost = AddGhostShape(ind,position);
 }
 
-OgreShape* Game::AddGhostShape(int ind)
+OgreShape* Game::AddGhostShape(int ind,Vector3D* position)
 {
-	Vector3D* pos = new Vector3D();
-	pos->x = 0;
-	pos->y = 0;
-	pos->z = 0;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
+	Shape* shape = new Shape(position,mSceneMgr,"sinbad.mesh");
 	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
@@ -185,9 +181,14 @@ void Game::ReadPackets(void)
 	int type;
 	int ind;
 	int local;
+	float startx;
+	float startz;
+	float starty;
+	
 	int ret;
 	int newTime;
 	int time;
+
 
 	char name[50];
 
@@ -207,7 +208,10 @@ void Game::ReadPackets(void)
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-			AddShape(local, ind, name);
+			startx = mes.ReadFloat();
+			startz = mes.ReadFloat();
+			starty = mes.ReadFloat();
+			AddShape(local, ind, name,startx,startz,starty);
 			break;
 
 		case DREAMSOCK_MES_REMOVESHAPE:
