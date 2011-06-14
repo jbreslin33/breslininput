@@ -12,13 +12,18 @@ OgreShape::OgreShape(Vector3D* position, Ogre::Root* root)
 {
 	Ogre::SceneManager* mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 
-	// create main model
+	// set command origins
+	mCommand.mOrigin.x = position->x;
+	mCommand.mOrigin.x = position->y;
+	mCommand.mOrigin.x = position->z;
 
+	//convert to ogre format
 	Vector3 spawnPoint;
-	spawnPoint.x = position->x;
-	spawnPoint.y = position->y;
-	spawnPoint.z = position->z;
+	spawnPoint.x = mCommand.mOrigin.x;
+	spawnPoint.y = mCommand.mOrigin.y;
+	spawnPoint.z = mCommand.mOrigin.z;
 
+	//create node to represent shape on server and pass in spawnPoint
 	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(spawnPoint);
 
  	mPosition = position;

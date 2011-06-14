@@ -26,7 +26,7 @@ OgreShape::OgreShape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::str
     mSceneNode    = mSceneManager->getRootSceneNode()->createChildSceneNode();
 
 	// put character in starting spawn spot
-    mSceneNode->translate(position->x,position->y,position->z, Node::TS_LOCAL);
+    mSceneNode->translate(position->x,position->z,position->y, Node::TS_LOCAL);
 
 	mEntity = mSceneManager->createEntity(mName,
 		mMeshName);
