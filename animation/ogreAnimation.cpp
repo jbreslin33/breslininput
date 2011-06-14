@@ -58,7 +58,7 @@ void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, 
 		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
 		{
 			setBaseAnimation(ANIM_JUMP_LOOP, true);
-			setTopAnimation(ANIM_NONE, true);
+			setTopAnimation(ANIM_JUMP_LOOP, true);
 		}
 		else if (mBaseAnimID == ANIM_IDLE_BASE || mBaseAnimID == ANIM_JUMP_LOOP)
 	    {
