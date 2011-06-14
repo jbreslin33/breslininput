@@ -44,8 +44,8 @@ void Game::AddShape(int local, int ind, char *name)
 	pos->y = 0;
 	pos->z = 0;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(pos,mSceneMgr,"cube.mesh");
+	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
@@ -54,6 +54,7 @@ void Game::AddShape(int local, int ind, char *name)
 	if(local)
 	{
 		mClient->mShape = shape;	
+		LogString("call SendReq");
 		SendRequestNonDeltaFrame();
 	}
 
@@ -69,8 +70,8 @@ OgreShape* Game::AddGhostShape(int ind)
 	pos->y = 0;
 	pos->z = 0;
 
-	Shape* shape = new Shape(pos,mSceneMgr,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(pos,mSceneMgr,"cube.mesh");
+	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
