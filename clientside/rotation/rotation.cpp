@@ -28,9 +28,9 @@ Rotation::Rotation(Vector3D* position,
 	//vars
 	mTurnSpeed = 250.0;
 
-	mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
+	mRotInterpLimitHigh = 6.0; //6.0how far away from server till we try to catch up
 	mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
-	mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
+	mRotInterpIncrease  = 1.2f; //rot factor used to catchup to server
     mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
 
 	//rotation
