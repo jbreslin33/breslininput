@@ -428,18 +428,20 @@ void Server::ReadPackets(void)
 				break;
 
 			case USER_MES_NONDELTAFRAME:
-
+				LogString("case use");
 				for (unsigned int i = 0; i < mClientVector.size(); i++)
 				{
+					LogString("Looping clients");
 					mClientVector.at(i)->mMessage.Init(mClientVector.at(i)->mMessage.outgoingData,
 						sizeof(mClientVector.at(i)->mMessage.outgoingData));
 
 					mClientVector.at(i)->mMessage.WriteByte(USER_MES_NONDELTAFRAME);
-					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetOutgoingSequence());
-					mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetIncomingSequence());
+					//mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetOutgoingSequence());
+					//mClientVector.at(i)->mMessage.WriteShort(mClientVector.at(i)->GetIncomingSequence());
 
 					for (unsigned int j = 0; j < mGame->mShapeVector.size(); j++)
 					{
+						LogString("looping shapes");
 						mGame->BuildMoveCommand(&mClientVector.at(i)->mMessage, mGame->mShapeVector.at(j));
 					}
 					mClientVector.at(i)->SendPacket();
