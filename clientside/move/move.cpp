@@ -26,7 +26,7 @@ Move::Move(Vector3D* position, Ogre::SceneManager* mSceneMgr,
 	mRunSpeed     = 0.0;
 
 	//thresholds
-	mRunSpeedMax  = 200.0;
+	mRunSpeedMax  = 15.0;
 	
 	mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
 	mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
