@@ -347,30 +347,26 @@ void Game::ReadMoveCommand(Message *mes, Shape *shape)
 
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
-	//shape->mProcessedFrame;
 	int flags = 0;
 
 	// Flags
 	flags = mes->ReadByte();
 
-	// Key
-	if(flags & CMD_KEY)
-	{
-		shape->mServerFrame.mKey = mes->ReadByte();
-		shape->mCommand.mKey = shape->mServerFrame.mKey;
-		//LogString("Client %d: Read key %d", shape->mIndex, shape->mCommand.mKey);
-	}
-
 	// Origin
-	if(flags & CMD_ORIGIN)
+	if(flags & CMD_ORIGIN_X)
 	{
-		shape->mProcessedFrame = mes->ReadByte();
+		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
 	}
 
-	// Read time to run command
-	shape->mServerFrame.mOrigin.x = mes->ReadFloat();
-	shape->mServerFrame.mOrigin.z = mes->ReadFloat();
-	shape->mServerFrame.mOrigin.y = mes->ReadFloat();
+	if(flags & CMD_ORIGIN_Z)
+	{
+		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
+	}
+
+	if(flags & CMD_ORIGIN_Y)
+	{
+		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
+	}
 
 	shape->mServerFrame.mVelocity.x = mes->ReadFloat();
 	shape->mServerFrame.mVelocity.z = mes->ReadFloat();

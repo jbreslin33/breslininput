@@ -265,6 +265,7 @@ void Client::SendPacket(void)
 	}
 	else
 	{
+		LogString("sm:%d",mMessage.GetSize());
 		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, myaddress);
 	}
 
