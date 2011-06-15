@@ -222,37 +222,38 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 
 	int last = (shape->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
-	// Check what needs to be updated
-	if(shape->mFrame[last].mKey != command->mKey)
+/********** CHECK WHAT NEEDS TO BE UPDATED *****************/
+
+	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x)
 	{
-		flags |= CMD_KEY;
+		flags |= CMD_ORIGIN_X;
+	}
+	if(shape->mFrame[last].mOrigin.z != command->mOrigin.z)
+	{
+		flags |= CMD_ORIGIN_Z;
+	}
+	if(shape->mFrame[last].mOrigin.y != command->mOrigin.y)
+	{
+		flags |= CMD_ORIGIN_Y;
 	}
 
-	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x ||
-		shape->mFrame[last].mOrigin.z != command->mOrigin.z)
-	{
-		flags |= CMD_ORIGIN;
-	}
+	/******ADD TO THE MESSAGE *****/
 
-	// Add to the message
 	// Flags
 	mes->WriteByte(flags);
 
-	// Key
-	if(flags & CMD_KEY)
+	if(flags & CMD_ORIGIN_X)
 	{
-		mes->WriteByte(command->mKey);
+		mes->WriteFloat(command->mOrigin.x);
 	}
-
-	// Origin
-	if(flags & CMD_ORIGIN)
+	if(flags & CMD_ORIGIN_Z)
 	{
-		mes->WriteByte(shape->mProcessedFrame & (COMMAND_HISTORY_SIZE-1));
+		mes->WriteFloat(command->mOrigin.z);
 	}
-
-	mes->WriteFloat(command->mOrigin.x);
-	mes->WriteFloat(command->mOrigin.z);
-	mes->WriteFloat(command->mOrigin.y);
+	if(flags & CMD_ORIGIN_Y)
+	{
+		mes->WriteFloat(command->mOrigin.y);
+	}
 
 	mes->WriteFloat(command->mVelocity.x);
 	mes->WriteFloat(command->mVelocity.z);

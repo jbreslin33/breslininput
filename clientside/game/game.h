@@ -22,8 +22,10 @@ extern bool keys[256];
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-#define CMD_KEY					1
-#define CMD_ORIGIN				4
+#define CMD_KEY						1
+#define CMD_ORIGIN_X                2
+#define CMD_ORIGIN_Z                4
+#define CMD_ORIGIN_Y                8
 
 #define USER_MES_FRAME			1
 #define USER_MES_NONDELTAFRAME	2

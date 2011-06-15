@@ -16,7 +16,6 @@ OgreShape::OgreShape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::str
 
  	mPosition = position;
 	mIndex  = 0;
-	mProcessedFrame = 0;
 	mRenderTime = 0.0;
 
 	//let's set our member variables to those passed in for use...
