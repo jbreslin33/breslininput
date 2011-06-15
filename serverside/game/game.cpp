@@ -241,6 +241,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 
 /********** CHECK WHAT NEEDS TO BE UPDATED *****************/
 
+	//Origin
 	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x)
 	{
 		flags |= CMD_ORIGIN_X;
@@ -254,11 +255,27 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		flags |= CMD_ORIGIN_Y;
 	}
 
+
+	//Velocity
+	if(shape->mFrame[last].mVelocity.x != command->mVelocity.x)
+	{
+		flags |= CMD_VELOCITY_X;
+	}
+	if(shape->mFrame[last].mVelocity.z != command->mVelocity.z)
+	{
+		flags |= CMD_VELOCITY_Z;
+	}
+	if(shape->mFrame[last].mVelocity.y != command->mVelocity.y)
+	{
+		flags |= CMD_VELOCITY_Y;
+	}
+
 	/******ADD TO THE MESSAGE *****/
 
 	// Flags
 	mes->WriteByte(flags);
 
+	//Origin
 	if(flags & CMD_ORIGIN_X)
 	{
 		mes->WriteFloat(command->mOrigin.x);
@@ -272,10 +289,19 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		mes->WriteFloat(command->mOrigin.y);
 	}
 
-	mes->WriteFloat(command->mVelocity.x);
-	mes->WriteFloat(command->mVelocity.z);
-	mes->WriteFloat(command->mVelocity.y);
-
+	//Velocity
+	if(flags & CMD_VELOCITY_X)
+	{
+		mes->WriteFloat(command->mVelocity.x);
+	}
+	if(flags & CMD_VELOCITY_Z)
+	{
+		mes->WriteFloat(command->mVelocity.z);
+	}
+	if(flags & CMD_VELOCITY_Y)
+	{
+		mes->WriteFloat(command->mVelocity.y);
+	}
     mes->WriteFloat(command->mRot.x);
 	mes->WriteFloat(command->mRot.z);
 

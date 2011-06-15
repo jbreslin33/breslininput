@@ -26,6 +26,9 @@ extern bool keys[256];
 #define CMD_ORIGIN_X                2
 #define CMD_ORIGIN_Z                4
 #define CMD_ORIGIN_Y                8
+#define CMD_VELOCITY_X             16
+#define CMD_VELOCITY_Z             32
+#define CMD_VELOCITY_Y             64
 
 #define USER_MES_FRAME			1
 #define USER_MES_NONDELTAFRAME	2
