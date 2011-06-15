@@ -16,7 +16,7 @@ class Shape : public Move , public Rotation, public OgreAnimation
 {
 
 public:
-Shape(Vector3D* position, Ogre::SceneManager* mSceneMgr, std::string mesh);
+Shape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::SceneManager* mSceneMgr, std::string mesh);
 ~Shape();
 
 //ticks

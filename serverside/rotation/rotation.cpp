@@ -21,10 +21,10 @@ using namespace Ogre;
 
 #define TURN_SPEED 250.0f      // character turning in degrees per second
 
-Rotation::Rotation(Vector3D* position,
+Rotation::Rotation(Vector3D* position, Vector3D* velocity, Vector3D* rotation, 
 									   Ogre::Root* root)
 :
-	OgreShape(position,root)
+	OgreShape(position,velocity,rotation,root)
 {
 	//rotation states
 	mRotationStateMachine = new RotationStateMachine(this);    //setup the state machine

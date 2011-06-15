@@ -131,6 +131,11 @@ void Client::SendConnect(const char *name)
 	SendPacket(&mMessage);
 }
 
+void Client::forceUpdate()
+{
+
+}
+
 void Client::SendDisconnect(void)
 {
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));

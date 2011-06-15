@@ -54,8 +54,9 @@ public:
 	void moveGhostShapes();
 	
 	//Game
-	void       AddShape   (int local, int index, char *name, float x, float y, float z);
-	OgreShape* AddGhostShape(int index, Vector3D* position);
+	void AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
+					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
+	OgreShape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);

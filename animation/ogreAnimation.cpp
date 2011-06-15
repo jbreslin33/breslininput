@@ -3,10 +3,11 @@
 
 #include "../math/vector3D.h"
 
-OgreAnimation::OgreAnimation(Vector3D* position, Ogre::SceneManager* mSceneMgr,
+OgreAnimation::OgreAnimation(Vector3D* position, Vector3D* velocity, Vector3D* rotation, 
+							 Ogre::SceneManager* mSceneMgr,
 								   std::string mesh)
 :
-	OgreShape(position,mSceneMgr,mesh)
+	OgreShape(position,velocity,rotation,mSceneMgr,mesh)
 {
 	setupAnimations();
 }

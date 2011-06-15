@@ -96,6 +96,8 @@ public:
 	void			SendDisconnect(void);
 	void			SendPing(void);
 
+	void            forceUpdate();
+
 	void			SetConnectionState(int con)		{ connectionState = con; }
 	int				GetConnectionState(void)		{ return connectionState; }
 
