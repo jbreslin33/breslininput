@@ -398,9 +398,21 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
 	}
 
-	shape->mServerFrame.mVelocity.x = mes->ReadFloat();
-	shape->mServerFrame.mVelocity.z = mes->ReadFloat();
-	shape->mServerFrame.mVelocity.y = mes->ReadFloat();
+	// Velocity
+	if(flags & CMD_VELOCITY_X)
+	{
+		shape->mServerFrame.mVelocity.x = mes->ReadFloat();		
+	}
+
+	if(flags & CMD_VELOCITY_Z)
+	{
+		shape->mServerFrame.mVelocity.z = mes->ReadFloat();	
+	}
+
+	if(flags & CMD_VELOCITY_Y)
+	{
+		shape->mServerFrame.mVelocity.y = mes->ReadFloat();
+	}
 
 	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
 	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
