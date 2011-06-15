@@ -349,7 +349,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
 	int flags = 0;
 
-		mDetailsPanel->setParamValue(8, Ogre::StringConverter::toString(mes->GetSize()));
+		mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	// Flags
 	flags = mes->ReadByte();
