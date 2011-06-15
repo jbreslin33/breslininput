@@ -16,7 +16,7 @@ class Jump : public virtual OgreShape
 
 public:
 
-Jump(Vector3D* position, Ogre::Root* root);
+Jump(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root);
 ~Jump();
 
 //ticks

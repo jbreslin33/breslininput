@@ -25,7 +25,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for(int i = 0; i < 40; i++)
+	for(int i = 0; i < 20; i++)
 	{
 		createAIShape();
 	}
@@ -50,7 +50,16 @@ void Game::createShape(Client* client)
 	pos->z = 0;
 	pos->y = 0;
 
-	Shape* shape = new Shape(pos,mRoot); 
+	Vector3D* vel = new Vector3D();
+	vel->x = 0;
+	vel->z = 0;
+	vel->y = 0;
+
+	Vector3D* rot = new Vector3D();
+	rot->x = 0;
+	rot->z = 0;
+
+	Shape* shape = new Shape(pos,vel,rot,mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
@@ -70,9 +79,16 @@ void Game::createAIShape()
 	pos->z = 30 * mRunningShapeIndex;
 	pos->y = 0;
 
-	
+	Vector3D* vel = new Vector3D();
+	vel->x = 0;
+	vel->z = 0;
+	vel->y = 0;
 
-	Shape* shape = new Shape(pos,mRoot); 
+	Vector3D* rot = new Vector3D();
+	rot->x = 0;
+	rot->z = 0;
+
+	Shape* shape = new Shape(pos,vel,rot,mRoot); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	shape->mIndex = mRunningShapeIndex;
 	mShapeVector.push_back(shape); //either way add this to shape vector
@@ -163,6 +179,7 @@ void Game::SendExitNotification(void)
 {
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
+
 		mServer->mClientVector.at(i)->mMessage.Init(mServer->mClientVector.at(i)->mMessage.outgoingData,
 			sizeof(mServer->mClientVector.at(i)->mMessage.outgoingData));
 

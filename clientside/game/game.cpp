@@ -37,15 +37,25 @@ Game::~Game()
 	delete mClient;
 }
 
-void Game::AddShape(int local, int ind, char *name, float x, float y, float z)
+void Game::AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
+					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
-	position->x = x;
-	position->z = z;
-	position->y = y;
+	position->x = originX;
+	position->z = originZ;
+	position->y = originY;
 
-	Shape* shape = new Shape(position,mSceneMgr,"sinbad.mesh");
-	//shape->getSceneNode()->scale(30,30,30);
+	Vector3D* velocity = new Vector3D();
+	velocity->x = velocityX;
+	velocity->z = velocityZ;
+	velocity->y = velocityY;
+
+	Vector3D* rotation = new Vector3D();
+	rotation->x = rotationX;
+	rotation->z = rotationZ;
+	rotation->y = 0;
+
+	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	
 	shape->mIndex = ind;
 
@@ -60,13 +70,13 @@ void Game::AddShape(int local, int ind, char *name, float x, float y, float z)
 
 	shape->mGame = this;
 	
-	shape->mGhost = AddGhostShape(ind,position);
+	shape->mGhost = AddGhostShape(ind,position,velocity,rotation);
 }
 
-OgreShape* Game::AddGhostShape(int ind,Vector3D* position)
+OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
 
-	Shape* shape = new Shape(position,mSceneMgr,"sinbad.mesh");
+	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
@@ -158,6 +168,8 @@ void Game::CheckKeys(void)
 	}
 }
 
+//this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
+//unless it did not change on server in which case it should contain same value.
 void Game::moveGhostShapes()
 {
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
@@ -184,6 +196,12 @@ void Game::ReadPackets(void)
 	float startx;
 	float startz;
 	float starty;
+	float velocityX;
+	float velocityZ;
+	float velocityY;
+	float rotationX;
+	float rotationZ;
+	
 	
 	int ret;
 	int newTime;
@@ -211,7 +229,12 @@ void Game::ReadPackets(void)
 			startx = mes.ReadFloat();
 			startz = mes.ReadFloat();
 			starty = mes.ReadFloat();
-			AddShape(local, ind, name,startx,startz,starty);
+			velocityX = mes.ReadFloat();
+			velocityZ = mes.ReadFloat();
+			velocityY = mes.ReadFloat();
+			rotationX = mes.ReadFloat();
+			rotationZ = mes.ReadFloat();
+			AddShape(local, ind, name,startx,startz,starty,velocityX,velocityZ,velocityY,rotationX,rotationZ);
 			break;
 
 		case DREAMSOCK_MES_REMOVESHAPE:
@@ -328,8 +351,13 @@ void Game::ReadMoveCommand(Message *mes, Shape *shape)
 	// Origin
 	shape->mServerFrame.mOrigin.x		= mes->ReadFloat();
 	shape->mServerFrame.mOrigin.z		= mes->ReadFloat();
+	shape->mServerFrame.mOrigin.y       = 0;
 	shape->mServerFrame.mVelocity.x		= mes->ReadFloat();
 	shape->mServerFrame.mVelocity.z		= mes->ReadFloat();
+	shape->mServerFrame.mVelocity.y     = 0;
+
+	shape->mServerFrame.mRot.x = 0;
+	shape->mServerFrame.mRot.z = 0;
 
 	// Read time to run command
 	shape->mServerFrame.mMilliseconds = mes->ReadByte();

@@ -27,7 +27,7 @@ class OgreShape
 
 public:
 OgreShape();
-OgreShape(Vector3D* position, Ogre::Root* root);
+OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root);
 ~OgreShape();
 
 //for tracking what we last sent to internets clients
