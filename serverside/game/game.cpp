@@ -76,7 +76,7 @@ void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->z = 30 * mRunningShapeIndex;
+	pos->z = 300 * mRunningShapeIndex;
 	pos->y = 0;
 
 	Vector3D* vel = new Vector3D();

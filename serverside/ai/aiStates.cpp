@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_RUN_SPEED 15           // character running speed in units per second
+#define MAX_RUN_SPEED 200           // character running speed in units per second
 
 Normal_AI* Normal_AI::Instance()
 {

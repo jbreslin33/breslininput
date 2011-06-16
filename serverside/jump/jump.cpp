@@ -3,7 +3,7 @@
 
 #include "../../client/client.h"
 
-#define MAX_RUN_SPEED 15           // character running speed in units per second
+#define MAX_RUN_SPEED 200           // character running speed in units per second
 
 #include <string>
 
@@ -22,10 +22,11 @@ Jump::Jump(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Roo
 :
 	OgreShape(position,velocity,rotation,root)
 {
-	//jumping
-	mVerticalVelocity = 0.0;
-    mJumpAccel   = 30.0;
-    mGravity     = 90.0;
+    //jumping
+    mVerticalVelocity = 0.0;
+    mJumpAccel   = 300.0;
+    mGravity     = 900.0;
+
 
   	//move states
 	mJumpStateMachine = new JumpStateMachine(this);    //setup the state machine

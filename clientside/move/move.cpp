@@ -25,12 +25,13 @@ Move::Move(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Sce
 	//run speed
 	mRunSpeed     = 0.0;
 
-	//thresholds
-	mRunSpeedMax  = 15.0;
-	
-	mPosInterpLimitHigh = .266; //8.0how far away from server till we try to catch up
-	mPosInterpLimitLow  = .06; //2.0;how close to server till we are in sync
-	mPosInterpFactor    = 4.0;
+    //thresholds
+    mRunSpeedMax  = 200.0;
+        
+    mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
+    mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
+    mPosInterpFactor    = 4.0;
+
 
 	//deltas
 	mDeltaX        = 0.0; 
