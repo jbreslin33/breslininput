@@ -3,7 +3,7 @@
 
 #include "../../client/client.h"
 
-#define MAX_RUN_SPEED .166           // character running speed in units per second
+#define MAX_RUN_SPEED 200           // character running speed in units per second
 
 #include <string>
 
@@ -25,12 +25,13 @@ Move::Move(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Roo
 :
 	OgreShape(position,velocity,rotation,root)
 {
-	//runSpeed
-	mRunSpeed     = 0.0;
+    //runSpeed
+    mRunSpeed     = 0.0;
 
-	//run acceleration
-    mRunAccel    = .166;
-    mRunDecel    = .166;
+    //run acceleration
+    mRunAccel    = 5.0;
+    mRunDecel    = 5.0;
+
 
  	//move states
 	mMoveStateMachine = new MoveStateMachine(this);    //setup the state machine

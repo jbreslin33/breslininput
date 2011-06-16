@@ -56,7 +56,8 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 	rotation->y = 0;
 
 	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
-	
+	shape->getSceneNode()->scale(30,30,30);
+
 	shape->mIndex = ind;
 
 	mShapeVector.push_back(shape);
@@ -77,7 +78,7 @@ OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, V
 {
 
 	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
-	//shape->getSceneNode()->scale(30,30,30);
+	shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 

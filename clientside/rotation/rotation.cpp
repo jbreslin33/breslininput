@@ -25,12 +25,12 @@ Rotation::Rotation(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 :
 	OgreShape(position,velocity,rotation,mSceneMgr,mesh)
 {
-	//vars
-	mTurnSpeed = 250.0;
+    //vars
+    mTurnSpeed = 250.0;
 
-	mRotInterpLimitHigh = 6.0; //6.0how far away from server till we try to catch up
-	mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
-	mRotInterpIncrease  = 1.2f; //rot factor used to catchup to server
+    mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
+    mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
+    mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
     mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
 
 	//rotation
