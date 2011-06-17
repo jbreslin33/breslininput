@@ -149,24 +149,7 @@ void Game::CheckKeys(void)
 		{
 	 		mClient->mShape->mCommand.mKey |= KEY_SPACE;
 	 	}
-
 	 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
-		//LogString("mMill:%d",mClient->mShape->mCommand.mMilliseconds);
-	}
-	else
-	{
-		if(keys[VK_SPACE])
-	 	{
-			if (mClient->connectionState == DREAMSOCK_DISCONNECTED)
-			{
-				LogString("send a connect dude");
-				mClient->SendConnect("myname");
-				//for (int i = 1; i < 20; i++)
-				//{
-				//	AddShape(0,i,"a");
-				//}
-			}
-		}
 	}
 }
 
@@ -181,10 +164,10 @@ void Game::moveGhostShapes()
 		transVector.x = mShapeVector.at(i)->mServerFrame.mOrigin.x;
 		transVector.z = mShapeVector.at(i)->mServerFrame.mOrigin.z;
 
-		//if (mShapeGhostVector.at(i))
-		//{
+		if (mShapeVector.at(i)->mGhost)
+		{
 			mShapeVector.at(i)->mGhost->getSceneNode()->setPosition(transVector);
-		//}
+		}
 	}
 }
 void Game::ReadPackets(void)
