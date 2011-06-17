@@ -22,6 +22,7 @@ Game::Game()
 	mRealTime	= 0;
 	mServerTime	= 0;
 	mFramenum	= 0;
+	mFrameTime  = 0;
 
 	mRunningShapeIndex = 1;
 	
@@ -113,10 +114,14 @@ void Game::Frame(int msec)
 {
 	mRealTime += msec;
 
+	mFrameTime += msec;
+
 	// Read packets from clients
 	mServer->ReadPackets();
 
-	// Wait full 100 ms before allowing to send
+	//LogString("rt:%d",mRealTime);
+	//LogString("st:%d",mServerTime);
+	// Wait full 32 ms before allowing to send
 	if(mRealTime < mServerTime)
 	{
 		// never let the time get too far off
@@ -136,6 +141,7 @@ void Game::Frame(int msec)
 		mRealTime = mServerTime;
 
 	SendCommand();
+	mFrameTime = 0;
 }
 
 //send to updates to all clients about all shapes

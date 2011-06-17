@@ -151,6 +151,7 @@ void Game::CheckKeys(void)
 	 	}
 
 	 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+		//LogString("mMill:%d",mClient->mShape->mCommand.mMilliseconds);
 	}
 	else
 	{
@@ -523,19 +524,14 @@ void Game::RunNetwork(int msec)
 	
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		//mShapeVector.at(i)->mRenderTime = mRenderTime;
 		mShapeVector.at(i)->interpolateTick(mRenderTime);
 	}
-	//if (mClient->connectionState == 1)
-	//{
-		// Framerate is too high
-		if(time > (1000 / 60)) {
-		
-			SendCommand();
-			mFrameTime = time / 1000.0f;
-			time = 0;
-		}
-	//}
+	// Framerate is too high
+	if(time > (1000 / 60)) {
+		SendCommand();
+		mFrameTime = time / 1000.0f;
+		time = 0;
+	}
 }
 
 void Game::gameLoop()
