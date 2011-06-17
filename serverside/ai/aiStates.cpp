@@ -26,7 +26,8 @@ void Normal_AI::execute(AI* ai)
 	int direction = 0;
 
 	ai->mCommand.mKey = direction;
-	ai->mCommand.mMilliseconds = 17;
+	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;
+	LogString("mFt:%d",ai->mGame->mFrameTime);
 	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
 
 }
@@ -46,22 +47,23 @@ void Random_AI::enter(AI* ai)
 }
 void Random_AI::execute(AI* ai)
 {
-	int chance;
+//	int chance;
 	//int key = 0;
 
-	srand ( time(NULL) + ai->mIndex);	/* initialize random seed: */
-	chance = rand() % 10 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
+//	srand ( time(NULL) + ai->mIndex);	/* initialize random seed: */
+//	chance = rand() % 10 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
 
 	//LogString("c:%d",chance);
 
-	if (chance == 5) //change key
-	{
+//	if (chance == 5) //change key
+//	{
 		srand ( time(NULL) + ai->mIndex);	/* initialize random seed: */
 		ai->mCommand.mKey = rand() % 16 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
-	}
+//	}
 
 	//ai->mCommand.mKey = key;
-	ai->mCommand.mMilliseconds = 17;
+	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;
+	//LogString("mFt:%d",ai->mGame->mFrameTime);
 	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
 
 }

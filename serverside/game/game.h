@@ -46,6 +46,7 @@ public:
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms
 	long	mFramenum;
+	int     mFrameTime;
 
 	int mRunningShapeIndex;
 
