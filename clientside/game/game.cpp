@@ -66,7 +66,7 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 	{
 		mClient->mShape = shape;	
 		LogString("call SendReq");
-		SendRequestNonDeltaFrame();
+		//SendRequestNonDeltaFrame();
 	}
 
 	shape->mGame = this;
@@ -83,7 +83,7 @@ OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, V
 	shape->mIndex = ind;
 
 	mShapeGhostVector.push_back(shape);
-	//shape->getSceneNode()->setVisible(false);
+	shape->getSceneNode()->setVisible(false);
 	return shape;
 }
 
@@ -526,6 +526,7 @@ void Game::RunNetwork(int msec)
 	}
 	// Framerate is too high
 	if(time > (1000 / 60)) {
+
 		SendCommand();
 		mFrameTime = time / 1000.0f;
 		time = 0;
