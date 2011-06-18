@@ -26,7 +26,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < 25; i++)
 	{
 		createAIShape();
 	}
@@ -241,7 +241,8 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 {
 	Command* command = &shape->mCommand;
 	
-	int flags = 0;
+	int flags1 = 0;
+	int flags2 = 0;
 
 	int last = (shape->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
@@ -250,66 +251,95 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	//Origin
 	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x)
 	{
-		flags |= CMD_ORIGIN_X;
+		flags1 |= CMD_ORIGIN_X;
 	}
 	if(shape->mFrame[last].mOrigin.z != command->mOrigin.z)
 	{
-		flags |= CMD_ORIGIN_Z;
+		flags1 |= CMD_ORIGIN_Z;
 	}
 	if(shape->mFrame[last].mOrigin.y != command->mOrigin.y)
 	{
-		flags |= CMD_ORIGIN_Y;
+		flags1 |= CMD_ORIGIN_Y;
 	}
 
 
 	//Velocity
 	if(shape->mFrame[last].mVelocity.x != command->mVelocity.x)
 	{
-		flags |= CMD_VELOCITY_X;
+		flags1 |= CMD_VELOCITY_X;
 	}
 	if(shape->mFrame[last].mVelocity.z != command->mVelocity.z)
 	{
-		flags |= CMD_VELOCITY_Z;
+		flags1 |= CMD_VELOCITY_Z;
 	}
 	if(shape->mFrame[last].mVelocity.y != command->mVelocity.y)
 	{
-		flags |= CMD_VELOCITY_Y;
+		flags1 |= CMD_VELOCITY_Y;
+	}
+
+	//Rotation
+	if(shape->mFrame[last].mRot.x != command->mRot.x)
+	{
+		flags1 |= CMD_ROTATION_X;
+	}
+	if(shape->mFrame[last].mRot.z != command->mRot.z)
+	{
+		flags1 |= CMD_ROTATION_Z;
+	}
+	
+	//Milliseconds
+	if(shape->mFrame[last].mMilliseconds != command->mMilliseconds)
+	{
+		flags2 |= CMD_MILLISECONDS;
 	}
 
 	/******ADD TO THE MESSAGE *****/
 
 	// Flags
-	mes->WriteByte(flags);
+	mes->WriteByte(flags1);
+	mes->WriteByte(flags2);
 
 	//Origin
-	if(flags & CMD_ORIGIN_X)
+	if(flags1 & CMD_ORIGIN_X)
 	{
 		mes->WriteFloat(command->mOrigin.x);
 	}
-	if(flags & CMD_ORIGIN_Z)
+	if(flags1 & CMD_ORIGIN_Z)
 	{
 		mes->WriteFloat(command->mOrigin.z);
 	}
-	if(flags & CMD_ORIGIN_Y)
+	if(flags1 & CMD_ORIGIN_Y)
 	{
 		mes->WriteFloat(command->mOrigin.y);
 	}
 
 	//Velocity
-	if(flags & CMD_VELOCITY_X)
+	if(flags1 & CMD_VELOCITY_X)
 	{
 		mes->WriteFloat(command->mVelocity.x);
 	}
-	if(flags & CMD_VELOCITY_Z)
+	if(flags1 & CMD_VELOCITY_Z)
 	{
 		mes->WriteFloat(command->mVelocity.z);
 	}
-	if(flags & CMD_VELOCITY_Y)
+	if(flags1 & CMD_VELOCITY_Y)
 	{
 		mes->WriteFloat(command->mVelocity.y);
 	}
-    mes->WriteFloat(command->mRot.x);
-	mes->WriteFloat(command->mRot.z);
 
-	mes->WriteByte(command->mMilliseconds);
+	//Rotation
+	if(flags1 & CMD_ROTATION_X)
+	{
+		mes->WriteFloat(command->mRot.x);
+	}
+	if(flags1 & CMD_ROTATION_Z)
+	{
+		mes->WriteFloat(command->mRot.z);
+	}
+
+	//Milliseconds
+	if(flags2 & CMD_MILLISECONDS)
+	{
+		mes->WriteByte(command->mMilliseconds);
+	}
 }
