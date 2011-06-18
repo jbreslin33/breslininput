@@ -55,8 +55,8 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 	rotation->z = rotationZ;
 	rotation->y = 0;
 
-	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"cube.mesh");
+	//shape->getSceneNode()->scale(30,30,30);
 
 	shape->mIndex = ind;
 
@@ -77,8 +77,8 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
 
-	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	Shape* shape = new Shape(position,velocity,rotation,mSceneMgr,"cube.mesh");
+	//shape->getSceneNode()->scale(30,30,30);
 	
 	shape->mIndex = ind;
 
