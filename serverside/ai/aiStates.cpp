@@ -27,7 +27,6 @@ void Normal_AI::execute(AI* ai)
 
 	ai->mCommand.mKey = direction;
 	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;
-	LogString("mFt:%d",ai->mGame->mFrameTime);
 	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
 
 }

@@ -66,7 +66,7 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 	{
 		mClient->mShape = shape;	
 		LogString("call SendReq");
-		//SendRequestNonDeltaFrame();
+		SendRequestNonDeltaFrame();
 	}
 
 	shape->mGame = this;
@@ -360,52 +360,67 @@ void Game::ReadMoveCommand(Message *mes, Shape *shape)
 
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
-	int flags = 0;
+	int flags1 = 0;
+	int flags2 = 0;
 
-		mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
+	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	// Flags
-	flags = mes->ReadByte();
+	flags1 = mes->ReadByte();
+	flags2 = mes->ReadByte();
 
 	// Origin
-	if(flags & CMD_ORIGIN_X)
+	if(flags1 & CMD_ORIGIN_X)
 	{
 		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
 	}
 
-	if(flags & CMD_ORIGIN_Z)
+	if(flags1 & CMD_ORIGIN_Z)
 	{
 		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
 	}
 
-	if(flags & CMD_ORIGIN_Y)
+	if(flags1 & CMD_ORIGIN_Y)
 	{
 		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
 	}
 
 	// Velocity
-	if(flags & CMD_VELOCITY_X)
+	if(flags1 & CMD_VELOCITY_X)
 	{
 		shape->mServerFrame.mVelocity.x = mes->ReadFloat();		
 	}
 
-	if(flags & CMD_VELOCITY_Z)
+	if(flags1 & CMD_VELOCITY_Z)
 	{
 		shape->mServerFrame.mVelocity.z = mes->ReadFloat();	
 	}
 
-	if(flags & CMD_VELOCITY_Y)
+	if(flags1 & CMD_VELOCITY_Y)
 	{
 		shape->mServerFrame.mVelocity.y = mes->ReadFloat();
 	}
 
+	//set old rot
 	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
 	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
 
-	shape->mServerFrame.mRot.x = mes->ReadFloat();
-	shape->mServerFrame.mRot.z = mes->ReadFloat();
+	//rotation
+	if(flags1 & CMD_ROTATION_X)
+	{
+		shape->mServerFrame.mRot.x = mes->ReadFloat();
+	}
 
-	shape->mCommand.mMilliseconds = mes->ReadByte();
+	if(flags1 & CMD_ROTATION_Z)
+	{
+		shape->mServerFrame.mRot.z = mes->ReadFloat();
+	}
+
+	//milliseconds
+	if (flags2 & CMD_MILLISECONDS)
+	{
+		shape->mCommand.mMilliseconds = mes->ReadByte();
+	}
 }
 
 //-----------------------------------------------------------------------------
