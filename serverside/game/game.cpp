@@ -26,7 +26,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for(int i = 0; i < 10; i++)
+	for(int i = 0; i < 0; i++)
 	{
 		createAIShape();
 	}
@@ -217,22 +217,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	//LogString("msec:%d",client->mShape->mCommand.mMilliseconds);
 	//let's set the shape's clientFrameTime right here.....
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
-}
-
-void Game::BuildMoveCommand(Message *mes, Shape* shape)
-{
-	Command* command = &shape->mCommand;
-	// Add to the message
-	// Key
-	mes->WriteByte(command->mKey);
-
-	// Origin
-	mes->WriteFloat(command->mOrigin.x);
-	mes->WriteFloat(command->mOrigin.z);
-	mes->WriteFloat(command->mVelocity.x);
-	mes->WriteFloat(command->mVelocity.z);
-
-	mes->WriteByte(command->mMilliseconds);
 }
 
 //does this even care that a client is passed it? other than that it needs it access mShape? which

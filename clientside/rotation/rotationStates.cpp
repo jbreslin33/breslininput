@@ -53,18 +53,18 @@ void Normal_ProcessTick_Rotation::execute(Rotation* rotation)
     {
          if (rotation->mServerRotSpeed == 0.0)
          {
-			rotation->mCommand.mRotSpeed = 0.0;
+			rotation->mCommandToRunOnShape.mRotSpeed = 0.0;
          }
          else
          {
 			// if server rot counter-clockwise hardcode server rot to +mTurnSpeed
             if(rotation->mServerRotSpeed > 0.0)
             {
-				rotation->mCommand.mRotSpeed = rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = rotation->mTurnSpeed;
             }
 			else //clockwise - set to -mTurnSpeed
             {
-				rotation->mCommand.mRotSpeed = -rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = -rotation->mTurnSpeed;
             }
 		}
 	}
@@ -100,30 +100,30 @@ void Catchup_ProcessTick_Rotation::execute(Rotation* rotation)
 			// if server rot counter-clockwise hardcode server rot to +mTurnSpeed
             if(rotation->mServerRotSpeed > 0.0)
             {
-				rotation->mCommand.mRotSpeed = rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = rotation->mTurnSpeed;
             }
             else //clockwise - set to -mTurnSpeed
             {
-				rotation->mCommand.mRotSpeed = -rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = -rotation->mTurnSpeed;
             }
 			if(rotation->mDegreesToServer/rotation->mServerRotSpeed > 0.0)
             {
-				rotation->mCommand.mRotSpeed = rotation->mCommand.mRotSpeed * rotation->mRotInterpIncrease;
+				rotation->mCommandToRunOnShape.mRotSpeed = rotation->mCommandToRunOnShape.mRotSpeed * rotation->mRotInterpIncrease;
             }
             else
             {
-				rotation->mCommand.mRotSpeed = rotation->mCommand.mRotSpeed * rotation->mRotInterpDecrease;
+				rotation->mCommandToRunOnShape.mRotSpeed = rotation->mCommandToRunOnShape.mRotSpeed * rotation->mRotInterpDecrease;
             }
 		}
         else if(rotation->mServerRotSpeed == 0.0)
         {
 			if (rotation->mDegreesToServer > 0.0)
             {
-				rotation->mCommand.mRotSpeed = rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = rotation->mTurnSpeed;
             }
             else //clockwise - set to -mTurnSpeed
             {
-				rotation->mCommand.mRotSpeed = -rotation->mTurnSpeed;
+				rotation->mCommandToRunOnShape.mRotSpeed = -rotation->mTurnSpeed;
             }
 		}
 	}
@@ -163,7 +163,7 @@ void Normal_InterpolateTick_Rotation::enter(Rotation* rotation)
 }
 void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
 {
-	float rotSpeed = rotation->mCommand.mRotSpeed * rotation->mRenderTime;
+	float rotSpeed = rotation->mCommandToRunOnShape.mRotSpeed * rotation->mRenderTime;
     rotation->getSceneNode()->yaw(Degree(rotSpeed));
 
     if (rotation->mServerRotSpeed == 0.0 && abs(rotation->getDegreesToServer()) < rotation->mRotInterpLimitLow)
@@ -185,7 +185,7 @@ Off_InterpolateTick_Rotation* Off_InterpolateTick_Rotation::Instance()
 }
 void Off_InterpolateTick_Rotation::enter(Rotation* rotation)
 {
-	rotation->mCommand.mRotSpeed = 0.0;
+	rotation->mCommandToRunOnShape.mRotSpeed = 0.0;
 }
 void Off_InterpolateTick_Rotation::execute(Rotation* rotation)
 {		
