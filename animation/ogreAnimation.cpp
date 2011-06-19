@@ -9,7 +9,7 @@ OgreAnimation::OgreAnimation(Vector3D* position, Vector3D* velocity, Vector3D* r
 :
 	OgreShape(position,velocity,rotation,mSceneMgr,mesh)
 {
-	setupAnimations();
+	//setupAnimations();
 }
 
 OgreAnimation::~OgreAnimation()

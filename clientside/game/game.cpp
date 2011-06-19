@@ -123,7 +123,7 @@ void Game::CheckKeys(void)
 
 	if (mClient->mShape) 
 	{
-		mClient->mShape->mCommand.mKey = 0;
+		mClient->mClientCommandToServer.mKey = 0;
  		if(keys[VK_ESCAPE])
  		{
 			mNetworkShutdown = true;
@@ -131,25 +131,25 @@ void Game::CheckKeys(void)
 	
  		if(keys[VK_DOWN])
  		{
- 			mClient->mShape->mCommand.mKey |= KEY_DOWN;
+ 			mClient->mClientCommandToServer.mKey |= KEY_DOWN;
  		}
  		if(keys[VK_UP])
  		{
- 			mClient->mShape->mCommand.mKey |= KEY_UP;
+ 			mClient->mClientCommandToServer.mKey |= KEY_UP;
  		}
  		if(keys[VK_LEFT])
  		{
- 			mClient->mShape->mCommand.mKey |= KEY_LEFT;
+ 			mClient->mClientCommandToServer.mKey |= KEY_LEFT;
  		}
  		if(keys[VK_RIGHT])
  		{
- 			mClient->mShape->mCommand.mKey |= KEY_RIGHT;
+ 			mClient->mClientCommandToServer.mKey |= KEY_RIGHT;
  		}
 		if(keys[VK_SPACE])
 		{
-	 		mClient->mShape->mCommand.mKey |= KEY_SPACE;
+	 		mClient->mClientCommandToServer.mKey |= KEY_SPACE;
 	 	}
-	 	mClient->mShape->mCommand.mMilliseconds = (int) (mFrameTime * 1000);
+	 	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
 	}
 }
 
@@ -248,22 +248,6 @@ void Game::ReadPackets(void)
 			}
 			break;
 
-		case USER_MES_NONDELTAFRAME:
-			// Skip sequences
-			LogString("USER_MES_NONDELTAFRAME");
-			//mes.ReadShort();
-		//	mes.ReadShort();
-
-			mOldTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
-
-			for (unsigned int i = 0; i < mShapeVector.size(); i++)
-			{
-				LogString("Reading NONDELTAFRAME for client %d", mShapeVector.at(i)->mIndex);
-				ReadMoveCommand(&mes, mShapeVector.at(i));
-			}
-
-			break;
-
 		case USER_MES_SERVEREXIT:
 			Disconnect();
 			break;
@@ -293,26 +277,13 @@ void Game::SendCommand(void)
 	mClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mClient->mShape->mFrame[i], &mClient->mShape->mCommand, sizeof(Command));
+	memcpy(&mClient->mClientCommandToServerArray[i], &mClient->mClientCommandToServer, sizeof(Command));
 
-	// Store the commands to the clients' history
+	// Store the commands to the clients' history???? or should i be storing all shapes history like it's really doing
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		memcpy(&mShapeVector.at(i)->mFrame[i], &mShapeVector.at(i)->mCommand, sizeof(Command));
+		memcpy(&mShapeVector.at(i)->mCommandToRunOnShapeArray[i], &mShapeVector.at(i)->mCommandToRunOnShape, sizeof(Command));
 	}
-}
-
-void Game::SendRequestNonDeltaFrame(void)
-{
-	LogString("sendReq");
-	char data[1400];
-	Message message;
-	message.Init(data, sizeof(data));
-
-	message.WriteByte(USER_MES_NONDELTAFRAME);
-	message.AddSequences(mClient);
-
-	mClient->SendPacket(&message);
 }
 
 void Game::Disconnect(void)
@@ -326,36 +297,6 @@ void Game::Disconnect(void)
 	mInit = false;
 
 	mClient->SendDisconnect();
-}
-
-void Game::ReadMoveCommand(Message *mes, Shape *shape)
-{
-	// Key
-	shape->mServerFrame.mKey			= mes->ReadByte();
-
-	// Origin
-	shape->mServerFrame.mOrigin.x		= mes->ReadFloat();
-	shape->mServerFrame.mOrigin.z		= mes->ReadFloat();
-	shape->mServerFrame.mOrigin.y       = 0;
-	shape->mServerFrame.mVelocity.x		= mes->ReadFloat();
-	shape->mServerFrame.mVelocity.z		= mes->ReadFloat();
-	shape->mServerFrame.mVelocity.y     = 0;
-
-	shape->mServerFrame.mRot.x = 0;
-	shape->mServerFrame.mRot.z = 0;
-
-	// Read time to run command
-	shape->mServerFrame.mMilliseconds = mes->ReadByte();
-
-	memcpy(&shape->mCommand, &shape->mServerFrame, sizeof(Command));
-
-	// Fill the history array with the position we got
-	for(int f = 0; f < COMMAND_HISTORY_SIZE; f++)
-	{
-		shape->mFrame[f].mPredictedOrigin.x = shape->mCommand.mOrigin.x;
-		shape->mFrame[f].mPredictedOrigin.z = shape->mCommand.mOrigin.z;
-	}
-	LogString("read move command");
 }
 
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
@@ -419,7 +360,8 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	//milliseconds
 	if (flags2 & CMD_MILLISECONDS)
 	{
-		shape->mCommand.mMilliseconds = mes->ReadByte();
+		shape->mServerFrame.mMilliseconds = mes->ReadByte();
+		shape->mCommandToRunOnShape.mMilliseconds = shape->mServerFrame.mMilliseconds;
 	}
 }
 
@@ -433,7 +375,7 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
-	if(mClient->mShape->mFrame[last].mKey != mClient->mShape->mCommand.mKey)
+	if(mClient->mClientCommandToServerArray[last].mKey != mClient->mClientCommandToServer.mKey)
 		flags |= CMD_KEY;
 
 	// Add to the message
@@ -444,10 +386,10 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 	// Key
 	if(flags & CMD_KEY)
 	{
-		mes->WriteByte(mClient->mShape->mCommand.mKey);
+		mes->WriteByte(mClient->mClientCommandToServer.mKey);
 	}
 
-	mes->WriteByte(mClient->mShape->mCommand.mMilliseconds);
+	mes->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
 }
 
 

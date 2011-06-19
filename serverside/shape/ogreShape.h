@@ -45,7 +45,7 @@ Vector3D* mPosition;
 int			mIndex;
 
 Command mFrame[COMMAND_HISTORY_SIZE];
-Command	mServerFrame;					// the latest frame from server
+//Command	mServerFrame;					// the latest frame from server
 Command	mCommand;						// current frame's commands
 
 long mProcessedFrame;

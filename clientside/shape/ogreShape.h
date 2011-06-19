@@ -48,9 +48,10 @@ Vector3D* mPosition;
 int			mIndex;
 std::string  mName;
 
-Command mFrame[COMMAND_HISTORY_SIZE];
+Command mCommandToRunOnShapeArray[COMMAND_HISTORY_SIZE];
 Command	mServerFrame;					// the latest frame from server
-Command	mCommand;						// current frame's commands
+//Command	mClientCommandToServer;						// current frame's commands
+Command mCommandToRunOnShape;
 
 float mRenderTime;
 
