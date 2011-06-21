@@ -56,7 +56,7 @@ void Random_AI::execute(AI* ai)
 
 //	if (chance == 5) //change key
 //	{
-		srand ( time(NULL) + ai->mIndex);	/* initialize random seed: */
+		srand ( (short)time(NULL) + ai->mIndex);	/* initialize random seed: */
 		ai->mCommand.mKey = rand() % 16 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
 //	}
 
