@@ -45,5 +45,5 @@ void Shape::interpolateTick(float renderTime)
 	//run animations here for now.
 	float animSpeed = mRunSpeed * 1000/mRunSpeedMax;
 	float yVelocity = mServerFrame.mVelocity.y;
-	//OgreAnimation::updateAnimations(yVelocity, renderTime, mServerFrame.mVelocity.isZero(), animSpeed);
+	OgreAnimation::updateAnimations(yVelocity, renderTime, mServerFrame.mVelocity.isZero(), animSpeed);
 }
