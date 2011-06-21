@@ -11,9 +11,9 @@ ObjectTitle::ObjectTitle(const String& name, MovableObject* object, Camera* came
     overlay->add2D(container);
  
     textArea = OverlayManager::getSingleton().createOverlayElement("TextArea", name+"_TitleTextArea");
-    textArea->setDimensions(0.8, 0.8);
+    textArea->setDimensions(0.8f, 0.8f);
     textArea->setMetricsMode(GMM_PIXELS);
-    textArea->setPosition(0.1, 0.1);
+    textArea->setPosition(0.1f, 0.1f);
  
     FontManager::getSingleton().load(fontName, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
     font = (Font*)FontManager::getSingleton().getByName(fontName).getPointer();

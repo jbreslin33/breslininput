@@ -77,7 +77,7 @@ void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->z = 300 * mRunningShapeIndex;
+	pos->z = 300.0f * mRunningShapeIndex;
 	pos->y = 0;
 
 	Vector3D* vel = new Vector3D();
@@ -119,8 +119,6 @@ void Game::Frame(int msec)
 	// Read packets from clients
 	mServer->ReadPackets();
 
-	//LogString("rt:%d",mRealTime);
-	//LogString("st:%d",mServerTime);
 	// Wait full 32 ms before allowing to send
 	if(mRealTime < mServerTime)
 	{
