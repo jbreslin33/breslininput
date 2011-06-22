@@ -212,6 +212,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 
 	// Read time to run command
 	client->mShape->mCommand.mMilliseconds = mes->ReadByte();
+	client->mShape->mCommand.mMillisecondsTotal += client->mShape->mCommand.mMilliseconds;
 	//LogString("msec:%d",client->mShape->mCommand.mMilliseconds);
 	//let's set the shape's clientFrameTime right here.....
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
@@ -244,7 +245,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		flags1 |= CMD_ORIGIN_Y;
 	}
 
-
+/*
 	//Velocity
 	if(shape->mFrame[last].mVelocity.x != command->mVelocity.x)
 	{
@@ -258,6 +259,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	{
 		flags1 |= CMD_VELOCITY_Y;
 	}
+*/
 
 	//Rotation
 	if(shape->mFrame[last].mRot.x != command->mRot.x)
@@ -270,7 +272,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	}
 	
 	//Milliseconds
-	if(shape->mFrame[last].mMilliseconds != command->mMilliseconds)
+	if(shape->mFrame[last].mMillisecondsTotal != command->mMillisecondsTotal)
 	{
 		flags2 |= CMD_MILLISECONDS;
 	}
@@ -295,6 +297,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		mes->WriteFloat(command->mOrigin.y);
 	}
 
+/*
 	//Velocity
 	if(flags1 & CMD_VELOCITY_X)
 	{
@@ -308,6 +311,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	{
 		mes->WriteFloat(command->mVelocity.y);
 	}
+*/
 
 	//Rotation
 	if(flags1 & CMD_ROTATION_X)
@@ -322,6 +326,8 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	//Milliseconds
 	if(flags2 & CMD_MILLISECONDS)
 	{
-		mes->WriteByte(command->mMilliseconds);
+		mes->WriteByte(command->mMillisecondsTotal);
 	}
+
+	shape->mCommand.mMillisecondsTotal = 0;
 }

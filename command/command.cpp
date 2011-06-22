@@ -6,6 +6,10 @@ Command::Command()
 	mOrigin.y = 0.0;
 	mOrigin.z = 0.0;
 
+	mOriginOld.x = 0.0;
+	mOriginOld.y = 0.0;
+	mOriginOld.z = 0.0;
+
 	mVelocity.x = 0.0;
 	mVelocity.y = 0.0;
 	mVelocity.z = 0.0;
@@ -21,6 +25,8 @@ Command::Command()
 	mKey = 0;
 
 	mMilliseconds = 0;
+
+	mMillisecondsTotal = 0;
 
 	mClientFrametime = 0.0f;
 }

@@ -55,7 +55,7 @@ void Normal_ProcessTick_Move::execute(Move* move)
         serverDest.y = move->mServerFrame.mVelocity.y;
         serverDest.normalise();
 
-        move->mRunSpeed = 0.0;
+       // move->mRunSpeed = 0.0;
 
         if(move->mCommandToRunOnShape.mMilliseconds != 0)
         {
@@ -119,20 +119,32 @@ void Catchup_ProcessTick_Move::execute(Move* move)
         predictDist = sqrt(predictDist);
 
         //server velocity
-        move->mRunSpeed = sqrt(pow(move->mServerFrame.mVelocity.x, 2) + 
-        pow(move->mServerFrame.mVelocity.z, 2) + pow(move->mServerFrame.mVelocity.y, 2))/move->mCommandToRunOnShape.mMilliseconds;
-                                
-        //time needed to get to future server pos
-        float time = move->mDeltaPosition * move->mPosInterpFactor/move->mRunSpeed;
+		if(move->mCommandToRunOnShape.mMilliseconds != 0)
+        {
+           move->mRunSpeed = sqrt(pow(move->mServerFrame.mVelocity.x, 2) + 
+           pow(move->mServerFrame.mVelocity.z, 2) + pow(move->mServerFrame.mVelocity.y, 2))/move->mCommandToRunOnShape.mMilliseconds;
+		}
 
-        myDest.normalise();
+		if(move->mRunSpeed != 0.0)
+		{
+           //time needed to get to future server pos
+           float time = move->mDeltaPosition * move->mPosInterpFactor/move->mRunSpeed;
 
-        //client vel needed to get to future server pos in time
-        myDest = myDest * predictDist/time;
+           myDest.normalise();
 
-        move->mCommandToRunOnShape.mVelocity.x = myDest.x;
-        move->mCommandToRunOnShape.mVelocity.z = myDest.z;
-        move->mCommandToRunOnShape.mVelocity.y = myDest.y;
+           //client vel needed to get to future server pos in time
+           myDest = myDest * predictDist/time;
+
+           move->mCommandToRunOnShape.mVelocity.x = myDest.x;
+           move->mCommandToRunOnShape.mVelocity.z = myDest.z;
+           move->mCommandToRunOnShape.mVelocity.y = myDest.y;
+		}
+		else
+		{
+           move->mCommandToRunOnShape.mVelocity.x = 0.0;
+           move->mCommandToRunOnShape.mVelocity.z = 0.0;
+           move->mCommandToRunOnShape.mVelocity.y = 0.0;
+		}
 	}
 }
 void Catchup_ProcessTick_Move::exit(Move* move)
