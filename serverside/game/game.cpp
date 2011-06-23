@@ -138,6 +138,15 @@ void Game::Frame(int msec)
 	if(mServerTime < mRealTime)
 		mRealTime = mServerTime;
 
+	//just processtick for ai guys because their moves come from ai class/states
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		if (mShapeVector.at(i)->mClient == NULL) //your an ai guy
+		{
+			mShapeVector.at(i)->processTick();
+		}
+	}
+
 	SendCommand();
 	mFrameTime = 0;
 }
