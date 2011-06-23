@@ -454,11 +454,11 @@ void Server::ReadPackets(void)
 						}
 					}
 					
-					else
-					{
+					//else
+					//{
 						//just processtick for ai guys because their moves come from ai class/states
-						mGame->mShapeVector.at(i)->processTick();
-					}
+					//	mGame->mShapeVector.at(i)->processTick();
+					//}
 					
 				}
 
