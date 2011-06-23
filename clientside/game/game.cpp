@@ -310,23 +310,22 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	flags1 = mes->ReadByte();
 	flags2 = mes->ReadByte();
 
-	shape->mServerFrame.mOriginOld.x = shape->mServerFrame.mOrigin.x;
-	shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
-	shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
-
 	// Origin
 	if(flags1 & CMD_ORIGIN_X)
 	{
+		shape->mServerFrame.mOriginOld.x = shape->mServerFrame.mOrigin.x;
 		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
 	}
 
 	if(flags1 & CMD_ORIGIN_Z)
 	{
+		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
 		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
 	}
 
 	if(flags1 & CMD_ORIGIN_Y)
 	{
+		shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
 		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
 	}
 
@@ -376,6 +375,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	   shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 	   shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
 	}
+
 }
 
 //-----------------------------------------------------------------------------
