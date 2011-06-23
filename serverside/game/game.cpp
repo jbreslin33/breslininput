@@ -254,22 +254,6 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		flags1 |= CMD_ORIGIN_Y;
 	}
 
-/*
-	//Velocity
-	if(shape->mFrame[last].mVelocity.x != command->mVelocity.x)
-	{
-		flags1 |= CMD_VELOCITY_X;
-	}
-	if(shape->mFrame[last].mVelocity.z != command->mVelocity.z)
-	{
-		flags1 |= CMD_VELOCITY_Z;
-	}
-	if(shape->mFrame[last].mVelocity.y != command->mVelocity.y)
-	{
-		flags1 |= CMD_VELOCITY_Y;
-	}
-*/
-
 	//Rotation
 	if(shape->mFrame[last].mRot.x != command->mRot.x)
 	{
@@ -305,22 +289,6 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	{
 		mes->WriteFloat(command->mOrigin.y);
 	}
-
-/*
-	//Velocity
-	if(flags1 & CMD_VELOCITY_X)
-	{
-		mes->WriteFloat(command->mVelocity.x);
-	}
-	if(flags1 & CMD_VELOCITY_Z)
-	{
-		mes->WriteFloat(command->mVelocity.z);
-	}
-	if(flags1 & CMD_VELOCITY_Y)
-	{
-		mes->WriteFloat(command->mVelocity.y);
-	}
-*/
 
 	//Rotation
 	if(flags1 & CMD_ROTATION_X)

@@ -23,12 +23,6 @@ void Normal_AI::enter(AI* ai)
 }
 void Normal_AI::execute(AI* ai)
 {
-	int direction = 0;
-
-	ai->mCommand.mKey = direction;
-	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;
-	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
-
 }
 void Normal_AI::exit(AI* ai)
 {
@@ -50,9 +44,16 @@ void Random_AI::execute(AI* ai)
 	srand ( (short)time(NULL) + ai->mIndex);	/* initialize random seed: */
 	ai->mCommand.mKey = rand() % 16 + 1;  //assign random key 0-16 or is it 1-16 or 0-15?
 
+	if (ai->mCommand.mKey == 16)
+	{
+		ai->mCommand.mKey = 0;
+	}
+
+	//let's set them both because right now brian uses both. but for us ai guys they should be the same number???
+	ai->mCommand.mMillisecondsTotal = ai->mGame->mFrameTime;
 	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;
-	ai->mCommand.mMillisecondsTotal += ai->mCommand.mMilliseconds;
-	ai->mCommand.mClientFrametime = ai->mCommand.mMilliseconds / 1000.0f;
+
+	ai->mCommand.mClientFrametime = ai->mCommand.mMillisecondsTotal / 1000.0f;
 
 }
 void Random_AI::exit(AI* ai)
