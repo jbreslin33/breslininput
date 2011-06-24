@@ -304,7 +304,11 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	int flags1 = 0;
 	int flags2 = 0;
 
-	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
+bool x = true;
+bool z = true;
+bool y = true;
+
+	//mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	// Flags
 	flags1 = mes->ReadByte();
@@ -316,17 +320,29 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 		shape->mServerFrame.mOriginOld.x = shape->mServerFrame.mOrigin.x;
 		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
 	}
+	else
+	{
+		x = false;
+	}
 
 	if(flags1 & CMD_ORIGIN_Z)
 	{
 		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
 		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
 	}
+	else
+	{
+		z = false;
+	}
 
 	if(flags1 & CMD_ORIGIN_Y)
 	{
 		shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
 		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
+	}
+	else
+	{
+		y = false;
 	}
 
 /*
@@ -371,11 +387,19 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 
 	if (shape->mServerFrame.mMilliseconds != 0) 
 	{
-	   shape->mServerFrame.mVelocity.x = shape->mServerFrame.mOrigin.x - shape->mServerFrame.mOriginOld.x;
-	   shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
-	   shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
+		if(!x && !z && !y && shape->mServerFrame.mMilliseconds != 0)
+		{
+			shape->mServerFrame.mVelocity.x = 0.0;
+			shape->mServerFrame.mVelocity.z = 0.0;
+			shape->mServerFrame.mVelocity.y = 0.0;
+		}
+		else
+		{
+			shape->mServerFrame.mVelocity.x = shape->mServerFrame.mOrigin.x - shape->mServerFrame.mOriginOld.x;
+			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
+			shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
+		}
 	}
-
 }
 
 //-----------------------------------------------------------------------------
