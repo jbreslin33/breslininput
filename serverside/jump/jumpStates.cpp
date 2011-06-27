@@ -1,4 +1,6 @@
 #include "jumpStates.h"
+#include "../../tdreamsock/dreamSockLog.h"
+
 #include "jumpStateMachine.h"
 
 #include "jump.h"
@@ -25,6 +27,7 @@ void Normal_Jump::execute(Jump* jump)
 		jump->mSceneNode->setPosition(jump->mSceneNode->getPosition().x, 0.0, jump->mSceneNode->getPosition().z);
         jump->mVerticalVelocity = 0.0;
 		jump->mJumpStateMachine->changeState(No_Jump::Instance());
+		LogString("Jump");
     }
 }
 void Normal_Jump::exit(Jump* jump)
