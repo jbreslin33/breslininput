@@ -60,80 +60,42 @@
 // Introduce classes
 class Network;
 class Shape;
-class Shape;
 
 class Client
 {
 public:
-	Client(Network* network);
-	Client(const char *localIP, const char *remoteIP, int port);
+
+Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 	void			DumpBuffer(void);
 	void			ParsePacket(Message *mes);
+	void            Reset();
+	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
-	int				connectionState;		// Connecting, connected, disconnecting, disconnected
+	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
+	unsigned short	mIncomingSequence;		// Incoming packet sequence
+	unsigned short	mIncomingAcknowledged;	// Last packet acknowledged by other end
+	unsigned short	mDroppedPackets;			// Dropped packets
 
-	unsigned short	outgoingSequence;		// OutFgoing packet sequence
-	unsigned short	incomingSequence;		// Incoming packet sequence
-	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
-	unsigned short	droppedPackets;			// Dropped packets
+	int				mServerPort;				// Port
+	char			mServerIP[32];			// IP address
+	char			mName[32];				// Client name
 
-	int				serverPort;				// Port
-	char			serverIP[32];			// IP address
-	char			name[32];				// Client name
+	struct sockaddr	mMyaddress;				// Socket address
 
-
-	struct sockaddr	myaddress;				// Socket address
-
-	int				pingSent;				// When did we send ping?
-	int				ping;					// Network latency
-
-	int				lastMessageTime;
+	int				mLastMessageTime;
 
 public:
 
-	int				Initialise(const char *localIP, const char *remoteIP, int port);
-	void			Uninitialise(void);
-	void			Reset(void);
 	void			SendConnect(const char *name);
 	void			SendDisconnect(void);
-	void			SendPing(void);
-
-	void            forceUpdate();
-
-	void			SetConnectionState(int con)		{ connectionState = con; }
-	int				GetConnectionState(void)		{ return connectionState; }
 
 	int				GetPacket(char *data, struct sockaddr *from);
 	void			SendPacket(void);
 	void			SendPacket(Message *message);
 
-	unsigned short	GetOutgoingSequence(void)				{ return outgoingSequence; }
-	void			SetOutgoingSequence(unsigned short seq)	{ outgoingSequence = seq; }
-	void			IncreaseOutgoingSequence(void)			{ outgoingSequence++; }
-	unsigned short	GetIncomingSequence(void)				{ return incomingSequence; }
-	void			SetIncomingSequence(unsigned short seq)	{ incomingSequence = seq; }
-	unsigned short	GetIncomingAcknowledged(void)			{ return incomingAcknowledged; }
-	void			SetIncomingAcknowledged(unsigned short seq) { incomingAcknowledged = seq; }
-	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
-	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
-
-	char			*GetName(void)			{ return name; }
-
-#ifdef WIN32
-	void			SetName(char *n)		{ strcpy_s(name, n); }
-#else
-	void			SetName(char *n)		{ strcpy(name, n); }
-#endif
-
-	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
-	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
-
-	int				GetPingSent(void)		{ return pingSent; }
-	void			SetPing(int p)			{ ping = p; }
-
-	int				GetLastMessageTime(void) { return lastMessageTime; }
-	void			SetLastMessageTime(int t) { lastMessageTime = t; }
+	struct sockaddr *GetSocketAddress(void) { return &mMyaddress; }
+	void			SetSocketAddress(struct sockaddr *address) { memcpy(&mMyaddress, address, sizeof(struct sockaddr)); }
 
 	Message	mMessage;
 
