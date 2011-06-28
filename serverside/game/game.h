@@ -73,9 +73,6 @@ public:
 	void	ReadDeltaMoveCommand(Message *mes, Client *client);
 	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
 
-	// Server
-	void	ShutdownNetwork(void);
-
 	//time
 	void	Frame(int msec);
 

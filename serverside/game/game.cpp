@@ -38,11 +38,6 @@ Game::~Game()
 	delete mServer;
 }
 
-void Game::ShutdownNetwork(void)
-{
-	mServer->Uninitialise();
-}
-
 void Game::createShape(Client* client)
 {
 

@@ -58,7 +58,6 @@ public:
 					~Server();
 
 	void			Uninitialise(void);
-	void			SendPing(void);
 	int				GetPacket(char *data, struct sockaddr *from);
 	void			SendPackets(void);
 

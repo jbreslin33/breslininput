@@ -30,12 +30,6 @@ Server::~Server()
 	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
 }
 
-void Server::Uninitialise(void)
-{
-	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
-
-	init = false;
-}
 
 //send a shape that has a client. i.e. a new human player
 void Server::SendAddShape(Client* client)
@@ -182,15 +176,6 @@ void Server::SendRemoveShape(Shape* shape)
 */
 }
 
-void Server::SendPing(void)
-{
-	// Send ping message to every client
-	for (unsigned int i = 0; i < mClientVector.size(); i++)
-	{
-		mClientVector.at(i)->SendPing();
-	}
-}
-
 //called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
 void Server::AddClient(struct sockaddr *address, char *name)
 {
@@ -202,7 +187,7 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	client->SetOutgoingSequence(1);
 	client->SetIncomingSequence(0);
 	client->SetIncomingAcknowledged(0);
-	client->SetName(name);
+	//client->SetName(name);
 
 	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
@@ -224,8 +209,6 @@ void Server::RemoveClient(Client *client)
 		}
 	}
 }
-
-
 
 void Server::ParsePacket(Message *mes, struct sockaddr *address)
 {
@@ -280,11 +263,6 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 					    RemoveClient(mClientVector.at(i));
 
 						LogString("LIBRARY: Server: a client disconnected");
-						break;
-
-					case DREAMSOCK_MES_PING:
-						mClientVector.at(i)->SetPing(mNetwork->dreamSock_GetCurrentSystemTime() - mClientVector.at(i)->GetPingSent());
-						LogString("ping");
 						break;
 				}
 			}
