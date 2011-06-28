@@ -26,7 +26,7 @@
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
-#include "../client/client.h"
+#include "../serverside/client/client.h"
 
 
 Network::Network()

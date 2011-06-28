@@ -5,7 +5,7 @@
 
 #include "../../clientside/shape/shape.h"
 
-#include "../../client/client.h"
+#include "../../clientside/client/client.h"
 
 #include "../../math/vector3D.h"
 

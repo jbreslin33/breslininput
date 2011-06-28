@@ -131,7 +131,7 @@ set(HDRS
 	../message/message.h
 	
 	#client
-	../client/client.h
+	../clientside/client/client.h
 
 	#billboard
 	../billboard/objectTitle.h
@@ -182,7 +182,7 @@ set(SRCS
 	../message/message.cpp
 	
 	#client
-	../client/client.cpp
+	../clientside/client/client.cpp
 	
 	#billboard
 	../billboard/objectTitle.cpp
@@ -236,7 +236,7 @@ set(HDRS
 	../message/message.h
 	
 	#client
-	../client/client.h
+	../clientside/client/client.h
 		
 	#billboard
 	../billboard/objectTitle.h
@@ -285,7 +285,7 @@ set(SRCS
 	../message/message.cpp
 	
 	#client
-	../client/client.cpp
+	../clientside/client/client.cpp
 	
 	#billboard
 	../billboard/objectTitle.cpp

@@ -1,7 +1,7 @@
 #include "jump.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../client/client.h"
+#include "../../serverside/client/client.h"
 
 #define MAX_RUN_SPEED 200           // character running speed in units per second
 

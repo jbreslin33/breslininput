@@ -4,7 +4,7 @@
 #include "../../server/server.h"
 #include "../../network/network.h"
 
-#include "../../client/serverSideClient.h"
+#include "../../serverside/client/client.h"
 #include "../../serverside/shape/shape.h"
 #include "../../command/command.h"
 

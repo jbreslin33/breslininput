@@ -1,7 +1,7 @@
 #include "shape.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../client/client.h"
+#include "../../serverside/client/client.h"
 
 #include <string>
 
