@@ -180,48 +180,6 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 	return ret;
 }
 
-void Client::SendPacket(void)
-{
-	// Check that everything is set up
-	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
-	{
-		LogString("SendPacket error: Could not send because the client is disconnected");
-		return;
-	}
-
-	// If the message overflowed, do not send it
-	if(mMessage.GetOverFlow())
-	{
-		LogString("SendPacket error: Could not send because the buffer overflowed");
-		return;
-	}
-
-	// Check if serverPort is set. If it is, we are a client sending to the server.
-	// Otherwise we are a server sending to a client.
-	if(mServerPort)
-	{
-		struct sockaddr_in sendToAddress;
-		memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
-
-		u_long inetAddr = inet_addr(mServerIP);
-		sendToAddress.sin_port = htons((u_short) mServerPort);
-		sendToAddress.sin_family = AF_INET;
-		sendToAddress.sin_addr.s_addr = inetAddr;
-
-		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data,
-			*(struct sockaddr *) &sendToAddress);
-	}
-
-	// Check if the packet is sequenced
-	mMessage.BeginReading();
-	int type = mMessage.ReadByte();
-
-	if(type > 0)
-	{
-		mOutgoingSequence++;
-	}
-}
-
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up

@@ -91,7 +91,7 @@ public:
 	void			SendDisconnect(void);
 
 	int				GetPacket(char *data, struct sockaddr *from);
-	void			SendPacket(void);
+
 	void			SendPacket(Message *message);
 
 	struct sockaddr *GetSocketAddress(void) { return &mMyaddress; }
