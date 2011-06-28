@@ -1,10 +1,10 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "../message/message.h"
+#include "../../message/message.h"
 
 //command
-#include "../command/command.h"
+#include "../../command/command.h"
 
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")

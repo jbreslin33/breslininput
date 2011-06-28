@@ -3,7 +3,7 @@
 #include "../tdreamsock/dreamSockLog.h"
 
 #include "../network/network.h"
-#include "../client/client.h"
+#include "../serverside/client/client.h"
 #include "../message/message.h"
 #include "../serverside/shape/shape.h"
 #include "../serverside/game/game.h"

@@ -1,5 +1,5 @@
 #include "message.h"
-#include "../client/client.h"
+#include "../serverside/client/client.h"
 
 // Common headers
 #include <stdio.h>
