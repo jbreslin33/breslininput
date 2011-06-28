@@ -296,7 +296,7 @@ int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 		}
 		size_t t = 256;
 if (mClient)
-	if (mClient->connectionState == 1)
+	if (mClient->mConnectionState == 1)
 		LogString("Error code %d: recvfrom() : %s", errno, strerror_s("error",t,errno));
 #else
 		// Silently handle wouldblock

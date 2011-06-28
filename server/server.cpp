@@ -183,7 +183,7 @@ void Server::AddClient(struct sockaddr *address, char *name)
 	mClientVector.push_back(client);
 
 	client->SetSocketAddress(address);
-	client->SetConnectionState(DREAMSOCK_CONNECTING);
+	client->mConnectionState = DREAMSOCK_CONNECTING;
 	client->SetOutgoingSequence(1);
 	client->SetIncomingSequence(0);
 	client->SetIncomingAcknowledged(0);
@@ -248,9 +248,9 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 				}
 
 				// Wait for one message before setting state to connected
-				if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
+				if(mClientVector.at(i)->mConnectionState == DREAMSOCK_CONNECTING)
 				{
-					mClientVector.at(i)->SetConnectionState(DREAMSOCK_CONNECTED);
+					mClientVector.at(i)->mConnectionState = DREAMSOCK_CONNECTED;
 				}
 
 				// Parse through the system messages
@@ -277,7 +277,7 @@ int Server::CheckForTimeout(char *data, struct sockaddr *from)
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		// Don't timeout when connecting
-		if(mClientVector.at(i)->GetConnectionState() == DREAMSOCK_CONNECTING)
+		if(mClientVector.at(i)->mConnectionState == DREAMSOCK_CONNECTING)
 		{
 			continue;
 		}

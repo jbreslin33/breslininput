@@ -67,8 +67,7 @@ public:
 	Client(Network* network);
 
 ~Client();
-	void			DumpBuffer(void);
-	int				connectionState;		// Connecting, connected, disconnecting, disconnected
+	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
 	unsigned short	outgoingSequence;		// OutFgoing packet sequence
 	unsigned short	incomingSequence;		// Incoming packet sequence
@@ -80,9 +79,6 @@ public:
 	int				lastMessageTime;
 
 public:
-
-	void			SetConnectionState(int con)		{ connectionState = con; }
-	int				GetConnectionState(void)		{ return connectionState; }
 
 	void			SendPacket(void);
 	void			SendPacket(Message *message);
