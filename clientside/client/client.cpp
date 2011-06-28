@@ -10,63 +10,35 @@
 #include <arpa/inet.h>
 #endif
 
-//server side client constructor, many instances will be made, one for each client connected.
-Client::Client(Network* network)
-{
-	mNetwork = network;
-
-	mShape = NULL; //to be filled when we actually create the shape
-
-	connectionState	= DREAMSOCK_DISCONNECTED;
-
-	outgoingSequence		= 1;
-	incomingSequence		= 0;
-	incomingAcknowledged	= 0;
-	droppedPackets			= 0;
-
-	serverPort				= 0;
-
-	pingSent				= 0;
-	ping					= 0;
-
-	lastMessageTime			= 0;
-}
-
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int port)
 {
 	mShape = NULL; //to be filled when we actually create the shape
 
-	connectionState	= DREAMSOCK_DISCONNECTED;
+	mConnectionState	= DREAMSOCK_DISCONNECTED;
 
-	outgoingSequence		= 1;
-	incomingSequence		= 0;
-	incomingAcknowledged	= 0;
-	droppedPackets			= 0;
-
-	serverPort				= 0;
-
-	pingSent				= 0;
-	ping					= 0;
-
-	lastMessageTime			= 0;
+	mOutgoingSequence		= 1;
+	mIncomingSequence		= 0;
+	mIncomingAcknowledged	= 0;
+	mDroppedPackets			= 0;
+	mLastMessageTime			= 0;
 
 	// Save server's address information for later use
-	serverPort = port;
+	mServerPort = port;
 	
 	#ifdef WIN32
 	size_t t = 256;
-	strcpy_s(serverIP,t, remoteIP);
+	strcpy_s(mServerIP,t, remoteIP);
 #else
 	strcpy(serverIP,remoteIP);
 #endif
-	LogString("Server's information: IP address: %s, port: %d", serverIP, serverPort);
+	LogString("Server's information: IP address: %s, port: %d", mServerIP, mServerPort);
 
 	// Create client socket
 	mNetwork = new Network(this,localIP, 0);
 
 	// Check that the address is not empty
-	u_long inetAddr = inet_addr(serverIP);
+	u_long inetAddr = inet_addr(mServerIP);
 
 	if(inetAddr == INADDR_NONE)
 	{
@@ -85,27 +57,17 @@ Client::~Client()
 	delete mNetwork;
 }
 
-void Client::Uninitialise(void)
-{
-	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
-	Reset();
-}
-
 void Client::Reset(void)
 {
-	connectionState = DREAMSOCK_DISCONNECTED;
+	mConnectionState = DREAMSOCK_DISCONNECTED;
 
-	outgoingSequence		= 1;
-	incomingSequence		= 0;
-	incomingAcknowledged	= 0;
-	droppedPackets			= 0;
-
-	pingSent				= 0;
-	ping					= 0;
-
-	lastMessageTime			= 0;
-
+    mOutgoingSequence                = 1;
+    mIncomingSequence                = 0;
+    mIncomingAcknowledged    = 0;
+    mDroppedPackets                  = 0;
+    mLastMessageTime                 = 0;
 }
+
 
 void Client::DumpBuffer(void)
 {
@@ -122,18 +84,13 @@ void Client::SendConnect(const char *name)
 	// Dump buffer so there won't be any old packets to process
 	DumpBuffer();
 
-	connectionState = DREAMSOCK_CONNECTING;
+	mConnectionState = DREAMSOCK_CONNECTING;
 
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
 	mMessage.WriteByte(DREAMSOCK_MES_CONNECT);
 	mMessage.WriteString(name);
 
 	SendPacket(&mMessage);
-}
-
-void Client::forceUpdate()
-{
-
 }
 
 void Client::SendDisconnect(void)
@@ -144,17 +101,7 @@ void Client::SendDisconnect(void)
 	SendPacket(&mMessage);
 	Reset();
 
-	connectionState = DREAMSOCK_DISCONNECTING;
-}
-
-void Client::SendPing(void)
-{
-	pingSent = mNetwork->dreamSock_GetCurrentSystemTime();
-
-	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
-	mMessage.WriteByte(DREAMSOCK_MES_PING);
-
-	SendPacket(&mMessage);
+	mConnectionState = DREAMSOCK_DISCONNECTING;
 }
 
 void Client::ParsePacket(Message *mes)
@@ -169,31 +116,31 @@ void Client::ParsePacket(Message *mes)
 		unsigned short sequence		= mes->ReadShort();
 		unsigned short sequenceAck	= mes->ReadShort();
 
-		if(sequence <= incomingSequence)
+		if(sequence <= mIncomingSequence)
 		{
 			LogString("Client: (sequence: %d <= incoming seq: %d)",
-				sequence, incomingSequence);
+				sequence, mIncomingSequence);
 
 			LogString("Client: Sequence mismatch");
 		}
 
-		droppedPackets = sequence - incomingSequence + 1;
+		mDroppedPackets = sequence - mIncomingSequence + 1;
 
-		incomingSequence = sequence;
-		incomingAcknowledged = sequenceAck;
+		mIncomingSequence = sequence;
+		mIncomingAcknowledged = sequenceAck;
 	}
 
 	// Parse trough the system messages
 	switch(type)
 	{
 	case DREAMSOCK_MES_CONNECT:
-		connectionState = DREAMSOCK_CONNECTED;
+		mConnectionState = DREAMSOCK_CONNECTED;
 
 		LogString("LIBRARY: Client: got connect confirmation");
 		break;
 
 	case DREAMSOCK_MES_DISCONNECT:
-		connectionState = DREAMSOCK_DISCONNECTED;
+		mConnectionState = DREAMSOCK_DISCONNECTED;
 
 		LogString("LIBRARY: Client: got disconnect confirmation");
 		break;
@@ -204,10 +151,6 @@ void Client::ParsePacket(Message *mes)
 
 	case DREAMSOCK_MES_REMOVESHAPE:
 		LogString("LIBRARY: Client: removing a client");
-		break;
-
-	case DREAMSOCK_MES_PING:
-		SendPing();
 		break;
 	}
 }
@@ -240,7 +183,7 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 void Client::SendPacket(void)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -255,22 +198,18 @@ void Client::SendPacket(void)
 
 	// Check if serverPort is set. If it is, we are a client sending to the server.
 	// Otherwise we are a server sending to a client.
-	if(serverPort)
+	if(mServerPort)
 	{
 		struct sockaddr_in sendToAddress;
 		memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
-		u_long inetAddr = inet_addr(serverIP);
-		sendToAddress.sin_port = htons((u_short) serverPort);
+		u_long inetAddr = inet_addr(mServerIP);
+		sendToAddress.sin_port = htons((u_short) mServerPort);
 		sendToAddress.sin_family = AF_INET;
 		sendToAddress.sin_addr.s_addr = inetAddr;
 
 		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data,
 			*(struct sockaddr *) &sendToAddress);
-	}
-	else
-	{
-		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, myaddress);
 	}
 
 	// Check if the packet is sequenced
@@ -279,14 +218,14 @@ void Client::SendPacket(void)
 
 	if(type > 0)
 	{
-		outgoingSequence++;
+		mOutgoingSequence++;
 	}
 }
 
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -301,22 +240,18 @@ void Client::SendPacket(Message *theMes)
 
 	// Check if serverPort is set. If it is, we are a client sending to the server.
 	// Otherwise we are a server sending to a client.
-	if(serverPort)
+	if(mServerPort)
 	{
 		struct sockaddr_in sendToAddress;
 		memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
-		u_long inetAddr = inet_addr(serverIP);
-		sendToAddress.sin_port = htons((u_short) serverPort);
+		u_long inetAddr = inet_addr(mServerIP);
+		sendToAddress.sin_port = htons((u_short) mServerPort);
 		sendToAddress.sin_family = AF_INET;
 		sendToAddress.sin_addr.s_addr = inetAddr;
 
 		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
-	}
-	else
-	{
-		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data, myaddress);
 	}
 
 	// Check if the packet is sequenced
@@ -325,7 +260,7 @@ void Client::SendPacket(Message *theMes)
 
 	if(type > 0)
 	{
-		outgoingSequence++;
+		mOutgoingSequence++;
 	}
 }
 

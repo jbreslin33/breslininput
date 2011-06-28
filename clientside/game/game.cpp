@@ -258,13 +258,13 @@ void Game::ReadPackets(void)
 
 void Game::SendCommand(void)
 {
-	if(mClient->GetConnectionState() != DREAMSOCK_CONNECTED)
+	if(mClient->mConnectionState != DREAMSOCK_CONNECTED)
 		return;
 
 	Message message;
 	char data[1400];
 
-	int i = mClient->GetOutgoingSequence() & (COMMAND_HISTORY_SIZE-1);
+	int i = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
 	message.Init(data, sizeof(data));
 	message.WriteByte(USER_MES_FRAME);						// type
@@ -409,7 +409,7 @@ bool y = true;
 void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
-	int last = (mClient->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+	int last = (mClient->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
 	if(mClient->mClientCommandToServerArray[last].mKey != mClient->mClientCommandToServer.mKey)
