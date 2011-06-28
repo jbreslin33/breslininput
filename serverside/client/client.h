@@ -65,7 +65,7 @@ class Client
 {
 public:
 	Client(Network* network);
-	Client(const char *localIP, const char *remoteIP, int port);
+
 ~Client();
 	void			DumpBuffer(void);
 	int				connectionState;		// Connecting, connected, disconnecting, disconnected
@@ -73,9 +73,7 @@ public:
 	unsigned short	outgoingSequence;		// OutFgoing packet sequence
 	unsigned short	incomingSequence;		// Incoming packet sequence
 	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
-	unsigned short	droppedPackets;			// Dropped packets
-
-	char			serverIP[32];			// IP address
+	unsigned short	mDroppedPackets;			// Dropped packets
 
 	struct sockaddr	myaddress;				// Socket address
 
@@ -96,12 +94,12 @@ public:
 	void			SetIncomingSequence(unsigned short seq)	{ incomingSequence = seq; }
 	unsigned short	GetIncomingAcknowledged(void)			{ return incomingAcknowledged; }
 	void			SetIncomingAcknowledged(unsigned short seq) { incomingAcknowledged = seq; }
-	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
-	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
 
+	//clients address to send back messages to
 	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
 	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
 
+	//for timeouts
 	int				GetLastMessageTime(void) { return lastMessageTime; }
 	void			SetLastMessageTime(int t) { lastMessageTime = t; }
 
