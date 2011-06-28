@@ -31,7 +31,6 @@ using namespace Ogre;
 #define CMD_MILLISECONDS            2
 
 #define USER_MES_FRAME				1
-#define USER_MES_NONDELTAFRAME		2
 #define USER_MES_SERVEREXIT			3
 
 //class Network;

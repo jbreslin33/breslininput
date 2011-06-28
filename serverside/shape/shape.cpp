@@ -65,12 +65,6 @@ void Shape::processTick()
     mCommand.mRot.x = mSceneNode->getOrientation().zAxis().x;
     mCommand.mRot.z = mSceneNode->getOrientation().zAxis().z;
 
-	//set mProcessed frame if their is a client controlling this shape
-	if (mClient != NULL)
-	{
-		int f = mClient->mIncomingSequence & (COMMAND_HISTORY_SIZE-1);
-		mProcessedFrame = f;
-	}
 }
 
 void Shape::setKeyDirection()
