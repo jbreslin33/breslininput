@@ -308,7 +308,7 @@ bool x = true;
 bool z = true;
 bool y = true;
 
-	//mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
+	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	// Flags
 	flags1 = mes->ReadByte();
@@ -344,24 +344,6 @@ bool y = true;
 	{
 		y = false;
 	}
-
-/*
-	// Velocity
-	if(flags1 & CMD_VELOCITY_X)
-	{
-		shape->mServerFrame.mVelocity.x = mes->ReadFloat();		
-	}
-
-	if(flags1 & CMD_VELOCITY_Z)
-	{
-		shape->mServerFrame.mVelocity.z = mes->ReadFloat();	
-	}
-
-	if(flags1 & CMD_VELOCITY_Y)
-	{
-		shape->mServerFrame.mVelocity.y = mes->ReadFloat();
-	}
-*/
 
 	//set old rot
 	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
