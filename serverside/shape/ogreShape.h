@@ -31,10 +31,7 @@ OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root
 ~OgreShape();
 
 //for tracking what we last sent to internets clients
-	unsigned short	GetOutgoingSequence(void)				{ return outgoingSequence; }
-	void			SetOutgoingSequence(unsigned short seq)	{ outgoingSequence = seq; }
-	void			IncreaseOutgoingSequence(void)			{ outgoingSequence++; }
-	unsigned short	outgoingSequence;		// Outgoing packet sequence
+unsigned short	mOutgoingSequence;		// Outgoing packet sequence
 
 //ogre scene stuff
 SceneNode*          mSceneNode;

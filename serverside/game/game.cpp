@@ -163,11 +163,8 @@ void Game::SendCommand(void)
 		//this is where you need to actually loop thru the shapes not the clients but put write to client mMessage
 		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
-			
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
-			//LogString("s:%d",mServer->mClientVector.at(i)->mMessage.GetSize());
 		}
-			//LogString("ts:%d",mServer->mClientVector.at(i)->mMessage.GetSize());
 	}
 
 	// Send messages to all clients
@@ -176,7 +173,7 @@ void Game::SendCommand(void)
 	// Store the sent command in history
 	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
 	{
-		int num = (mServer->mGame->mShapeVector.at(i)->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+		int num = (mServer->mGame->mShapeVector.at(i)->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
 		memcpy(&mServer->mGame->mShapeVector.at(i)->mFrame[num], &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
 	}
 }
@@ -231,7 +228,7 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	int flags1 = 0;
 	int flags2 = 0;
 
-	int last = (shape->GetOutgoingSequence() - 1) & (COMMAND_HISTORY_SIZE-1);
+	int last = (shape->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
 
 /********** CHECK WHAT NEEDS TO BE UPDATED *****************/
 

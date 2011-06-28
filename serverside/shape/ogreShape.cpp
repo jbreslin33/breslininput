@@ -30,7 +30,7 @@ OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 	mIndex  = 0;
 	mProcessedFrame = 0;
 
-	outgoingSequence		= 1;
+	mOutgoingSequence		= 1;
 
 	//keys
     mKeyDirection = Vector3::ZERO;

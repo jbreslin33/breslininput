@@ -50,7 +50,6 @@ std::string  mName;
 
 Command mCommandToRunOnShapeArray[COMMAND_HISTORY_SIZE];
 Command	mServerFrame;					// the latest frame from server
-//Command	mClientCommandToServer;						// current frame's commands
 Command mCommandToRunOnShape;
 
 float mRenderTime;
