@@ -13,11 +13,11 @@
 //server side client constructor, many instances will be made, one for each client connected.
 Client::Client(Network* network)
 {
-	mNetwork = network;
+	mNetwork = network; //handles udp sockets
 
 	mShape = NULL; //to be filled when we actually create the shape
 
-	connectionState	= DREAMSOCK_DISCONNECTED;
+	mConnectionState	= DREAMSOCK_DISCONNECTED;
 
 	outgoingSequence		= 1;
 	incomingSequence		= 0;
@@ -33,20 +33,10 @@ Client::~Client()
 	delete mNetwork;
 }
 
-void Client::DumpBuffer(void)
-{
-	char data[1400];
-	int ret;
-
-	while((ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, data, NULL)) > 0)
-	{
-	}
-}
-
 void Client::SendPacket(void)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -74,7 +64,7 @@ void Client::SendPacket(void)
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || connectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
