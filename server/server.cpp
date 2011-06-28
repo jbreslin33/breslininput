@@ -184,12 +184,11 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	client->SetSocketAddress(address);
 	client->mConnectionState = DREAMSOCK_CONNECTING;
-	client->SetOutgoingSequence(1);
-	client->SetIncomingSequence(0);
-	client->SetIncomingAcknowledged(0);
-	//client->SetName(name);
+	client->mOutgoingSequence = 1;
+	client->mIncomingSequence = 0;
+	client->mIncomingAcknowledged = 0;
 
-	memcpy(&client->myaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
+	memcpy(&client->mMyaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
 	mGame->createShape(client);
 
@@ -227,7 +226,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 		{
 			if(memcmp(mClientVector.at(i)->GetSocketAddress(), address, sizeof(address)) == 0)
 			{
-				mClientVector.at(i)->SetLastMessageTime(mNetwork->dreamSock_GetCurrentSystemTime());
+				mClientVector.at(i)->mLastMessageTime = mNetwork->dreamSock_GetCurrentSystemTime();
 
 				// Check if the type is a positive number
 				// -> is the packet sequenced
@@ -236,15 +235,15 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 					unsigned short sequence         = mes->ReadShort();
 					unsigned short sequenceAck      = mes->ReadShort();
 
-					if(sequence <= mClientVector.at(i)->GetIncomingSequence())
+					if(sequence <= mClientVector.at(i)->mIncomingSequence)
 					{
 						LogString("LIB: Server: Sequence mismatch (sequence: %ld <= incoming seq: %ld)",
-						sequence, mClientVector.at(i)->GetIncomingSequence());
+						sequence, mClientVector.at(i)->mIncomingSequence);
 					}
 
-					mClientVector.at(i)->mDroppedPackets  = sequence - mClientVector.at(i)->GetIncomingSequence() - 1;
-					mClientVector.at(i)->SetIncomingSequence(sequence);
-					mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
+					mClientVector.at(i)->mDroppedPackets  = sequence - mClientVector.at(i)->mIncomingSequence - 1;
+					mClientVector.at(i)->mIncomingSequence = sequence;
+					mClientVector.at(i)->mIncomingAcknowledged = sequenceAck;
 				}
 
 				// Wait for one message before setting state to connected
@@ -284,10 +283,10 @@ int Server::CheckForTimeout(char *data, struct sockaddr *from)
 
 		// Check if the client has been silent for 30 seconds
 		// If yes, assume crashed and remove the client
-		if(currentTime - mClientVector.at(i)->GetLastMessageTime() > 30000)
+		if(currentTime - mClientVector.at(i)->mLastMessageTime > 30000)
 		{
 			LogString("Client timeout, disconnecting (%d - %d = %d)",
-				currentTime, mClientVector.at(i)->GetLastMessageTime(), currentTime - mClientVector.at(i)->GetLastMessageTime());
+				currentTime, mClientVector.at(i)->mLastMessageTime, currentTime - mClientVector.at(i)->mLastMessageTime);
 
 			// Build a 'fake' message so the application will also
 			// receive notification of a client disconnecting
@@ -404,7 +403,7 @@ void Server::ReadPackets(void)
 
 				for (unsigned int i = 0; i < mClientVector.size(); i++)
 				{
-					if(memcmp(&mClientVector.at(i)->myaddress, &address, sizeof(address)) == 0)
+					if(memcmp(&mClientVector.at(i)->mMyaddress, &address, sizeof(address)) == 0)
 					{
 						//mClientVector.erase(
 					}
@@ -423,7 +422,7 @@ void Server::ReadPackets(void)
 				{
 					if (mGame->mShapeVector.at(i)->mClient != NULL)
 					{
-						if(memcmp(&mGame->mShapeVector.at(i)->mClient->myaddress, &address, sizeof(address)) == 0)
+						if(memcmp(&mGame->mShapeVector.at(i)->mClient->mMyaddress, &address, sizeof(address)) == 0)
 						{
 							mGame->ReadDeltaMoveCommand(&mes, mGame->mShapeVector.at(i)->mClient);
 							mGame->mShapeVector.at(i)->processTick();

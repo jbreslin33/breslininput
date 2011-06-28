@@ -39,8 +39,8 @@ char *Message::GetNewPoint(int length)
 
 void Message::AddSequences(Client *client)
 {
-	WriteShort(client->GetOutgoingSequence());
-	WriteShort(client->GetIncomingSequence());
+	WriteShort(client->mOutgoingSequence);
+	WriteShort(client->mIncomingSequence);
 }
 
 void Message::Write(const void *d, int length)

@@ -68,7 +68,7 @@ void Shape::processTick()
 	//set mProcessed frame if their is a client controlling this shape
 	if (mClient != NULL)
 	{
-		int f = mClient->GetIncomingSequence() & (COMMAND_HISTORY_SIZE-1);
+		int f = mClient->mIncomingSequence & (COMMAND_HISTORY_SIZE-1);
 		mProcessedFrame = f;
 	}
 }
