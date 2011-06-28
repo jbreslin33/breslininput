@@ -242,7 +242,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 						sequence, mClientVector.at(i)->GetIncomingSequence());
 					}
 
-					mClientVector.at(i)->SetDroppedPackets(sequence - mClientVector.at(i)->GetIncomingSequence() - 1);
+					mClientVector.at(i)->mDroppedPackets  = sequence - mClientVector.at(i)->GetIncomingSequence() - 1;
 					mClientVector.at(i)->SetIncomingSequence(sequence);
 					mClientVector.at(i)->SetIncomingAcknowledged(sequenceAck);
 				}

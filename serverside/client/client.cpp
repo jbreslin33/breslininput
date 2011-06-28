@@ -22,7 +22,7 @@ Client::Client(Network* network)
 	outgoingSequence		= 1;
 	incomingSequence		= 0;
 	incomingAcknowledged	= 0;
-	droppedPackets			= 0;
+	mDroppedPackets			= 0;
 
 	lastMessageTime			= 0;
 }
