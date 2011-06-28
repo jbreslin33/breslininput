@@ -69,35 +69,23 @@ public:
 ~Client();
 	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
-	unsigned short	outgoingSequence;		// OutFgoing packet sequence
-	unsigned short	incomingSequence;		// Incoming packet sequence
-	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
+	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
+	unsigned short	mIncomingSequence;		// Incoming packet sequence
+	unsigned short	mIncomingAcknowledged;	// Last packet acknowledged by other end
 	unsigned short	mDroppedPackets;			// Dropped packets
 
-	struct sockaddr	myaddress;				// Socket address
+	struct sockaddr	mMyaddress;				// Socket address
 
-	int				lastMessageTime;
+	int				mLastMessageTime;
 
 public:
 
 	void			SendPacket(void);
 	void			SendPacket(Message *message);
 
-	unsigned short	GetOutgoingSequence(void)				{ return outgoingSequence; }
-	void			SetOutgoingSequence(unsigned short seq)	{ outgoingSequence = seq; }
-	void			IncreaseOutgoingSequence(void)			{ outgoingSequence++; }
-	unsigned short	GetIncomingSequence(void)				{ return incomingSequence; }
-	void			SetIncomingSequence(unsigned short seq)	{ incomingSequence = seq; }
-	unsigned short	GetIncomingAcknowledged(void)			{ return incomingAcknowledged; }
-	void			SetIncomingAcknowledged(unsigned short seq) { incomingAcknowledged = seq; }
-
 	//clients address to send back messages to
-	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
-	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
-
-	//for timeouts
-	int				GetLastMessageTime(void) { return lastMessageTime; }
-	void			SetLastMessageTime(int t) { lastMessageTime = t; }
+	struct sockaddr *GetSocketAddress(void) { return &mMyaddress; }
+	void			SetSocketAddress(struct sockaddr *address) { memcpy(&mMyaddress, address, sizeof(struct sockaddr)); }
 
 	Message	mMessage;
 

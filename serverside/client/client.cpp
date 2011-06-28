@@ -19,12 +19,12 @@ Client::Client(Network* network)
 
 	mConnectionState	= DREAMSOCK_DISCONNECTED;
 
-	outgoingSequence		= 1;
-	incomingSequence		= 0;
-	incomingAcknowledged	= 0;
+	mOutgoingSequence		= 1;
+	mIncomingSequence		= 0;
+	mIncomingAcknowledged	= 0;
 	mDroppedPackets			= 0;
 
-	lastMessageTime			= 0;
+	mLastMessageTime			= 0;
 }
 
 Client::~Client()
@@ -49,7 +49,7 @@ void Client::SendPacket(void)
 		return;
 	}
 
-	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, myaddress);
+	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, mMyaddress);
 
 	// Check if the packet is sequenced
 	mMessage.BeginReading();
@@ -57,7 +57,7 @@ void Client::SendPacket(void)
 
 	if(type > 0)
 	{
-		outgoingSequence++;
+		mOutgoingSequence++;
 	}
 }
 
@@ -77,7 +77,7 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data, myaddress);
+	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data, mMyaddress);
 
 	// Check if the packet is sequenced
 	theMes->BeginReading();
@@ -85,7 +85,7 @@ void Client::SendPacket(Message *theMes)
 
 	if(type > 0)
 	{
-		outgoingSequence++;
+		mOutgoingSequence++;
 	}
 }
 
