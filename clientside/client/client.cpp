@@ -164,14 +164,14 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 	int ret;
 
 	Message mes;
-	//LogString("sizeOfData:%d",sizeof(data));
+
 	mes.Init(data, sizeof(data));
 
 	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data, from);
 
 	if(ret <= 0)
 		return 0;
-	//LogString("size:%d",mes.GetSize());
+
 	mes.SetSize(ret);
 
 	// Parse system messages
@@ -196,21 +196,17 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	// Check if serverPort is set. If it is, we are a client sending to the server.
-	// Otherwise we are a server sending to a client.
-	if(mServerPort)
-	{
-		struct sockaddr_in sendToAddress;
-		memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
+	//this used to ask whether serverPort was null but not needed now that this function is on clientside.
+	struct sockaddr_in sendToAddress;
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
-		u_long inetAddr = inet_addr(mServerIP);
-		sendToAddress.sin_port = htons((u_short) mServerPort);
-		sendToAddress.sin_family = AF_INET;
-		sendToAddress.sin_addr.s_addr = inetAddr;
+	u_long inetAddr = inet_addr(mServerIP);
+	sendToAddress.sin_port = htons((u_short) mServerPort);
+	sendToAddress.sin_family = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
 
-		mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data,
+	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
-	}
 
 	// Check if the packet is sequenced
 	theMes->BeginReading();
