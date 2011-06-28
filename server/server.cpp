@@ -369,7 +369,6 @@ void Server::SendPackets(void)
 	}
 }
 
-
 void Server::ReadPackets(void)
 {
 	char data[1400];
@@ -430,18 +429,8 @@ void Server::ReadPackets(void)
 							break;
 						}
 					}
-					
-					//else
-					//{
-						//just processtick for ai guys because their moves come from ai class/states
-					//	mGame->mShapeVector.at(i)->processTick();
-					//}
-					
 				}
-
-
 				break;
-
 			}
 		}
 	}
