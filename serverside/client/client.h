@@ -80,7 +80,6 @@ public:
 
 public:
 
-	void			SendPacket(void);
 	void			SendPacket(Message *message);
 
 	//clients address to send back messages to

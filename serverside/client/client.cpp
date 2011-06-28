@@ -33,34 +33,6 @@ Client::~Client()
 	delete mNetwork;
 }
 
-void Client::SendPacket(void)
-{
-	// Check that everything is set up
-	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
-	{
-		LogString("SendPacket error: Could not send because the client is disconnected");
-		return;
-	}
-
-	// If the message overflowed, do not send it
-	if(mMessage.GetOverFlow())
-	{
-		LogString("SendPacket error: Could not send because the buffer overflowed");
-		return;
-	}
-
-	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, mMessage.GetSize(), mMessage.data, mMyaddress);
-
-	// Check if the packet is sequenced
-	mMessage.BeginReading();
-	int type = mMessage.ReadByte();
-
-	if(type > 0)
-	{
-		mOutgoingSequence++;
-	}
-}
-
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up

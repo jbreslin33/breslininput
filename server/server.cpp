@@ -41,7 +41,7 @@ void Server::SendAddShape(Client* client)
 
 	//this a new client so let him change to connectionState = DREAMSOCK_CONNECTED; 
 	client->mMessage.WriteByte(DREAMSOCK_MES_CONNECT);	// type
-	client->SendPacket();
+	client->SendPacket(&client->mMessage);
 
 	// First inform the new client of the other shapes by looping thru entire
 	//mShapeVector one by one and sending out client->SendPacket();
@@ -110,8 +110,7 @@ void Server::SendAddShape(Client* client)
 			mClientVector.at(i)->mMessage.WriteFloat(client->mShape->mCommand.mRot.x);
 			mClientVector.at(i)->mMessage.WriteFloat(client->mShape->mCommand.mRot.z);
 		
-
-			mClientVector.at(i)->SendPacket();
+			mClientVector.at(i)->SendPacket(&mClientVector.at(i)->mMessage);
 		}
 	}
 }
@@ -144,7 +143,7 @@ void Server::SendAddAIShape(Shape* shape)
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mRot.z);
 
 
-		mClientVector.at(i)->SendPacket();
+		mClientVector.at(i)->SendPacket(&mClientVector.at(i)->mMessage);
 	}
 }
 
@@ -354,6 +353,7 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 	return ret;
 }
 
+//this loops thru each client instance and then calls their sendPacket(mess) function
 void Server::SendPackets(void)
 {
 	// Check if the server is set up
@@ -365,7 +365,7 @@ void Server::SendPackets(void)
 		if(mClientVector.at(i)->mMessage.GetSize() == 0)
 			continue;
 
-		mClientVector.at(i)->SendPacket();
+		mClientVector.at(i)->SendPacket(&mClientVector.at(i)->mMessage);
 	}
 }
 
