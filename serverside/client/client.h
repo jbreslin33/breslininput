@@ -60,7 +60,6 @@
 // Introduce classes
 class Network;
 class Shape;
-class Shape;
 
 class Client
 {
@@ -69,8 +68,6 @@ public:
 	Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 	void			DumpBuffer(void);
-	void			ParsePacket(Message *mes);
-
 	int				connectionState;		// Connecting, connected, disconnecting, disconnected
 
 	unsigned short	outgoingSequence;		// OutFgoing packet sequence
@@ -78,33 +75,17 @@ public:
 	unsigned short	incomingAcknowledged;	// Last packet acknowledged by other end
 	unsigned short	droppedPackets;			// Dropped packets
 
-	int				serverPort;				// Port
 	char			serverIP[32];			// IP address
-	char			name[32];				// Client name
-
 
 	struct sockaddr	myaddress;				// Socket address
-
-	int				pingSent;				// When did we send ping?
-	int				ping;					// Network latency
 
 	int				lastMessageTime;
 
 public:
 
-	int				Initialise(const char *localIP, const char *remoteIP, int port);
-	void			Uninitialise(void);
-	void			Reset(void);
-	void			SendConnect(const char *name);
-	void			SendDisconnect(void);
-	void			SendPing(void);
-
-	void            forceUpdate();
-
 	void			SetConnectionState(int con)		{ connectionState = con; }
 	int				GetConnectionState(void)		{ return connectionState; }
 
-	int				GetPacket(char *data, struct sockaddr *from);
 	void			SendPacket(void);
 	void			SendPacket(Message *message);
 
@@ -118,19 +99,8 @@ public:
 	unsigned short	GetDroppedPackets(void)					{ return droppedPackets; }
 	void			SetDroppedPackets(unsigned short drop)	{ droppedPackets = drop; }
 
-	char			*GetName(void)			{ return name; }
-
-#ifdef WIN32
-	void			SetName(char *n)		{ strcpy_s(name, n); }
-#else
-	void			SetName(char *n)		{ strcpy(name, n); }
-#endif
-
 	struct sockaddr *GetSocketAddress(void) { return &myaddress; }
 	void			SetSocketAddress(struct sockaddr *address) { memcpy(&myaddress, address, sizeof(struct sockaddr)); }
-
-	int				GetPingSent(void)		{ return pingSent; }
-	void			SetPing(int p)			{ ping = p; }
 
 	int				GetLastMessageTime(void) { return lastMessageTime; }
 	void			SetLastMessageTime(int t) { lastMessageTime = t; }
