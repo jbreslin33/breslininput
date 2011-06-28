@@ -28,7 +28,6 @@ OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 
  	mPosition = position;
 	mIndex  = 0;
-	mProcessedFrame = 0;
 
 	mOutgoingSequence		= 1;
 
