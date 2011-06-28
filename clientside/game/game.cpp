@@ -299,6 +299,7 @@ void Game::Disconnect(void)
 	mClient->SendDisconnect();
 }
 
+//this is all shapes coming to client game from server
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
 	int flags1 = 0;
@@ -384,10 +385,8 @@ bool y = true;
 	}
 }
 
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc:
-//-----------------------------------------------------------------------------
+//this the client's (in this case we are on clientside so there is only one client instance) move being built
+//to send to the server
 void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
