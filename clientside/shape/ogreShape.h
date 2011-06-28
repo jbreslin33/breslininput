@@ -39,8 +39,6 @@ SceneNode*          mSceneNode;
 ObjectTitle* mObjectTitle;
 std::string  mObjectTitleString;
 
-
-
 //stats
 Vector3D* mPosition;
 
