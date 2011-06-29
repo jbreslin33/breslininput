@@ -387,7 +387,7 @@ bool y = true;
 }
 
 //this the client's (in this case we are on clientside so there is only one client instance) move being built
-//to send to the server
+//to send to the server, all we are sending is a key(maybe) and always milliseconds.
 void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
@@ -395,7 +395,14 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 
 	// Check what needs to be updated
 	if(mClient->mClientCommandToServerArray[last].mKey != mClient->mClientCommandToServer.mKey)
+	{
 		flags |= CMD_KEY;
+	}
+
+	if(mClient->mClientCommandToServerArray[last].mMilliseconds != mClient->mClientCommandToServer.mMilliseconds)
+	{
+		flags |= CMD_MILLISECONDS;
+	}
 
 	// Add to the message
 	
@@ -408,7 +415,10 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 		mes->WriteByte(mClient->mClientCommandToServer.mKey);
 	}
 
-	mes->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
+	if(flags & CMD_MILLISECONDS)
+	{
+		mes->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
+	}
 }
 
 

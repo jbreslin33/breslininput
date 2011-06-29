@@ -209,14 +209,19 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 	if(flags & CMD_KEY)
 	{
 		client->mShape->mCommand.mKey = mes->ReadByte();
-
-		//LogString("Client %d: read CMD_KEY (%d)", client->mShape->mIndex, client->mShape->mCommand.mKey);
 	}
 
-	// Read time to run command
-	client->mShape->mCommand.mMilliseconds = mes->ReadByte();
+	// Milliseconds
+	if(flags & CMD_MILLISECONDS)
+	{
+		client->mShape->mCommand.mMilliseconds = mes->ReadByte();
+	}
+
+	//let's keep a tally called mMillisecondsTotal by adding up everytime we ReadDeltaMove...
 	client->mShape->mCommand.mMillisecondsTotal += client->mShape->mCommand.mMilliseconds;
-	//LogString("msec:%d",client->mShape->mCommand.mMilliseconds);
+
+	//do i want to tally up the mKeys too???? especially if I'm not going to act on them as soon as i read them, atleast that is the plan.
+
 	//let's set the shape's clientFrameTime right here.....
 	client->mShape->mCommand.mClientFrametime = client->mShape->mCommand.mMilliseconds / 1000.0f;
 }
