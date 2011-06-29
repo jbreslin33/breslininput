@@ -37,11 +37,7 @@ char *Message::GetNewPoint(int length)
 	return tempData;
 }
 
-void Message::AddSequences(Client *client)
-{
-	WriteShort(client->mOutgoingSequence);
-	WriteShort(client->mIncomingSequence);
-}
+
 
 void Message::Write(const void *d, int length)
 {
