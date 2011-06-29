@@ -264,7 +264,7 @@ void Game::SendCommand(void)
 	Message message;
 	char data[1400];
 
-	int i = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
+	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
 	message.Init(data, sizeof(data));
 	message.WriteByte(USER_MES_FRAME);						// type
@@ -278,12 +278,12 @@ void Game::SendCommand(void)
 	mClient->SendPacket(&message);
 
 	// Store the command to the input client's history
-	memcpy(&mClient->mClientCommandToServerArray[i], &mClient->mClientCommandToServer, sizeof(Command));
+	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));
 
 	// Store the commands to the clients' history???? or should i be storing all shapes history like it's really doing
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		memcpy(&mShapeVector.at(i)->mCommandToRunOnShapeArray[i], &mShapeVector.at(i)->mCommandToRunOnShape, sizeof(Command));
+		memcpy(&mShapeVector.at(i)->mCommandToRunOnShapeArray[outgoingSequence], &mShapeVector.at(i)->mCommandToRunOnShape, sizeof(Command));
 	}
 }
 
