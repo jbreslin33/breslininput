@@ -24,7 +24,7 @@ Client::Client(Network* network)
 	mIncomingAcknowledged	= 0;
 	mDroppedPackets			= 0;
 
-	mLastMessageTime			= 0;
+	mLastMessageTime		= 0;
 }
 
 Client::~Client()
