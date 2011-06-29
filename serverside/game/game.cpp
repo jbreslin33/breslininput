@@ -171,10 +171,11 @@ void Game::SendCommand(void)
 	// Send messages to all clients
 	mServer->SendPackets();
 
-	// Store the sent command in mLastCommand
+	// Store the sent command in mLastCommand.
 	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
 	{
 		memcpy(&mServer->mGame->mShapeVector.at(i)->mLastCommand, &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
+		mServer->mGame->mShapeVector.at(i)->mCommand.mMillisecondsTotal = 0;
 	}
 }
 
@@ -300,5 +301,5 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		mes->WriteByte(command->mMillisecondsTotal);
 	}
 
-	shape->mCommand.mMillisecondsTotal = 0;
+	//shape->mCommand.mMillisecondsTotal = 0;
 }
