@@ -26,7 +26,7 @@ Game::Game()
 
 	mRunningShapeIndex = 1;
 	
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < 0; i++)
 	{
 		createAIShape();
 	}
@@ -165,19 +165,15 @@ void Game::SendCommand(void)
 		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
-			//can i piggy back here and write history???
 		}
 	}
 
 	// Send messages to all clients
 	mServer->SendPackets();
 
-	// Store the sent command in history
+	// Store the sent command in mLastCommand
 	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
 	{
-		//int num = (mServer->mGame->mShapeVector.at(i)->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
-		//memcpy(&mServer->mGame->mShapeVector.at(i)->mFrame[num], &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
-		//instead of commented out above let's just set mLastCommand in ogreShape
 		memcpy(&mServer->mGame->mShapeVector.at(i)->mLastCommand, &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
 	}
 }
@@ -235,85 +231,71 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 {
 	Command* command = &shape->mCommand;
 	
-	int flags1 = 0;
-	int flags2 = 0;
+	int flags = 0;
 
-	//int last = (shape->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
-/*
-	Command lastCommand;
-	if (shape->mClient)
-	{
-		int last = (shape->mClient->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
-	}
-	else
-	{
-		
-	}
-*/
 /********** CHECK WHAT NEEDS TO BE UPDATED *****************/
 
 	//Origin
 	if(shape->mLastCommand.mOrigin.x != command->mOrigin.x)
 	{
-		flags1 |= CMD_ORIGIN_X;
+		flags |= CMD_ORIGIN_X;
 	}
 	if(shape->mLastCommand.mOrigin.z != command->mOrigin.z)
 	{
-		flags1 |= CMD_ORIGIN_Z;
+		flags |= CMD_ORIGIN_Z;
 	}
 	if(shape->mLastCommand.mOrigin.y != command->mOrigin.y)
 	{
-		flags1 |= CMD_ORIGIN_Y;
+		flags |= CMD_ORIGIN_Y;
 	}
 
 	//Rotation
 	if(shape->mLastCommand.mRot.x != command->mRot.x)
 	{
-		flags1 |= CMD_ROTATION_X;
+		flags |= CMD_ROTATION_X;
 	}
 	if(shape->mLastCommand.mRot.z != command->mRot.z)
 	{
-		flags1 |= CMD_ROTATION_Z;
+		flags |= CMD_ROTATION_Z;
 	}
 	
 	//Milliseconds
 	if(shape->mLastCommand.mMillisecondsTotal != command->mMillisecondsTotal)
 	{
-		flags2 |= CMD_MILLISECONDS;
+		flags |= CMD_MILLISECONDS;
 	}
 
 	/******ADD TO THE MESSAGE *****/
 
 	// Flags
-	mes->WriteByte(flags1);
-	mes->WriteByte(flags2);
+	mes->WriteByte(flags);  
 
 	//Origin
-	if(flags1 & CMD_ORIGIN_X)
+	if(flags & CMD_ORIGIN_X)
 	{
 		mes->WriteFloat(command->mOrigin.x);
 	}
-	if(flags1 & CMD_ORIGIN_Z)
+	if(flags & CMD_ORIGIN_Z)
 	{
 		mes->WriteFloat(command->mOrigin.z);
 	}
-	if(flags1 & CMD_ORIGIN_Y)
+	if(flags & CMD_ORIGIN_Y)
 	{
 		mes->WriteFloat(command->mOrigin.y);
 	}
 
 	//Rotation
-	if(flags1 & CMD_ROTATION_X)
+	if(flags & CMD_ROTATION_X)
 	{
 		mes->WriteFloat(command->mRot.x);
 	}
-	if(flags1 & CMD_ROTATION_Z)
+	if(flags & CMD_ROTATION_Z)
 	{
 		mes->WriteFloat(command->mRot.z);
 	}
 
 	//Milliseconds
-	if(flags2 & CMD_MILLISECONDS)
+	if(flags & CMD_MILLISECONDS)
 	{
 		mes->WriteByte(command->mMillisecondsTotal);
 	}

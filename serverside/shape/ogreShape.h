@@ -38,10 +38,8 @@ Vector3D* mPosition;
 
 int			mIndex;
 
-Command mFrame[COMMAND_HISTORY_SIZE];
-//Command	mServerFrame;					// the latest frame from server
-Command	mCommand;						// current frame's commands
-Command mLastCommand;     //this is for the aiguys
+Command	mCommand;		// current frame's commands we are about to or are running this on shapes on server.
+Command mLastCommand;   //this is the last command sent to clients and also that was ran on server
 
 Message	mMessage; //is this all i need to get information over the internets?
 
