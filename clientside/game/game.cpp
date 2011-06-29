@@ -303,21 +303,19 @@ void Game::Disconnect(void)
 //this is all shapes coming to client game from server
 void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 {
-	int flags1 = 0;
-	int flags2 = 0;
+	int flags = 0;
 
-bool x = true;
-bool z = true;
-bool y = true;
+	bool x = true;
+	bool z = true;
+	bool y = true;
 
 	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	// Flags
-	flags1 = mes->ReadByte();
-	flags2 = mes->ReadByte();
+	flags = mes->ReadByte();
 
 	// Origin
-	if(flags1 & CMD_ORIGIN_X)
+	if(flags & CMD_ORIGIN_X)
 	{
 		shape->mServerFrame.mOriginOld.x = shape->mServerFrame.mOrigin.x;
 		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
@@ -327,7 +325,7 @@ bool y = true;
 		x = false;
 	}
 
-	if(flags1 & CMD_ORIGIN_Z)
+	if(flags & CMD_ORIGIN_Z)
 	{
 		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
 		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
@@ -337,7 +335,7 @@ bool y = true;
 		z = false;
 	}
 
-	if(flags1 & CMD_ORIGIN_Y)
+	if(flags & CMD_ORIGIN_Y)
 	{
 		shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
 		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
@@ -352,18 +350,18 @@ bool y = true;
 	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
 
 	//rotation
-	if(flags1 & CMD_ROTATION_X)
+	if(flags & CMD_ROTATION_X)
 	{
 		shape->mServerFrame.mRot.x = mes->ReadFloat();
 	}
 
-	if(flags1 & CMD_ROTATION_Z)
+	if(flags & CMD_ROTATION_Z)
 	{
 		shape->mServerFrame.mRot.z = mes->ReadFloat();
 	}
 
 	//milliseconds
-	if (flags2 & CMD_MILLISECONDS)
+	if (flags & CMD_MILLISECONDS)
 	{
 		shape->mServerFrame.mMilliseconds = mes->ReadByte();
 		shape->mCommandToRunOnShape.mMilliseconds = shape->mServerFrame.mMilliseconds;

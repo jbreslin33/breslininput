@@ -16,19 +16,16 @@ using namespace Ogre;
 #define KEY_LEFT					4
 #define KEY_RIGHT					8
 
-//flag1
-#define CMD_ORIGIN_X                1
-#define CMD_ORIGIN_Z                2
-#define CMD_ORIGIN_Y                4
-#define CMD_VELOCITY_X              8
-#define CMD_VELOCITY_Z             16
-#define CMD_VELOCITY_Y             32
-#define CMD_ROTATION_X             64
-#define CMD_ROTATION_Z            128
-
-//flag2
+//flag
 #define CMD_KEY						1
 #define CMD_MILLISECONDS            2
+#define CMD_ORIGIN_X                4
+#define CMD_ORIGIN_Z                8
+#define CMD_ORIGIN_Y               16 
+#define CMD_ROTATION_X             32
+#define CMD_ROTATION_Z             64
+#define CMD_SKIPNEXTSHAPE         128
+//skip next guy???
 
 #define USER_MES_FRAME				1
 #define USER_MES_SERVEREXIT			3
