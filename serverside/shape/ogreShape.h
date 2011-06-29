@@ -30,9 +30,6 @@ OgreShape();
 OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root);
 ~OgreShape();
 
-//for tracking what we last sent to internets clients
-unsigned short	mOutgoingSequence;		// Outgoing packet sequence
-
 //ogre scene stuff
 SceneNode*          mSceneNode;
 
@@ -44,6 +41,7 @@ int			mIndex;
 Command mFrame[COMMAND_HISTORY_SIZE];
 //Command	mServerFrame;					// the latest frame from server
 Command	mCommand;						// current frame's commands
+Command mLastCommand;     //this is for the aiguys
 
 Message	mMessage; //is this all i need to get information over the internets?
 

@@ -165,6 +165,7 @@ void Game::SendCommand(void)
 		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
 			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
+			//can i piggy back here and write history???
 		}
 	}
 
@@ -174,8 +175,10 @@ void Game::SendCommand(void)
 	// Store the sent command in history
 	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
 	{
-		int num = (mServer->mGame->mShapeVector.at(i)->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
-		memcpy(&mServer->mGame->mShapeVector.at(i)->mFrame[num], &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
+		//int num = (mServer->mGame->mShapeVector.at(i)->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
+		//memcpy(&mServer->mGame->mShapeVector.at(i)->mFrame[num], &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
+		//instead of commented out above let's just set mLastCommand in ogreShape
+		memcpy(&mServer->mGame->mShapeVector.at(i)->mLastCommand, &mServer->mGame->mShapeVector.at(i)->mCommand, sizeof(Command));
 	}
 }
 
@@ -235,36 +238,46 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	int flags1 = 0;
 	int flags2 = 0;
 
-	int last = (shape->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
-
+	//int last = (shape->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
+/*
+	Command lastCommand;
+	if (shape->mClient)
+	{
+		int last = (shape->mClient->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
+	}
+	else
+	{
+		
+	}
+*/
 /********** CHECK WHAT NEEDS TO BE UPDATED *****************/
 
 	//Origin
-	if(shape->mFrame[last].mOrigin.x != command->mOrigin.x)
+	if(shape->mLastCommand.mOrigin.x != command->mOrigin.x)
 	{
 		flags1 |= CMD_ORIGIN_X;
 	}
-	if(shape->mFrame[last].mOrigin.z != command->mOrigin.z)
+	if(shape->mLastCommand.mOrigin.z != command->mOrigin.z)
 	{
 		flags1 |= CMD_ORIGIN_Z;
 	}
-	if(shape->mFrame[last].mOrigin.y != command->mOrigin.y)
+	if(shape->mLastCommand.mOrigin.y != command->mOrigin.y)
 	{
 		flags1 |= CMD_ORIGIN_Y;
 	}
 
 	//Rotation
-	if(shape->mFrame[last].mRot.x != command->mRot.x)
+	if(shape->mLastCommand.mRot.x != command->mRot.x)
 	{
 		flags1 |= CMD_ROTATION_X;
 	}
-	if(shape->mFrame[last].mRot.z != command->mRot.z)
+	if(shape->mLastCommand.mRot.z != command->mRot.z)
 	{
 		flags1 |= CMD_ROTATION_Z;
 	}
 	
 	//Milliseconds
-	if(shape->mFrame[last].mMillisecondsTotal != command->mMillisecondsTotal)
+	if(shape->mLastCommand.mMillisecondsTotal != command->mMillisecondsTotal)
 	{
 		flags2 |= CMD_MILLISECONDS;
 	}
