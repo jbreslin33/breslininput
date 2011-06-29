@@ -268,7 +268,9 @@ void Game::SendCommand(void)
 
 	message.Init(data, sizeof(data));
 	message.WriteByte(USER_MES_FRAME);						// type
-	message.AddSequences(mClient);					// sequences
+//	message.AddSequences(mClient);					// sequences
+	message.WriteShort(mClient->mOutgoingSequence);
+	message.WriteShort(mClient->mIncomingSequence);
 
 	// Build delta-compressed move command
 	BuildDeltaMoveCommand(&message);
