@@ -68,7 +68,8 @@ public:
 	void	CheckKeys   (void);
 	void	Frame       (void);
 	void	RunNetwork  (int msec);
-
+	void    checkForShutdown();
+	bool    runGraphics();
 	// Network
 	void	ReadPackets             (void);
 	void	SendCommand             (void);

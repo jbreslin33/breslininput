@@ -510,25 +510,35 @@ void Game::gameLoop()
 		if(game != NULL)
 		{
 			game->CheckKeys();
-
-			if (mNetworkShutdown == true)
-			{
-				Shutdown();
-			}
 			game->RunNetwork(mRenderTime * 1000);
 		}
 
-		if (mNetworkShutdown == true)
-		{
-			mShutDown = true;
-		}
-
-		
-		//Pump messages in all registered RenderWindow windows
-		WindowEventUtilities::messagePump();
-
-		if (!mRoot->renderOneFrame())
+		checkForShutdown();
+		if (!runGraphics())
 			break;
+	}
+}
+
+void Game::checkForShutdown()
+{
+	if (mNetworkShutdown == true)
+	{
+		mShutDown = true;
+	}
+}
+
+bool Game::runGraphics()
+{
+	//Pump messages in all registered RenderWindow windows
+	WindowEventUtilities::messagePump();
+
+	if (!mRoot->renderOneFrame())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
 	}
 }
 
