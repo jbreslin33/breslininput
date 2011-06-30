@@ -70,6 +70,8 @@ public:
 	void	RunNetwork  (int msec);
 	void    checkForShutdown();
 	bool    runGraphics();
+	void    interpolateFrame();
+
 	// Network
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
