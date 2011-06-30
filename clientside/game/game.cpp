@@ -489,12 +489,10 @@ void Game::RunNetwork(int msec)
 
 	ReadPackets();
 	
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		mShapeVector.at(i)->interpolateTick(mRenderTime);
-	}
 	// Framerate is too high
 	if(time > (1000 / 60)) {
+
+		//I think i want to official grab the key tally here along with the milliseconds tally.
 
 		SendCommand();
 		mFrameTime = time / 1000.0f;
@@ -514,8 +512,17 @@ void Game::gameLoop()
 		}
 
 		checkForShutdown();
+		interpolateFrame();
 		if (!runGraphics())
 			break;
+	}
+}
+
+void Game::interpolateFrame()
+{
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		mShapeVector.at(i)->interpolateTick(mRenderTime);
 	}
 }
 
