@@ -27,7 +27,7 @@ class OgreShape
 
 public:
 OgreShape();
-OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root);
+OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,unsigned int index);
 ~OgreShape();
 
 //ogre scene stuff

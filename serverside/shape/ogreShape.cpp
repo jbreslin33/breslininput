@@ -8,7 +8,8 @@ OgreShape::OgreShape()
 }
 
 //this is the contructor for server side ogre shape
-OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root)
+OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,
+					 unsigned int index)
 {
 	Ogre::SceneManager* mSceneManager = root->createSceneManager(Ogre::ST_GENERIC);
 
@@ -27,7 +28,7 @@ OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 	mSceneNode = mSceneManager->getRootSceneNode()->createChildSceneNode(spawnPoint);
 
  	mPosition = position;
-	mIndex  = 0;
+	mIndex  = index;
 
 	//keys
     mKeyDirection = Vector3::ZERO;

@@ -51,6 +51,7 @@ public:
 	int     mFrameTime;
 
 	int mRunningShapeIndex;
+	int mSpreadOutAIIndex;
 
 	std::vector<Shape*> mShapeVector;	//every tangible item in game world..
 
@@ -62,6 +63,7 @@ public:
 	void createShape(Client* client);
 	void createAIShape();
 	void RemoveShape (Shape* shape);
+	unsigned int getOpenIndex();
 	
 	// Network
 	void	SendCommand(void);

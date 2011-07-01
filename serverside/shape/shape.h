@@ -30,7 +30,7 @@ class Shape
 {
 
 public:
-Shape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root);
+Shape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,unsigned int index);
 ~Shape();
 
 //ticks
