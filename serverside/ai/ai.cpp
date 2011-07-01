@@ -21,9 +21,9 @@ using namespace Ogre;
 #define KEY_LEFT				4
 #define KEY_RIGHT				8
 
-AI::AI(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root)
+AI::AI(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,unsigned int index)
 :
-	OgreShape(position,velocity,rotation,root)
+	OgreShape(position,velocity,rotation,root,index)
 {
  	//ai states
 	mAIStateMachine = new AIStateMachine(this);    //setup the state machine

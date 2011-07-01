@@ -5,13 +5,13 @@
 
 #include <string>
 
-Shape::Shape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root)
+Shape::Shape(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,unsigned int index)
 :
-	Rotation(position,velocity,rotation,root),
-	Move    (position,velocity,rotation,root),
-	Jump    (position,velocity,rotation,root),
-	AI      (position,velocity,rotation,root),
-	OgreShape		  (position,velocity,rotation,root)
+	Rotation(position,velocity,rotation,root,index),
+	Move    (position,velocity,rotation,root,index),
+	Jump    (position,velocity,rotation,root,index),
+	AI      (position,velocity,rotation,root,index),
+	OgreShape		  (position,velocity,rotation,root,index)
 {
 	//client if this shape has associated with it
 	mClient = NULL;

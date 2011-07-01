@@ -25,6 +25,7 @@ Game::Game()
 	mFrameTime  = 0;
 
 	mRunningShapeIndex = 1;
+	mSpreadOutAIIndex = 1;
 	
 	for(int i = 0; i < 5; i++)
 	{
@@ -55,11 +56,13 @@ void Game::createShape(Client* client)
 	rot->x = 0;
 	rot->z = 0;
 
-	Shape* shape = new Shape(pos,vel,rot,mRoot); 
+	//shape->mIndex = getOpenIndex();
+
+	Shape* shape = new Shape(pos,vel,rot,mRoot,getOpenIndex()); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
-	shape->mIndex = mRunningShapeIndex;
+
 	mShapeVector.push_back(shape); //either way add this to shape vector
-	mRunningShapeIndex++;
+	//mRunningShapeIndex++;
 
 	if (client != NULL)
 	{
@@ -68,11 +71,35 @@ void Game::createShape(Client* client)
 	}
 }
 
+unsigned int Game::getOpenIndex()
+{
+	bool proposedIndexOpen = false;
+	for (unsigned int proposedIndex = 1; !proposedIndexOpen; proposedIndex++) //keep going till you get an index
+	{
+		bool someoneHasThisIndex = false;
+		for (unsigned int i = 0; i < mShapeVector.size(); i++)
+		{
+			if (mShapeVector.at(i)->mIndex == proposedIndex)
+			{
+				someoneHasThisIndex = true;
+			}
+		}
+		if (someoneHasThisIndex == false)
+		{
+			//proposedIndexOpen = true;
+			return  proposedIndex;
+		}
+
+	}
+	return 0;
+	
+}
+
 void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->z = 300.0f * mRunningShapeIndex;
+	pos->z = 300.0f * mSpreadOutAIIndex;
 	pos->y = 0;
 
 	Vector3D* vel = new Vector3D();
@@ -84,11 +111,11 @@ void Game::createAIShape()
 	rot->x = 0;
 	rot->z = 0;
 
-	Shape* shape = new Shape(pos,vel,rot,mRoot); 
+	Shape* shape = new Shape(pos,vel,rot,mRoot,getOpenIndex()); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
-	shape->mIndex = mRunningShapeIndex;
+	//shape->mIndex = getOpenIndex();
 	mShapeVector.push_back(shape); //either way add this to shape vector
-	mRunningShapeIndex++;
+	mSpreadOutAIIndex++;
 
 	mServer->SendAddAIShape(shape);
 }
