@@ -56,13 +56,9 @@ void Game::createShape(Client* client)
 	rot->x = 0;
 	rot->z = 0;
 
-	//shape->mIndex = getOpenIndex();
-
 	Shape* shape = new Shape(pos,vel,rot,mRoot,getOpenIndex()); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
-
 	mShapeVector.push_back(shape); //either way add this to shape vector
-	//mRunningShapeIndex++;
 
 	if (client != NULL)
 	{
@@ -101,6 +97,7 @@ void Game::createAIShape()
 	pos->x = 0;
 	pos->z = 300.0f * mSpreadOutAIIndex;
 	pos->y = 0;
+	mSpreadOutAIIndex++;
 
 	Vector3D* vel = new Vector3D();
 	vel->x = 0;
@@ -113,9 +110,7 @@ void Game::createAIShape()
 
 	Shape* shape = new Shape(pos,vel,rot,mRoot,getOpenIndex()); 
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
-	//shape->mIndex = getOpenIndex();
 	mShapeVector.push_back(shape); //either way add this to shape vector
-	mSpreadOutAIIndex++;
 
 	mServer->SendAddAIShape(shape);
 }
