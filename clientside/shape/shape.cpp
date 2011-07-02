@@ -8,9 +8,9 @@
 Shape::Shape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::SceneManager* mSceneMgr,
 								 std::string mesh)
 :
-	Move    (ind,position,velocity,rotation,mSceneMgr,mesh),
-	Rotation(ind,position,velocity,rotation,mSceneMgr,mesh),
-	OgreAnimation     (ind,position,velocity,rotation,mSceneMgr,mesh),
+	Move    (),
+	Rotation(),
+	OgreAnimation     (),
 	OgreShape         (ind,position,velocity,rotation,mSceneMgr,mesh)
 {
 

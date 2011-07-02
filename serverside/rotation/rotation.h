@@ -17,7 +17,7 @@ class Rotation :  public virtual OgreShape
 
 public:
 
-Rotation(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* root,unsigned int index);
+Rotation();
 ~Rotation();
 
 //movement
