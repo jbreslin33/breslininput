@@ -20,10 +20,10 @@ using namespace Ogre;
 #define KEY_RIGHT				8
 #define KEY_SPACE				16
 
-Rotation::Rotation(Vector3D* position, Vector3D* velocity, Vector3D* rotation, 
+Rotation::Rotation(int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, 
 									   Ogre::SceneManager* mSceneMgr, std::string mesh)
 :
-	OgreShape(position,velocity,rotation,mSceneMgr,mesh)
+	OgreShape(ind,position,velocity,rotation,mSceneMgr,mesh)
 {
     //vars
     mTurnSpeed = 250.0;

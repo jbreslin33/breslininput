@@ -27,8 +27,8 @@ AI::AI(Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::Root* r
 {
  	//ai states
 	mAIStateMachine = new AIStateMachine(this);    //setup the state machine
-	mAIStateMachine->setCurrentState      (Random_AI::Instance());
-	mAIStateMachine->setPreviousState     (Random_AI::Instance());
+	mAIStateMachine->setCurrentState      (Normal_AI::Instance());
+	mAIStateMachine->setPreviousState     (Normal_AI::Instance());
 	mAIStateMachine->setGlobalState       (NULL);
 }
 

@@ -88,7 +88,6 @@ unsigned int Game::getOpenIndex()
 
 	}
 	return 0;
-	
 }
 
 void Game::createAIShape()

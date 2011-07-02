@@ -142,7 +142,6 @@ void Server::SendAddAIShape(Shape* shape)
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mRot.x);
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mRot.z);
 
-
 		mClientVector.at(i)->SendPacket(&mClientVector.at(i)->mMessage);
 	}
 }
