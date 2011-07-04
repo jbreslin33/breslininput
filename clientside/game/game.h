@@ -103,6 +103,9 @@ public:
 	//initialize
 	bool mInit;
 	bool mNetworkShutdown;
+	bool mJoinGame;
+	bool mPlayingGame;
+
 
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;
