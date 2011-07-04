@@ -21,15 +21,18 @@ Game::Game(const char* serverIP)
 	mServerIP = serverIP;
  	mClient	= new Client("", mServerIP, 30004);
 
-	mFrameTime		= 0.0f;
- 	mRenderTime		= 0.0f;
-	mOldTime = 0;
- 	mInit			= false;
+	mFrameTime		 = 0.0f;
+ 	mRenderTime		 = 0.0f;
+	mOldTime         = 0;
+ 	mInit			 = false;
 	mNetworkShutdown = false;
 
 	mInit = true;
 
-	mClient->SendConnect("myname");
+	mJoinGame    = false;
+	mPlayingGame = false;
+
+
  }
 
 Game::~Game()
@@ -471,6 +474,12 @@ void Game::processUnbufferedInput()
 	{
         keys[VK_SPACE] = FALSE;
 	}
+
+	if (mKeyboard->isKeyDown(OIS::KC_V)) // Right - yaw or strafe
+    {
+		mJoinGame = TRUE;
+    }
+
 }
 
 bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -504,6 +513,11 @@ void Game::gameLoop()
 {
 	while(true)
     {
+		if (mJoinGame && !mPlayingGame)
+		{
+			mClient->SendConnect("myname");
+			mPlayingGame = true;
+		}
 		processUnbufferedInput();
 		if(game != NULL)
 		{
