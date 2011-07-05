@@ -49,7 +49,7 @@ void Random_AI::execute(AI* ai)
 		ai->mCommand.mKey = 0;
 	}
 
-	//ai->mCommand.mKey = 2;
+	ai->mCommand.mKey = 2;
 	//let's set them both because right now brian uses both. but for us ai guys they should be the same number???
 	ai->mCommand.mMillisecondsTotal = ai->mGame->mFrameTime;
 	ai->mCommand.mMilliseconds = ai->mGame->mFrameTime;

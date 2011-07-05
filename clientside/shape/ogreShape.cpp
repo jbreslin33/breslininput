@@ -84,7 +84,7 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 	mCommandToRunOnShape.mKey = 0;
 	mCommandToRunOnShape.mRotSpeed = 0;
 
-	mSceneNode->setPosition(position->x,position->z,position->y);	
+	mSceneNode->setPosition(position->x,position->y,position->z);	
 
 	mEntity = mSceneManager->createEntity(mName,
 		mMeshName);
@@ -104,6 +104,14 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 
 	mGame = NULL;
 	mGhost = NULL;
+
+	if (mSceneNode->getPosition().y != 0)
+	{
+		LogString("-------------");
+		LogString("x:%f",mSceneNode->getPosition().x);
+		LogString("y:%f",mSceneNode->getPosition().y);
+		LogString("z:%f",mSceneNode->getPosition().z);
+	}
 }
 
 OgreShape::~OgreShape()

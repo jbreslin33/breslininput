@@ -232,6 +232,11 @@ Shape* shape;
 			startx = mes.ReadFloat();
 			starty = mes.ReadFloat();
 			startz = mes.ReadFloat();
+
+			if (starty != 0)
+			{
+				LogString("HELPPPPPPPPPPPPPPPPPP");
+			}
 			velocityX = mes.ReadFloat();
 			velocityY = mes.ReadFloat();
 			velocityZ = mes.ReadFloat();
