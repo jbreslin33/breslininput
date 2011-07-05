@@ -39,9 +39,8 @@ Game::~Game()
 	delete mServer;
 }
 
-void Game::createShape(Client* client)
+void Game::createClientAvatar(Client* client)
 {
-
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
 	pos->y = 0;

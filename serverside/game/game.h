@@ -60,7 +60,7 @@ public:
 	~Game();
 
 	//shapes
-	void createShape(Client* client);
+	void createClientAvatar(Client* client);
 	void createAIShape();
 	void RemoveShape (Shape* shape);
 	unsigned int getOpenIndex();

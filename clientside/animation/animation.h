@@ -1,5 +1,5 @@
-#ifndef OGREANIMATION_H
-#define OGREANIMATION_H
+#ifndef ANIMATION_H
+#define ANIMATION_H
 
 #define NUM_ANIMS 13           // number of animations the character has
 #define ANIM_FADE_SPEED 7.5f   // animation crossfade speed in % of full weight per second
@@ -31,12 +31,12 @@ enum AnimID
     ANIM_NONE
 };
 
-class OgreAnimation : public virtual OgreShape
+class Animation : public virtual OgreShape
 {
 
 public:
-	OgreAnimation();
-	~OgreAnimation();
+	Animation();
+	~Animation();
 
 //animation
 void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
