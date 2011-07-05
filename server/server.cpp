@@ -139,6 +139,10 @@ void Server::SendAddAIShape(Shape* shape)
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mOrigin.y);
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mOrigin.z);
 
+		if (shape->mCommand.mOrigin.y != 0)
+		{
+			LogString("HELP");
+		}
 
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mVelocity.x);
 		mClientVector.at(i)->mMessage.WriteFloat(shape->mCommand.mVelocity.y);
