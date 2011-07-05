@@ -117,15 +117,27 @@ void Game::createScene(void)
 
 
 	// create a floor mesh resource
+	/*
 	MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 		Plane(Vector3::UNIT_Y, 0), 10000, 10000, 10, 10, true, 1, -1000, -1000, Vector3::UNIT_Z);
 
 
 	// create a floor entity, give it a material, and place it at the origin
     Entity* floor = mSceneMgr->createEntity("Floor", "floor");
-    floor->setMaterialName("Examples/Rockwall");
+
+	
+	floor->setMaterialName("rockwall.tga");
 	floor->setCastShadows(false);
-    mSceneMgr->getRootSceneNode()->attachObject(floor);
+
+	SceneNode*    sceneNode    = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	
+	sceneNode->attachObject(floor);
+	Vector3 pos;
+	pos.x = 0;
+	pos.y = -300;
+	pos.z = 0;
+	sceneNode->setPosition(pos);
+	*/
 }
 
 
@@ -164,7 +176,7 @@ void Game::CheckKeys(void)
  		}
 		if(keys[VK_SPACE])
 		{
-	 		mClient->mClientCommandToServer.mKey |= KEY_SPACE;
+	 		//mClient->mClientCommandToServer.mKey |= KEY_SPACE;
 	 	}
 	 	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
 	}
@@ -474,6 +486,7 @@ void Game::processUnbufferedInput()
 	{
         keys[VK_RIGHT] = FALSE;
 	}
+	/*
 	if (mKeyboard->isKeyDown(OIS::KC_SPACE)) // Right - yaw or strafe
     {
 		keys[VK_SPACE] = TRUE;
@@ -482,7 +495,7 @@ void Game::processUnbufferedInput()
 	{
         keys[VK_SPACE] = FALSE;
 	}
-
+*/
 	if (mKeyboard->isKeyDown(OIS::KC_V)) // Right - yaw or strafe
     {
 		mJoinGame = TRUE;

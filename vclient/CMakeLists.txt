@@ -109,7 +109,12 @@ set(HDRS
 	../clientside/shape/ogreShape.h
 	
 	#animation
-	../animation/ogreAnimation.h
+	../clientside/animation/animation.h
+	
+	#animation states
+	../clientside/animation/animationStateMachine.h
+	../clientside/animation/animationState.h
+	../clientside/animation/animationStates.h	
 	
 	#move
 	../clientside/move/move.h
@@ -163,7 +168,10 @@ set(SRCS
 	../clientside/shape/ogreShape.cpp
 	
 	#animation
-	../animation/ogreAnimation.cpp
+	../clientside/animation/animation.cpp
+	
+	#animation states
+	../clientside/animation/animationStates.cpp
 	
 	#move
 	../clientside/move/move.cpp
@@ -214,7 +222,12 @@ set(HDRS
 	../clientside/shape/ogreShape.h
 	
 	#animation
-	../animation/ogreAnimation.h
+	../clientside/animation/animation.h
+	
+	#animation states
+	../clientside/animation/animationStateMachine.h
+	../clientside/animation/animationState.h
+	../clientside/animation/animationStates.h	
 	
 	#move
 	../clientside/move/move.h
@@ -266,7 +279,10 @@ set(SRCS
 	../clientside/shape/ogreShape.cpp
 	
 	#animation
-	../animation/ogreAnimation.cpp
+	../clientside/animation/animation.cpp
+	
+	#animation states
+	../clientside/animation/animationStates.cpp
 	
 	#move
 	../clientside/move/move.cpp

@@ -3,18 +3,18 @@
 
 #include "../math/vector3D.h"
 
-OgreAnimation::OgreAnimation()
+Animation::Animation()
 :
 	OgreShape()
 {
 	setupAnimations();
 }
 
-OgreAnimation::~OgreAnimation()
+Animation::~Animation()
 {
 }
 
-void OgreAnimation::setupAnimations()
+void Animation::setupAnimations()
 {
 	// this is very important due to the nature of the exported animations
 	mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -40,12 +40,12 @@ void OgreAnimation::setupAnimations()
 
 }
 
-void OgreAnimation::addTime(Real deltaTime)
+void Animation::addTime(Real deltaTime)
 {
 
 }
 
-void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
+void Animation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
 {
 	Real baseAnimSpeed = animSpeed;
 	Real topAnimSpeed = animSpeed;
@@ -96,7 +96,7 @@ void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, 
 	fadeAnimations(deltaTime);
 }
 
-void OgreAnimation::fadeAnimations(Real deltaTime)
+void Animation::fadeAnimations(Real deltaTime)
 {
 	for (int i = 0; i < NUM_ANIMS; i++)
 	{
@@ -124,7 +124,7 @@ void OgreAnimation::fadeAnimations(Real deltaTime)
 	}
 }
 
-void OgreAnimation::setBaseAnimation(AnimID id, bool reset)
+void Animation::setBaseAnimation(AnimID id, bool reset)
 {
 	if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
 	{
@@ -150,7 +150,7 @@ void OgreAnimation::setBaseAnimation(AnimID id, bool reset)
 	}
 }
 
-void OgreAnimation::setTopAnimation(AnimID id, bool reset)
+void Animation::setTopAnimation(AnimID id, bool reset)
 {
 	if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
 	{
