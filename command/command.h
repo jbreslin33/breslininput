@@ -12,7 +12,6 @@ Command();
 Vector3D mOrigin;            //finish origin of frame/tick
 Vector3D mOriginOld;            //origin of last frame/tick
 Vector3D mVelocity;	         //velocity during frame/tick
-Vector3D mPredictedOrigin;
 Vector3D mRot; //rotation during frame/tick
 Vector3D mRotOld;	//velocity during last frame/tick
 

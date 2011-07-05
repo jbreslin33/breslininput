@@ -44,13 +44,13 @@ void Game::createShape(Client* client)
 
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->z = 0;
 	pos->y = 0;
+	pos->z = 0;
 
 	Vector3D* vel = new Vector3D();
 	vel->x = 0;
-	vel->z = 0;
 	vel->y = 0;
+	vel->z = 0;
 
 	Vector3D* rot = new Vector3D();
 	rot->x = 0;
@@ -94,14 +94,14 @@ void Game::createAIShape()
 {
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
-	pos->z = 300.0f * mSpreadOutAIIndex;
-	pos->y = 0;
+	pos->y = 300.0f * mSpreadOutAIIndex;
+	pos->z = 0;
 	mSpreadOutAIIndex++;
 
 	Vector3D* vel = new Vector3D();
 	vel->x = 0;
-	vel->z = 0;
 	vel->y = 0;
+	vel->z = 0;
 
 	Vector3D* rot = new Vector3D();
 	rot->x = 0;
@@ -262,14 +262,15 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	{
 		flags |= CMD_ORIGIN_X;
 	}
-	if(shape->mLastCommand.mOrigin.z != command->mOrigin.z)
-	{
-		flags |= CMD_ORIGIN_Z;
-	}
 	if(shape->mLastCommand.mOrigin.y != command->mOrigin.y)
 	{
 		flags |= CMD_ORIGIN_Y;
 	}
+	if(shape->mLastCommand.mOrigin.z != command->mOrigin.z)
+	{
+		flags |= CMD_ORIGIN_Z;
+	}
+
 
 	//Rotation
 	if(shape->mLastCommand.mRot.x != command->mRot.x)
@@ -297,14 +298,15 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	{
 		mes->WriteFloat(command->mOrigin.x);
 	}
-	if(flags & CMD_ORIGIN_Z)
-	{
-		mes->WriteFloat(command->mOrigin.z);
-	}
 	if(flags & CMD_ORIGIN_Y)
 	{
 		mes->WriteFloat(command->mOrigin.y);
 	}
+	if(flags & CMD_ORIGIN_Z)
+	{
+		mes->WriteFloat(command->mOrigin.z);
+	}
+
 
 	//Rotation
 	if(flags & CMD_ROTATION_X)

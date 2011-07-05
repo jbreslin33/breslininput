@@ -26,8 +26,8 @@ extern bool keys[256];
 #define CMD_KEY						1
 #define CMD_MILLISECONDS            2
 #define CMD_ORIGIN_X                4
-#define CMD_ORIGIN_Z                8
-#define CMD_ORIGIN_Y               16 
+#define CMD_ORIGIN_Y                8
+#define CMD_ORIGIN_Z               16 
 #define CMD_ROTATION_X             32
 #define CMD_ROTATION_Z             64
 #define CMD_SKIPNEXTSHAPE         128
@@ -60,9 +60,9 @@ public:
 	void moveGhostShapes();
 	
 	//Game
-	void AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
+	Shape* AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
 					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
-	OgreShape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
+	Shape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);

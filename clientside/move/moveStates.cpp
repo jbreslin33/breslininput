@@ -51,8 +51,8 @@ void Normal_ProcessTick_Move::execute(Move* move)
        // Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 
 		serverDest.x = move->mServerFrame.mVelocity.x;
-	    serverDest.z = move->mServerFrame.mVelocity.z;
-        serverDest.y = move->mServerFrame.mVelocity.y;
+	    serverDest.y = move->mServerFrame.mVelocity.y;
+        serverDest.z = move->mServerFrame.mVelocity.z;
         serverDest.normalise();
 
        // move->mRunSpeed = 0.0;
@@ -60,15 +60,19 @@ void Normal_ProcessTick_Move::execute(Move* move)
         if(move->mCommandToRunOnShape.mMilliseconds != 0)
         {
 			
-			move->mRunSpeed = sqrt(pow(move->mServerFrame.mVelocity.x, 2) + 
-            pow(move->mServerFrame.mVelocity.z, 2) + pow(move->mServerFrame.mVelocity.y, 2))/move->mCommandToRunOnShape.mMilliseconds;
+			move->mRunSpeed =
+			sqrt(
+			pow(move->mServerFrame.mVelocity.x, 2) + 
+            pow(move->mServerFrame.mVelocity.y, 2) +
+			pow(move->mServerFrame.mVelocity.z, 2)) /
+			move->mCommandToRunOnShape.mMilliseconds;
         }
 
         serverDest = serverDest * move->mRunSpeed;
 
 		move->mCommandToRunOnShape.mVelocity.x = serverDest.x;
-        move->mCommandToRunOnShape.mVelocity.z = serverDest.z;
         move->mCommandToRunOnShape.mVelocity.y = serverDest.y;
+        move->mCommandToRunOnShape.mVelocity.z = serverDest.z;
 	}
 }
 void Normal_ProcessTick_Move::exit(Move* move)
@@ -99,30 +103,31 @@ void Catchup_ProcessTick_Move::execute(Move* move)
         Ogre::Vector3 myDest      = Ogre::Vector3::ZERO; //vector from clienr pos to future server pos
 
         serverDest.x = move->mServerFrame.mVelocity.x;
-        serverDest.z = move->mServerFrame.mVelocity.z;
         serverDest.y = move->mServerFrame.mVelocity.y;
+        serverDest.z = move->mServerFrame.mVelocity.z;
         serverDest.normalise();
 
         float multiplier = move->mDeltaPosition * move->mPosInterpFactor;
         serverDest = serverDest * multiplier;
         serverDest.x = move->mServerFrame.mOrigin.x + serverDest.x;
-        serverDest.z = move->mServerFrame.mOrigin.z + serverDest.z;
         serverDest.y = move->mServerFrame.mOrigin.y + serverDest.y;
+        serverDest.z = move->mServerFrame.mOrigin.z + serverDest.z;
                 //LogString("mOrigin.y %f", move->mClient->mServerFrame.mOrigin.y);
 
         myDest.x = serverDest.x - move->getSceneNode()->getPosition().x;
-        myDest.z = serverDest.z - move->getSceneNode()->getPosition().z;
         myDest.y = serverDest.y - move->getSceneNode()->getPosition().y;
+        myDest.z = serverDest.z - move->getSceneNode()->getPosition().z;
+
 
         //dist from clienr pos to future server pos
-        float predictDist = pow(myDest.x, 2) + pow(myDest.z, 2) + pow(myDest.y, 2);
+        float predictDist = pow(myDest.x, 2) + pow(myDest.y, 2) + pow(myDest.z, 2);
         predictDist = sqrt(predictDist);
 
         //server velocity
 		if(move->mCommandToRunOnShape.mMilliseconds != 0)
         {
            move->mRunSpeed = sqrt(pow(move->mServerFrame.mVelocity.x, 2) + 
-           pow(move->mServerFrame.mVelocity.z, 2) + pow(move->mServerFrame.mVelocity.y, 2))/move->mCommandToRunOnShape.mMilliseconds;
+           pow(move->mServerFrame.mVelocity.y, 2) + pow(move->mServerFrame.mVelocity.z, 2))/move->mCommandToRunOnShape.mMilliseconds;
 		}
 
 		if(move->mRunSpeed != 0.0)
@@ -136,14 +141,16 @@ void Catchup_ProcessTick_Move::execute(Move* move)
            myDest = myDest * predictDist/time;
 
            move->mCommandToRunOnShape.mVelocity.x = myDest.x;
-           move->mCommandToRunOnShape.mVelocity.z = myDest.z;
            move->mCommandToRunOnShape.mVelocity.y = myDest.y;
+           move->mCommandToRunOnShape.mVelocity.z = myDest.z;
+
 		}
 		else
 		{
            move->mCommandToRunOnShape.mVelocity.x = 0.0;
-           move->mCommandToRunOnShape.mVelocity.z = 0.0;
            move->mCommandToRunOnShape.mVelocity.y = 0.0;
+           move->mCommandToRunOnShape.mVelocity.z = 0.0;
+
 		}
 	}
 }
@@ -187,8 +194,9 @@ void Normal_InterpolateTick_Move::execute(Move* move)
 	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
     transVector.x = move->mCommandToRunOnShape.mVelocity.x;
-    transVector.z = move->mCommandToRunOnShape.mVelocity.z;
     transVector.y = move->mCommandToRunOnShape.mVelocity.y;
+    transVector.z = move->mCommandToRunOnShape.mVelocity.z;
+
         
     move->getSceneNode()->translate(transVector * move->mRenderTime * 1000, Ogre::Node::TS_WORLD);
 

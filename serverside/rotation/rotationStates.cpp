@@ -30,8 +30,9 @@ void Normal_Rotation::execute(Rotation* rotation)
 	Real yawAtSpeed;
 
 	rotation->mGoalDirection += rotation->mKeyDirection.z * Vector3::UNIT_Z;
+	rotation->mGoalDirection.y = 0;
     rotation->mGoalDirection += rotation->mKeyDirection.x * Vector3::UNIT_X;
-    rotation->mGoalDirection.y = 0;
+
     rotation->mGoalDirection.normalise();
 
     Quaternion toGoal = rotation->mSceneNode->getOrientation().zAxis().getRotationTo

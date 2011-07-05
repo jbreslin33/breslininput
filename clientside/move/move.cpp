@@ -34,8 +34,8 @@ Move::Move()
 
 	//deltas
 	mDeltaX        = 0.0; 
-	mDeltaZ		   = 0.0;
-	mDeltaY        = 0.0;
+	mDeltaY		   = 0.0;
+	mDeltaZ        = 0.0;
 	mDeltaPosition = 0.0;
 
 	//move processTick states
@@ -71,9 +71,9 @@ void Move::interpolateTick()
 void Move::calculateDeltaPosition()
 {
 	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
-    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
     mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
+    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
 
     //distance we are off from server
-    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaZ, 2) + pow(mDeltaY, 2));
+    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2) +  pow(mDeltaZ, 2));
 }
