@@ -36,14 +36,6 @@ OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 	mGoalDirection = Vector3::ZERO;
 
 	mGame = NULL;
-
-	if (mSceneNode->getPosition().y != 0)
-	{
-		LogString("-------------");
-		LogString("x:%f",mSceneNode->getPosition().x);
-		LogString("y:%f",mSceneNode->getPosition().y);
-		LogString("z:%f",mSceneNode->getPosition().z);
-	}
 }
 
 OgreShape::~OgreShape()

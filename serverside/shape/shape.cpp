@@ -29,7 +29,6 @@ void Shape::processTick()
 	if (mClient == NULL)
 	{
 		AI::processTick();
-		//LogString("run ai for:%d",mIndex);
 	}
 
 	//don't do any rotation if there is no mKey set

@@ -146,7 +146,7 @@ void Client::ParsePacket(Message *mes)
 		break;
 
 	case DREAMSOCK_MES_ADDSHAPE:
-		LogString("LIBRARY: Client: adding a shape");
+		//LogString("LIBRARY: Client: adding a shape");
 		break;
 
 	case DREAMSOCK_MES_REMOVESHAPE:
