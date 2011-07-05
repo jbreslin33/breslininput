@@ -29,17 +29,6 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 	// put character in starting spawn spot
     //mSceneNode->translate(position->x,position->z,position->y, Node::TS_LOCAL);
 
-	
-	if (mIndex == 5)
-	{
-		/*
-		LogString("index:%d",mIndex);
-		LogString("x:%f",position->x);
-		LogString("y:%f",position->y);
-		LogString("z:%f",position->z);
-		LogString("_______________");
-		*/
-	}
 	//let's set the serverframe...for inititialize purposeses
 	mServerFrame.mOrigin.x = position->x;
 	mServerFrame.mOrigin.y = position->y;
@@ -104,14 +93,6 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 
 	mGame = NULL;
 	mGhost = NULL;
-
-	if (mSceneNode->getPosition().y != 0)
-	{
-		LogString("-------------");
-		LogString("x:%f",mSceneNode->getPosition().x);
-		LogString("y:%f",mSceneNode->getPosition().y);
-		LogString("z:%f",mSceneNode->getPosition().z);
-	}
 }
 
 OgreShape::~OgreShape()

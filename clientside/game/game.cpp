@@ -195,16 +195,9 @@ void Game::ReadPackets(void)
 	int type;
 	int ind;
 	int local;
-	float startx;
-	float starty;
-	float startz;
-	float velocityX;
-	float velocityY;
-	float velocityZ;
-	float rotationX;
-	float rotationZ;
-	
-	
+	Vector3D origin;
+	Vector3D velocity; 
+	Vector3D rotation;
 	int ret;
 	int newTime;
 	int time;
@@ -229,20 +222,15 @@ Shape* shape;
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
-			startx = mes.ReadFloat();
-			starty = mes.ReadFloat();
-			startz = mes.ReadFloat();
-
-			if (starty != 0)
-			{
-				LogString("HELPPPPPPPPPPPPPPPPPP");
-			}
-			velocityX = mes.ReadFloat();
-			velocityY = mes.ReadFloat();
-			velocityZ = mes.ReadFloat();
-			rotationX = mes.ReadFloat();
-			rotationZ = mes.ReadFloat();
-			shape = AddShape(local, ind, name,startx,starty,startz,velocityX,velocityY,velocityZ,rotationX,rotationZ);
+			origin.x = mes.ReadFloat();
+			origin.y = mes.ReadFloat();
+			origin.z = mes.ReadFloat();
+			velocity.x = mes.ReadFloat();
+			velocity.y = mes.ReadFloat();
+			velocity.z = mes.ReadFloat();
+			rotation.x = mes.ReadFloat();
+			rotation.z = mes.ReadFloat();
+			shape = AddShape(local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
 			//now add to vectors....
 			mShapeVector.push_back(shape);
@@ -404,21 +392,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 			shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
 			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 		}
-	}
-
-	if (shape->mIndex == 5)
-	{
-		/*
-		LogString("-------SF-------");
-		LogString("x:%f",shape->mServerFrame.mOrigin.x);
-		LogString("y:%f",shape->mServerFrame.mOrigin.y);
-		LogString("z:%f",shape->mServerFrame.mOrigin.z);
-		LogString("------n-----");
-		LogString("x:%f",shape->getSceneNode()->getPosition().x);
-		LogString("y:%f",shape->getSceneNode()->getPosition().y);
-		LogString("z:%f",shape->getSceneNode()->getPosition().z);
-		*/
-
 	}
 }
 
