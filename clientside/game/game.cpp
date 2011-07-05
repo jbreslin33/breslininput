@@ -40,18 +40,18 @@ Game::~Game()
 	delete mClient;
 }
 
-void Game::AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
-					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ)
+Shape* Game::AddShape(int local, int ind, char *name, float originX, float originY, float originZ,
+					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
 	position->x = originX;
-	position->z = originZ;
 	position->y = originY;
+	position->z = originZ;
 
 	Vector3D* velocity = new Vector3D();
 	velocity->x = velocityX;
-	velocity->z = velocityZ;
 	velocity->y = velocityY;
+	velocity->z = velocityZ;
 
 	Vector3D* rotation = new Vector3D();
 	rotation->x = rotationX;
@@ -63,7 +63,7 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 
 	//shape->mIndex = ind;
 
-	mShapeVector.push_back(shape);
+	//mShapeVector.push_back(shape);
 	
 	if(local)
 	{
@@ -75,9 +75,11 @@ void Game::AddShape(int local, int ind, char *name, float originX, float originZ
 	shape->mGame = this;
 	
 	shape->mGhost = AddGhostShape(ind,position,velocity,rotation);
+
+	return shape;
 }
 
-OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
+Shape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
 
 	Shape* shape = new Shape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
@@ -85,7 +87,7 @@ OgreShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, V
 	
 	//shape->mIndex = ind;
 
-	mShapeGhostVector.push_back(shape);
+	//mShapeGhostVector.push_back(shape);
 	//shape->getSceneNode()->setVisible(false);
 	return shape;
 }
@@ -112,6 +114,18 @@ void Game::createScene(void)
     pointLight->setPosition(Ogre::Vector3(250, 150, 250));
     pointLight->setDiffuseColour(Ogre::ColourValue::White);
     pointLight->setSpecularColour(Ogre::ColourValue::White);
+
+
+	// create a floor mesh resource
+	MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+		Plane(Vector3::UNIT_Y, 0), 10000, 10000, 10, 10, true, 1, -1000, -1000, Vector3::UNIT_Z);
+
+
+	// create a floor entity, give it a material, and place it at the origin
+    Entity* floor = mSceneMgr->createEntity("Floor", "floor");
+    floor->setMaterialName("Examples/Rockwall");
+	floor->setCastShadows(false);
+    mSceneMgr->getRootSceneNode()->attachObject(floor);
 }
 
 
@@ -182,11 +196,11 @@ void Game::ReadPackets(void)
 	int ind;
 	int local;
 	float startx;
-	float startz;
 	float starty;
+	float startz;
 	float velocityX;
-	float velocityZ;
 	float velocityY;
+	float velocityZ;
 	float rotationX;
 	float rotationZ;
 	
@@ -195,6 +209,7 @@ void Game::ReadPackets(void)
 	int newTime;
 	int time;
 
+Shape* shape;
 
 	char name[50];
 
@@ -215,14 +230,19 @@ void Game::ReadPackets(void)
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
 			startx = mes.ReadFloat();
-			startz = mes.ReadFloat();
 			starty = mes.ReadFloat();
+			startz = mes.ReadFloat();
 			velocityX = mes.ReadFloat();
-			velocityZ = mes.ReadFloat();
 			velocityY = mes.ReadFloat();
+			velocityZ = mes.ReadFloat();
 			rotationX = mes.ReadFloat();
 			rotationZ = mes.ReadFloat();
-			AddShape(local, ind, name,startx,startz,starty,velocityX,velocityZ,velocityY,rotationX,rotationZ);
+			shape = AddShape(local, ind, name,startx,starty,startz,velocityX,velocityY,velocityZ,rotationX,rotationZ);
+
+			//now add to vectors....
+			mShapeVector.push_back(shape);
+			mShapeGhostVector.push_back(shape->mGhost);
+
 			break;
 
 		case DREAMSOCK_MES_REMOVESHAPE:
@@ -283,11 +303,6 @@ void Game::SendCommand(void)
 	// Store the command to the input client's history
 	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));
 
-	// Store the commands to the clients' history???? or should i be storing all shapes history like it's really doing
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		memcpy(&mShapeVector.at(i)->mCommandToRunOnShapeArray[outgoingSequence], &mShapeVector.at(i)->mCommandToRunOnShape, sizeof(Command));
-	}
 }
 
 void Game::Disconnect(void)
@@ -328,16 +343,6 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 		x = false;
 	}
 
-	if(flags & CMD_ORIGIN_Z)
-	{
-		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
-		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
-	}
-	else
-	{
-		z = false;
-	}
-
 	if(flags & CMD_ORIGIN_Y)
 	{
 		shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
@@ -346,6 +351,16 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 	else
 	{
 		y = false;
+	}
+
+	if(flags & CMD_ORIGIN_Z)
+	{
+		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
+		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
+	}
+	else
+	{
+		z = false;
 	}
 
 	//set old rot
@@ -375,15 +390,30 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 		if(!x && !z && !y && shape->mServerFrame.mMilliseconds != 0)
 		{
 			shape->mServerFrame.mVelocity.x = 0.0;
-			shape->mServerFrame.mVelocity.z = 0.0;
 			shape->mServerFrame.mVelocity.y = 0.0;
+			shape->mServerFrame.mVelocity.z = 0.0;
 		}
 		else
 		{
 			shape->mServerFrame.mVelocity.x = shape->mServerFrame.mOrigin.x - shape->mServerFrame.mOriginOld.x;
-			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 			shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
+			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 		}
+	}
+
+	if (shape->mIndex == 5)
+	{
+		/*
+		LogString("-------SF-------");
+		LogString("x:%f",shape->mServerFrame.mOrigin.x);
+		LogString("y:%f",shape->mServerFrame.mOrigin.y);
+		LogString("z:%f",shape->mServerFrame.mOrigin.z);
+		LogString("------n-----");
+		LogString("x:%f",shape->getSceneNode()->getPosition().x);
+		LogString("y:%f",shape->getSceneNode()->getPosition().y);
+		LogString("z:%f",shape->getSceneNode()->getPosition().z);
+		*/
+
 	}
 }
 

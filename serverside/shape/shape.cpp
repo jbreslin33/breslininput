@@ -55,12 +55,14 @@ void Shape::processTick()
 	//though it could be i guess, velocity and position could go in move
 	//and mRot could go in rotation.
     mCommand.mVelocity.x = mSceneNode->getPosition().x - mCommand.mOrigin.x;
-    mCommand.mVelocity.z = mSceneNode->getPosition().z - mCommand.mOrigin.z;
     mCommand.mVelocity.y = mSceneNode->getPosition().y - mCommand.mOrigin.y;
+    mCommand.mVelocity.z = mSceneNode->getPosition().z - mCommand.mOrigin.z;
+
 
     mCommand.mOrigin.x = mSceneNode->getPosition().x;
-    mCommand.mOrigin.z = mSceneNode->getPosition().z;
     mCommand.mOrigin.y = mSceneNode->getPosition().y;
+    mCommand.mOrigin.z = mSceneNode->getPosition().z;
+
 
     mCommand.mRot.x = mSceneNode->getOrientation().zAxis().x;
     mCommand.mRot.z = mSceneNode->getOrientation().zAxis().z;
@@ -70,8 +72,9 @@ void Shape::processTick()
 void Shape::setKeyDirection()
 {
 	mKeyDirection.x = 0;
-    mKeyDirection.z = 0;
     mKeyDirection.y = 0;
+    mKeyDirection.z = 0;
+
                 
     // keep track of the player's intended direction
     if(mCommand.mKey & KEY_UP) 

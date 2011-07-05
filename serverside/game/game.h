@@ -20,8 +20,8 @@ using namespace Ogre;
 #define CMD_KEY						1
 #define CMD_MILLISECONDS            2
 #define CMD_ORIGIN_X                4
-#define CMD_ORIGIN_Z                8
-#define CMD_ORIGIN_Y               16 
+#define CMD_ORIGIN_Y                8
+#define CMD_ORIGIN_Z               16 
 #define CMD_ROTATION_X             32
 #define CMD_ROTATION_Z             64
 #define CMD_SKIPNEXTSHAPE         128

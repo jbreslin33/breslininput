@@ -18,7 +18,7 @@ using namespace Ogre;
 
 class ObjectTitle;
 class Game;
-
+class Shape;
 class OgreShape
 {
 
@@ -46,14 +46,13 @@ Vector3D* mPosition;
 int			mIndex;
 std::string  mName;
 
-Command mCommandToRunOnShapeArray[COMMAND_HISTORY_SIZE];
 Command	mServerFrame;					// the latest frame from server
 Command mCommandToRunOnShape;
 
 float mRenderTime;
 
 Game* mGame;
-OgreShape* mGhost;
+Shape* mGhost;
 
 
 };

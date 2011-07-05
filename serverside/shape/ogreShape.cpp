@@ -15,8 +15,8 @@ OgreShape::OgreShape(Vector3D* position, Vector3D* velocity, Vector3D* rotation,
 
 	// set command origins
 	mCommand.mOrigin.x = position->x;
-	mCommand.mOrigin.x = position->y;
-	mCommand.mOrigin.x = position->z;
+	mCommand.mOrigin.y = position->y;
+	mCommand.mOrigin.z = position->z;
 
 	//convert to ogre format
 	Vector3 spawnPoint;
