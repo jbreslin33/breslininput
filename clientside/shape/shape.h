@@ -4,7 +4,7 @@
 //parents
 #include "../../clientside/move/move.h"
 #include "../../clientside/rotation/rotation.h"
-#include "../../animation/ogreAnimation.h"
+#include "../../clientside/animation/animation.h"
 
 //Ogre headers
 #include "Ogre.h"
@@ -12,7 +12,7 @@ using namespace Ogre;
 
 #include <string>
 
-class Shape : public Move , public Rotation, public OgreAnimation
+class Shape : public Move , public Rotation, public Animation
 {
 
 public:
