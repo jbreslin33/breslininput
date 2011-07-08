@@ -4,10 +4,6 @@
 //parents
 #include "../../clientside/shape/ogreShape.h"
 
-//Ogre headers
-#include "Ogre.h"
-using namespace Ogre;
-
 class Command;
 class MoveStateMachine;
 
