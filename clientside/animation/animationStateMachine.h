@@ -2,13 +2,13 @@
 #define ANIMATIONSTATEMACHINE_H
 #include "animationState.h"
 
-class Animation;
+class OgreAnimation;
 
 class AnimationStateMachine
 {
 private:
   //a pointer to the agent that owns this instance
-  Animation*   m_pOwner;
+  OgreAnimation*   m_pOwner;
   AnimationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
@@ -19,7 +19,7 @@ private:
 
 public:
 
-  AnimationStateMachine(Animation* owner):m_pOwner(owner),
+  AnimationStateMachine(OgreAnimation* owner):m_pOwner(owner),
 	                               m_pCurrentState(0),
                                    m_pPreviousState(0),
                                    m_pGlobalState(0)

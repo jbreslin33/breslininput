@@ -1,20 +1,20 @@
-#include "ogreAnimation.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "animation.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../math/vector3D.h"
+#include "../../math/vector3D.h"
 
-Animation::Animation()
+OgreAnimation::OgreAnimation()
 :
 	OgreShape()
 {
 	setupAnimations();
 }
 
-Animation::~Animation()
+OgreAnimation::~OgreAnimation()
 {
 }
 
-void Animation::setupAnimations()
+void OgreAnimation::setupAnimations()
 {
 	// this is very important due to the nature of the exported animations
 	mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
@@ -40,12 +40,12 @@ void Animation::setupAnimations()
 
 }
 
-void Animation::addTime(Real deltaTime)
+void OgreAnimation::addTime(Real deltaTime)
 {
 
 }
 
-void Animation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
+void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
 {
 	Real baseAnimSpeed = animSpeed;
 	Real topAnimSpeed = animSpeed;
@@ -96,7 +96,7 @@ void Animation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, floa
 	fadeAnimations(deltaTime);
 }
 
-void Animation::fadeAnimations(Real deltaTime)
+void OgreAnimation::fadeAnimations(Real deltaTime)
 {
 	for (int i = 0; i < NUM_ANIMS; i++)
 	{
@@ -124,7 +124,7 @@ void Animation::fadeAnimations(Real deltaTime)
 	}
 }
 
-void Animation::setBaseAnimation(AnimID id, bool reset)
+void OgreAnimation::setBaseAnimation(AnimID id, bool reset)
 {
 	if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
 	{
@@ -150,7 +150,7 @@ void Animation::setBaseAnimation(AnimID id, bool reset)
 	}
 }
 
-void Animation::setTopAnimation(AnimID id, bool reset)
+void OgreAnimation::setTopAnimation(AnimID id, bool reset)
 {
 	if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
 	{
