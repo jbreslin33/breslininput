@@ -94,7 +94,7 @@ void Game::createAIShape()
 	Vector3D* pos = new Vector3D();
 	pos->x = 0;
 	pos->y = 0;
-	pos->z = 300.0f * mSpreadOutAIIndex;;
+	pos->z = 600.0f * mSpreadOutAIIndex;;
 	mSpreadOutAIIndex++;
 
 	Vector3D* vel = new Vector3D();
