@@ -46,7 +46,11 @@ void Random_AI::execute(AI* ai)
 
 	if (ai->mCommand.mKey == 16)
 	{
-		ai->mCommand.mKey = 0;
+		ai->mCommand.mKey = 2;
+	}
+	if (ai->mCommand.mKey == 0)
+	{
+		ai->mCommand.mKey = 4;
 	}
 
 	//let's set them both because right now brian uses both. but for us ai guys they should be the same number???
