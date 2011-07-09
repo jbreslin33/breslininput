@@ -23,11 +23,7 @@ void calculateDeltaPosition();
 MoveStateMachine* mMoveProcessTickStateMachine;
 MoveStateMachine* mMoveInterpolateTickStateMachine;
 
-//run speed
-float mRunSpeed;
-
 //thresholds
-float mRunSpeedMax;
 float mTurnSpeed;
 float mPosInterpLimitHigh;
 float mPosInterpLimitLow;

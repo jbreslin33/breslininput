@@ -21,12 +21,8 @@ using namespace Ogre;
 Move::Move()
  : OgreShape()
 {
-	//run speed
-	mRunSpeed     = 0.0;
-
     //thresholds
-    mRunSpeedMax  = 200.0;
-        
+
     mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
     mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
     mPosInterpFactor    = 4.0;

@@ -49,7 +49,7 @@ AnimationStateMachine* mAnimationInterpolateTickStateMachine;
 
 //animation
 //void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
-void         setupAnimations  ();
+void         setupAnimations();
 void         fadeAnimations   (Real deltaTime);
 void         setTopAnimation  (AnimID id, bool reset);
 void         setBaseAnimation (AnimID id, bool reset);

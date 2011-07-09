@@ -61,6 +61,12 @@ void OgreAnimation::setupAnimations()
 		mFadingIn[i] = false;
 		mFadingOut[i] = false;
 	}
+	// start off in the idle state (top and bottom together)
+	setBaseAnimation(ANIM_IDLE_BASE,false);
+	setTopAnimation(ANIM_IDLE_TOP,false);
+
+	// relax the hands since we're not holding anything
+	mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
 }
 /*
 void OgreAnimation::updateAnimations(Real deltaTime, bool stop, float animSpeed)

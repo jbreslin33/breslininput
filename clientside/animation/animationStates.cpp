@@ -99,11 +99,16 @@ void Idle_InterpolateTick_Animation::enter(OgreAnimation* animation)
 void Idle_InterpolateTick_Animation::execute(OgreAnimation* animation)
 {
 	animation->mObjectTitleString.append(" A:IDLE");
-	LogString("here i am");
+	
+
 	if (!animation->mCommandToRunOnShape.mVelocity.isZero())
 	{
 		animation->mAnimationInterpolateTickStateMachine->changeState(Run_InterpolateTick_Animation::Instance());
 	}
+
+	animation->mAnims[animation->mBaseAnimID]->addTime(animation->mRenderTime * animation->mRunSpeed * 1000/animation->mRunSpeedMax);
+	animation->mAnims[animation->mTopAnimID]->addTime(animation->mRenderTime * animation->mRunSpeed * 1000/animation->mRunSpeedMax);
+	animation->fadeAnimations(animation->mRenderTime);
 }
 void Idle_InterpolateTick_Animation::exit(OgreAnimation* animation)
 {
@@ -127,12 +132,18 @@ void Run_InterpolateTick_Animation::enter(OgreAnimation* animation)
 }
 void Run_InterpolateTick_Animation::execute(OgreAnimation* animation)
 {
-	animation->mObjectTitleString.append(" A:IDLE");
+	animation->mObjectTitleString.append(" A: RUN");
 
 	if (animation->mCommandToRunOnShape.mVelocity.isZero())
 	{
 		animation->mAnimationInterpolateTickStateMachine->changeState(Idle_InterpolateTick_Animation::Instance());
 	}
+
+	animation->mAnims[animation->mBaseAnimID]->addTime(animation->mRenderTime * animation->mRunSpeed * 1000/animation->mRunSpeedMax);
+	animation->mAnims[animation->mTopAnimID]->addTime(animation->mRenderTime * animation->mRunSpeed * 1000/animation->mRunSpeedMax);
+	animation->fadeAnimations(animation->mRenderTime);
+
+	animation->fadeAnimations(animation->mRenderTime);
 }
 void Run_InterpolateTick_Animation::exit(OgreAnimation* animation)
 {
