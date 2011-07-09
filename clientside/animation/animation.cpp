@@ -3,15 +3,46 @@
 
 #include "../../math/vector3D.h"
 
+//animation states
+#include "animationStateMachine.h"
+#include "animationStates.h"
+
 OgreAnimation::OgreAnimation()
 :
 	OgreShape()
 {
+
 	setupAnimations();
+	
+	//move processTick states
+	mAnimationProcessTickStateMachine = new AnimationStateMachine(this);    //setup the state machine
+	mAnimationProcessTickStateMachine->setCurrentState      (Idle_ProcessTick_Animation::Instance());
+	mAnimationProcessTickStateMachine->setPreviousState     (Idle_ProcessTick_Animation::Instance());
+	mAnimationProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Animation::Instance());
+
+	//move interpolateTick states
+	mAnimationInterpolateTickStateMachine = new AnimationStateMachine(this);    //setup the state machine
+	mAnimationInterpolateTickStateMachine->setCurrentState      (Idle_InterpolateTick_Animation::Instance());
+	mAnimationInterpolateTickStateMachine->setPreviousState     (Idle_InterpolateTick_Animation::Instance());
+	mAnimationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Animation::Instance());
+
+
+
+
 }
 
 OgreAnimation::~OgreAnimation()
 {
+}
+
+void OgreAnimation::processTick()
+{
+    mAnimationProcessTickStateMachine->update();
+}
+
+void OgreAnimation::interpolateTick()
+{
+	mAnimationInterpolateTickStateMachine->update();
 }
 
 void OgreAnimation::setupAnimations()
@@ -30,36 +61,16 @@ void OgreAnimation::setupAnimations()
 		mFadingIn[i] = false;
 		mFadingOut[i] = false;
 	}
-
-	// start off in the idle state (top and bottom together)
-	setBaseAnimation(ANIM_IDLE_BASE,false);
-	setTopAnimation(ANIM_IDLE_TOP,false);
-
-	// relax the hands since we're not holding anything
-	mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
-
 }
-
-void OgreAnimation::addTime(Real deltaTime)
-{
-
-}
-
-void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, float animSpeed)
+/*
+void OgreAnimation::updateAnimations(Real deltaTime, bool stop, float animSpeed)
 {
 	Real baseAnimSpeed = animSpeed;
 	Real topAnimSpeed = animSpeed;
 
-	mTimer += deltaTime;
-
 	if (stop == false)
 	{
-		if(Yvelocity != 0.0 && mBaseAnimID != ANIM_JUMP_LOOP)
-		{
-			setBaseAnimation(ANIM_JUMP_LOOP, true);
-			setTopAnimation(ANIM_JUMP_LOOP, true);
-		}
-		else if (mBaseAnimID == ANIM_IDLE_BASE || mBaseAnimID == ANIM_JUMP_LOOP)
+		if (mBaseAnimID == ANIM_IDLE_BASE)
 	    {
 			// start running if not already moving and the player wants to move
 			setBaseAnimation(ANIM_RUN_BASE, true);
@@ -95,7 +106,7 @@ void OgreAnimation::updateAnimations(Real Yvelocity, Real deltaTime, bool stop, 
 	// apply smooth transitioning between our animations
 	fadeAnimations(deltaTime);
 }
-
+*/
 void OgreAnimation::fadeAnimations(Real deltaTime)
 {
 	for (int i = 0; i < NUM_ANIMS; i++)

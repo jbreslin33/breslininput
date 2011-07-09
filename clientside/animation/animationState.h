@@ -1,13 +1,13 @@
-#ifndef ANIMATIONSTATE_H
-#define ANIMATIONSTATE_H
+#ifndef OGREANIMATIONSTATE_H
+#define OGREANIMATIONSTATE_H
 
 class OgreAnimation;
 
-class AnimationState
+class OgreAnimationState
 {
 public:
 
-  virtual ~AnimationState(){}
+  virtual ~OgreAnimationState(){}
 
   //this will execute when the state is entered
   virtual void enter(OgreAnimation*)=0;

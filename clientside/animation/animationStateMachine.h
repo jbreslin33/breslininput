@@ -9,13 +9,13 @@ class AnimationStateMachine
 private:
   //a pointer to the agent that owns this instance
   OgreAnimation*   m_pOwner;
-  AnimationState*    m_pCurrentState;
+  OgreAnimationState*    m_pCurrentState;
 
   //a record of the last state the agent was in
-  AnimationState*   m_pPreviousState;
+  OgreAnimationState*   m_pPreviousState;
 
   //this is called every time the FSM is updated
-  AnimationState*   m_pGlobalState;
+  OgreAnimationState*   m_pGlobalState;
 
 public:
 
@@ -28,9 +28,9 @@ public:
   virtual ~AnimationStateMachine(){}
 
   //use these methods to initialize the FSM
-  void setCurrentState(AnimationState* s){m_pCurrentState = s;}
-  void setGlobalState(AnimationState* s) {m_pGlobalState = s;}
-  void setPreviousState(AnimationState* s){m_pPreviousState = s;}
+  void setCurrentState(OgreAnimationState* s){m_pCurrentState = s;}
+  void setGlobalState(OgreAnimationState* s) {m_pGlobalState = s;}
+  void setPreviousState(OgreAnimationState* s){m_pPreviousState = s;}
 
   //call this to update the FSM
   void  update()const
@@ -43,7 +43,7 @@ public:
   }
 
   //change to a new state
-  void  changeState(AnimationState* pNewState)
+  void  changeState(OgreAnimationState* pNewState)
   {
    // assert(pNewState &&
            //"<StateMachine::ChangeState>: trying to change to NULL state");
@@ -76,9 +76,9 @@ public:
  //   return typeid(*m_pCurrentState) == typeid(st);
  // }
 
-  AnimationState*  currentState()  const{return m_pCurrentState;}
-  AnimationState*  globalState()   const{return m_pGlobalState;}
-  AnimationState*  previousState() const{return m_pPreviousState;}
+  OgreAnimationState*  currentState()  const{return m_pCurrentState;}
+  OgreAnimationState*  globalState()   const{return m_pGlobalState;}
+  OgreAnimationState*  previousState() const{return m_pPreviousState;}
 };
 #endif
 
