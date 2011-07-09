@@ -23,8 +23,6 @@ Shape::~Shape()
 
 void Shape::processTick()
 {
-
-
 	//call parent processTicks since you overrode them
 	Move::processTick(); 
 	Rotation::processTick();

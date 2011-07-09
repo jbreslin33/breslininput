@@ -29,10 +29,8 @@ Game::Game(const char* serverIP)
 
 	mInit = true;
 
-	mJoinGame    = false;
+	mJoinGame    = true;
 	mPlayingGame = false;
-
-
  }
 
 Game::~Game()
@@ -60,16 +58,11 @@ Shape* Game::AddShape(int local, int ind, char *name, float originX, float origi
 
 	Shape* shape = new Shape(ind, position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
-
-	//shape->mIndex = ind;
-
-	//mShapeVector.push_back(shape);
 	
 	if(local)
 	{
 		mClient->mShape = shape;	
 		LogString("call SendReq");
-		//SendRequestNonDeltaFrame();
 	}
 
 	shape->mGame = this;
@@ -81,17 +74,10 @@ Shape* Game::AddShape(int local, int ind, char *name, float originX, float origi
 
 Shape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
-
 	Shape* shape = new Shape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
-	
-	//shape->mIndex = ind;
-
-	//mShapeGhostVector.push_back(shape);
-	//shape->getSceneNode()->setVisible(false);
 	return shape;
 }
-
 
 void Game::RemoveShape(int index)
 {
@@ -114,30 +100,6 @@ void Game::createScene(void)
     pointLight->setPosition(Ogre::Vector3(250, 150, 250));
     pointLight->setDiffuseColour(Ogre::ColourValue::White);
     pointLight->setSpecularColour(Ogre::ColourValue::White);
-
-
-	// create a floor mesh resource
-	/*
-	MeshManager::getSingleton().createPlane("floor", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-		Plane(Vector3::UNIT_Y, 0), 10000, 10000, 10, 10, true, 1, -1000, -1000, Vector3::UNIT_Z);
-
-
-	// create a floor entity, give it a material, and place it at the origin
-    Entity* floor = mSceneMgr->createEntity("Floor", "floor");
-
-	
-	floor->setMaterialName("rockwall.tga");
-	floor->setCastShadows(false);
-
-	SceneNode*    sceneNode    = mSceneMgr->getRootSceneNode()->createChildSceneNode();
-	
-	sceneNode->attachObject(floor);
-	Vector3 pos;
-	pos.x = 0;
-	pos.y = -300;
-	pos.z = 0;
-	sceneNode->setPosition(pos);
-	*/
 }
 
 
