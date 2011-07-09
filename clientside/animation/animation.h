@@ -31,6 +31,8 @@ enum AnimID
     ANIM_NONE
 };
 
+class AnimationStateMachine;
+
 class OgreAnimation : public virtual OgreShape
 {
 
@@ -38,13 +40,19 @@ public:
 	OgreAnimation();
 	~OgreAnimation();
 
+//ticks
+void processTick    ();
+void interpolateTick    ();
+
+AnimationStateMachine* mAnimationProcessTickStateMachine;
+AnimationStateMachine* mAnimationInterpolateTickStateMachine;
+
 //animation
-void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
+//void         updateAnimations (Real Yvelocity, Real renderTime, bool stop, float animSpeed);
 void         setupAnimations  ();
 void         fadeAnimations   (Real deltaTime);
 void         setTopAnimation  (AnimID id, bool reset);
 void         setBaseAnimation (AnimID id, bool reset);
-void         addTime          (Real deltaTime);
 
 //animation
 Ogre::AnimationState* mAnims[NUM_ANIMS];     // master animation list
@@ -52,7 +60,6 @@ AnimID          mBaseAnimID;           // current base (full- or lower-body) ani
 AnimID          mTopAnimID;            // current top (upper-body) animation
 bool            mFadingIn[NUM_ANIMS];  // which animations are fading in
 bool            mFadingOut[NUM_ANIMS]; // which animations are fading out
-Real            mTimer;                // general timer to see how long animations have been playing
 Ogre::AnimationState  *mAnimationState;
 
 };

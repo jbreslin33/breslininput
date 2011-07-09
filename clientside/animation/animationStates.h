@@ -4,7 +4,7 @@
 
 class OgreAnimation;
 
-class Global_ProcessTick_Animation : public AnimationState
+class Global_ProcessTick_Animation : public OgreAnimationState
 {
 private:
   Global_ProcessTick_Animation(){}
@@ -15,30 +15,30 @@ public:
   void exit   (OgreAnimation* animation);
 };
 
-class Normal_ProcessTick_Animation : public AnimationState
+class Idle_ProcessTick_Animation : public OgreAnimationState
 {
 private:
-  Normal_ProcessTick_Animation(){}
+  Idle_ProcessTick_Animation(){}
 public:
-  static Normal_ProcessTick_Animation* Instance();
+  static Idle_ProcessTick_Animation* Instance();
   void enter  (OgreAnimation* animation);
   void execute(OgreAnimation* animation);
   void exit   (OgreAnimation* animation);
 };
 
-class Catchup_ProcessTick_Animation : public AnimationState
+class Run_ProcessTick_Animation : public OgreAnimationState
 {
 private:
-  Catchup_ProcessTick_Animation(){}
+  Run_ProcessTick_Animation(){}
 public:
-  static Catchup_ProcessTick_Animation* Instance();
+  static Run_ProcessTick_Animation* Instance();
   void enter  (OgreAnimation* animation);
   void execute(OgreAnimation* animation);
   void exit   (OgreAnimation* animation);
 };
 /********************InterpolateTick*************/
 
-class Global_InterpolateTick_Animation : public AnimationState
+class Global_InterpolateTick_Animation : public OgreAnimationState
 {
 private:
   Global_InterpolateTick_Animation(){}
@@ -49,18 +49,29 @@ public:
   void exit   (OgreAnimation* animation);
 };
 
-class Normal_InterpolateTick_Animation : public AnimationState
+class Idle_InterpolateTick_Animation : public OgreAnimationState
 {
 private:
-  Normal_InterpolateTick_Animation(){}
+  Idle_InterpolateTick_Animation(){}
 public:
-  static Normal_InterpolateTick_Animation* Instance();
+  static Idle_InterpolateTick_Animation* Instance();
   void enter  (OgreAnimation* animation);
   void execute(OgreAnimation* animation);
   void exit   (OgreAnimation* animation);
 };
 
-class Off_InterpolateTick_Animation : public AnimationState
+class Run_InterpolateTick_Animation : public OgreAnimationState
+{
+private:
+  Run_InterpolateTick_Animation(){}
+public:
+  static Run_InterpolateTick_Animation* Instance();
+  void enter  (OgreAnimation* animation);
+  void execute(OgreAnimation* animation);
+  void exit   (OgreAnimation* animation);
+};
+
+class Off_InterpolateTick_Animation : public OgreAnimationState
 {
 private:
   Off_InterpolateTick_Animation(){}
