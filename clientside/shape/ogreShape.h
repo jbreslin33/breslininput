@@ -42,6 +42,11 @@ std::string  mObjectTitleString;
 //stats
 Vector3D* mPosition;
 
+//run speed
+float mRunSpeed;
+
+float mRunSpeedMax;
+
 //id
 int			mIndex;
 std::string  mName;
@@ -50,6 +55,8 @@ Command	mServerFrame;					// the latest frame from server
 Command mCommandToRunOnShape;
 
 float mRenderTime;
+
+
 
 Game* mGame;
 Shape* mGhost;

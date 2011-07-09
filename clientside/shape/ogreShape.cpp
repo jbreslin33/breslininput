@@ -20,6 +20,10 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 	mIndex  = ind;
 	mRenderTime = 0.0;
 
+	//run speed
+	mRunSpeed     = 0.0;
+	mRunSpeedMax  = 200.0;
+
 	//let's set our member variables to those passed in for use...
     mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
