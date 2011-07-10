@@ -73,6 +73,7 @@ public:
 
 	//time
 	void	Frame(int msec);
+	void	CheckCollisions(void);
 
 };
 
