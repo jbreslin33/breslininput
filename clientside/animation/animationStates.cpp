@@ -98,7 +98,7 @@ void Idle_InterpolateTick_Animation::enter(OgreAnimation* animation)
 }
 void Idle_InterpolateTick_Animation::execute(OgreAnimation* animation)
 {
-	//animation->mObjectTitleString.append(" A:IDLE");
+	animation->mObjectTitleString.append(" A:IDLE");
 	
 
 	if (!animation->mCommandToRunOnShape.mVelocity.isZero())
@@ -134,7 +134,7 @@ void Run_InterpolateTick_Animation::enter(OgreAnimation* animation)
 }
 void Run_InterpolateTick_Animation::execute(OgreAnimation* animation)
 {
-	//animation->mObjectTitleString.append(" A: RUN");
+	animation->mObjectTitleString.append(" A: RUN");
 
 	if (animation->mCommandToRunOnShape.mVelocity.isZero())
 	{

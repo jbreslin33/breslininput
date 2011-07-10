@@ -147,6 +147,7 @@ void Catchup_ProcessTick_Move::execute(Move* move)
 		}
 		else
 		{
+			//why would catchup ever need to set velocity to zero, wouldn't we simply leave catchup state??
            move->mCommandToRunOnShape.mVelocity.x = 0.0;
            move->mCommandToRunOnShape.mVelocity.y = 0.0;
            move->mCommandToRunOnShape.mVelocity.z = 0.0;
