@@ -134,6 +134,17 @@ void Game::Frame(int msec)
 	// Read packets from clients
 	mServer->ReadPackets();
 
+	//just processtick for ai guys because their moves come from ai class/states
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		if (mShapeVector.at(i)->mClient == NULL) //your an ai guy
+		{
+			mShapeVector.at(i)->processTick();
+		}
+	}
+
+	CheckCollisions();
+
 	// Wait full 32 ms before allowing to send
 	if(mRealTime < mServerTime)
 	{
@@ -153,17 +164,39 @@ void Game::Frame(int msec)
 	if(mServerTime < mRealTime)
 		mRealTime = mServerTime;
 
-	//just processtick for ai guys because their moves come from ai class/states
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		if (mShapeVector.at(i)->mClient == NULL) //your an ai guy
-		{
-			mShapeVector.at(i)->processTick();
-		}
-	}
-
 	SendCommand();
 	mFrameTime = 0;
+}
+
+void Game::CheckCollisions(void)
+{
+   for (unsigned int i = 0; i < mShapeVector.size(); i++)
+   {
+	   for (unsigned int j = i+1; j < mShapeVector.size(); j++) 
+	   {
+          float x1 = mShapeVector.at(i)->mSceneNode->getPosition().x;
+	      float z1 = mShapeVector.at(i)->mSceneNode->getPosition().z;
+		  float x2 = mShapeVector.at(j)->mSceneNode->getPosition().x;
+	      float z2 = mShapeVector.at(j)->mSceneNode->getPosition().z;
+
+		  float distSq = pow((x1-x2),2) + pow((z1-z2),2);
+
+		  if(distSq < 10000.0)
+		  {
+			 mShapeVector.at(i)->mCommand.mOrigin = mShapeVector.at(i)->mCommand.mOriginOld;
+			 mShapeVector.at(j)->mCommand.mOrigin = mShapeVector.at(j)->mCommand.mOriginOld;
+
+             float x3 = mShapeVector.at(i)->mCommand.mOriginOld.x;
+	         float z3 = mShapeVector.at(i)->mCommand.mOriginOld.z;
+		     float x4 = mShapeVector.at(j)->mCommand.mOriginOld.x;
+	         float z4 = mShapeVector.at(j)->mCommand.mOriginOld.z;
+
+
+             mShapeVector.at(i)->mSceneNode->setPosition(x3,0.0,z3);
+			 mShapeVector.at(j)->mSceneNode->setPosition(x4,0.0,z4);
+		  }
+	   }
+   }
 }
 
 //send to updates to all clients about all shapes
