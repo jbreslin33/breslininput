@@ -76,7 +76,7 @@ Shape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vecto
 {
 	Shape* shape = new Shape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
-	shape->getSceneNode()->setVisible(false);
+	//shape->getSceneNode()->setVisible(false);
 	return shape;
 }
 
