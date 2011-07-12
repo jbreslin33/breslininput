@@ -29,7 +29,7 @@ Game::Game(const char* serverIP)
 
 	mInit = true;
 
-	mJoinGame    = true;
+	mJoinGame    = false;
 	mPlayingGame = false;
  }
 
