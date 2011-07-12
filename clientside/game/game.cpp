@@ -497,11 +497,11 @@ void Game::gameLoop()
 {
 	while(true)
     {
-		if (mJoinGame && !mPlayingGame)
-		{
-			mClient->SendConnect("myname");
-			mPlayingGame = true;
-		}
+		//if (mJoinGame && !mPlayingGame)
+		//{
+			//mClient->SendConnect("myname");
+		//	mPlayingGame = true;
+		//}
 		processUnbufferedInput();
 		if(game != NULL)
 		{
@@ -513,6 +513,13 @@ void Game::gameLoop()
 		interpolateFrame();
 		if (!runGraphics())
 			break;
+
+		if (!mPlayingGame)
+		{
+			mClient->SendConnect("myname");
+			mPlayingGame = true;
+		}
+		
 	}
 }
 
