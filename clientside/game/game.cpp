@@ -147,19 +147,16 @@ void Game::CheckKeys(void)
 
 //this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
 //unless it did not change on server in which case it should contain same value.
-void Game::moveGhostShapes()
+void Game::moveGhostShapes(Shape* shape)
 {
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+
+	transVector.x = shape->mServerFrame.mOrigin.x;
+	transVector.z = shape->mServerFrame.mOrigin.z;
+
+	if (shape->mGhost)
 	{
-		Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
-
-		transVector.x = mShapeVector.at(i)->mServerFrame.mOrigin.x;
-		transVector.z = mShapeVector.at(i)->mServerFrame.mOrigin.z;
-
-		if (mShapeVector.at(i)->mGhost)
-		{
-			mShapeVector.at(i)->mGhost->getSceneNode()->setPosition(transVector);
-		}
+		shape->mGhost->getSceneNode()->setPosition(transVector);
 	}
 }
 void Game::ReadPackets(void)
@@ -232,12 +229,10 @@ Shape* shape;
 			while (mes.getReadCount() <= mes.GetSize())
 			{
 				if (mNetworkShutdown)
+				{
 					return;
+				}
 				ReadDeltaMoveCommand(&mes);
-				//mShapeVector.at(i)->processTick(); //when you read packets??
-
-				moveGhostShapes(); //let the ghosts move since we just got the update..
-				//LogString("readCount:%d",mes.getReadCount());
 			}
 			break;
 
@@ -389,9 +384,8 @@ void Game::ReadDeltaMoveCommand(Message *mes)
 			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 		}
 	}
-
 	shape->processTick();
-
+	moveGhostShapes(shape);
 }
 
 //this the client's (in this case we are on clientside so there is only one client instance) move being built

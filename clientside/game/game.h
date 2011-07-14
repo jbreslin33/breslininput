@@ -57,7 +57,7 @@ public:
 
 	//Server player 
 	//void	MoveServerPlayer(void); //for debugging and still some actual functionality
-	void moveGhostShapes();
+	void moveGhostShapes(Shape* shape);
 	
 	//Game
 	Shape* AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
