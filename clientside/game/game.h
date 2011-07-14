@@ -105,7 +105,16 @@ public:
 	bool mNetworkShutdown;
 	bool mJoinGame;
 	bool mPlayingGame;
+	bool mInitializeGui;
 
+	//bui
+	OgreBites::Button* mJoinButton;
+
+	void buttonHit(OgreBites::Button *button);
+
+	void loadJoinScreen();
+	void unloadOtherScreens();
+	void initializeGui();
 
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;

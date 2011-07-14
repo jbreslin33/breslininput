@@ -31,6 +31,7 @@ Game::Game(const char* serverIP)
 
 	mJoinGame    = false;
 	mPlayingGame = false;
+	mInitializeGui = false;
  }
 
 Game::~Game()
@@ -101,9 +102,8 @@ void Game::createScene(void)
     pointLight->setPosition(Ogre::Vector3(250, 150, 250));
     pointLight->setDiffuseColour(Ogre::ColourValue::White);
     pointLight->setSpecularColour(Ogre::ColourValue::White);
+
 }
-
-
 
  void Game::Shutdown(void)
  {
@@ -463,7 +463,14 @@ void Game::processUnbufferedInput()
     {
 		mJoinGame = TRUE;
     }
+}
 
+void Game::buttonHit(OgreBites::Button *button)
+{
+	if (button == mJoinButton)
+	{
+		LogString("mJoinButton HIT!");
+	}
 }
 
 bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
@@ -515,7 +522,37 @@ void Game::gameLoop()
 			mClient->SendConnect("myname");
 			mPlayingGame = true;
 		}
+
+		initializeGui();
+
+		mJoinGame = true;
 	}
+}
+
+void Game::initializeGui()
+{
+	if (mInitializeGui == true)
+	{
+		return;
+	}
+	else
+	{
+		loadJoinScreen();
+		mInitializeGui = true;
+	}
+}
+
+void Game::loadJoinScreen()
+{
+	unloadOtherScreens();
+	mJoinButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "Click Me!");
+	mTrayMgr->showCursor();
+
+}
+
+void Game::unloadOtherScreens()
+{
+
 }
 
 void Game::interpolateFrame()
