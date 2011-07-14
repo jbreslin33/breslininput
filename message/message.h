@@ -38,6 +38,8 @@ public:
 
 	char			*data;
 	char			outgoingData[1400];
+
+	int             getReadCount() { return readCount; }
 };
 
 
