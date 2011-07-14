@@ -468,6 +468,16 @@ void Game::buttonHit(OgreBites::Button *button)
 	}
 }
 
+bool Game::mouseMoved( const OIS::MouseEvent &arg )
+{
+    if (mTrayMgr->injectMouseMove(arg)) return true;
+	if (mPlayingGame)
+	{
+		mCameraMan->injectMouseMove(arg);
+	}
+    return true;
+}
+
 bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 	mRenderTime = evt.timeSinceLastFrame;
@@ -510,13 +520,13 @@ void Game::gameLoop()
 		checkForShutdown();
 		interpolateFrame();
 
-		
 		if (!runGraphics())
+		{
 			break;
+		}
 
 		initializeGui();
 
-		//mJoinGame = true;
 	}
 }
 
