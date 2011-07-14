@@ -107,12 +107,15 @@ public:
 	bool mPlayingGame;
 	bool mInitializeGui;
 
-	//bui
+	//gui
 	OgreBites::Button* mJoinButton;
 
 	void buttonHit(OgreBites::Button *button);
 
+	
+	void hideGui();
 	void loadJoinScreen();
+	void hideJoinScreen();
 	void unloadOtherScreens();
 	void initializeGui();
 

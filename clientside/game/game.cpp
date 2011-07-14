@@ -470,6 +470,13 @@ void Game::buttonHit(OgreBites::Button *button)
 	if (button == mJoinButton)
 	{
 		LogString("mJoinButton HIT!");
+		if (mJoinGame && !mPlayingGame)
+		{
+			mClient->SendConnect("myname");
+			mPlayingGame = true;
+		}
+
+		hideGui();
 	}
 }
 
@@ -517,12 +524,6 @@ void Game::gameLoop()
 		if (!runGraphics())
 			break;
 
-		if (mJoinGame && !mPlayingGame)
-		{
-			mClient->SendConnect("myname");
-			mPlayingGame = true;
-		}
-
 		initializeGui();
 
 		mJoinGame = true;
@@ -545,9 +546,25 @@ void Game::initializeGui()
 void Game::loadJoinScreen()
 {
 	unloadOtherScreens();
-	mJoinButton = mTrayMgr->createButton(OgreBites::TL_TOPLEFT, "MyButton", "Click Me!");
+	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "MyButton", "Click Me!");
+	mTrayMgr->moveWidgetToTray(mJoinButton,OgreBites::TL_CENTER);
 	mTrayMgr->showCursor();
 
+}
+
+void Game::hideGui()
+{
+	hideJoinScreen();
+	mTrayMgr->hideCursor();
+}
+
+void Game::hideJoinScreen()
+{
+	//mJoinButton->cleanup();
+	//mJoinButton->hide();
+	//delete mJoinButton;
+            mTrayMgr->removeWidgetFromTray(mJoinButton);
+            mJoinButton->hide();
 }
 
 void Game::unloadOtherScreens()
