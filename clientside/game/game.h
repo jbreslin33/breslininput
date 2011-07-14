@@ -75,7 +75,7 @@ public:
 	// Network
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
-	void	ReadDeltaMoveCommand    (Message *mes, Shape *player);
+	void	ReadDeltaMoveCommand    (Message *mes);
 	void	BuildDeltaMoveCommand   (Message *mes);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);

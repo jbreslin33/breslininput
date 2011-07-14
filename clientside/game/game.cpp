@@ -228,14 +228,16 @@ Shape* shape;
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
-			for (unsigned int i = 0; i < mShapeVector.size(); i++)
+			//for (unsigned int i = 0; i < mShapeVector.size(); i++)
+			while (mes.getReadCount() <= mes.GetSize())
 			{
 				if (mNetworkShutdown)
 					return;
-				ReadDeltaMoveCommand(&mes, mShapeVector.at(i));
-				mShapeVector.at(i)->processTick(); //when you read packets??
+				ReadDeltaMoveCommand(&mes);
+				//mShapeVector.at(i)->processTick(); //when you read packets??
 
 				moveGhostShapes(); //let the ghosts move since we just got the update..
+				//LogString("readCount:%d",mes.getReadCount());
 			}
 			break;
 
@@ -287,8 +289,10 @@ void Game::Disconnect(void)
 }
 
 //this is all shapes coming to client game from server
-void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
+void Game::ReadDeltaMoveCommand(Message *mes)
 {
+	Shape* shape = NULL;
+
 	int flags = 0;
 
 	bool x = true;
@@ -299,6 +303,17 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 
 	//index
 	int id = mes->ReadByte();
+
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		Shape* curShape = mShapeVector.at(i);
+		if (curShape->mIndex == id)
+		{
+			shape = curShape;
+		}
+	}
+if(shape)
+{
 
 	// Flags
 	flags = mes->ReadByte();
@@ -371,6 +386,10 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 		}
 	}
+shape->processTick();
+
+}
+
 }
 
 //this the client's (in this case we are on clientside so there is only one client instance) move being built
