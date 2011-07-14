@@ -312,8 +312,11 @@ void Game::ReadDeltaMoveCommand(Message *mes)
 			shape = curShape;
 		}
 	}
-if(shape)
-{
+	
+	if(!shape)
+	{
+		return;
+	}
 
 	// Flags
 	flags = mes->ReadByte();
@@ -386,9 +389,8 @@ if(shape)
 			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
 		}
 	}
-shape->processTick();
 
-}
+	shape->processTick();
 
 }
 
