@@ -297,6 +297,9 @@ void Game::ReadDeltaMoveCommand(Message *mes, Shape *shape)
 
 	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
+	//index
+	int id = mes->ReadByte();
+
 	// Flags
 	flags = mes->ReadByte();
 

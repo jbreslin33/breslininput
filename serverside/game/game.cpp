@@ -303,7 +303,6 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 		flags |= CMD_ORIGIN_Z;
 	}
 
-
 	//Rotation
 	if(shape->mLastCommand.mRot.x != command->mRot.x)
 	{
@@ -321,6 +320,8 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 	}
 
 	/******ADD TO THE MESSAGE *****/
+
+	mes->WriteByte(shape->mIndex);
 
 	// Flags
 	mes->WriteByte(flags);  
