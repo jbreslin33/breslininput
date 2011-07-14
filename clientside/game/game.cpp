@@ -449,30 +449,18 @@ void Game::processUnbufferedInput()
 	{
         keys[VK_RIGHT] = FALSE;
 	}
-	/*
-	if (mKeyboard->isKeyDown(OIS::KC_SPACE)) // Right - yaw or strafe
-    {
-		keys[VK_SPACE] = TRUE;
-    }
-	else
-	{
-        keys[VK_SPACE] = FALSE;
-	}
-*/
-	if (mKeyboard->isKeyDown(OIS::KC_V)) // Right - yaw or strafe
-    {
-		mJoinGame = TRUE;
-    }
+
 }
 
 void Game::buttonHit(OgreBites::Button *button)
 {
 	if (button == mJoinButton)
 	{
-		LogString("mJoinButton HIT!");
+		mJoinGame = true;
 		if (mJoinGame && !mPlayingGame)
 		{
 			mClient->SendConnect("myname");
+			LogString("sent connect to server");
 			mPlayingGame = true;
 		}
 
@@ -521,12 +509,14 @@ void Game::gameLoop()
 
 		checkForShutdown();
 		interpolateFrame();
+
+		
 		if (!runGraphics())
 			break;
 
 		initializeGui();
 
-		mJoinGame = true;
+		//mJoinGame = true;
 	}
 }
 
@@ -549,7 +539,6 @@ void Game::loadJoinScreen()
 	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "MyButton", "Click Me!");
 	mTrayMgr->moveWidgetToTray(mJoinButton,OgreBites::TL_CENTER);
 	mTrayMgr->showCursor();
-
 }
 
 void Game::hideGui()
@@ -560,11 +549,8 @@ void Game::hideGui()
 
 void Game::hideJoinScreen()
 {
-	//mJoinButton->cleanup();
-	//mJoinButton->hide();
-	//delete mJoinButton;
-            mTrayMgr->removeWidgetFromTray(mJoinButton);
-            mJoinButton->hide();
+	mTrayMgr->removeWidgetFromTray(mJoinButton);
+    mJoinButton->hide();
 }
 
 void Game::unloadOtherScreens()
