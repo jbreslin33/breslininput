@@ -111,6 +111,7 @@ public:
 	OgreBites::Button* mJoinButton;
 
 	void buttonHit(OgreBites::Button *button);
+	bool mouseMoved( const OIS::MouseEvent &arg );
 
 	
 	void hideGui();
