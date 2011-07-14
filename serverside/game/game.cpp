@@ -321,6 +321,11 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 
 	/******ADD TO THE MESSAGE *****/
 
+	if (shape->mIndex == 2)
+	{
+		return;
+	}
+
 	mes->WriteByte(shape->mIndex);
 
 	// Flags
