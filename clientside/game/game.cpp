@@ -32,12 +32,16 @@ Game::Game(const char* serverIP)
 	mJoinGame    = false;
 	mPlayingGame = false;
 	mInitializeGui = false;
+
+	
  }
 
 Game::~Game()
 {
 	delete mClient;
 }
+
+
 
 Shape* Game::AddShape(int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
@@ -77,7 +81,7 @@ Shape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vecto
 {
 	Shape* shape = new Shape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
-	//shape->getSceneNode()->setVisible(false);
+	shape->getSceneNode()->setVisible(false);
 	return shape;
 }
 
@@ -564,7 +568,7 @@ void Game::initializeGui()
 void Game::loadJoinScreen()
 {
 	unloadOtherScreens();
-	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "MyButton", "Click Me!");
+	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "mJoinButton", "Join Game");
 	mTrayMgr->moveWidgetToTray(mJoinButton,OgreBites::TL_CENTER);
 	mTrayMgr->showCursor();
 }
