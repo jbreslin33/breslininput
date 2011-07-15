@@ -291,7 +291,7 @@ int main(int argc, char **argv)
 					time = newTime - oldTime;
 				} while (time < 1);
 
-				game->Frame(time);
+				game->frame(time);
 
 				oldTime = newTime;
 			}
