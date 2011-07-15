@@ -45,14 +45,15 @@ public:
 	
 	Server	*mServer;  //go between for game(contains game logic) and Network(handles sending message across internets)
 
+	//time
 	int		mRealTime;				// Real server up-time in ms
 	int		mServerTime;				// Server frame * 100 ms
 	long	mFramenum;
 	int     mFrameTime;
 
+	//shapes
 	int mRunningShapeIndex;
 	int mSpreadOutAIIndex;
-
 	std::vector<Shape*> mShapeVector;	//every tangible item in game world..
 
 public:
@@ -60,20 +61,25 @@ public:
 	~Game();
 
 	//shapes
-	void createClientAvatar(Client* client);
-	void createAIShape();
-	void RemoveShape (Shape* shape);
+	void         createClientAvatar(Client* client);
+	void         createAIShape();
+	void         removeShape (Shape* shape);
 	unsigned int getOpenIndex();
 	
 	// Network
-	void	SendCommand(void);
-	void	SendExitNotification(void);
-	void	ReadDeltaMoveCommand(Message *mes, Client *client);
-	void	BuildDeltaMoveCommand(Message *mes, Shape* shape);
+	void	sendCommand(void);
+	void	sendExitNotification(void);
+	void	readDeltaMoveCommand(Message *mes, Client *client);
+	void	buildDeltaMoveCommand(Message *mes, Shape* shape);
 
 	//time
-	void	Frame(int msec);
-	void	CheckCollisions(void);
+	void	frame(int msec);
+	
+	//collision detection
+	void	checkCollisions(void);
+
+	//scope
+ 	bool    checkScope(Client* client, Shape* shape);
 
 };
 

@@ -36,16 +36,16 @@ class Shape;
 class Server
 {
 public:
-	void			SendAddAIShape(Shape* shape);
-	void			SendAddShape(Client* client);
-	void			SendRemoveShape(Shape* shape);
-	void			AddClient(struct sockaddr *address, char *name);
+	void			sendAddAIShape(Shape* shape);
+	void			sendAddShape(Client* client);
+	void			sendRemoveShape(Shape* shape);
+	void			addClient(struct sockaddr *address, char *name);
 
-	void			RemoveClient(Client *client);
+	void			removeClient(Client *client);
 
 	
-	void			ParsePacket(Message *mes, struct sockaddr *address);
-	int				CheckForTimeout(char *data, struct sockaddr *from);
+	void			parsePacket(Message *mes, struct sockaddr *address);
+	int				checkForTimeout(char *data, struct sockaddr *from);
 
 	std::vector<Client*> mClientVector;
 
@@ -57,16 +57,15 @@ public:
 					Server(Game* serverSideGame,const char *localIP, int serverPort);
 					~Server();
 
-	void			Uninitialise(void);
-	int				GetPacket(char *data, struct sockaddr *from);
-	void			SendPackets(void);
+	int				getPacket(char *data, struct sockaddr *from);
+	void			sendPackets(void);
 
-	int				GetPort(void)			{ return port; }
+	int				getPort(void)			{ return port; }
 
 	Game* mGame;
 	Network* mNetwork;
 
-	void	ReadPackets(void);
+	void	readPackets(void);
 	const char *mLocalIP;
 };
 

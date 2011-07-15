@@ -144,7 +144,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 				time = newTime - oldTime;
 			} while (time < 1);
 			
-			game->Frame(time);
+			game->frame(time);
 			
 
 			oldTime = newTime;

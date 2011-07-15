@@ -32,7 +32,7 @@ Server::~Server()
 
 
 //send a shape that has a client. i.e. a new human player
-void Server::SendAddShape(Client* client)
+void Server::sendAddShape(Client* client)
 {
 
 	// init mMessage for client
@@ -120,7 +120,7 @@ void Server::SendAddShape(Client* client)
 }
 
 //this is your serverside guy. he has no client, but we still need to tell everyone about the chap
-void Server::SendAddAIShape(Shape* shape)
+void Server::sendAddAIShape(Shape* shape)
 {
 	// Send 'Add Shape' message to every client
 	// Then tell the others about the new shape
@@ -151,7 +151,7 @@ void Server::SendAddAIShape(Shape* shape)
 	}
 }
 
-void Server::SendRemoveShape(Shape* shape)
+void Server::sendRemoveShape(Shape* shape)
 {
 	
 	int index = shape->mIndex;
@@ -166,7 +166,7 @@ void Server::SendRemoveShape(Shape* shape)
 		mClientVector.at(i)->mMessage.WriteByte(index);							// index
 	}
 
-	SendPackets();
+	sendPackets();
 	
 	//do i need this next bit?
 /*
@@ -180,7 +180,7 @@ void Server::SendRemoveShape(Shape* shape)
 }
 
 //called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
-void Server::AddClient(struct sockaddr *address, char *name)
+void Server::addClient(struct sockaddr *address, char *name)
 {
 	Client* client = new Client(mNetwork);
 	mClientVector.push_back(client);
@@ -197,29 +197,29 @@ void Server::AddClient(struct sockaddr *address, char *name)
 
 	LogString("LIB: Adding client with shape index %d", client->mShape->mIndex);
 
-	SendAddShape(client);  
+	sendAddShape(client);  
 }
 
-void Server::RemoveClient(Client *client)
+void Server::removeClient(Client *client)
 {
 	for (unsigned int i = 0; i < mClientVector.size(); i++)
 	{
 		if (mClientVector.at(i) == client)
 		{
-			mGame->RemoveShape(client->mShape); //remove the shape associated with this client while your at it.
+			mGame->removeShape(client->mShape); //remove the shape associated with this client while your at it.
 			mClientVector.erase (mClientVector.begin()+i);
 		}
 	}
 }
 
-void Server::ParsePacket(Message *mes, struct sockaddr *address)
+void Server::parsePacket(Message *mes, struct sockaddr *address)
 {
 	mes->BeginReading();
     int type = mes->ReadByte();
 
 	if (type == DREAMSOCK_MES_CONNECT)
 	{
-				AddClient(address, mes->ReadString());
+				addClient(address, mes->ReadString());
 				LogString("LIBRARY: Server: a client connected succesfully");
 	}
 	else
@@ -262,7 +262,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 						//if(mClientVector.at(i) == NULL)
 						//	break;
 
-					    RemoveClient(mClientVector.at(i));
+					    removeClient(mClientVector.at(i));
 
 						LogString("LIBRARY: Server: a client disconnected");
 						break;
@@ -272,7 +272,7 @@ void Server::ParsePacket(Message *mes, struct sockaddr *address)
 	}
 }
 
-int Server::CheckForTimeout(char *data, struct sockaddr *from)
+int Server::checkForTimeout(char *data, struct sockaddr *from)
 {
 	int currentTime = mNetwork->dreamSock_GetCurrentSystemTime();
 
@@ -299,7 +299,7 @@ int Server::CheckForTimeout(char *data, struct sockaddr *from)
 
 			*(struct sockaddr *) from = *mClientVector.at(i)->GetSocketAddress();
 
-			RemoveClient(mClientVector.at(i));
+			removeClient(mClientVector.at(i));
 
 			return mes.GetSize();
 		}
@@ -307,14 +307,14 @@ int Server::CheckForTimeout(char *data, struct sockaddr *from)
 	return 0;
 }
 
-int Server::GetPacket(char *data, struct sockaddr *from)
+int Server::getPacket(char *data, struct sockaddr *from)
 {
 	// Check if the server is set up
 	if(!mNetwork->mSocket)
 		return 0;
 
 	// Check for timeout
-	int timeout = CheckForTimeout(data, from);
+	int timeout = checkForTimeout(data, from);
 
 	if(timeout)
 		return timeout;
@@ -351,13 +351,13 @@ int Server::GetPacket(char *data, struct sockaddr *from)
 	mes.SetSize(ret);
 
 	// Parse system messages
-	ParsePacket(&mes, from);
+	parsePacket(&mes, from);
 
 	return ret;
 }
 
 //this loops thru each client instance and then calls their sendPacket(mess) function
-void Server::SendPackets(void)
+void Server::sendPackets(void)
 {
 	// Check if the server is set up
 	if(!mNetwork->mSocket)
@@ -372,7 +372,7 @@ void Server::SendPackets(void)
 	}
 }
 
-void Server::ReadPackets(void)
+void Server::readPackets(void)
 {
 	char data[1400];
 
@@ -387,7 +387,7 @@ void Server::ReadPackets(void)
 	// Get the packet from the socket
 	try
 	{
-		while(ret = GetPacket(mes.data, &address))
+		while(ret = getPacket(mes.data, &address))
 		{
 			mes.SetSize(ret);
 			mes.BeginReading();
@@ -426,7 +426,7 @@ void Server::ReadPackets(void)
 					{
 						if(memcmp(&mGame->mShapeVector.at(i)->mClient->mMyaddress, &address, sizeof(address)) == 0)
 						{
-							mGame->ReadDeltaMoveCommand(&mes, mGame->mShapeVector.at(i)->mClient);
+							mGame->readDeltaMoveCommand(&mes, mGame->mShapeVector.at(i)->mClient);
 							mGame->mShapeVector.at(i)->processTick();
 
 							break;

@@ -110,29 +110,29 @@ void Game::createAIShape()
 	shape->mGame = this; //for now to give access to shapeVector for collision i guess
 	mShapeVector.push_back(shape); //either way add this to shape vector
 
-	mServer->SendAddAIShape(shape);
+	mServer->sendAddAIShape(shape);
 }
 
-void Game::RemoveShape(Shape* shape)
+void Game::removeShape(Shape* shape)
 {
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
 		if (mShapeVector.at(i) == shape)
 		{
-			mServer->SendRemoveShape(shape);
+			mServer->sendRemoveShape(shape);
 			mShapeVector.erase (mShapeVector.begin()+i);
 		}
 	}
 }
 
-void Game::Frame(int msec)
+void Game::frame(int msec)
 {
 	mRealTime += msec;
 
 	mFrameTime += msec;
 
 	// Read packets from clients
-	mServer->ReadPackets();
+	mServer->readPackets();
 
 	//just processtick for ai guys because their moves come from ai class/states
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
@@ -143,7 +143,7 @@ void Game::Frame(int msec)
 		}
 	}
 
-	CheckCollisions();
+	checkCollisions();
 
 	// Wait full 32 ms before allowing to send
 	if(mRealTime < mServerTime)
@@ -164,16 +164,18 @@ void Game::Frame(int msec)
 	if(mServerTime < mRealTime)
 		mRealTime = mServerTime;
 
-	SendCommand();
+	sendCommand();
 	mFrameTime = 0;
 }
 
-void Game::CheckCollisions(void)
+void Game::checkCollisions(void)
 {
    for (unsigned int i = 0; i < mShapeVector.size(); i++)
    {
+	  
 	   for (unsigned int j = i+1; j < mShapeVector.size(); j++) 
 	   {
+		   
           float x1 = mShapeVector.at(i)->mSceneNode->getPosition().x;
 	      float z1 = mShapeVector.at(i)->mSceneNode->getPosition().z;
 		  float x2 = mShapeVector.at(j)->mSceneNode->getPosition().x;
@@ -191,7 +193,7 @@ void Game::CheckCollisions(void)
 		     float x4 = mShapeVector.at(j)->mCommand.mOriginOld.x;
 	         float z4 = mShapeVector.at(j)->mCommand.mOriginOld.z;
 
-
+			
              mShapeVector.at(i)->mSceneNode->setPosition(x3,0.0,z3);
 			 mShapeVector.at(j)->mSceneNode->setPosition(x4,0.0,z4);
 		  }
@@ -199,8 +201,28 @@ void Game::CheckCollisions(void)
    }
 }
 
+bool Game::checkScope(Client* client, Shape* shape)
+{
+	//let's check scop here...
+	float x1 = client->mShape->mSceneNode->getPosition().x;  //clientshape
+	float z1 = client->mShape->mSceneNode->getPosition().z;
+	float x2 = shape->mSceneNode->getPosition().x;  //build shape
+	float z2 = shape->mSceneNode->getPosition().z;
+
+	float distSq = pow((x1-x2),2) + pow((z1-z2),2);
+			
+	if(distSq < 10000000.0)
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
+}
+
 //send to updates to all clients about all shapes
-void Game::SendCommand(void)
+void Game::sendCommand(void)
 {
 	// Fill messages..for all clients
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
@@ -215,14 +237,17 @@ void Game::SendCommand(void)
 		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mIncomingSequence);
 
 		//this is where you need to actually loop thru the shapes not the clients but put write to client mMessage
-		for (unsigned int j = 0; j < mServer->mGame->mShapeVector.size(); j++)
+		for (unsigned int j = 0; j < mShapeVector.size(); j++)
 		{                         //the client to send to's message        //the shape command it's about
-			BuildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mServer->mGame->mShapeVector.at(j));
+			if (checkScope(mServer->mClientVector.at(i),mShapeVector.at(i)))
+			{
+				buildDeltaMoveCommand(&mServer->mClientVector.at(i)->mMessage, mShapeVector.at(j));
+			}
 		}
 	}
 
 	// Send messages to all clients
-	mServer->SendPackets();
+	mServer->sendPackets();
 
 	// Store the sent command in mLastCommand.
 	for (unsigned int i = 0; i < mServer->mGame->mShapeVector.size(); i++)
@@ -234,7 +259,7 @@ void Game::SendCommand(void)
 
 
 //this is the whole shabang server exit not a player or shape exit
-void Game::SendExitNotification(void)
+void Game::sendExitNotification(void)
 {
 	for (unsigned int i = 0; i < mServer->mClientVector.size(); i++)
 	{
@@ -247,11 +272,11 @@ void Game::SendExitNotification(void)
 		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mIncomingSequence);
 	}
 
-	mServer->SendPackets();
+	mServer->sendPackets();
 }
 
 //this is just for clients right now, should i make another or hijack this function??
-void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
+void Game::readDeltaMoveCommand(Message *mes, Client *client)
 {
 	int flags = 0;
 
@@ -281,7 +306,7 @@ void Game::ReadDeltaMoveCommand(Message *mes, Client *client)
 
 //does this even care that a client is passed it? other than that it needs it access mShape? which
 //i should already have?
-void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
+void Game::buildDeltaMoveCommand(Message *mes, Shape* shape)
 {
 	Command* command = &shape->mCommand;
 	
@@ -321,10 +346,9 @@ void Game::BuildDeltaMoveCommand(Message *mes, Shape* shape)
 
 	/******ADD TO THE MESSAGE *****/
 
-	if (shape->mIndex == 2)
-	{
-		return;
-	}
+	//check scope first....
+	//let's check within 10000
+	
 
 	mes->WriteByte(shape->mIndex);
 
