@@ -10,7 +10,7 @@ using namespace Ogre;
 
 class Command;
 class RotationStateMachine;
-class Shape;
+class DynamicShape;
 
 class Rotation :  public virtual OgreShape
 {

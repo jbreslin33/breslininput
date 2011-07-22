@@ -1,7 +1,7 @@
 #include "rotationStates.h"
 #include "rotationStateMachine.h"
 
-#include "../../clientside/shape/shape.h"
+#include "../../clientside/shape/dynamicShape.h"
 
 #include "rotation.h"
 

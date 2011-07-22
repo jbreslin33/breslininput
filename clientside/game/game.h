@@ -3,7 +3,7 @@
 
 #include "../../game/BaseApplication.h"
 
-#include "../../clientside/shape/shape.h"
+#include "../../clientside/shape/dynamicShape.h"
 
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
@@ -57,12 +57,12 @@ public:
 
 	//Server player 
 	//void	MoveServerPlayer(void); //for debugging and still some actual functionality
-	void moveGhostShapes(Shape* shape);
+	void moveGhostShapes(DynamicShape* shape);
 	
 	//Game
-	Shape* AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
+	DynamicShape* AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
 					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
-	Shape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
+	DynamicShape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
@@ -90,8 +90,8 @@ public:
 	const char*  mServerIP;
 
 	//Shapes
-	std::vector<Shape*> mShapeVector;	 //all shapes in the client world
-	std::vector<Shape*> mShapeGhostVector;	 //all shapes in the client world's ghost 
+	std::vector<DynamicShape*> mShapeVector;	 //all shapes in the client world
+	std::vector<DynamicShape*> mShapeGhostVector;	 //all shapes in the client world's ghost 
 
 	vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 	
