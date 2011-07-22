@@ -107,6 +107,7 @@ set(HDRS
 	#shape
 	../clientside/shape/shape.h
 	../clientside/shape/ogreShape.h
+	../clientside/shape/dynamicShape.h
 	
 	#animation
 	../clientside/animation/animation.h
@@ -166,6 +167,7 @@ set(SRCS
 	#shape
 	../clientside/shape/shape.cpp
 	../clientside/shape/ogreShape.cpp
+	../clientside/shape/dynamicShape.cpp
 	
 	#animation
 	../clientside/animation/animation.cpp
@@ -220,6 +222,7 @@ set(HDRS
 	#shape
 	../clientside/shape/shape.h
 	../clientside/shape/ogreShape.h
+	../clientside/shape/dynamicShape.h
 	
 	#animation
 	../clientside/animation/animation.h
@@ -277,6 +280,7 @@ set(SRCS
 	#shape
 	../clientside/shape/shape.cpp
 	../clientside/shape/ogreShape.cpp
+	../clientside/shape/dynamicShape.cpp
 	
 	#animation
 	../clientside/animation/animation.cpp

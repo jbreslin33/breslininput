@@ -18,7 +18,7 @@ using namespace Ogre;
 
 class ObjectTitle;
 class Game;
-class Shape;
+class DynamicShape;
 class OgreShape
 {
 
@@ -59,7 +59,7 @@ float mRenderTime;
 
 
 Game* mGame;
-Shape* mGhost;
+DynamicShape* mGhost;
 
 
 };

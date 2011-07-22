@@ -1,7 +1,7 @@
 #include "rotation.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../clientside/shape/shape.h"
+#include "../../clientside/shape/dynamicShape.h"
 
 #include <string>
 

@@ -3,7 +3,7 @@
 
 #include "../../network/network.h"
 
-#include "../../clientside/shape/shape.h"
+#include "../../clientside/shape/dynamicShape.h"
 
 #include "../../clientside/client/client.h"
 
@@ -43,7 +43,7 @@ Game::~Game()
 
 
 
-Shape* Game::AddShape(int local, int ind, char *name, float originX, float originY, float originZ,
+DynamicShape* Game::AddShape(int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
@@ -61,7 +61,7 @@ Shape* Game::AddShape(int local, int ind, char *name, float originX, float origi
 	rotation->z = rotationZ;
 	rotation->y = 0;
 
-	Shape* shape = new Shape(ind, position,velocity,rotation,mSceneMgr,"sinbad.mesh");
+	DynamicShape* shape = new DynamicShape(ind, position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	if(local)
@@ -77,9 +77,9 @@ Shape* Game::AddShape(int local, int ind, char *name, float originX, float origi
 	return shape;
 }
 
-Shape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
+DynamicShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
-	Shape* shape = new Shape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
+	DynamicShape* shape = new DynamicShape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	//shape->getSceneNode()->setVisible(false);
 	return shape;
@@ -151,7 +151,7 @@ void Game::CheckKeys(void)
 
 //this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
 //unless it did not change on server in which case it should contain same value.
-void Game::moveGhostShapes(Shape* shape)
+void Game::moveGhostShapes(DynamicShape* shape)
 {
 	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
 
@@ -178,7 +178,7 @@ void Game::ReadPackets(void)
 	int newTime;
 	int time;
 
-Shape* shape;
+DynamicShape* shape;
 
 	char name[50];
 
@@ -290,7 +290,7 @@ void Game::Disconnect(void)
 //this is all shapes coming to client game from server
 void Game::ReadDeltaMoveCommand(Message *mes)
 {
-	Shape* shape = NULL;
+	DynamicShape* shape = NULL;
 
 	int flags = 0;
 
@@ -305,7 +305,7 @@ void Game::ReadDeltaMoveCommand(Message *mes)
 
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
-		Shape* curShape = mShapeVector.at(i);
+		DynamicShape* curShape = mShapeVector.at(i);
 		if (curShape->mIndex == id)
 		{
 			shape = curShape;
