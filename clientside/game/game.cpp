@@ -3,7 +3,7 @@
 
 #include "../../network/network.h"
 
-#include "../../clientside/shape/dynamicShape.h"
+#include "../../clientside/shape/ogreDynamicShape.h"
 
 #include "../../clientside/client/client.h"
 
@@ -61,8 +61,12 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 	rotation->z = rotationZ;
 	rotation->y = 0;
 
-	DynamicShape* shape = new DynamicShape(this,ind, position,velocity,rotation,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	DynamicShape* shape = new OgreDynamicShape(this,ind, position,velocity,rotation,"sinbad.mesh");
+	Vector3D v;
+	v.x = 30;
+	v.x = 30;
+	v.y = 30;
+	shape->scale(v);
 	
 	if(local)
 	{
@@ -79,8 +83,12 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 
 DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
-	DynamicShape* shape = new DynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
-	shape->getSceneNode()->scale(30,30,30);
+	DynamicShape* shape = new OgreDynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
+	Vector3D v;
+	v.x = 30;
+	v.x = 30;
+	v.y = 30;
+	shape->scale(v);
 	//shape->getSceneNode()->setVisible(false);
 	return shape;
 }
@@ -153,14 +161,15 @@ void Game::CheckKeys(void)
 //unless it did not change on server in which case it should contain same value.
 void Game::moveGhostShapes(DynamicShape* shape)
 {
-	Ogre::Vector3 transVector = Ogre::Vector3::ZERO;
+	Vector3D transVector;
 
 	transVector.x = shape->mServerFrame.mOrigin.x;
+	transVector.y = 0;
 	transVector.z = shape->mServerFrame.mOrigin.z;
 
 	if (shape->mGhost)
 	{
-		shape->mGhost->getSceneNode()->setPosition(transVector);
+		shape->mGhost->setPosition(transVector);
 	}
 }
 void Game::ReadPackets(void)
