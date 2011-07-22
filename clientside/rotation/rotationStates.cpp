@@ -21,9 +21,10 @@ void Global_ProcessTick_Rotation::execute(Rotation* rotation)
 {
 	rotation->calculateServerRotationSpeed();
 
-	// yaw server guy to new rot
-	//rotation->mGame->mShapeGhostVector.at
-    rotation->mGhost->getSceneNode()->yaw(Degree(rotation->mServerRotSpeed));	
+	//shape_replace
+    //rotation->mGhost->getSceneNode()->yaw(Degree(rotation->mServerRotSpeed), true);
+    rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
+
 }
 void Global_ProcessTick_Rotation::exit(Rotation* rotation)
 {
@@ -166,7 +167,7 @@ void Normal_InterpolateTick_Rotation::execute(Rotation* rotation)
 
 	//rotation->mObjectTitleString.append("R:Normal");
 	float rotSpeed = rotation->mCommandToRunOnShape.mRotSpeed * rotation->mRenderTime;
-    rotation->getSceneNode()->yaw(Degree(rotSpeed));
+    rotation->yaw(rotSpeed, true);
 
     if (rotation->mServerRotSpeed == 0.0 && abs(rotation->getDegreesToServer()) < rotation->mRotInterpLimitLow)
     {

@@ -6,81 +6,26 @@
 //billboard
 #include "../../billboard/objectTitle.h"
 
-
-
 OgreShape::OgreShape()
 {
 }
 //constructor for client side ogre shape
 OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::SceneManager* mSceneMgr, std::string mesh)
 {
+	//Ogre::SceneManager* mSceneManager = game->getRoot();
+
 	static int number_of_times = 0;
 
- 	mPosition = position;
-	mIndex  = ind;
-	mRenderTime = 0.0;
-
-	//run speed
-	mRunSpeed     = 0.0;
-	mRunSpeedMax  = 200.0;
-
 	//let's set our member variables to those passed in for use...
-    mSceneManager = mSceneMgr;
+    //mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
 	mName         = StringConverter::toString(number_of_times);
-    mSceneNode    = mSceneManager->getRootSceneNode()->createChildSceneNode();
-
-	// put character in starting spawn spot
-    //mSceneNode->translate(position->x,position->z,position->y, Node::TS_LOCAL);
-
-	//let's set the serverframe...for inititialize purposeses
-	mServerFrame.mOrigin.x = position->x;
-	mServerFrame.mOrigin.y = position->y;
-	mServerFrame.mOrigin.z = position->z;
-
-	mServerFrame.mOriginOld.x = position->x;
-	mServerFrame.mOriginOld.y = position->y;
-	mServerFrame.mOriginOld.z = position->z;
-
-	mServerFrame.mVelocity.x = position->x;
-	mServerFrame.mVelocity.y = position->y;
-	mServerFrame.mVelocity.z = position->z;
-
-	mServerFrame.mRot.x = rotation->x;
-	mServerFrame.mRot.z = rotation->z;
-
-	mServerFrame.mMilliseconds = 0;
-	mServerFrame.mMillisecondsTotal = 0;
-
-	mServerFrame.mKey = 0;
-	mServerFrame.mRotSpeed = 0;
-
-	//let's set the serverframe...for inititialize purposeses
-	mCommandToRunOnShape.mOrigin.x = position->x;
-	mCommandToRunOnShape.mOrigin.y = position->y;
-	mCommandToRunOnShape.mOrigin.z = position->z;
-
-	mCommandToRunOnShape.mOriginOld.x = position->x;
-	mCommandToRunOnShape.mOriginOld.y = position->y;
-	mCommandToRunOnShape.mOriginOld.z = position->z;
-
-	mCommandToRunOnShape.mVelocity.x = position->x;
-	mCommandToRunOnShape.mVelocity.y = position->y;
-	mCommandToRunOnShape.mVelocity.z = position->z;
-
-	mCommandToRunOnShape.mRot.x = rotation->x;
-	mCommandToRunOnShape.mRot.z = rotation->z;
-
-	mCommandToRunOnShape.mMilliseconds = 0;
-	mCommandToRunOnShape.mMillisecondsTotal = 0;
-
-	mCommandToRunOnShape.mKey = 0;
-	mCommandToRunOnShape.mRotSpeed = 0;
+    mSceneNode    = mGame->mSceneMgr->getRootSceneNode()->createChildSceneNode();
 
 	mSceneNode->setPosition(position->x,position->y,position->z);	
+	
+	mEntity = mGame->mSceneMgr->createEntity(mName, mMeshName);
 
-	mEntity = mSceneManager->createEntity(mName,
-		mMeshName);
     mSceneNode->attachObject(mEntity);
 
 	//billboard
@@ -91,12 +36,9 @@ OgreShape::OgreShape(int ind, Vector3D* position, Vector3D* velocity, Vector3D* 
 	mObjectTitle = new ObjectTitle
 	(titlename, mEntity, mSceneMgr->getCamera("PlayerCam"), title,
     fontName, color);
-	//end billboard
 
 	number_of_times++;
-
-	mGame = NULL;
-	mGhost = NULL;
+	//end billboard
 }
 
 OgreShape::~OgreShape()
@@ -106,3 +48,53 @@ OgreShape::~OgreShape()
 	delete mSceneNode;
 }
 
+void OgreShape::yaw(float amountToYaw, bool converToDegree)
+{
+	if (convertToDegree)
+	{
+		getSceneNode()->yaw(Degree(rotation->mServerRotSpeed), true);
+		//rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
+	}
+}
+float OgreShape::getDegreesToSomething(Vector3D vectorOfSomething)
+{
+    //calculate how far off we are from server
+    Quaternion toSomething = getSceneNode()->getOrientation().zAxis().getRotationTo(vectorOfSomething,Vector3::UNIT_Y);
+
+
+    // convert to degrees
+    Real degreesToServer = toServer.getYaw().valueDegrees();
+	return degreesToserver;
+}
+
+//1 world, 2 local
+void OgreShape::translate(Vector3D translateVector, int perspective)
+{
+	if (perspective == 1)
+	{
+		move->getSceneNode()->translate(transVector * move->mRenderTime * 1000, Ogre::Node::TS_WORLD);
+	}
+	if (perspective == 2)
+	{
+		move->getSceneNode()->translate(transVector * move->mRenderTime * 1000, Ogre::Node::TS_LOCAL);
+	}
+}
+
+void OgreShape::setPosition(Vector3D position)
+{
+	getSceneNode()->setPosition(position);
+}
+
+void OgreShape::setPosition(float x, float y, float z)
+{
+	getSceneNode()->setPosition(x,y,z);
+}
+
+Vector3D OgreShape::getPosition()
+{
+	Vector3D position;
+	position.x = getSceneNode()->getPosition.x;
+	position.y = getSceneNode()->getPosition.y;
+	position.z = getSceneNode()->getPosition.z;
+	return position;
+}

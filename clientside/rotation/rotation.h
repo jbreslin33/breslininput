@@ -2,17 +2,13 @@
 #define ROTATION_H
 
 //parents
-#include "../../clientside/shape/ogreShape.h"
-
-//Ogre headers
-#include "Ogre.h"
-using namespace Ogre;
+#include "../../clientside/shape/shape.h"
 
 class Command;
 class RotationStateMachine;
 class DynamicShape;
 
-class Rotation :  public virtual OgreShape
+class Rotation :  public Shape
 {
 
 public:
@@ -24,7 +20,7 @@ Rotation();
 void processTick    ();
 
 void interpolateTick    ();
-Real getDegreesToServer();
+float getDegreesToServer();
 void calculateServerRotationSpeed();
 
 RotationStateMachine* mRotationProcessTickStateMachine;
@@ -40,9 +36,9 @@ float mRotInterpIncrease;
 float mRotInterpDecrease;
 
 //rotation
-Ogre::Vector3 mServerRotOld;
-Ogre::Vector3 mServerRotNew;
-Ogre::Real    mDegreesToServer;
+Vector3D mServerRotOld;
+Vector3D mServerRotNew;
+float    mDegreesToServer;
 };
 
 #endif

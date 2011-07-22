@@ -9,9 +9,8 @@
 
 OgreAnimation::OgreAnimation()
 :
-	OgreShape()
+	Shape()
 {
-
 	setupAnimations();
 	
 	//move processTick states
@@ -25,10 +24,6 @@ OgreAnimation::OgreAnimation()
 	mAnimationInterpolateTickStateMachine->setCurrentState      (Idle_InterpolateTick_Animation::Instance());
 	mAnimationInterpolateTickStateMachine->setPreviousState     (Idle_InterpolateTick_Animation::Instance());
 	mAnimationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Animation::Instance());
-
-
-
-
 }
 
 OgreAnimation::~OgreAnimation()
@@ -68,51 +63,7 @@ void OgreAnimation::setupAnimations()
 	// relax the hands since we're not holding anything
 	mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
 }
-/*
-void OgreAnimation::updateAnimations(Real deltaTime, bool stop, float animSpeed)
-{
-	Real baseAnimSpeed = animSpeed;
-	Real topAnimSpeed = animSpeed;
 
-	if (stop == false)
-	{
-		if (mBaseAnimID == ANIM_IDLE_BASE)
-	    {
-			// start running if not already moving and the player wants to move
-			setBaseAnimation(ANIM_RUN_BASE, true);
-			if (mTopAnimID == ANIM_IDLE_TOP)
-			{
-				setTopAnimation(ANIM_RUN_TOP, true);
-			}
-		}
-	}
-	else
-	{
-		if (mBaseAnimID == ANIM_RUN_BASE)
-		{
-			// stop running if already moving and the player doesn't want to move
-			setBaseAnimation(ANIM_IDLE_BASE, true);
-			if (mTopAnimID == ANIM_RUN_TOP) 
-			{
-				setTopAnimation(ANIM_IDLE_TOP, true);
-			}
-		}
-	}
-	
-	// increment the current base and top animation times
-	if (mBaseAnimID != ANIM_NONE)
-	{
-		mAnims[mBaseAnimID]->addTime(deltaTime * baseAnimSpeed);
-	}
-	if (mTopAnimID != ANIM_NONE)
-	{
-		mAnims[mTopAnimID]->addTime(deltaTime * topAnimSpeed);
-	}
-	
-	// apply smooth transitioning between our animations
-	fadeAnimations(deltaTime);
-}
-*/
 void OgreAnimation::fadeAnimations(Real deltaTime)
 {
 	for (int i = 0; i < NUM_ANIMS; i++)

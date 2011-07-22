@@ -19,7 +19,7 @@ using namespace Ogre;
 #define KEY_SPACE				16
 
 Move::Move()
- : OgreShape()
+ : Shape()
 {
     //thresholds
 
@@ -66,9 +66,9 @@ void Move::interpolateTick()
 
 void Move::calculateDeltaPosition()
 {
-	mDeltaX = mServerFrame.mOrigin.x - getSceneNode()->getPosition().x;
-    mDeltaY = mServerFrame.mOrigin.y - getSceneNode()->getPosition().y;
-    mDeltaZ = mServerFrame.mOrigin.z - getSceneNode()->getPosition().z;
+	mDeltaX = mServerFrame.mOrigin.x - getPosition().x;
+    mDeltaY = mServerFrame.mOrigin.y - getPosition().y;
+    mDeltaZ = mServerFrame.mOrigin.z - getPosition().z;
 
     //distance we are off from server
     mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2) +  pow(mDeltaZ, 2));

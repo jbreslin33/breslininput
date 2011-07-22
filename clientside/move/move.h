@@ -2,12 +2,12 @@
 #define MOVE_H
 
 //parents
-#include "../../clientside/shape/ogreShape.h"
+#include "../../clientside/shape/shape.h"
 
 class Command;
 class MoveStateMachine;
 
-class Move : public virtual OgreShape
+class Move : public Shape
 {
 
 public:

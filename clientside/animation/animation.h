@@ -9,7 +9,7 @@
 using namespace Ogre;
 
 //parents
-#include "../../clientside/shape/ogreShape.h"
+#include "../../clientside/shape/shape.h"
 
 // all the animations our character has, and a null ID
 // some of these affect separate body parts and will be blended together
@@ -33,7 +33,7 @@ enum AnimID
 
 class AnimationStateMachine;
 
-class OgreAnimation : public virtual OgreShape
+class OgreAnimation : public virtual Shape
 {
 
 public:
