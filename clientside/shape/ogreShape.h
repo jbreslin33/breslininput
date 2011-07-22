@@ -1,3 +1,4 @@
+
 #ifndef OGRESHAPE_H
 #define OGRESHAPE_H
 

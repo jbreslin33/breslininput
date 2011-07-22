@@ -106,9 +106,10 @@ set(HDRS
 	
 	#shape
 	../clientside/shape/shape.h
-	../clientside/shape/ogreShape.h
+	#../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
-	
+	../clientside/shape/ogreDynamicShape.h
+
 	#states
 	../clientside/states/dynamicShapeState.h
 	../clientside/states/dynamicShapeStateMachine.h
@@ -146,8 +147,9 @@ set(SRCS
 	
 	#shape
 	../clientside/shape/shape.cpp
-	../clientside/shape/ogreShape.cpp
+	#../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
+	../clientside/shape/ogreDynamicShape.cpp
 	
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp
@@ -186,8 +188,9 @@ set(HDRS
 	
 	#shape
 	../clientside/shape/shape.h
-	../clientside/shape/ogreShape.h
+	#../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
+	../clientside/shape/ogreDynamicShape.h
 	
 	#states
 	../clientside/states/dynamicShapeState.h
@@ -226,8 +229,9 @@ set(SRCS
 	
 	#shape
 	../clientside/shape/shape.cpp
-	../clientside/shape/ogreShape.cpp
+	#../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
+	../clientside/shape/ogreDynamicShape.cpp
 	
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp

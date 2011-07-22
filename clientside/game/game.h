@@ -3,7 +3,7 @@
 
 #include "../../game/BaseApplication.h"
 
-#include "../../clientside/shape/dynamicShape.h"
+#include "../../clientside/shape/ogreDynamicShape.h"
 
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
