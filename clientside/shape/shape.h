@@ -19,7 +19,7 @@ class Shape
 {
 public:
 
-Shape();
+Shape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, std::string mesh);
 ~Shape();
 
 virtual void     yaw                  (float amountToYaw, bool converToDegree   ) = 0;

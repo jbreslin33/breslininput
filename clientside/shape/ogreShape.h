@@ -13,8 +13,7 @@ class OgreShape : public Shape
 {
 
 public:
-OgreShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, Ogre::SceneManager* mSceneMgr, std::string mesh);
-OgreShape();
+OgreShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, std::string mesh);
 ~OgreShape();
 
 SceneNode* getSceneNode() { return mSceneNode; }
@@ -25,6 +24,9 @@ void     translate            (Vector3D translateVector, int perspective);
 Vector3D getPosition          (                                         );
 void     setPosition          (Vector3D position                        );
 void     setPosition          (float x, float y, float z                );
+
+
+Ogre::Vector3 converToVector3(Vector3D vector3d);
 
 //ogre scene stuff
 std::string         mMeshName;

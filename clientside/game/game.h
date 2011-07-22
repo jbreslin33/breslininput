@@ -60,9 +60,9 @@ public:
 	void moveGhostShapes(DynamicShape* shape);
 	
 	//Game
-	DynamicShape* AddShape(int local, int ind, char *name, float originX, float originZ, float originY,
+	DynamicShape* AddShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
 					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
-	DynamicShape* AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
+	DynamicShape* AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	CheckKeys   (void);
@@ -93,7 +93,7 @@ public:
 	std::vector<DynamicShape*> mShapeVector;	 //all shapes in the client world
 	std::vector<DynamicShape*> mShapeGhostVector;	 //all shapes in the client world's ghost 
 
-	vector<MovableTextOverlay*> myVect;  //for writing above shapes head
+	std::vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 	
 	//time
 	float mFrameTime;
@@ -119,6 +119,8 @@ public:
 	void hideJoinScreen();
 	void unloadOtherScreens();
 	void initializeGui();
+
+	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
 #ifdef WIN32
 	DreamWinSock* mDreamWinSock;
