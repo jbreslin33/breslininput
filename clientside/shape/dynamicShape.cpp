@@ -1,7 +1,13 @@
 #include "dynamicShape.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
+#include "../states/dynamicShapeStateMachine.h"
+#include "../states/dynamicShapeMoveStates.h"
+#include "../states/dynamicShapeRotationStates.h"
+
 #include "../../billboard/objectTitle.h"
+
+
 
 #include <string.h>
 
@@ -10,7 +16,58 @@ DynamicShape::DynamicShape(Game* game, int ind, Vector3D* position, Vector3D* ve
 :
 	OgreShape         (game,ind,position,velocity,rotation,mesh)
 {
+	/////move
+    //thresholds
 
+    mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
+    mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
+    mPosInterpFactor    = 4.0;
+
+
+	//deltas
+	mDeltaX        = 0.0; 
+	mDeltaY		   = 0.0;
+	mDeltaZ        = 0.0;
+	mDeltaPosition = 0.0;
+
+	//move processTick states
+	mMoveProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mMoveProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
+
+	//move interpolateTick states
+	mMoveInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_InterpolateTick_Move::Instance());
+	//mMoveInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setGlobalState       (NULL);
+
+	//////rotation
+    //vars
+    mTurnSpeed = 250.0;
+
+    mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
+    mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
+    mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
+    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
+
+	//rotation
+	mServerRotOld.zero();
+	mServerRotNew.zero();
+	mDegreesToServer = 0.0;
+
+	//process tick rotation states
+	mRotationProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mRotationProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Rotation::Instance());
+	mRotationProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
+	mRotationProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Rotation::Instance());
+
+	//interpolate tick rotation states
+	mRotationInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mRotationInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Rotation::Instance());
+	mRotationInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
+	mRotationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Rotation::Instance());
 }
 
 DynamicShape::~DynamicShape()
@@ -24,8 +81,8 @@ void DynamicShape::processTick()
 	//mObjectTitleString.clear(); //empty title string so it can be filled anew
 
 	//call parent processTicks since you overrode them
-	Move::processTick(); 
-	Rotation::processTick();
+    mMoveProcessTickStateMachine->update();
+	mRotationProcessTickStateMachine->update();
 	//OgreAnimation::processTick();
 	
 	//run billboard here for now.
@@ -38,12 +95,12 @@ void DynamicShape::interpolateTick(float renderTime)
 	mRenderTime = renderTime;
 
 	//call parent interpolateTicks since you overrode them
-	Move::interpolateTick();
-	Rotation::interpolateTick();
+	mMoveInterpolateTickStateMachine->update();
+	mRotationInterpolateTickStateMachine->update();
 	//OgreAnimation::interpolateTick();
 }
 
-float Rotation::getDegreesToServer()
+float DynamicShape::getDegreesToServer()
 {
     Vector3D serverRotNew;
 
@@ -62,7 +119,7 @@ float Rotation::getDegreesToServer()
 	return degreesToServer;
 }
 
-void Rotation::calculateServerRotationSpeed()
+void DynamicShape::calculateServerRotationSpeed()
 {
     mServerRotOld.zero();
     mServerRotNew.zero();
@@ -97,4 +154,14 @@ void Rotation::calculateServerRotationSpeed()
     {
 		mServerRotSpeed = 0.0f;
     }
+}
+
+void DynamicShape::calculateDeltaPosition()
+{
+	mDeltaX = mServerFrame.mOrigin.x - getPosition().x;
+    mDeltaY = mServerFrame.mOrigin.y - getPosition().y;
+    mDeltaZ = mServerFrame.mOrigin.z - getPosition().z;
+
+    //distance we are off from server
+    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2) +  pow(mDeltaZ, 2));
 }

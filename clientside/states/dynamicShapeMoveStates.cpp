@@ -1,9 +1,9 @@
-#include "moveStates.h"
-#include "moveStateMachine.h"
+#include "dynamicShapeMoveStates.h"
+#include "dynamicShapeStateMachine.h"
 
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "move.h"
+#include "../shape/dynamicShape.h"
 
 //utility
 #include <math.h>
@@ -17,16 +17,16 @@ Global_ProcessTick_Move* Global_ProcessTick_Move::Instance()
   static Global_ProcessTick_Move instance;
   return &instance;
 }
-void Global_ProcessTick_Move::enter(Move* move)
+void Global_ProcessTick_Move::enter(DynamicShape* dynamicShape)
 {
 
 }
-void Global_ProcessTick_Move::execute(Move* move)
+void Global_ProcessTick_Move::execute(DynamicShape* dynamicShape)
 {
-	//move->mObjectTitleString.append(StringConverter::toString(move->mIndex));
-	move->calculateDeltaPosition();
+	//dynamicShape->mObjectTitleString.append(StringConverter::toString(dynamicShape->mIndex));
+	dynamicShape->calculateDeltaPosition();
 }
-void Global_ProcessTick_Move::exit(Move* move)
+void Global_ProcessTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 
@@ -37,50 +37,50 @@ Normal_ProcessTick_Move* Normal_ProcessTick_Move::Instance()
   static Normal_ProcessTick_Move instance;
   return &instance;
 }
-void Normal_ProcessTick_Move::enter(Move* move)
+void Normal_ProcessTick_Move::enter(DynamicShape* dynamicShape)
 {
 
 }
-void Normal_ProcessTick_Move::execute(Move* move)
+void Normal_ProcessTick_Move::execute(DynamicShape* dynamicShape)
 {
-	//move->mObjectTitleString.append("M:Normal ");
+	//dynamicShape->mObjectTitleString.append("M:Normal ");
 
 	// if distance exceeds threshold && server velocity is zero
-	if(move->mDeltaPosition > move->mPosInterpLimitHigh && !move->mServerFrame.mVelocity.isZero())
+	if(dynamicShape->mDeltaPosition > dynamicShape->mPosInterpLimitHigh && !dynamicShape->mServerFrame.mVelocity.isZero())
 	{
-		move->mMoveProcessTickStateMachine->changeState(Catchup_ProcessTick_Move::Instance());
+		dynamicShape->mMoveProcessTickStateMachine->changeState(Catchup_ProcessTick_Move::Instance());
     }
     else //server stopped or we are in sync so just use server vel as is, this is meat of normal state...
     {
 		Vector3D serverDest;
        // Ogre::Vector3 myDest      = Ogre::Vector3::ZERO;
 
-		serverDest.x = move->mServerFrame.mVelocity.x;
-	    serverDest.y = move->mServerFrame.mVelocity.y;
-        serverDest.z = move->mServerFrame.mVelocity.z;
+		serverDest.x = dynamicShape->mServerFrame.mVelocity.x;
+	    serverDest.y = dynamicShape->mServerFrame.mVelocity.y;
+        serverDest.z = dynamicShape->mServerFrame.mVelocity.z;
         serverDest.normalise();
 
-       // move->mRunSpeed = 0.0;
+       // dynamicShape->mRunSpeed = 0.0;
 
-        if(move->mCommandToRunOnShape.mMilliseconds != 0)
+        if(dynamicShape->mCommandToRunOnShape.mMilliseconds != 0)
         {
 			
-			move->mRunSpeed =
+			dynamicShape->mRunSpeed =
 			sqrt(
-			pow(move->mServerFrame.mVelocity.x, 2) + 
-            pow(move->mServerFrame.mVelocity.y, 2) +
-			pow(move->mServerFrame.mVelocity.z, 2)) /
-			move->mCommandToRunOnShape.mMilliseconds;
+			pow(dynamicShape->mServerFrame.mVelocity.x, 2) + 
+            pow(dynamicShape->mServerFrame.mVelocity.y, 2) +
+			pow(dynamicShape->mServerFrame.mVelocity.z, 2)) /
+			dynamicShape->mCommandToRunOnShape.mMilliseconds;
         }
 
-        serverDest = serverDest * move->mRunSpeed;
+        serverDest = serverDest * dynamicShape->mRunSpeed;
 
-		move->mCommandToRunOnShape.mVelocity.x = serverDest.x;
-        move->mCommandToRunOnShape.mVelocity.y = serverDest.y;
-        move->mCommandToRunOnShape.mVelocity.z = serverDest.z;
+		dynamicShape->mCommandToRunOnShape.mVelocity.x = serverDest.x;
+        dynamicShape->mCommandToRunOnShape.mVelocity.y = serverDest.y;
+        dynamicShape->mCommandToRunOnShape.mVelocity.z = serverDest.z;
 	}
 }
-void Normal_ProcessTick_Move::exit(Move* move)
+void Normal_ProcessTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 
@@ -91,37 +91,37 @@ Catchup_ProcessTick_Move* Catchup_ProcessTick_Move::Instance()
 	static Catchup_ProcessTick_Move instance;
 	return &instance;
 }
-void Catchup_ProcessTick_Move::enter(Move* move)
+void Catchup_ProcessTick_Move::enter(DynamicShape* dynamicShape)
 {
 }
-void Catchup_ProcessTick_Move::execute(Move* move)
+void Catchup_ProcessTick_Move::execute(DynamicShape* dynamicShape)
 {
-	//move->mObjectTitleString.append("M:Catchup ");
+	//dynamicShape->mObjectTitleString.append("M:Catchup ");
 	//if we are back in sync
-    if(move->mDeltaPosition <= move->mPosInterpLimitHigh || move->mServerFrame.mVelocity.isZero())
+    if(dynamicShape->mDeltaPosition <= dynamicShape->mPosInterpLimitHigh || dynamicShape->mServerFrame.mVelocity.isZero())
     {
-		move->mMoveProcessTickStateMachine->changeState(Normal_ProcessTick_Move::Instance());
+		dynamicShape->mMoveProcessTickStateMachine->changeState(Normal_ProcessTick_Move::Instance());
     }
     else
     {
 		Vector3D serverDest; //vector to future server pos
         Vector3D myDest; //vector from clienr pos to future server pos
 
-        serverDest.x = move->mServerFrame.mVelocity.x;
-        serverDest.y = move->mServerFrame.mVelocity.y;
-        serverDest.z = move->mServerFrame.mVelocity.z;
+        serverDest.x = dynamicShape->mServerFrame.mVelocity.x;
+        serverDest.y = dynamicShape->mServerFrame.mVelocity.y;
+        serverDest.z = dynamicShape->mServerFrame.mVelocity.z;
         serverDest.normalise();
 
-        float multiplier = move->mDeltaPosition * move->mPosInterpFactor;
+        float multiplier = dynamicShape->mDeltaPosition * dynamicShape->mPosInterpFactor;
         serverDest = serverDest * multiplier;
-        serverDest.x = move->mServerFrame.mOrigin.x + serverDest.x;
-        serverDest.y = move->mServerFrame.mOrigin.y + serverDest.y;
-        serverDest.z = move->mServerFrame.mOrigin.z + serverDest.z;
-                //LogString("mOrigin.y %f", move->mClient->mServerFrame.mOrigin.y);
+        serverDest.x = dynamicShape->mServerFrame.mOrigin.x + serverDest.x;
+        serverDest.y = dynamicShape->mServerFrame.mOrigin.y + serverDest.y;
+        serverDest.z = dynamicShape->mServerFrame.mOrigin.z + serverDest.z;
+                //LogString("mOrigin.y %f", dynamicShape->mClient->mServerFrame.mOrigin.y);
 
-        myDest.x = serverDest.x - move->getPosition().x;
-        myDest.y = serverDest.y - move->getPosition().y;
-        myDest.z = serverDest.z - move->getPosition().z;
+        myDest.x = serverDest.x - dynamicShape->getPosition().x;
+        myDest.y = serverDest.y - dynamicShape->getPosition().y;
+        myDest.z = serverDest.z - dynamicShape->getPosition().z;
 
 
         //dist from clienr pos to future server pos
@@ -129,16 +129,16 @@ void Catchup_ProcessTick_Move::execute(Move* move)
         predictDist = sqrt(predictDist);
 
         //server velocity
-		if(move->mCommandToRunOnShape.mMilliseconds != 0)
+		if(dynamicShape->mCommandToRunOnShape.mMilliseconds != 0)
         {
-           move->mRunSpeed = sqrt(pow(move->mServerFrame.mVelocity.x, 2) + 
-           pow(move->mServerFrame.mVelocity.y, 2) + pow(move->mServerFrame.mVelocity.z, 2))/move->mCommandToRunOnShape.mMilliseconds;
+           dynamicShape->mRunSpeed = sqrt(pow(dynamicShape->mServerFrame.mVelocity.x, 2) + 
+           pow(dynamicShape->mServerFrame.mVelocity.y, 2) + pow(dynamicShape->mServerFrame.mVelocity.z, 2))/dynamicShape->mCommandToRunOnShape.mMilliseconds;
 		}
 
-		if(move->mRunSpeed != 0.0)
+		if(dynamicShape->mRunSpeed != 0.0)
 		{
            //time needed to get to future server pos
-           float time = move->mDeltaPosition * move->mPosInterpFactor/move->mRunSpeed;
+           float time = dynamicShape->mDeltaPosition * dynamicShape->mPosInterpFactor/dynamicShape->mRunSpeed;
 
            myDest.normalise();
 
@@ -146,22 +146,22 @@ void Catchup_ProcessTick_Move::execute(Move* move)
 		   float distTime = predictDist/time;
            myDest = myDest * distTime;
 
-           move->mCommandToRunOnShape.mVelocity.x = myDest.x;
-           move->mCommandToRunOnShape.mVelocity.y = myDest.y;
-           move->mCommandToRunOnShape.mVelocity.z = myDest.z;
+           dynamicShape->mCommandToRunOnShape.mVelocity.x = myDest.x;
+           dynamicShape->mCommandToRunOnShape.mVelocity.y = myDest.y;
+           dynamicShape->mCommandToRunOnShape.mVelocity.z = myDest.z;
 
 		}
 		else
 		{
 			//why would catchup ever need to set velocity to zero, wouldn't we simply leave catchup state??
-           move->mCommandToRunOnShape.mVelocity.x = 0.0;
-           move->mCommandToRunOnShape.mVelocity.y = 0.0;
-           move->mCommandToRunOnShape.mVelocity.z = 0.0;
+           dynamicShape->mCommandToRunOnShape.mVelocity.x = 0.0;
+           dynamicShape->mCommandToRunOnShape.mVelocity.y = 0.0;
+           dynamicShape->mCommandToRunOnShape.mVelocity.z = 0.0;
 
 		}
 	}
 }
-void Catchup_ProcessTick_Move::exit(Move* move)
+void Catchup_ProcessTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 
@@ -173,15 +173,15 @@ Global_InterpolateTick_Move* Global_InterpolateTick_Move::Instance()
   static Global_InterpolateTick_Move instance;
   return &instance;
 }
-void Global_InterpolateTick_Move::enter(Move* move)
+void Global_InterpolateTick_Move::enter(DynamicShape* dynamicShape)
 {
 
 }
-void Global_InterpolateTick_Move::execute(Move* move)
+void Global_InterpolateTick_Move::execute(DynamicShape* dynamicShape)
 {
 
 }
-void Global_InterpolateTick_Move::exit(Move* move)
+void Global_InterpolateTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 
@@ -192,27 +192,27 @@ Normal_InterpolateTick_Move* Normal_InterpolateTick_Move::Instance()
   static Normal_InterpolateTick_Move instance;
   return &instance;
 }
-void Normal_InterpolateTick_Move::enter(Move* move)
+void Normal_InterpolateTick_Move::enter(DynamicShape* dynamicShape)
 {
 
 }
-void Normal_InterpolateTick_Move::execute(Move* move)
+void Normal_InterpolateTick_Move::execute(DynamicShape* dynamicShape)
 {
 	Vector3D transVector;
 
-    transVector.x = move->mCommandToRunOnShape.mVelocity.x;
-    transVector.y = move->mCommandToRunOnShape.mVelocity.y;
-    transVector.z = move->mCommandToRunOnShape.mVelocity.z;
+    transVector.x = dynamicShape->mCommandToRunOnShape.mVelocity.x;
+    transVector.y = dynamicShape->mCommandToRunOnShape.mVelocity.y;
+    transVector.z = dynamicShape->mCommandToRunOnShape.mVelocity.z;
         
-    move->translate(transVector * move->mRenderTime * 1000, 1);
+    dynamicShape->translate(transVector * dynamicShape->mRenderTime * 1000, 1);
 
 	//does this just prevent you from going below 0 up and down?
-    if(move->getPosition().y < 0.0)
+    if(dynamicShape->getPosition().y < 0.0)
 	{	
-		move->setPosition(move->getPosition().x, 0.0 ,move->getPosition().z);
+		dynamicShape->setPosition(dynamicShape->getPosition().x, 0.0 ,dynamicShape->getPosition().z);
 	}
 }
-void Normal_InterpolateTick_Move::exit(Move* move)
+void Normal_InterpolateTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 
@@ -223,14 +223,14 @@ Off_InterpolateTick_Move* Off_InterpolateTick_Move::Instance()
 	static Off_InterpolateTick_Move instance;
 	return &instance;
 }
-void Off_InterpolateTick_Move::enter(Move* move)
+void Off_InterpolateTick_Move::enter(DynamicShape* dynamicShape)
 {
 }
-void Off_InterpolateTick_Move::execute(Move* move)
+void Off_InterpolateTick_Move::execute(DynamicShape* dynamicShape)
 {
 
 }
-void Off_InterpolateTick_Move::exit(Move* move)
+void Off_InterpolateTick_Move::exit(DynamicShape* dynamicShape)
 {
 }
 

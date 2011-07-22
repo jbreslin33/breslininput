@@ -20,7 +20,7 @@ void Global_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
 
 	//shape_replace
     //->mGhost->getSceneNode()->yaw(Degree(->mServerRotSpeed), true);
-   dynamicShape->mGhost->yaw(dynamicShape->mServerRotSpeed,true);	
+	dynamicShape->mGhost->yaw(dynamicShape->mServerRotSpeed,true);	
 
 }
 void Global_ProcessTick_Rotation::exit(DynamicShape* dynamicShape)
@@ -42,7 +42,7 @@ void Normal_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
 	//->mObjectTitleString.append("R:Normal");
 	
 	// are we too far off you need to change to catchup state
-    if(abs(->mDegreesToServer) >dynamicShape->mRotInterpLimitHigh)
+    if(abs(dynamicShape->mDegreesToServer) > dynamicShape->mRotInterpLimitHigh)
     {
        dynamicShape->mRotationProcessTickStateMachine->changeState(Catchup_ProcessTick_Rotation::Instance());
 		return;
@@ -93,7 +93,7 @@ void Catchup_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
     }
     else
     {
-		if(->mServerRotSpeed != 0.0)
+		if(dynamicShape->mServerRotSpeed != 0.0)
         {
 			// if server rot counter-clockwise hardcode server rot to +mTurnSpeed
             if(dynamicShape->mServerRotSpeed > 0.0)

@@ -43,7 +43,7 @@ Game::~Game()
 
 
 
-DynamicShape* Game::AddShape(int local, int ind, char *name, float originX, float originY, float originZ,
+DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
@@ -61,7 +61,7 @@ DynamicShape* Game::AddShape(int local, int ind, char *name, float originX, floa
 	rotation->z = rotationZ;
 	rotation->y = 0;
 
-	DynamicShape* shape = new DynamicShape(ind, position,velocity,rotation,mSceneMgr,"sinbad.mesh");
+	DynamicShape* shape = new DynamicShape(this,ind, position,velocity,rotation,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	
 	if(local)
@@ -72,14 +72,14 @@ DynamicShape* Game::AddShape(int local, int ind, char *name, float originX, floa
 
 	shape->mGame = this;
 	
-	shape->mGhost = AddGhostShape(ind,position,velocity,rotation);
+	shape->mGhost = AddGhostShape(game,ind,position,velocity,rotation);
 
 	return shape;
 }
 
-DynamicShape* Game::AddGhostShape(int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
+DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
-	DynamicShape* shape = new DynamicShape(ind,position,velocity,rotation,mSceneMgr,"sinbad.mesh");
+	DynamicShape* shape = new DynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
 	shape->getSceneNode()->scale(30,30,30);
 	//shape->getSceneNode()->setVisible(false);
 	return shape;
@@ -206,7 +206,7 @@ DynamicShape* shape;
 			velocity.z = mes.ReadFloat();
 			rotation.x = mes.ReadFloat();
 			rotation.z = mes.ReadFloat();
-			shape = AddShape(local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
+			shape = AddShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
 			//now add to vectors....
 			mShapeVector.push_back(shape);
