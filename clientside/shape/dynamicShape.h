@@ -87,7 +87,7 @@ float    mDegreesToServer;
 std::string mName;
 
 std::string getName() { return mName; }
-Game* game;
+Game* mGame;
 
 };
 
