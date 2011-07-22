@@ -5,10 +5,6 @@
 
 #include <string>
 
-//Ogre headers
-#include "Ogre.h"
-using namespace Ogre;
-
 //rotation states
 #include "rotationStateMachine.h"
 #include "rotationStates.h"
@@ -22,7 +18,7 @@ using namespace Ogre;
 
 Rotation::Rotation()
 :
-	OgreShape()
+	Shape()
 {
     //vars
     mTurnSpeed = 250.0;
@@ -33,8 +29,8 @@ Rotation::Rotation()
     mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
 
 	//rotation
-	mServerRotOld  = Ogre::Vector3::ZERO;
-	mServerRotNew  = Ogre::Vector3::ZERO;
+	mServerRotOld.zero();
+	mServerRotNew.zero();
 	mDegreesToServer = 0.0;
 
 	//process tick rotation states
@@ -66,9 +62,9 @@ void Rotation::interpolateTick()
 	mRotationInterpolateTickStateMachine->update();	
 }
 
-Real Rotation::getDegreesToServer()
+float Rotation::getDegreesToServer()
 {
-    Ogre::Vector3 serverRotNew  = Ogre::Vector3::ZERO;
+    Vector3D serverRotNew;
 
     serverRotNew.x = mServerFrame.mRot.x;
     serverRotNew.z = mServerFrame.mRot.z;
@@ -76,18 +72,19 @@ Real Rotation::getDegreesToServer()
     serverRotNew.normalise();
 
     //calculate how far off we are from server
-    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+   // Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
+
 
     // convert to degrees
-    Real degreesToServer = toServer.getYaw().valueDegrees();
-
+    //Real degreesToServer = toServer.getYaw().valueDegrees();
+	float degreesToServer = getDegreesToSomething(serverRotNew);
 	return degreesToServer;
 }
 
 void Rotation::calculateServerRotationSpeed()
 {
-    mServerRotOld  = Ogre::Vector3::ZERO;
-    mServerRotNew  = Ogre::Vector3::ZERO;
+    mServerRotOld.zero();
+    mServerRotNew.zero();
 
     mServerRotOld.x = mServerFrame.mRotOld.x;
     mServerRotOld.z = mServerFrame.mRotOld.z;
@@ -99,20 +96,24 @@ void Rotation::calculateServerRotationSpeed()
     mServerRotOld.normalise();
 
     //calculate how far off we are from server
-    Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
+    //Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
 
     // convert to degrees
-    mDegreesToServer = toServer.getYaw().valueDegrees();
+    //mDegreesToServer = toServer.getYaw().valueDegrees();
+
+	mDegreesToServer = getDegreesToSomething(mServerRotNew);
 
     //calculate server rotation from last tick to new one
 	
-    Quaternion serverRot = mGhost->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
+    //Quaternion serverRot = mGhost->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
 
     // convert to degrees
-    mServerRotSpeed = serverRot.getYaw().valueDegrees();
+    //mServerRotSpeed = serverRot.getYaw().valueDegrees();
+	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew);
 
-    if(abs(mServerRotSpeed) < 0.01)
+
+    if(abs(mServerRotSpeed) < 0)
     {
-		mServerRotSpeed = 0.0;
+		mServerRotSpeed = 0.0f;
     }
 }

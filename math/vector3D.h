@@ -15,6 +15,11 @@ float y;
 float z;
 
 bool isZero();
+void zero();
+
+void normalise();
+
+Vector3D operator*(float num) const;
 
 };
 #endif

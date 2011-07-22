@@ -109,30 +109,12 @@ set(HDRS
 	../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
 	
-	#animation
-	../clientside/animation/animation.h
-	
-	#animation states
-	../clientside/animation/animationStateMachine.h
-	../clientside/animation/animationState.h
-	../clientside/animation/animationStates.h	
-	
-	#move
-	../clientside/move/move.h
-	
-	#move states
-	../clientside/move/moveStateMachine.h
-	../clientside/move/moveState.h
-	../clientside/move/moveStates.h
-	
-	#rotation
-	../clientside/rotation/rotation.h
-	
-	#rotation states
-	../clientside/rotation/rotationStateMachine.h
-	../clientside/rotation/rotationState.h
-	../clientside/rotation/rotationStates.h	
-	
+	#states
+	../clientside/states/dynamicShapeState.h
+	../clientside/states/dynamicShapeStateMachine.h
+	../clientside/states/dynamicShapeMoveStates.h
+	../clientside/states/dynamicShapeRotationStates.h
+		
 	#message
 	../message/message.h
 	
@@ -141,8 +123,6 @@ set(HDRS
 
 	#billboard
 	../billboard/objectTitle.h
-	
-	
 )
  
 set(SRCS
@@ -169,24 +149,9 @@ set(SRCS
 	../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
 	
-	#animation
-	../clientside/animation/animation.cpp
-	
-	#animation states
-	../clientside/animation/animationStates.cpp
-	
-	#move
-	../clientside/move/move.cpp
-
-	
-	#move states
-	../clientside/move/moveStates.cpp
-	
-	#rotation
-	../clientside/rotation/rotation.cpp
-	
-	#rotation states
-	../clientside/rotation/rotationStates.cpp
+	#states
+	../clientside/states/dynamicShapeMoveStates.cpp
+	../clientside/states/dynamicShapeRotationStates.cpp
 	
 	#message
 	../message/message.cpp
@@ -224,29 +189,11 @@ set(HDRS
 	../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
 	
-	#animation
-	../clientside/animation/animation.h
-	
-	#animation states
-	../clientside/animation/animationStateMachine.h
-	../clientside/animation/animationState.h
-	../clientside/animation/animationStates.h	
-	
-	#move
-	../clientside/move/move.h
-	
-	#move states
-	../clientside/move/moveStateMachine.h
-	../clientside/move/moveState.h
-	../clientside/move/moveStates.h
-	
-	#rotation
-	../clientside/rotation/rotation.h
-	
-	#rotation states
-	../clientside/rotation/rotationStateMachine.h
-	../clientside/rotation/rotationState.h
-	../clientside/rotation/rotationStates.h	
+	#states
+	../clientside/states/dynamicShapeState.h
+	../clientside/states/dynamicStateMachine.h
+	../clientside/states/dynamicShapeMoveStates.h
+	../clientside/states/dynamicShapeRotationStates.h
 	
 	#message
 	../message/message.h
@@ -282,24 +229,18 @@ set(SRCS
 	../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
 	
-	#animation
-	../clientside/animation/animation.cpp
+	#states
+	../clientside/states/dynamicShapeMoveStates.cpp
+	../clientside/states/dynamicShapeRotationStates.cpp
 	
-	#animation states
-	../clientside/animation/animationStates.cpp
+	#message
+	../message/message.cpp
 	
-	#move
-	../clientside/move/move.cpp
-
+	#client
+	../clientside/client/client.cpp
 	
-	#move states
-	../clientside/move/moveStates.cpp
-	
-	#rotation
-	../clientside/rotation/rotation.cpp
-	
-	#rotation states
-	../clientside/rotation/rotationStates.cpp
+	#billboard
+	../billboard/objectTitle.cpp
 	
 	#message
 	../message/message.cpp
