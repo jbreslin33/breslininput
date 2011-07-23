@@ -19,7 +19,7 @@ virtual void     setPosition          (Vector3D                                 
 virtual void     setPosition          (float x, float y, float z                ) = 0;
 virtual Vector3D getPosition          (                                         ) = 0;
 virtual void     scale                (Vector3D                                 ) = 0;
-
+virtual void     setVisible           (bool b                                   ) = 0;
 //id
 int			 mIndex;
 

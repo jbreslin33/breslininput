@@ -88,7 +88,7 @@ DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector
 	v.y = 30;
 	v.z = 30;
 	shape->scale(v);
-	//shape->getSceneNode()->setVisible(false);
+	shape->setVisible(false);
 	return shape;
 }
 

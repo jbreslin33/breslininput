@@ -62,7 +62,7 @@ void Normal_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
             }
 			else //clockwise - set to -mTurnSpeed
             {
-				dynamicShape->mCommandToRunOnShape.mRotSpeed = dynamicShape->mTurnSpeed;
+				dynamicShape->mCommandToRunOnShape.mRotSpeed = -dynamicShape->mTurnSpeed;
             }
 		}
 	}
@@ -102,7 +102,7 @@ void Catchup_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
             }
             else //clockwise - set to -mTurnSpeed
             {
-				dynamicShape->mCommandToRunOnShape.mRotSpeed = dynamicShape->mTurnSpeed;
+				dynamicShape->mCommandToRunOnShape.mRotSpeed = -dynamicShape->mTurnSpeed;
             }
 			if(dynamicShape->mDegreesToServer / dynamicShape->mServerRotSpeed > 0.0)
             {
@@ -121,7 +121,7 @@ void Catchup_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
             }
             else //clockwise - set to -mTurnSpeed
             {
-				dynamicShape->mCommandToRunOnShape.mRotSpeed = dynamicShape->mTurnSpeed;
+				dynamicShape->mCommandToRunOnShape.mRotSpeed = -dynamicShape->mTurnSpeed;
             }
 		}
 	}
