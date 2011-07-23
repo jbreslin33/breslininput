@@ -20,58 +20,42 @@ public:
 DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 ~DynamicShape();
 
-//virtual
-virtual void     yaw                  (float amountToYaw, bool converToDegree   ) = 0;
-virtual float    getDegreesToSomething(Vector3D something                       ) = 0;
-virtual void     translate            (Vector3D translateVector, int perspective) = 0;
+//game pointer cause you gotta know about the world you inhabit as a playa
+Game* mGame;
 
-//dynamic
-//run speed
-float mRunSpeed;
+//state machines
+DynamicShapeStateMachine* mMoveProcessTickStateMachine;
+DynamicShapeStateMachine* mMoveInterpolateTickStateMachine;
+DynamicShapeStateMachine* mRotationProcessTickStateMachine;
+DynamicShapeStateMachine* mRotationInterpolateTickStateMachine;
 
-float mRunSpeedMax;
+//this is used to rotate to and for debugging. it goes right to lates serverFrame from net.
+DynamicShape* mGhost;
 
+//commands
 Command	mServerFrame;					// the latest frame from server
 Command mCommandToRunOnShape;
 
+//time
 float mRenderTime;
 
-
-DynamicShape* mGhost;
-
-//ticks
-void processTick();
-void interpolateTick(float renderTime);
-
-float getDegreesToServer();
-void calculateServerRotationSpeed();
-
-/////move
-void calculateDeltaPosition();
-
-DynamicShapeStateMachine* mMoveProcessTickStateMachine;
-DynamicShapeStateMachine* mMoveInterpolateTickStateMachine;
-
-//rotation states
-DynamicShapeStateMachine* mRotationProcessTickStateMachine;
-DynamicShapeStateMachine* mRotationInterpolateTickStateMachine;
+//run speed
+float mRunSpeed;
+float mRunSpeedMax;
 
 //thresholds
 float mTurnSpeed;
 float mPosInterpLimitHigh;
 float mPosInterpLimitLow;
-
 float mPosInterpFactor;
 
 //deltas
 float mDeltaX;
 float mDeltaZ;
 float mDeltaY;
-
 float mDeltaPosition;
 
-////rotation
-//vars
+//rotation
 float mServerRotSpeed;
 
 float mRotInterpLimitHigh;
@@ -84,8 +68,22 @@ Vector3D mServerRotOld;
 Vector3D mServerRotNew;
 float    mDegreesToServer;
 
+//virtual need to be implemented in subclass...
+virtual void        yaw                  (float amountToYaw, bool converToDegree   ) = 0;
+virtual float       getDegreesToSomething(Vector3D something                       ) = 0;
+virtual void        translate            (Vector3D translateVector, int perspective) = 0;
 virtual std::string getName() = 0; 
-Game* mGame;
+
+//ticks
+void processTick();
+void interpolateTick(float renderTime);
+
+//rotation
+float getDegreesToServer();
+void  calculateServerRotationSpeed();
+
+//move
+void calculateDeltaPosition();
 
 };
 
