@@ -21,7 +21,7 @@ OgreDynamicShape::OgreDynamicShape(Game* game, int ind, Vector3D* position, Vect
 	mMeshName     = mesh;
 	mName         = StringConverter::toString(number_of_times);
     mSceneNode    = mGame->getSceneManager()->getRootSceneNode()->createChildSceneNode();
-
+	LogString("create mSceneNode for OgreDynamicShape");
 	mSceneNode->setPosition(position->x,position->y,position->z);	
 	
 	mEntity = mGame->getSceneManager()->createEntity(mName, mMeshName);
@@ -53,29 +53,49 @@ void OgreDynamicShape::scale(Vector3D scaleVector)
 	getSceneNode()->scale(scaleVector.x, scaleVector.y, scaleVector.z);
 }
 
+void OgreDynamicShape::checkExtents(Vector3D min, int i)
+{
+
+	Ogre::Vector3 max;
+	max = Ogre::Vector3::UNIT_SCALE;
+
+	assert( (min.x <= max.x && min.y <= max.y && min.z <= max.z) &&
+                "Got ya Bitch!" );
+
+			//mExtent = EXTENT_FINITE;
+			//mMinimum = min;
+			//mMaximum = max;
+}
 void OgreDynamicShape::yaw(float amountToYaw, bool convertToDegree)
 {
+	//LogString("before");
 	if (convertToDegree)
 	{
 		getSceneNode()->yaw(Degree(amountToYaw));
 		//rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
 	}
+	//LogString("after");
 }
-float OgreDynamicShape::getDegreesToSomething(Vector3D vectorOfSomething)
+float OgreDynamicShape::getDegreesToSomething(Vector3D vectorOfSomething,int i)
 {
+		
+	checkExtents(vectorOfSomething,1);
+	//LogString("b");
     //calculate how far off we are from server
+
     Quaternion toSomething = getSceneNode()->getOrientation().zAxis().getRotationTo(converToVector3(vectorOfSomething),Vector3::UNIT_Y);
 
 
     // convert to degrees
     Real degreesToServer = toSomething.getYaw().valueDegrees();
+	//LogString("a");
 	return degreesToServer;
 }
 
 //1 world, 2 local
 void OgreDynamicShape::translate(Vector3D translateVector, int perspective)
 {
-
+	//checkExtents(translateVector);
 	if (perspective == 1)
 	{
 		getSceneNode()->translate(converToVector3(translateVector), Ogre::Node::TS_WORLD);
@@ -88,6 +108,7 @@ void OgreDynamicShape::translate(Vector3D translateVector, int perspective)
 
 void OgreDynamicShape::setPosition(Vector3D position)
 {
+	//checkExtents(position);
 	getSceneNode()->setPosition(converToVector3(position));
 }
 
@@ -107,6 +128,7 @@ Vector3D OgreDynamicShape::getPosition()
 
 Ogre::Vector3 OgreDynamicShape::converToVector3(Vector3D vector3d)
 {
+		//checkExtents(vector3d);
 	Ogre::Vector3 vec3;
 	vec3.x = vector3d.x;
 	vec3.y = vector3d.y;

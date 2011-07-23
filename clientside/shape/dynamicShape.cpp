@@ -14,16 +14,13 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 :
 	Shape         (ind,position,rotation)
 {
-
+	mGame = game;
 //dynamic
 	mRenderTime = 0.0;
 
 	//run speed
 	mRunSpeed     = 0.0;
 	mRunSpeedMax  = 200.0;
-
-	// put character in starting spawn spot
-    //mSceneNode->translate(position->x,position->z,position->y, Node::TS_LOCAL);
 
 	//let's set the serverframe...for inititialize purposeses
 	mServerFrame.mOrigin.x = position->x;
@@ -39,6 +36,7 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mServerFrame.mVelocity.z = position->z;
 
 	mServerFrame.mRot.x = rotation->x;
+	mServerFrame.mRot.y = 0;
 	mServerFrame.mRot.z = rotation->z;
 
 	mServerFrame.mMilliseconds = 0;
@@ -61,6 +59,7 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mCommandToRunOnShape.mVelocity.z = position->z;
 
 	mCommandToRunOnShape.mRot.x = rotation->x;
+	mCommandToRunOnShape.mRot.y = 0;
 	mCommandToRunOnShape.mRot.z = rotation->z;
 
 	mCommandToRunOnShape.mMilliseconds = 0;
@@ -160,6 +159,7 @@ float DynamicShape::getDegreesToServer()
     Vector3D serverRotNew;
 
     serverRotNew.x = mServerFrame.mRot.x;
+	serverRotNew.y = 0;
     serverRotNew.z = mServerFrame.mRot.z;
 
     serverRotNew.normalise();
@@ -170,7 +170,7 @@ float DynamicShape::getDegreesToServer()
 
     // convert to degrees
     //Real degreesToServer = toServer.getYaw().valueDegrees();
-	float degreesToServer = getDegreesToSomething(serverRotNew);
+	float degreesToServer = getDegreesToSomething(serverRotNew,1);
 	return degreesToServer;
 }
 
@@ -180,9 +180,11 @@ void DynamicShape::calculateServerRotationSpeed()
     mServerRotNew.zero();
 
     mServerRotOld.x = mServerFrame.mRotOld.x;
+	mServerRotOld.y = 0;
     mServerRotOld.z = mServerFrame.mRotOld.z;
 
     mServerRotNew.x = mServerFrame.mRot.x;
+	mServerRotNew.y = 0;
     mServerRotNew.z = mServerFrame.mRot.z;
 
     mServerRotNew.normalise();
@@ -194,7 +196,7 @@ void DynamicShape::calculateServerRotationSpeed()
     // convert to degrees
     //mDegreesToServer = toServer.getYaw().valueDegrees();
 
-	mDegreesToServer = getDegreesToSomething(mServerRotNew);
+	mDegreesToServer = getDegreesToSomething(mServerRotNew,2);
 
     //calculate server rotation from last tick to new one
 	
@@ -202,7 +204,7 @@ void DynamicShape::calculateServerRotationSpeed()
 
     // convert to degrees
     //mServerRotSpeed = serverRot.getYaw().valueDegrees();
-	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew);
+	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew,3);
 
 
     if(abs(mServerRotSpeed) < 0)

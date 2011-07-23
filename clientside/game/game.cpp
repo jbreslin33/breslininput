@@ -58,14 +58,15 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 
 	Vector3D* rotation = new Vector3D();
 	rotation->x = rotationX;
-	rotation->z = rotationZ;
 	rotation->y = 0;
+	rotation->z = rotationZ;
+
 
 	DynamicShape* shape = new OgreDynamicShape(this,ind, position,velocity,rotation,"sinbad.mesh");
 	Vector3D v;
 	v.x = 30;
-	v.x = 30;
 	v.y = 30;
+	v.z = 30;
 	shape->scale(v);
 	
 	if(local)
@@ -75,9 +76,7 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 	}
 
 	shape->mGame = this;
-	
 	shape->mGhost = AddGhostShape(game,ind,position,velocity,rotation);
-
 	return shape;
 }
 
@@ -86,8 +85,8 @@ DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector
 	DynamicShape* shape = new OgreDynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
 	Vector3D v;
 	v.x = 30;
-	v.x = 30;
 	v.y = 30;
+	v.z = 30;
 	shape->scale(v);
 	//shape->getSceneNode()->setVisible(false);
 	return shape;

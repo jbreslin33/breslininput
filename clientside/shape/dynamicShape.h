@@ -22,7 +22,7 @@ DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3
 
 //virtual
 virtual void     yaw                  (float amountToYaw, bool converToDegree   ) = 0;
-virtual float    getDegreesToSomething(Vector3D something                       ) = 0;
+virtual float    getDegreesToSomething(Vector3D something, int i                ) = 0;
 virtual void     translate            (Vector3D translateVector, int perspective) = 0;
 
 //dynamic
@@ -84,9 +84,7 @@ Vector3D mServerRotOld;
 Vector3D mServerRotNew;
 float    mDegreesToServer;
 
-std::string mName;
-
-std::string getName() { return mName; }
+virtual std::string getName() = 0; 
 Game* mGame;
 
 };
