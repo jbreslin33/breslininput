@@ -170,7 +170,7 @@ float DynamicShape::getDegreesToServer()
 
     // convert to degrees
     //Real degreesToServer = toServer.getYaw().valueDegrees();
-	float degreesToServer = getDegreesToSomething(serverRotNew,1);
+	float degreesToServer = getDegreesToSomething(serverRotNew);
 	return degreesToServer;
 }
 
@@ -196,7 +196,7 @@ void DynamicShape::calculateServerRotationSpeed()
     // convert to degrees
     //mDegreesToServer = toServer.getYaw().valueDegrees();
 
-	mDegreesToServer = getDegreesToSomething(mServerRotNew,2);
+	mDegreesToServer = getDegreesToSomething(mServerRotNew);
 
     //calculate server rotation from last tick to new one
 	
@@ -204,7 +204,7 @@ void DynamicShape::calculateServerRotationSpeed()
 
     // convert to degrees
     //mServerRotSpeed = serverRot.getYaw().valueDegrees();
-	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew,3);
+	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew);
 
 
     if(abs(mServerRotSpeed) < 0)
