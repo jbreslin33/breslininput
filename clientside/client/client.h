@@ -79,7 +79,6 @@ Client(const char *localIP, const char *remoteIP, int port);
 
 	int				mServerPort;				// Port
 	char			mServerIP[32];			// IP address
-	char			mName[32];				// Client name
 
 	struct sockaddr	mMyaddress;				// Socket address
 

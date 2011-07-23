@@ -27,7 +27,7 @@ Game::Game()
 	mRunningShapeIndex = 1;
 	mSpreadOutAIIndex = 1;
 	
-	for(int i = 0; i < 5; i++)
+	for(int i = 0; i < 0; i++)
 	{
 		createAIShape();
 	}

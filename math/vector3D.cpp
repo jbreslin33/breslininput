@@ -38,10 +38,12 @@ void Vector3D::zero()
 
 void Vector3D::normalise()
 {
-	float magnitude = sqrtf(x * x + y * y + z * z);
-	x /= magnitude;
-	y /= magnitude;
-	z /= magnitude;
+	double len = length();
+	if (len == 0)
+		return;
+	x /= len;
+	y /= len;
+	z /= len;
 }
 
 //multiply this vector by a scalar
