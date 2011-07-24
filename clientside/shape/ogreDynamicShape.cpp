@@ -1,6 +1,9 @@
 #include "ogreDynamicShape.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
+//animation states for enter method
+#include "../states/dynamicShapeAnimationStates.h"
+
 #include "../game/game.h"
 
 #include "../../billboard/objectTitle.h"
@@ -157,6 +160,39 @@ void OgreDynamicShape::setVisible(bool visible)
 }
 
 //animation
+void OgreDynamicShape::runAnimations()
+{
+	mAnims[mBaseAnimID]->addTime(mRenderTime * mRunSpeed * 1000/mRunSpeedMax);
+	mAnims[mTopAnimID]->addTime(mRenderTime * mRunSpeed * 1000/mRunSpeedMax);
+	fadeAnimations(mRenderTime);
+
+	fadeAnimations(mRenderTime);
+}
+
+void OgreDynamicShape::enterAnimationState(DynamicShapeState* animationState)
+{
+	
+	if (animationState == Idle_InterpolateTick_Animation::Instance())
+	{
+		// start off in the idle state (top and bottom together)
+		setBaseAnimation(ANIM_IDLE_BASE,false);
+		setTopAnimation(ANIM_IDLE_TOP,false);
+
+		// relax the hands since we're not holding anything
+		mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+	}
+	else if (animationState == Run_InterpolateTick_Animation::Instance())
+	{
+		setBaseAnimation(ANIM_RUN_BASE, true);
+	    setTopAnimation(ANIM_RUN_TOP, true);
+
+		// relax the hands since we're not holding anything
+		if (!mAnims[ANIM_HANDS_RELAXED]->getEnabled())
+		{
+			mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
+		}
+	}
+}
 
 void OgreDynamicShape::fadeAnimations(Real deltaTime)
 {

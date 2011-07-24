@@ -125,11 +125,11 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mRotationInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
 	mRotationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Rotation::Instance());
 
-    //move interpolateTick states
+    //animation interpolateTick states
     mAnimationInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-    mAnimationInterpolateTickStateMachine->setCurrentState      (Idle_InterpolateTick_Animation::Instance());
-    mAnimationInterpolateTickStateMachine->setPreviousState     (Idle_InterpolateTick_Animation::Instance());
-    mAnimationInterpolateTickStateMachine->setGlobalState    
+    mAnimationInterpolateTickStateMachine->setCurrentState (Idle_InterpolateTick_Animation::Instance());
+    mAnimationInterpolateTickStateMachine->setPreviousState(Idle_InterpolateTick_Animation::Instance());
+    mAnimationInterpolateTickStateMachine->setGlobalState  (Global_InterpolateTick_Animation::Instance());  
 
 }
 
@@ -145,8 +145,7 @@ void DynamicShape::processTick()
 	//update state machines...
     mMoveProcessTickStateMachine->update();
 	mRotationProcessTickStateMachine->update();
-
-	
+		
 	//run billboard here for now.
 	drawTitle();
 }
@@ -157,7 +156,7 @@ void DynamicShape::interpolateTick(float renderTime)
 	//update state machines...
 	mMoveInterpolateTickStateMachine->update();
 	mRotationInterpolateTickStateMachine->update();
-
+	mAnimationInterpolateTickStateMachine->update();
 }
 
 float DynamicShape::getDegreesToServer()

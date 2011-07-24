@@ -20,6 +20,9 @@ Shape(int ind, Vector3D* position, Vector3D* rotation);
 virtual void     setPosition          (Vector3D                  ) = 0;
 virtual void     setPosition          (float x, float y, float z ) = 0;
 
+//animation
+virtual void     runAnimations        (                          ) = 0;   
+
 //getting position
 virtual Vector3D getPosition          (                          ) = 0;
 

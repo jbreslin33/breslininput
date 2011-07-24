@@ -12,6 +12,7 @@
 //i want a dynamic shape...this should be dynamic shape shape should hide ogreshape...
 class Game;
 class DynamicShapeStateMachine;
+class DynamicShapeState;
 
 class DynamicShape : public Shape //, public OgreAnimation
 {
@@ -75,6 +76,9 @@ virtual void        yaw                  (float amountToYaw, bool converToDegree
 virtual float       getDegreesToSomething(Vector3D something                       ) = 0;
 virtual void        translate            (Vector3D translateVector, int perspective) = 0;
 virtual std::string getName() = 0; 
+
+//animation
+virtual void enterAnimationState(DynamicShapeState* animationState) = 0;
 
 //ticks
 void processTick();
