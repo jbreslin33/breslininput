@@ -28,6 +28,8 @@ DynamicShapeStateMachine* mMoveProcessTickStateMachine;
 DynamicShapeStateMachine* mMoveInterpolateTickStateMachine;
 DynamicShapeStateMachine* mRotationProcessTickStateMachine;
 DynamicShapeStateMachine* mRotationInterpolateTickStateMachine;
+DynamicShapeStateMachine* mAnimationInterpolateTickStateMachine;
+
 
 //this is used to rotate to and for debugging. it goes right to lates serverFrame from net.
 DynamicShape* mGhost;
