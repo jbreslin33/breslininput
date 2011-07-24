@@ -1,167 +1,132 @@
-#include "dynamicShape.h"
+#include "ogreStaticShape.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../states/dynamicShapeStateMachine.h"
-#include "../states/dynamicShapeMoveStates.h"
-#include "../states/dynamicShapeRotationStates.h"
+#include "../game/game.h"
 
 #include "../../billboard/objectTitle.h"
 
-
-
 #include <string.h>
 
-DynamicShape::DynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity,
+OgreStaticShape::OgreStaticShape(Game* game, int ind, Vector3D* position, Vector3D* velocity,
 						   Vector3D* rotation, std::string mesh)
 :
-	OgreShape         (game,ind,position,velocity,rotation,mesh)
+	StaticShape         (game,ind,position,velocity,rotation)
 {
-	/////move
-    //thresholds
+	//Ogre::SceneManager* mSceneManager = game->getRoot();
 
-    mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
-    mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
-    mPosInterpFactor    = 4.0;
-
-
-	//deltas
-	mDeltaX        = 0.0; 
-	mDeltaY		   = 0.0;
-	mDeltaZ        = 0.0;
-	mDeltaPosition = 0.0;
-
-	//move processTick states
-	mMoveProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mMoveProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
-	mMoveProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
-	mMoveProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
-
-	//move interpolateTick states
-	mMoveInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_InterpolateTick_Move::Instance());
-	//mMoveInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setGlobalState       (NULL);
-
-	//////rotation
-    //vars
-    mTurnSpeed = 250.0;
-
-    mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
-    mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
-    mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
-    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
-
-	//rotation
-	mServerRotOld.zero();
-	mServerRotNew.zero();
-	mDegreesToServer = 0.0;
-
-	//process tick rotation states
-	mRotationProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mRotationProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Rotation::Instance());
-	mRotationProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
-	mRotationProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Rotation::Instance());
-
-	//interpolate tick rotation states
-	mRotationInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mRotationInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Rotation::Instance());
-	mRotationInterpolateTickStateMachine->setPreviousState     (Normal_ProcessTick_Rotation::Instance());
-	mRotationInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Rotation::Instance());
-}
-
-DynamicShape::~DynamicShape()
-{
-
-}
-
-void DynamicShape::processTick()
-{
-
-	//mObjectTitleString.clear(); //empty title string so it can be filled anew
-
-	//call parent processTicks since you overrode them
-    mMoveProcessTickStateMachine->update();
-	mRotationProcessTickStateMachine->update();
-	//OgreAnimation::processTick();
+	static int number_of_times = 0;
 	
-	//run billboard here for now.
-	//mObjectTitle->setTitle(mObjectTitleString); //fill title with mObjectTitleString which we have appended from all states we want info on.
-	//mObjectTitle->update(); //draw title for shape
+	//let's set our member variables to those passed in for use...
+    //mSceneManager = mSceneMgr;
+	mMeshName     = mesh;
+	mName         = StringConverter::toString(number_of_times);
+    mSceneNode    = mGame->getSceneManager()->getRootSceneNode()->createChildSceneNode();
+	LogString("create mSceneNode for OgreStaticShape");
+	mSceneNode->setPosition(position->x,position->y,position->z);	
+	
+	mEntity = mGame->getSceneManager()->createEntity(mName, mMeshName);
 
+    mSceneNode->attachObject(mEntity);
+
+	//billboard
+	const Ogre::String& titlename = "tn" + StringConverter::toString(number_of_times);
+	const Ogre::String& title = "ti" + StringConverter::toString(number_of_times);
+	const Ogre::String& fontName = "SdkTrays/Caption";
+	const Ogre::ColourValue& color = Ogre::ColourValue::White;
+	mObjectTitle = new ObjectTitle
+	(titlename, mEntity, mGame->getSceneManager()->getCamera("PlayerCam"), title,
+    fontName, color);
+
+	number_of_times++;
+	//end billboard
 }
-void DynamicShape::interpolateTick(float renderTime)
-{
-	mRenderTime = renderTime;
 
-	//call parent interpolateTicks since you overrode them
-	mMoveInterpolateTickStateMachine->update();
-	mRotationInterpolateTickStateMachine->update();
-	//OgreAnimation::interpolateTick();
+OgreStaticShape::~OgreStaticShape()
+{
+	delete mObjectTitle;
+	delete mEntity;
+	delete mSceneNode;
 }
 
-float DynamicShape::getDegreesToServer()
+void OgreStaticShape::scale(Vector3D scaleVector)
 {
-    Vector3D serverRotNew;
+	getSceneNode()->scale(scaleVector.x, scaleVector.y, scaleVector.z);
+}
 
-    serverRotNew.x = mServerFrame.mRot.x;
-    serverRotNew.z = mServerFrame.mRot.z;
+void OgreStaticShape::checkExtents(Vector3D min)
+{
 
-    serverRotNew.normalise();
+	Ogre::Vector3 max;
+	max = Ogre::Vector3::UNIT_SCALE;
 
+	assert( (min.x <= max.x && min.y <= max.y && min.z <= max.z) &&
+                "you have a problem with a vector maybe dividing by zero or a garbage value!" );
+
+			//mExtent = EXTENT_FINITE;
+			//mMinimum = min;
+			//mMaximum = max;
+}
+
+void OgreStaticShape::yaw(float amountToYaw, bool convertToDegree)
+{
+	if (convertToDegree)
+	{
+		getSceneNode()->yaw(Degree(amountToYaw));
+		//rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
+	}
+}
+float OgreStaticShape::getDegreesToSomething(Vector3D vectorOfSomething)
+{
     //calculate how far off we are from server
-   // Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(serverRotNew,Vector3::UNIT_Y);
-
+    Quaternion toSomething = getSceneNode()->getOrientation().zAxis().getRotationTo(converToVector3(vectorOfSomething),Vector3::UNIT_Y);
 
     // convert to degrees
-    //Real degreesToServer = toServer.getYaw().valueDegrees();
-	float degreesToServer = getDegreesToSomething(serverRotNew);
+    Real degreesToServer = toSomething.getYaw().valueDegrees();
 	return degreesToServer;
 }
 
-void DynamicShape::calculateServerRotationSpeed()
+//1 world, 2 local
+void OgreStaticShape::translate(Vector3D translateVector, int perspective)
 {
-    mServerRotOld.zero();
-    mServerRotNew.zero();
-
-    mServerRotOld.x = mServerFrame.mRotOld.x;
-    mServerRotOld.z = mServerFrame.mRotOld.z;
-
-    mServerRotNew.x = mServerFrame.mRot.x;
-    mServerRotNew.z = mServerFrame.mRot.z;
-
-    mServerRotNew.normalise();
-    mServerRotOld.normalise();
-
-    //calculate how far off we are from server
-    //Quaternion toServer = getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew,Vector3::UNIT_Y);
-
-    // convert to degrees
-    //mDegreesToServer = toServer.getYaw().valueDegrees();
-
-	mDegreesToServer = getDegreesToSomething(mServerRotNew);
-
-    //calculate server rotation from last tick to new one
-	
-    //Quaternion serverRot = mGhost->getSceneNode()->getOrientation().zAxis().getRotationTo(mServerRotNew, Vector3::UNIT_Y);
-
-    // convert to degrees
-    //mServerRotSpeed = serverRot.getYaw().valueDegrees();
-	mServerRotSpeed = mGhost->getDegreesToSomething(mServerRotNew);
-
-
-    if(abs(mServerRotSpeed) < 0)
-    {
-		mServerRotSpeed = 0.0f;
-    }
+	if (perspective == 1)
+	{
+		getSceneNode()->translate(converToVector3(translateVector), Ogre::Node::TS_WORLD);
+	}
+	if (perspective == 2)
+	{
+		getSceneNode()->translate(converToVector3(translateVector), Ogre::Node::TS_LOCAL);
+	}
 }
 
-void DynamicShape::calculateDeltaPosition()
+void OgreStaticShape::setPosition(Vector3D position)
 {
-	mDeltaX = mServerFrame.mOrigin.x - getPosition().x;
-    mDeltaY = mServerFrame.mOrigin.y - getPosition().y;
-    mDeltaZ = mServerFrame.mOrigin.z - getPosition().z;
+	getSceneNode()->setPosition(converToVector3(position));
+}
 
-    //distance we are off from server
-    mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2) +  pow(mDeltaZ, 2));
+void OgreStaticShape::setPosition(float x, float y, float z)
+{
+	getSceneNode()->setPosition(x,y,z);
+}
+
+Vector3D OgreStaticShape::getPosition()
+{
+	Vector3D position;
+	position.x = getSceneNode()->getPosition().x;
+	position.y = getSceneNode()->getPosition().y;
+	position.z = getSceneNode()->getPosition().z;
+	return position;
+}
+
+Ogre::Vector3 OgreStaticShape::converToVector3(Vector3D vector3d)
+{
+	Ogre::Vector3 vec3;
+	vec3.x = vector3d.x;
+	vec3.y = vector3d.y;
+	vec3.z = vector3d.z;
+	return vec3;
+}
+
+void OgreStaticShape::setVisible(bool visible)
+{
+	getSceneNode()->setVisible(visible);
 }
