@@ -53,51 +53,6 @@ void OgreStaticShape::scale(Vector3D scaleVector)
 	getSceneNode()->scale(scaleVector.x, scaleVector.y, scaleVector.z);
 }
 
-void OgreStaticShape::checkExtents(Vector3D min)
-{
-
-	Ogre::Vector3 max;
-	max = Ogre::Vector3::UNIT_SCALE;
-
-	assert( (min.x <= max.x && min.y <= max.y && min.z <= max.z) &&
-                "you have a problem with a vector maybe dividing by zero or a garbage value!" );
-
-			//mExtent = EXTENT_FINITE;
-			//mMinimum = min;
-			//mMaximum = max;
-}
-
-void OgreStaticShape::yaw(float amountToYaw, bool convertToDegree)
-{
-	if (convertToDegree)
-	{
-		getSceneNode()->yaw(Degree(amountToYaw));
-		//rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
-	}
-}
-float OgreStaticShape::getDegreesToSomething(Vector3D vectorOfSomething)
-{
-    //calculate how far off we are from server
-    Quaternion toSomething = getSceneNode()->getOrientation().zAxis().getRotationTo(converToVector3(vectorOfSomething),Vector3::UNIT_Y);
-
-    // convert to degrees
-    Real degreesToServer = toSomething.getYaw().valueDegrees();
-	return degreesToServer;
-}
-
-//1 world, 2 local
-void OgreStaticShape::translate(Vector3D translateVector, int perspective)
-{
-	if (perspective == 1)
-	{
-		getSceneNode()->translate(converToVector3(translateVector), Ogre::Node::TS_WORLD);
-	}
-	if (perspective == 2)
-	{
-		getSceneNode()->translate(converToVector3(translateVector), Ogre::Node::TS_LOCAL);
-	}
-}
-
 void OgreStaticShape::setPosition(Vector3D position)
 {
 	getSceneNode()->setPosition(converToVector3(position));
