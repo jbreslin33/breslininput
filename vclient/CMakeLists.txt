@@ -117,7 +117,8 @@ set(HDRS
 	../clientside/states/dynamicShapeStateMachine.h
 	../clientside/states/dynamicShapeMoveStates.h
 	../clientside/states/dynamicShapeRotationStates.h
-		
+	../clientside/states/dynamicShapeAnimationStates.h
+	
 	#message
 	../message/message.h
 	
@@ -158,6 +159,7 @@ set(SRCS
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp
 	../clientside/states/dynamicShapeRotationStates.cpp
+	../clientside/states/dynamicShapeAnimationStates.cpp
 	
 	#message
 	../message/message.cpp
@@ -203,6 +205,7 @@ set(HDRS
 	../clientside/states/dynamicStateMachine.h
 	../clientside/states/dynamicShapeMoveStates.h
 	../clientside/states/dynamicShapeRotationStates.h
+	../clientside/states/dynamicShapeAnimationStates.h
 	
 	#message
 	../message/message.h
@@ -244,6 +247,7 @@ set(SRCS
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp
 	../clientside/states/dynamicShapeRotationStates.cpp
+	../clientside/states/dynamicShapeAnimationStates.cpp
 	
 	#message
 	../message/message.cpp

@@ -79,9 +79,11 @@ float    getDegreesToSomething(Vector3D something                       );
 Vector3D getPosition          (                                         );
 
 //animation
-void         fadeAnimations   (Real deltaTime);
-void         setTopAnimation  (AnimID id, bool reset);
-void         setBaseAnimation (AnimID id, bool reset);
+void runAnimations();
+void enterAnimationState(DynamicShapeState* animationState);
+void fadeAnimations   (Real deltaTime);
+void setTopAnimation  (AnimID id, bool reset);
+void setBaseAnimation (AnimID id, bool reset);
 
 //title
 void drawTitle    ();

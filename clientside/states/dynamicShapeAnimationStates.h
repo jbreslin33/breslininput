@@ -1,84 +1,42 @@
-#ifndef ANIMATIONSTATES_H
-#define ANIMATIONSTATES_H
-#include "animationState.h"
+#ifndef DYNAMICSHAPEANIMATIONSTATES_H
+#define DYNAMICSHAPEANIMATIONSTATES_H
+#include "dynamicShapeState.h"
 
-class OgreAnimation;
+class DynamicShape;
 
-class Global_ProcessTick_Animation : public OgreAnimationState
-{
-private:
-  Global_ProcessTick_Animation(){}
-public:
-  static Global_ProcessTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
-};
-
-class Idle_ProcessTick_Animation : public OgreAnimationState
-{
-private:
-  Idle_ProcessTick_Animation(){}
-public:
-  static Idle_ProcessTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
-};
-
-class Run_ProcessTick_Animation : public OgreAnimationState
-{
-private:
-  Run_ProcessTick_Animation(){}
-public:
-  static Run_ProcessTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
-};
 /********************InterpolateTick*************/
 
-class Global_InterpolateTick_Animation : public OgreAnimationState
+class Global_InterpolateTick_Animation : public DynamicShapeState
 {
 private:
   Global_InterpolateTick_Animation(){}
 public:
   static Global_InterpolateTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
+  void enter  (DynamicShape* dynamicShape);
+  void execute(DynamicShape* dynamicShape);
+  void exit   (DynamicShape* dynamicShape);
 };
 
-class Idle_InterpolateTick_Animation : public OgreAnimationState
+class Idle_InterpolateTick_Animation : public DynamicShapeState
 {
 private:
   Idle_InterpolateTick_Animation(){}
 public:
   static Idle_InterpolateTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
+  void enter  (DynamicShape* dynamicShape);
+  void execute(DynamicShape* dynamicShape);
+  void exit   (DynamicShape* dynamicShape);
 };
 
-class Run_InterpolateTick_Animation : public OgreAnimationState
+class Run_InterpolateTick_Animation : public DynamicShapeState
 {
 private:
   Run_InterpolateTick_Animation(){}
 public:
   static Run_InterpolateTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
+  void enter  (DynamicShape* dynamicShape);
+  void execute(DynamicShape* dynamicShape);
+  void exit   (DynamicShape* dynamicShape);
 };
 
-class Off_InterpolateTick_Animation : public OgreAnimationState
-{
-private:
-  Off_InterpolateTick_Animation(){}
-public:
-  static Off_InterpolateTick_Animation* Instance();
-  void enter  (OgreAnimation* animation);
-  void execute(OgreAnimation* animation);
-  void exit   (OgreAnimation* animation);
-};
 #endif
