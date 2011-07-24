@@ -131,11 +131,22 @@ void OgreDynamicShape::setVisible(bool visible)
 	getSceneNode()->setVisible(visible);
 }
 
-void OgreDynamicShape::drawTitle(std::string title)
+void OgreDynamicShape::drawTitle()
 {
-
+	mObjectTitle->setTitle(mObjectTitleString); 
+	mObjectTitle->update();
 }
-void OgreDynamicShape::appendToTile(std::string appendage)
+void OgreDynamicShape::appendToTitle(std::string appendage)
 {
+	mObjectTitleString.append(appendage);
+}
 
+void OgreDynamicShape::appendToTitle(int appendage)
+{
+	mObjectTitleString.append(StringConverter::toString(appendage));
+}
+
+void OgreDynamicShape::clearTitle()
+{
+	mObjectTitleString.clear();
 }
