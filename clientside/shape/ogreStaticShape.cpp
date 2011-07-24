@@ -6,7 +6,7 @@
 OgreStaticShape::OgreStaticShape(Game* game, int ind, Vector3D* position, Vector3D* velocity,
 						   Vector3D* rotation, std::string mesh)
 :
-	StaticShape         (game,ind,position,velocity,rotation)
+	OgreDynamicShape         (game,ind,position,velocity,rotation,mesh)
 {
 
 }

@@ -1,7 +1,7 @@
 #ifndef OGRESTATICSHAPE_H
 #define OGRESTATICSHAPE_H
 
-#include "staticShape.h"
+#include "ogreDynamicShape.h"
 
 //Ogre headers
 #include "Ogre.h"
@@ -9,7 +9,11 @@ using namespace Ogre;
 
 #include <string>
 
-class OgreStaticShape : public StaticShape //, public OgreAnimation
+/***
+Just overide what you need to shut off movement,animation etc.
+*/
+
+class OgreStaticShape : public OgreDynamicShape //, public OgreAnimation
 {
 
 public:
