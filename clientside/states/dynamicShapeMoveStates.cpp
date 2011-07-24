@@ -44,7 +44,7 @@ void Normal_ProcessTick_Move::enter(DynamicShape* dynamicShape)
 }
 void Normal_ProcessTick_Move::execute(DynamicShape* dynamicShape)
 {
-	dynamicShape->appendToTitle("M:Normal");
+	//dynamicShape->appendToTitle("M:Normal");
 
 	// if distance exceeds threshold && server velocity is zero
 	if(dynamicShape->mDeltaPosition > dynamicShape->mPosInterpLimitHigh && !dynamicShape->mServerFrame.mVelocity.isZero())
@@ -97,7 +97,7 @@ void Catchup_ProcessTick_Move::enter(DynamicShape* dynamicShape)
 }
 void Catchup_ProcessTick_Move::execute(DynamicShape* dynamicShape)
 {
-	dynamicShape->appendToTitle("M:Catchup");
+	//dynamicShape->appendToTitle("M:Catchup");
 
 	//if we are back in sync
     if(dynamicShape->mDeltaPosition <= dynamicShape->mPosInterpLimitHigh || dynamicShape->mServerFrame.mVelocity.isZero())

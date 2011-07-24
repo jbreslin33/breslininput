@@ -18,6 +18,17 @@ public:
 OgreDynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, std::string mesh);
 ~OgreDynamicShape();
 
+//ogre scene stuff
+std::string         mMeshName;
+std::string         mName;
+
+//this is your pointer to move shape, really all you need.
+SceneNode*          mSceneNode;
+
+//billboard
+ObjectTitle* mObjectTitle;
+std::string  mObjectTitleString;
+
 //debugging
 void checkExtents(Vector3D min);
 
@@ -47,18 +58,10 @@ std::string getName() { return mName; }
 //ogre scene node
 SceneNode*  getSceneNode() { return mSceneNode; }
 
+//utility
 Ogre::Vector3 converToVector3(Vector3D vector3d);
 
-//ogre scene stuff
-std::string         mMeshName;
-std::string         mName;
-Entity*             mEntity;
-Ogre::SceneManager* mSceneManager;
-SceneNode*          mSceneNode;
 
-//billboard
-ObjectTitle* mObjectTitle;
-std::string  mObjectTitleString;
 
 };
 

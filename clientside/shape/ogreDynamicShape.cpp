@@ -12,23 +12,25 @@ OgreDynamicShape::OgreDynamicShape(Game* game, int ind, Vector3D* position, Vect
 :
 	DynamicShape         (game,ind,position,velocity,rotation)
 {
-	//Ogre::SceneManager* mSceneManager = game->getRoot();
-
+	//we use this to name shape. as ogre is picky about same names. it also serves as a counter of sorts.
 	static int number_of_times = 0;
 	
 	//let's set our member variables to those passed in for use...
-    //mSceneManager = mSceneMgr;
 	mMeshName     = mesh;
 	mName         = StringConverter::toString(number_of_times);
     mSceneNode    = mGame->getSceneManager()->getRootSceneNode()->createChildSceneNode();
-	LogString("create mSceneNode for OgreDynamicShape");
+
+	//set Starting position of sceneNode, we will attach our mesh to this. this is all that's needed for static shapes. actually we need to add
+	//rotation for them
 	mSceneNode->setPosition(position->x,position->y,position->z);	
 	
-	mEntity = mGame->getSceneManager()->createEntity(mName, mMeshName);
+	//create mesh
+	Entity* mEntity = mGame->getSceneManager()->createEntity(mName, mMeshName);
 
+	//attache mesh to scenenode, henceforward we will use mSceneNode to control shape.
     mSceneNode->attachObject(mEntity);
 
-	//billboard
+	//billboard(this is writing above shapes head)
 	const Ogre::String& titlename = "tn" + StringConverter::toString(number_of_times);
 	const Ogre::String& title = "ti" + StringConverter::toString(number_of_times);
 	const Ogre::String& fontName = "SdkTrays/Caption";
@@ -38,13 +40,14 @@ OgreDynamicShape::OgreDynamicShape(Game* game, int ind, Vector3D* position, Vect
     fontName, color);
 
 	number_of_times++;
-	//end billboard
 }
+
+
 
 OgreDynamicShape::~OgreDynamicShape()
 {
 	delete mObjectTitle;
-	delete mEntity;
+	//delete mEntity;
 	delete mSceneNode;
 }
 
