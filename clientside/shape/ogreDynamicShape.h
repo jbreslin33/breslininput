@@ -18,17 +18,31 @@ public:
 OgreDynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, std::string mesh);
 ~OgreDynamicShape();
 
-void checkExtents(Vector3D min);
+//debugging
+void        checkExtents         (Vector3D min);
+
+//size
 void        scale                (Vector3D scaleVector);
+
+//movement
 void        yaw                  (float amountToYaw, bool converToDegree   );
-float       getDegreesToSomething(Vector3D something                       );
 void        translate            (Vector3D translateVector, int perspective);
-Vector3D    getPosition          (                                         );
 void        setPosition          (Vector3D position                        );
 void        setPosition          (float x, float y, float z                );
 void        setVisible           (bool visible                             );
 
+//check position
+float       getDegreesToSomething(Vector3D something                       );
+Vector3D    getPosition          (                                         );
+
+//title
+void     drawTitle            (std::string title         );
+void     appendToTile         (std::string appendage     );
+
+//name
 std::string getName()      { return mName; } 
+
+//ogre scene node
 SceneNode*  getSceneNode() { return mSceneNode; }
 
 Ogre::Vector3 converToVector3(Vector3D vector3d);
