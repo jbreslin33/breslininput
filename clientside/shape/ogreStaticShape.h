@@ -20,9 +20,6 @@ OgreStaticShape(Game* game, int ind, Vector3D* position, Vector3D* velocity, Vec
 
 void checkExtents(Vector3D min);
 void        scale                (Vector3D scaleVector);
-void        yaw                  (float amountToYaw, bool converToDegree   );
-float       getDegreesToSomething(Vector3D something                       );
-void        translate            (Vector3D translateVector, int perspective);
 Vector3D    getPosition          (                                         );
 void        setPosition          (Vector3D position                        );
 void        setPosition          (float x, float y, float z                );
