@@ -196,82 +196,83 @@ void OgreDynamicShape::enterAnimationState(DynamicShapeState* animationState)
 
 void OgreDynamicShape::fadeAnimations(Real deltaTime)
 {
-        for (int i = 0; i < NUM_ANIMS; i++)
+	for (int i = 0; i < NUM_ANIMS; i++)
+    {
+		if (mFadingIn[i])
         {
-                if (mFadingIn[i])
-                {
-                        // slowly fade this animation in until it has full weight
-                        Real newWeight = mAnims[i]->getWeight() + deltaTime * ANIM_FADE_SPEED;
-                        mAnims[i]->setWeight(Math::Clamp<Real>(newWeight, 0, 1));
-                        if (newWeight >= 1)
-                        {
-                                mFadingIn[i] = false;
-                        }
-                }
-                else if (mFadingOut[i])
-                {
-                        // slowly fade this animation out until it has no weight, and then disable it
-                        Real newWeight = mAnims[i]->getWeight() - deltaTime * ANIM_FADE_SPEED;
-                        mAnims[i]->setWeight(Math::Clamp<Real>(newWeight, 0, 1));
-                        if (newWeight <= 0)
-                        {
-                                mAnims[i]->setEnabled(false);
-                                mFadingOut[i] = false;
-                        }
-                }
+			// slowly fade this animation in until it has full weight
+            Real newWeight = mAnims[i]->getWeight() + deltaTime * ANIM_FADE_SPEED;
+            mAnims[i]->setWeight(Math::Clamp<Real>(newWeight, 0, 1));
+            if (newWeight >= 1)
+            {
+				mFadingIn[i] = false;
+            }
         }
+        else if (mFadingOut[i])
+        {
+			// slowly fade this animation out until it has no weight, and then disable it
+			Real newWeight = mAnims[i]->getWeight() - deltaTime * ANIM_FADE_SPEED;
+            mAnims[i]->setWeight(Math::Clamp<Real>(newWeight, 0, 1));
+            if (newWeight <= 0)
+            {
+				mAnims[i]->setEnabled(false);
+                mFadingOut[i] = false;
+            }
+        }
+	}
 }
 
 void OgreDynamicShape::setBaseAnimation(AnimID id, bool reset)
 {
-        if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
-        {
-                // if we have an old animation, fade it out
-                mFadingIn[mBaseAnimID] = false;
-                mFadingOut[mBaseAnimID] = true;
-        }
-        
-        mBaseAnimID = id;
+	if (mBaseAnimID >= 0 && mBaseAnimID < NUM_ANIMS)
+    {
+		// if we have an old animation, fade it out
+        mFadingIn[mBaseAnimID] = false;
+        mFadingOut[mBaseAnimID] = true;
+    }
+     
+    mBaseAnimID = id;
 
-        if (id != ANIM_NONE)
-        {
-                // if we have a new animation, enable it and fade it in
-                mAnims[id]->setEnabled(true);
-                mAnims[id]->setWeight(0);
-                mFadingOut[id] = false;
-                mFadingIn[id] = true;
+    if (id != ANIM_NONE)
+    {
+		// if we have a new animation, enable it and fade it in
+        mAnims[id]->setEnabled(true);
+        mAnims[id]->setWeight(0);
+        mFadingOut[id] = false;
+        mFadingIn[id] = true;
 
-                if (reset)
-                {
-                        mAnims[id]->setTimePosition(0);
-                }
+		if (reset)
+        {
+			mAnims[id]->setTimePosition(0);
         }
+	}
 }
 
 void OgreDynamicShape::setTopAnimation(AnimID id, bool reset)
 {
-        if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
+
+	if (mTopAnimID >= 0 && mTopAnimID < NUM_ANIMS)
+    {
+		// if we have an old animation, fade it out
+        mFadingIn[mTopAnimID] = false;
+        mFadingOut[mTopAnimID] = true;
+    }
+
+    mTopAnimID = id;
+
+    if (id != ANIM_NONE)
+    {
+		// if we have a new animation, enable it and fade it in
+        mAnims[id]->setEnabled(true);
+        mAnims[id]->setWeight(0);
+        mFadingOut[id] = false;
+        mFadingIn[id] = true;
+
+        if (reset)
         {
-                // if we have an old animation, fade it out
-                mFadingIn[mTopAnimID] = false;
-                mFadingOut[mTopAnimID] = true;
+			mAnims[id]->setTimePosition(0);
         }
-
-        mTopAnimID = id;
-
-        if (id != ANIM_NONE)
-        {
-                // if we have a new animation, enable it and fade it in
-                mAnims[id]->setEnabled(true);
-                mAnims[id]->setWeight(0);
-                mFadingOut[id] = false;
-                mFadingIn[id] = true;
-
-                if (reset)
-                {
-                        mAnims[id]->setTimePosition(0);
-                }
-        }
+	}
 }
 
 //title
