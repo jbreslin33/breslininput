@@ -14,14 +14,26 @@ public:
 Shape(int ind, Vector3D* position, Vector3D* rotation);
 ~Shape();
 
-//virtual
+//virtual functions..
+
+//setting position
 virtual void     setPosition          (Vector3D                  ) = 0;
 virtual void     setPosition          (float x, float y, float z ) = 0;
+
+//getting position
 virtual Vector3D getPosition          (                          ) = 0;
+
+//size
 virtual void     scale                (Vector3D                  ) = 0;
+
+//visibility
 virtual void     setVisible           (bool b                    ) = 0;
-virtual void     drawTitle            (std::string title         ) = 0;
-virtual void     appendToTile         (std::string appendage     ) = 0;
+
+//title
+virtual void     drawTitle            (                          ) = 0;
+virtual void     appendToTitle        (std::string appendage     ) = 0;
+virtual void     appendToTitle        (int appendage             ) = 0;
+virtual void     clearTitle           (                          ) = 0;
 
 //id
 int			 mIndex;

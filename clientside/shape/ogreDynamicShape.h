@@ -19,28 +19,30 @@ OgreDynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity, Ve
 ~OgreDynamicShape();
 
 //debugging
-void        checkExtents         (Vector3D min);
+void checkExtents(Vector3D min);
 
 //size
-void        scale                (Vector3D scaleVector);
+void scale(Vector3D scaleVector);
 
 //movement
-void        yaw                  (float amountToYaw, bool converToDegree   );
-void        translate            (Vector3D translateVector, int perspective);
-void        setPosition          (Vector3D position                        );
-void        setPosition          (float x, float y, float z                );
-void        setVisible           (bool visible                             );
+void yaw        (float amountToYaw, bool converToDegree   );
+void translate  (Vector3D translateVector, int perspective);
+void setPosition(Vector3D position                        );
+void setPosition(float x, float y, float z                );
+void setVisible (bool visible                             );
 
 //check position
-float       getDegreesToSomething(Vector3D something                       );
-Vector3D    getPosition          (                                         );
+float    getDegreesToSomething(Vector3D something                       );
+Vector3D getPosition          (                                         );
 
 //title
-void     drawTitle            (std::string title         );
-void     appendToTile         (std::string appendage     );
+void drawTitle    ();
+void appendToTitle(std::string appendage);
+void appendToTitle(int appendage);
+void clearTitle   ();
 
 //name
-std::string getName()      { return mName; } 
+std::string getName() { return mName; } 
 
 //ogre scene node
 SceneNode*  getSceneNode() { return mSceneNode; }

@@ -132,7 +132,7 @@ DynamicShape::~DynamicShape()
 void DynamicShape::processTick()
 {
 
-	//mObjectTitleString.clear(); //empty title string so it can be filled anew
+	clearTitle(); //empty title string so it can be filled anew
 
 	//call parent processTicks since you overrode them
     mMoveProcessTickStateMachine->update();
@@ -140,6 +140,7 @@ void DynamicShape::processTick()
 	//OgreAnimation::processTick();
 	
 	//run billboard here for now.
+	drawTitle();
 	//mObjectTitle->setTitle(mObjectTitleString); //fill title with mObjectTitleString which we have appended from all states we want info on.
 	//mObjectTitle->update(); //draw title for shape
 
