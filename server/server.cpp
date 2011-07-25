@@ -2,7 +2,7 @@
 #include "server.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../network/network.h"
+#include "../serverside/network/network.h"
 #include "../serverside/client/client.h"
 #include "../message/message.h"
 #include "../serverside/shape/shape.h"
