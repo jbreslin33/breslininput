@@ -74,7 +74,7 @@ public:
 	void			SendConnect(const char *name);
 	void			SendDisconnect(void);
 
-	int				GetPacket(char *data, struct sockaddr *from);
+	int				GetPacket(char *data);
 
 	void			SendPacket(Message *message);
 

@@ -72,7 +72,7 @@ int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
 SOCKET dreamSock_OpenUDPSocket(const char netInterface[32], int port);
 void dreamSock_CloseSocket(SOCKET sock);
 
-int dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from);
+int dreamSock_GetPacket(SOCKET sock, char *data);
 void dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr);
 void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port);
 
