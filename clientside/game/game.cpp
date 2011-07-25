@@ -1,7 +1,7 @@
 #include "game.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../network/network.h"
+#include "../../clientside/network/network.h"
 
 #include "../../clientside/shape/ogreDynamicShape.h"
 

@@ -1,7 +1,7 @@
 #include "client.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../network/network.h"
+#include "../../clientside/network/network.h"
 #ifdef WIN32
 //
 #else
