@@ -96,7 +96,7 @@ set(HDRS
 	../tdreamsock/dreamWinSock.h
 	
 	#network
-	../network/network.h
+	../clientside/network/network.h
 	
 	#command
 	../command/command.h
@@ -140,7 +140,7 @@ set(SRCS
 	../tdreamsock/dreamWinSock.cpp
 
 	#network
-	../network/network.cpp
+	../clientside/network/network.cpp
 	
 	#command
 	../command/command.cpp
@@ -184,7 +184,7 @@ set(HDRS
 	../tdreamsock/dreamSockLog.h
 	
 	#network
-	../network/network.h
+	../clientside/network/network.h
 	
 	#command
 	../command/command.h
@@ -228,7 +228,7 @@ set(SRCS
 	../tdreamsock/dreamLinuxSock.cpp
 
 	#network
-	../network/network.cpp
+	../clientside/network/network.cpp
 	
 	#command
 	../command/command.cpp
