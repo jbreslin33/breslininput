@@ -16,21 +16,6 @@
 	#include <netinet/in.h>
 #endif
 
-// Define SOCKET data type for UNIX (defined in WinSock for Win32)
-// And socklen_t for Win32
-#ifdef WIN32
-	typedef int socklen_t;
-#else
-	typedef int SOCKET;
-
-	#ifndef TRUE
-	#define TRUE 1
-	#endif
-	#ifndef FALSE
-	#define FALSE 0
-	#endif
-#endif
-
 // Connection states
 #define DREAMSOCK_CONNECTING			0
 #define DREAMSOCK_CONNECTED				1
@@ -92,9 +77,6 @@ public:
 	int				GetPacket(char *data, struct sockaddr *from);
 
 	void			SendPacket(Message *message);
-
-	struct sockaddr *GetSocketAddress(void) { return &mMyaddress; }
-	void			SetSocketAddress(struct sockaddr *address) { memcpy(&mMyaddress, address, sizeof(struct sockaddr)); }
 
 	Message	mMessage;
 
