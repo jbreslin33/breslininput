@@ -98,7 +98,7 @@ set(HDRS
 	../tdreamsock/dreamWinSock.h
 	
 	#network
-	../network/network.h
+	../serverside/network/network.h
 	
 	#shape
 	../serverside/shape/shape.h
@@ -171,7 +171,7 @@ set(SRCS
 	../tdreamsock/dreamWinSock.cpp
 	
 	#network
-	../network/network.cpp
+	../serverside/network/network.cpp
 	
 	#shape
 	../serverside/shape/shape.cpp
@@ -232,7 +232,7 @@ set(HDRS
 	../serverside/game/game.h
 	
 	#network
-	../network/network.h
+	../serverside/network/network.h
 	
 	#tdreamsock
 	../tdreamsock/dreamSockLog.h
@@ -308,7 +308,7 @@ set(SRCS
 	../tdreamsock/dreamLinuxSock.cpp
 
 	#network
-	../network/network.cpp
+	../serverside/network/network.cpp
 	
 	#shape
 	../serverside/shape/shape.cpp
