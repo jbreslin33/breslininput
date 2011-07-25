@@ -193,7 +193,7 @@ DynamicShape* shape;
 	Message mes;
 	mes.Init(data, sizeof(data));
 
-	while(ret = mClient->GetPacket(mes.data, &address))
+	while(ret = mClient->GetPacket(mes.data))
 	{
 		mes.SetSize(ret);
 		mes.BeginReading();

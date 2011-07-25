@@ -74,7 +74,7 @@ void Client::DumpBuffer(void)
 	char data[1400];
 	int ret;
 
-	while((ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, data, NULL)) > 0)
+	while((ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, data)) > 0)
 	{
 	}
 }
@@ -155,7 +155,7 @@ void Client::ParsePacket(Message *mes)
 	}
 }
 
-int Client::GetPacket(char *data, struct sockaddr *from)
+int Client::GetPacket(char *data)
 {
 	// Check if the client is set up or if it is disconnecting
 	if(!mNetwork->mSocket)
@@ -167,7 +167,7 @@ int Client::GetPacket(char *data, struct sockaddr *from)
 
 	mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data, from);
+	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data);
 
 	if(ret <= 0)
 		return 0;

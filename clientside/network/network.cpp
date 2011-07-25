@@ -1,12 +1,12 @@
 #include "network.h"
 
-#include "../message/message.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../../message/message.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
 
 
 #ifdef WIN32
-#include "../tdreamsock/dreamWinSock.h"
+#include "../../tdreamsock/dreamWinSock.h"
 #else
 #include <stdio.h>
 #include <memory.h>
@@ -26,7 +26,7 @@
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
-#include "../serverside/client/client.h"
+#include "../../serverside/client/client.h"
 
 
 Network::Network()
@@ -265,7 +265,7 @@ void Network::dreamSock_CloseSocket(SOCKET sock)
 #endif
 }
 
-int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
+int Network::dreamSock_GetPacket(SOCKET sock, char *data)
 {
 	int ret;
 	struct sockaddr tempFrom;
@@ -274,10 +274,6 @@ int Network::dreamSock_GetPacket(SOCKET sock, char *data, struct sockaddr *from)
 	fromlen = sizeof(tempFrom);
 
 	ret = recvfrom(sock, data, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
-
-	// Copy the address to the from pointer
-	if(from != NULL)
-		*(struct sockaddr *) from = tempFrom;
 
 	if(ret == -1)
 	{
