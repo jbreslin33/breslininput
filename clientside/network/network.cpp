@@ -3,8 +3,6 @@
 #include "../../message/message.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-
-
 #ifdef WIN32
 #include "../../tdreamsock/dreamWinSock.h"
 #else
@@ -39,7 +37,6 @@ Network::Network(Client* client, const char localIP[32], int localPort, const ch
 
 	mSocket = dreamSock_OpenUDPSocket(localIP, localPort);
 
-
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
 		//return DREAMSOCK_SERVER_ERROR;
@@ -62,8 +59,6 @@ Network::~Network()
 void Network::dreamSock_Shutdown(void)
 {
 	LogString("Shutting down dreamSock");
-	
-
 
 #ifdef WIN32
 	WSACleanup();
@@ -78,7 +73,6 @@ SOCKET Network::dreamSock_Socket(int protocol)
 {
 	int type;
 	int proto;
-	SOCKET sock;
 
 	// Check which protocol to use
 	if(protocol == DREAMSOCK_TCP)
@@ -93,7 +87,7 @@ SOCKET Network::dreamSock_Socket(int protocol)
 	}
 
 	// Create the socket
-	if((sock = socket(AF_INET, type, proto)) == -1)
+	if((mSocket = socket(AF_INET, type, proto)) == -1)
 	{
 		LogString("dreamSock_Socket - socket() failed");
 
@@ -108,25 +102,25 @@ SOCKET Network::dreamSock_Socket(int protocol)
 		return DREAMSOCK_INVALID_SOCKET;
 	}
 
-	return sock;
+	return mSocket;
 }
 
-int Network::dreamSock_SetNonBlocking(SOCKET sock, u_long setMode)
+int Network::dreamSock_SetNonBlocking(u_long setMode)
 {
 	u_long set = setMode;
 
 	// Set the socket option
 #ifdef WIN32
-	return ioctlsocket(sock, FIONBIO, &set);
+	return ioctlsocket(mSocket, FIONBIO, &set);
 #else
-	return ioctl(sock, FIONBIO, &set);
+	return ioctl(mSocket, FIONBIO, &set);
 #endif
 }
 
-int Network::dreamSock_SetBroadcasting(SOCKET sock, int mode)
+int Network::dreamSock_SetBroadcasting(int mode)
 {
 	// make it broadcast capable
-	if(setsockopt(sock, SOL_SOCKET, SO_BROADCAST, (char *) &mode, sizeof(int)) == -1)
+	if(setsockopt(mSocket, SOL_SOCKET, SO_BROADCAST, (char *) &mode, sizeof(int)) == -1)
 	{
 		LogString("DreamSock_SetBroadcasting failed");
 
@@ -180,8 +174,8 @@ SOCKET Network::dreamSock_OpenUDPSocket(const char *netInterface, int port)
 	if(sock == DREAMSOCK_INVALID_SOCKET)
 		return sock;
 
-	dreamSock_SetNonBlocking(sock, 1);
-	dreamSock_SetBroadcasting(sock, 1);
+	dreamSock_SetNonBlocking(1);
+	dreamSock_SetBroadcasting(1);
 
 	// If no address string provided, use any interface available
 	if(!netInterface || !netInterface[0] || !strcmp(netInterface, "localhost"))
@@ -231,16 +225,16 @@ SOCKET Network::dreamSock_OpenUDPSocket(const char *netInterface, int port)
 	return sock;
 }
 
-void Network::dreamSock_CloseSocket(SOCKET sock)
+void Network::dreamSock_CloseSocket()
 {
 #ifdef WIN32
-		closesocket(sock);
+		closesocket(mSocket);
 #else
-		close(sock);
+		close(mSocket);
 #endif
 }
 
-int Network::dreamSock_GetPacket(SOCKET sock, char *data)
+int Network::dreamSock_GetPacket(char *data)
 {
 	int ret;
 	struct sockaddr tempFrom;
@@ -248,7 +242,7 @@ int Network::dreamSock_GetPacket(SOCKET sock, char *data)
 
 	fromlen = sizeof(tempFrom);
 
-	ret = recvfrom(sock, data, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
+	ret = recvfrom(mSocket, data, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
 
 	if(ret == -1)
 	{
@@ -283,11 +277,11 @@ if (mClient)
 	return ret;
 }
 
-void Network::dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr)
+void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
 {
 	int	ret;
 
-	ret = sendto(sock, data, length, 0, &addr, sizeof(addr));
+	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
 
 	if(ret == -1)
 	{
@@ -309,7 +303,7 @@ void Network::dreamSock_SendPacket(SOCKET sock, int length, char *data, struct s
 	}
 }
 
-void Network::dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
+void Network::dreamSock_Broadcast(int length, char *data, int port)
 {
 	struct sockaddr_in servaddr;
 	socklen_t len;
@@ -326,7 +320,7 @@ void Network::dreamSock_Broadcast(SOCKET sock, int length, char *data, int port)
 	len = sizeof(servaddr);
 
 	// Broadcast!
-	int ret = sendto(sock, data, length, 0, (struct sockaddr *) &servaddr, len);
+	int ret = sendto(mSocket, data, length, 0, (struct sockaddr *) &servaddr, len);
 
 	if(ret == -1)
 	{
@@ -360,7 +354,7 @@ int Network::dreamSock_GetCurrentSystemTime(void)
 
 void Network::sendPacket(Message *theMes)
 {
-	dreamSock_SendPacket(mSocket, theMes->GetSize(), theMes->data,
+	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
 
 }
