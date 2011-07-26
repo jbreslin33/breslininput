@@ -1,6 +1,9 @@
 #include "dynamicShape.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
+//game
+#include "../game/game.h"
+
 #include "../states/dynamicShapeStateMachine.h"
 #include "../states/dynamicShapeMoveStates.h"
 #include "../states/dynamicShapeRotationStates.h"
@@ -212,3 +215,94 @@ void DynamicShape::calculateDeltaPosition()
     //distance we are off from server
     mDeltaPosition = sqrt(pow(mDeltaX, 2) + pow(mDeltaY, 2) +  pow(mDeltaZ, 2));
 }
+
+
+//this is all shapes coming to client game from server
+//should a shape be responsible to read it's own command?????
+//once we determine it's about him shouldn't we pass it off to
+//shape object to handle?
+void DynamicShape::readDeltaMoveCommand(Message *mes)
+{
+	//DynamicShape* shape = NULL;
+
+	int flags = 0;
+
+	bool x = true;
+	bool z = true;
+	bool y = true;
+
+	// Flags
+	flags = mes->ReadByte();
+
+	// Origin
+	if(flags & CMD_ORIGIN_X)
+	{
+		mServerFrame.mOriginOld.x = mServerFrame.mOrigin.x;
+		mServerFrame.mOrigin.x = mes->ReadFloat();		
+	}
+	else
+	{
+		x = false;
+	}
+
+	if(flags & CMD_ORIGIN_Y)
+	{
+		mServerFrame.mOriginOld.y = mServerFrame.mOrigin.y;
+		mServerFrame.mOrigin.y = mes->ReadFloat();
+	}
+	else
+	{
+		y = false;
+	}
+
+	if(flags & CMD_ORIGIN_Z)
+	{
+		mServerFrame.mOriginOld.z = mServerFrame.mOrigin.z;
+		mServerFrame.mOrigin.z = mes->ReadFloat();	
+	}
+	else
+	{
+		z = false;
+	}
+
+	//set old rot
+	mServerFrame.mRotOld.x = mServerFrame.mRot.x;
+	mServerFrame.mRotOld.z = mServerFrame.mRot.z;
+
+	//rotation
+	if(flags & CMD_ROTATION_X)
+	{
+		mServerFrame.mRot.x = mes->ReadFloat();
+	}
+
+	if(flags & CMD_ROTATION_Z)
+	{
+		mServerFrame.mRot.z = mes->ReadFloat();
+	}
+
+	//milliseconds
+	if (flags & CMD_MILLISECONDS)
+	{
+		mServerFrame.mMilliseconds = mes->ReadByte();
+		mCommandToRunOnShape.mMilliseconds = mServerFrame.mMilliseconds;
+	}
+
+	if (mServerFrame.mMilliseconds != 0) 
+	{
+		if(!x && !z && !y && mServerFrame.mMilliseconds != 0)
+		{
+			mServerFrame.mVelocity.x = 0.0;
+			mServerFrame.mVelocity.y = 0.0;
+			mServerFrame.mVelocity.z = 0.0;
+		}
+		else
+		{
+			mServerFrame.mVelocity.x = mServerFrame.mOrigin.x - mServerFrame.mOriginOld.x;
+			mServerFrame.mVelocity.y = mServerFrame.mOrigin.y - mServerFrame.mOriginOld.y;
+			mServerFrame.mVelocity.z = mServerFrame.mOrigin.z - mServerFrame.mOriginOld.z;
+		}
+	}
+	processTick();
+	mGame->moveGhostShapes(this);
+}
+

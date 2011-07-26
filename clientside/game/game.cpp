@@ -295,20 +295,29 @@ void Game::Disconnect(void)
 }
 
 //this is all shapes coming to client game from server
+//should a shape be responsible to read it's own command?????
+//once we determine it's about him shouldn't we pass it off to
+//shape object to handle?
 void Game::ReadDeltaMoveCommand(Message *mes)
 {
 	DynamicShape* shape = NULL;
-
-	int flags = 0;
-
-	bool x = true;
-	bool z = true;
-	bool y = true;
 
 	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
 
 	//index
 	int id = mes->ReadByte();
+
+	shape = getDynamicShape(id);
+
+	if (shape)
+	{
+		shape->readDeltaMoveCommand(mes);
+	}
+}
+
+DynamicShape* Game::getDynamicShape(int id)
+{
+	DynamicShape* shape = NULL;
 
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
@@ -318,89 +327,22 @@ void Game::ReadDeltaMoveCommand(Message *mes)
 			shape = curShape;
 		}
 	}
-	
+
 	if(!shape)
 	{
-		return;
-	}
-
-	// Flags
-	flags = mes->ReadByte();
-
-	// Origin
-	if(flags & CMD_ORIGIN_X)
-	{
-		shape->mServerFrame.mOriginOld.x = shape->mServerFrame.mOrigin.x;
-		shape->mServerFrame.mOrigin.x = mes->ReadFloat();		
+		return NULL;
 	}
 	else
 	{
-		x = false;
+		return shape;
 	}
-
-	if(flags & CMD_ORIGIN_Y)
-	{
-		shape->mServerFrame.mOriginOld.y = shape->mServerFrame.mOrigin.y;
-		shape->mServerFrame.mOrigin.y = mes->ReadFloat();
-	}
-	else
-	{
-		y = false;
-	}
-
-	if(flags & CMD_ORIGIN_Z)
-	{
-		shape->mServerFrame.mOriginOld.z = shape->mServerFrame.mOrigin.z;
-		shape->mServerFrame.mOrigin.z = mes->ReadFloat();	
-	}
-	else
-	{
-		z = false;
-	}
-
-	//set old rot
-	shape->mServerFrame.mRotOld.x = shape->mServerFrame.mRot.x;
-	shape->mServerFrame.mRotOld.z = shape->mServerFrame.mRot.z;
-
-	//rotation
-	if(flags & CMD_ROTATION_X)
-	{
-		shape->mServerFrame.mRot.x = mes->ReadFloat();
-	}
-
-	if(flags & CMD_ROTATION_Z)
-	{
-		shape->mServerFrame.mRot.z = mes->ReadFloat();
-	}
-
-	//milliseconds
-	if (flags & CMD_MILLISECONDS)
-	{
-		shape->mServerFrame.mMilliseconds = mes->ReadByte();
-		shape->mCommandToRunOnShape.mMilliseconds = shape->mServerFrame.mMilliseconds;
-	}
-
-	if (shape->mServerFrame.mMilliseconds != 0) 
-	{
-		if(!x && !z && !y && shape->mServerFrame.mMilliseconds != 0)
-		{
-			shape->mServerFrame.mVelocity.x = 0.0;
-			shape->mServerFrame.mVelocity.y = 0.0;
-			shape->mServerFrame.mVelocity.z = 0.0;
-		}
-		else
-		{
-			shape->mServerFrame.mVelocity.x = shape->mServerFrame.mOrigin.x - shape->mServerFrame.mOriginOld.x;
-			shape->mServerFrame.mVelocity.y = shape->mServerFrame.mOrigin.y - shape->mServerFrame.mOriginOld.y;
-			shape->mServerFrame.mVelocity.z = shape->mServerFrame.mOrigin.z - shape->mServerFrame.mOriginOld.z;
-		}
-	}
-	shape->processTick();
-	moveGhostShapes(shape);
 }
 
 //this the client's (in this case we are on clientside so there is only one client instance) move being built
 //to send to the server, all we are sending is a key(maybe) and always milliseconds.
+
+
+
 void Game::BuildDeltaMoveCommand(Message *mes)
 {
 	int flags = 0;
