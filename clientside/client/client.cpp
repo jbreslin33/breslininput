@@ -14,7 +14,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	mIncomingSequence		= 0;
 	mIncomingAcknowledged	= 0;
 	mDroppedPackets			= 0;
-	mLastMessageTime		= 0;
 
 	// Save server's address information for later use
 	mServerPort = serverPort;
@@ -39,7 +38,6 @@ void Client::Reset(void)
     mIncomingSequence                = 0;
     mIncomingAcknowledged			 = 0;
     mDroppedPackets                  = 0;
-    mLastMessageTime                 = 0;
 }
 
 
