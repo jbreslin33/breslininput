@@ -28,21 +28,7 @@
 
 #include "../../serverside/client/client.h"
 
-
-Network::Network()
-{
-
-	mClient = NULL;
-#ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
-#else
-	mDreamLinuxSock = new DreamLinuxSock();
-#endif
-
-	mSocket = 0;
-}
-
-Network::Network(Client* client, const char netInterface[32], int port)
+Network::Network(Client* client, const char localIP[32], int localPort, const char serverIP[32], int serverPort )
 {
 	mClient = client;
 #ifdef WIN32
@@ -51,7 +37,7 @@ Network::Network(Client* client, const char netInterface[32], int port)
 	mDreamLinuxSock = new DreamLinuxSock();
 #endif
 
-	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
+	mSocket = dreamSock_OpenUDPSocket(localIP, localPort);
 
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
@@ -59,25 +45,14 @@ Network::Network(Client* client, const char netInterface[32], int port)
 		//return DREAMSOCK_SERVER_ERROR;
 		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
 	}
-}
 
-Network::Network(const char netInterface[32], int port)
-{
-	mClient = NULL;
-#ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
-#else
-	mDreamLinuxSock = new DreamLinuxSock();
-#endif
+	//ripped from client, since we only have one client on this side let's do it here.
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
-	mSocket = dreamSock_OpenUDPSocket(netInterface, port);
-
-
-	if(mSocket == DREAMSOCK_INVALID_SOCKET)
-	{
-		//return DREAMSOCK_SERVER_ERROR;
-		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
-	}
+	u_long inetAddr = inet_addr(serverIP);
+	sendToAddress.sin_port = htons((u_short) serverPort);
+	sendToAddress.sin_family = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
 }
 
 Network::~Network()
@@ -380,4 +355,12 @@ int Network::dreamSock_GetCurrentSystemTime(void)
 #else
 	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
 #endif
+}
+
+
+void Network::sendPacket(Message *theMes)
+{
+	dreamSock_SendPacket(mSocket, theMes->GetSize(), theMes->data,
+			*(struct sockaddr *) &sendToAddress);
+
 }

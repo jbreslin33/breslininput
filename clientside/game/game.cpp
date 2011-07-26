@@ -174,7 +174,6 @@ void Game::moveGhostShapes(DynamicShape* shape)
 void Game::ReadPackets(void)
 {
 	char data[1400];
-	struct sockaddr address;
 
 	int type;
 	int ind;

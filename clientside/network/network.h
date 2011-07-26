@@ -46,12 +46,12 @@ class DreamLinuxSock;
 #endif
 
 class Client;
+class Message;
 
 class Network 
 {
 public:
-Network();
-Network(Client* client,const char netInterface[32], int port);
+Network(Client* client,const char localIP[32], int port, const char serverIP[32], int serverPort);
 Network(const char netInterface[32], int port);
 ~Network();
 
@@ -60,6 +60,10 @@ DreamWinSock* mDreamWinSock;
 #else
 DreamLinuxSock* mDreamLinuxSock;
 #endif
+
+SOCKET mSocket;
+struct sockaddr_in sendToAddress;
+Client* mClient;
 
 // Function prototypes
 
@@ -73,7 +77,9 @@ SOCKET dreamSock_OpenUDPSocket(const char netInterface[32], int port);
 void dreamSock_CloseSocket(SOCKET sock);
 
 int dreamSock_GetPacket(SOCKET sock, char *data);
+
 void dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr);
+
 void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port);
 
 #ifndef WIN32
@@ -82,8 +88,6 @@ int dreamSock_Linux_GetCurrentSystemTime(void);
 
 int dreamSock_GetCurrentSystemTime(void);
 
-SOCKET mSocket;
-
-Client* mClient;
+void sendPacket(Message *theMes);
 };
 #endif
