@@ -2,6 +2,8 @@
 #include "../../tdreamsock/dreamSockLog.h"
 
 #include "../../clientside/network/network.h"
+
+/*
 #ifdef WIN32
 //
 #else
@@ -9,7 +11,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #endif
-
+*/
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {

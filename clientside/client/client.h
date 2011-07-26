@@ -5,17 +5,7 @@
 
 //command
 #include "../../command/command.h"
-/*
-#ifdef WIN32
-	#pragma comment (lib,"ws2_32.lib")
-#pragma message ("Auto linking WinSock2 library")
 
-	#include <winsock2.h>
-#else
-	#include <string.h>
-	#include <netinet/in.h>
-#endif
-*/
 // Connection states
 #define DREAMSOCK_CONNECTING			0
 #define DREAMSOCK_CONNECTED				1
