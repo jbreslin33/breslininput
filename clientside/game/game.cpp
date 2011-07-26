@@ -201,7 +201,7 @@ DynamicShape* shape;
 
 		switch(type)
 		{
-		case DREAMSOCK_MES_ADDSHAPE:
+		case mClient->mMessageAddShape:
 			local	= mes.ReadByte();
 			ind		= mes.ReadByte();
 			strcpy(name, mes.ReadString());
@@ -221,7 +221,7 @@ DynamicShape* shape;
 
 			break;
 
-		case DREAMSOCK_MES_REMOVESHAPE:
+		case mClient->mMessageRemoveShape:
 			ind = mes.ReadByte();
 			RemoveShape(ind);
 
@@ -257,7 +257,7 @@ DynamicShape* shape;
 
 void Game::SendCommand(void)
 {
-	if(mClient->mConnectionState != DREAMSOCK_CONNECTED)
+	if(mClient->mConnectionState != mClient->mMessageConnected)
 		return;
 
 	Message message;
