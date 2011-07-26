@@ -5,7 +5,7 @@
 
 //command
 #include "../../command/command.h"
-
+/*
 #ifdef WIN32
 	#pragma comment (lib,"ws2_32.lib")
 #pragma message ("Auto linking WinSock2 library")
@@ -15,7 +15,7 @@
 	#include <string.h>
 	#include <netinet/in.h>
 #endif
-
+*/
 // Connection states
 #define DREAMSOCK_CONNECTING			0
 #define DREAMSOCK_CONNECTED				1
@@ -63,8 +63,6 @@ Client(const char *localIP, const char *remoteIP, int port);
 	unsigned short	mDroppedPackets;			// Dropped packets
 
 	int				mServerPort;				// Port
-
-	struct sockaddr	mMyaddress;				// Socket address
 
 	int				mLastMessageTime;
 
