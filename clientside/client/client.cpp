@@ -8,7 +8,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
 	mShape = NULL; //to be filled when we actually create the shape
 
-	mConnectionState	= DREAMSOCK_DISCONNECTED;
+	mConnectionState	= mMessageDisconnected;
 
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
@@ -33,7 +33,7 @@ Client::~Client()
 
 void Client::Reset(void)
 {
-	mConnectionState = DREAMSOCK_DISCONNECTED;
+	mConnectionState = mMessageDisconnected;
 
     mOutgoingSequence                = 1;
     mIncomingSequence                = 0;
@@ -58,10 +58,10 @@ void Client::SendConnect(const char *name)
 	// Dump buffer so there won't be any old packets to process
 	DumpBuffer();
 
-	mConnectionState = DREAMSOCK_CONNECTING;
+	mConnectionState = mMessageConnecting;
 
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
-	mMessage.WriteByte(DREAMSOCK_MES_CONNECT);
+	mMessage.WriteByte(mMessageConnect);
 	mMessage.WriteString(name);
 
 	SendPacket(&mMessage);
@@ -70,12 +70,12 @@ void Client::SendConnect(const char *name)
 void Client::SendDisconnect(void)
 {
 	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
-	mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
+	mMessage.WriteByte(mMessageDisconnect);
 
 	SendPacket(&mMessage);
 	Reset();
 
-	mConnectionState = DREAMSOCK_DISCONNECTING;
+	mConnectionState = mMessageDisconnecting;
 }
 
 void Client::ParsePacket(Message *mes)
@@ -107,23 +107,23 @@ void Client::ParsePacket(Message *mes)
 	// Parse trough the system messages
 	switch(type)
 	{
-	case DREAMSOCK_MES_CONNECT:
-		mConnectionState = DREAMSOCK_CONNECTED;
+	case mMessageConnect:
+		mConnectionState = mMessageConnected;
 
 		LogString("LIBRARY: Client: got connect confirmation");
 		break;
 
-	case DREAMSOCK_MES_DISCONNECT:
-		mConnectionState = DREAMSOCK_DISCONNECTED;
+	case mMessageDisconnect:
+		mConnectionState = mMessageDisconnected;
 
 		LogString("LIBRARY: Client: got disconnect confirmation");
 		break;
 
-	case DREAMSOCK_MES_ADDSHAPE:
+	case mMessageAddShape:
 		//LogString("LIBRARY: Client: adding a shape");
 		break;
 
-	case DREAMSOCK_MES_REMOVESHAPE:
+	case mMessageRemoveShape:
 		LogString("LIBRARY: Client: removing a client");
 		break;
 	}
@@ -157,7 +157,7 @@ int Client::GetPacket(char *data)
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || mConnectionState == DREAMSOCK_DISCONNECTED)
+	if(!mNetwork->mSocket || mConnectionState == mMessageDisconnected)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
