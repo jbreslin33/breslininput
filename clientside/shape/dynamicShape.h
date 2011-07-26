@@ -2,6 +2,7 @@
 #define DYNAMICSHAPE_H
 
 #include "shape.h"
+#include "../../message/message.h"
 
 //command
 #include "../../command/command.h"
@@ -23,6 +24,24 @@ DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3
 
 //game pointer cause you gotta know about the world you inhabit as a playa
 Game* mGame;
+
+//network
+//flag
+#define CMD_KEY						1
+#define CMD_MILLISECONDS            2
+#define CMD_ORIGIN_X                4
+#define CMD_ORIGIN_Y                8
+#define CMD_ORIGIN_Z               16 
+#define CMD_ROTATION_X             32
+#define CMD_ROTATION_Z             64
+
+static const char mCommandKey          = 1;
+static const char mCommandMilliseconds = 2;
+static const char mCommandOriginX      = 4;
+static const char mCommandOriginY      = 8;
+static const char mCommandOriginZ      = 16;
+static const char mCommandRotationX    = 32;
+static const char mCommandRotationZ    = 64;
 
 //state machines
 DynamicShapeStateMachine* mMoveProcessTickStateMachine;
@@ -90,6 +109,10 @@ void  calculateServerRotationSpeed();
 
 //move
 void calculateDeltaPosition();
+
+//messaging
+void readDeltaMoveCommand(Message *mes);
+
 
 };
 
