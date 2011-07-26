@@ -34,7 +34,9 @@ Client(const char *localIP, const char *remoteIP, int port);
 	//the avatar
     DynamicShape* mShape;  //on server: everybody's got one ...same on clientside mShape is the clients personal avatar..
 	
-	//handles telegraphing key presses etc to server
+	//handles telegraphing key presses etc to server for your client/avatar pair. not to be
+	//confused with Commands that come from server that deal with all dynamic shapes on this
+	//client machine.
 	Command mClientCommandToServerArray[64];
 	Command	mClientCommandToServer; //for the human moves to be sent off to server
 
