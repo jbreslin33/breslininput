@@ -9,7 +9,7 @@
 
 #include "../../math/vector3D.h"
 
-#include "../../message/message.h"
+#include "../message/message.h"
 
 Game* game;
 bool keys[256];

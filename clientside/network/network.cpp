@@ -1,6 +1,6 @@
 #include "network.h"
 
-#include "../../message/message.h"
+#include "../message/message.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
 #ifdef WIN32
@@ -24,7 +24,7 @@
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
-#include "../../serverside/client/client.h"
+#include "../../clientside/client/client.h"
 
 Network::Network(Client* client, const char localIP[32], int localPort, const char serverIP[32], int serverPort )
 {
