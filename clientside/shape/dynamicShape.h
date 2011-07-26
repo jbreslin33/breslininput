@@ -2,7 +2,7 @@
 #define DYNAMICSHAPE_H
 
 #include "shape.h"
-#include "../../message/message.h"
+#include "../message/message.h"
 
 //command
 #include "../../command/command.h"
