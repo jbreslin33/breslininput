@@ -7,14 +7,8 @@
 
 Message::Message()
 {
-
 }
-
-Message::~Message()
-{
-}
-
-void Message::Init(char *d, int length)
+Message::Message(char *d, int length)
 {
 	data		= d;
 	maxSize		= length;
@@ -23,6 +17,19 @@ void Message::Init(char *d, int length)
 	overFlow	= false;
 }
 
+Message::~Message()
+{
+}
+/*
+void Message::Init(char *d, int length)
+{
+	data		= d;
+	maxSize		= length;
+	size		= 0;
+	readCount	= 0;
+	overFlow	= false;
+}
+*/
 void Message::Clear(void)
 {
 	size		= 0;

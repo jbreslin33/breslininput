@@ -8,6 +8,8 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
 	mShape = NULL; //to be filled when we actually create the shape
 
+	mMessage = new Message();
+
 	mConnectionState	= mMessageDisconnected;
 
 	mOutgoingSequence		= 1;
@@ -58,19 +60,21 @@ void Client::SendConnect(const char *name)
 
 	mConnectionState = mMessageConnecting;
 
-	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
-	mMessage.WriteByte(mMessageConnect);
-	mMessage.WriteString(name);
+	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
+	//mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
+	message->WriteByte(mMessageConnect);
+	message->WriteString(name);
 
-	SendPacket(&mMessage);
+	SendPacket(message);
 }
 
 void Client::SendDisconnect(void)
 {
-	mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
-	mMessage.WriteByte(mMessageDisconnect);
+	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
+	//mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
+	message->WriteByte(mMessageDisconnect);
 
-	SendPacket(&mMessage);
+	SendPacket(message);
 	Reset();
 
 	mConnectionState = mMessageDisconnecting;
@@ -135,19 +139,19 @@ int Client::GetPacket(char *data)
 
 	int ret;
 
-	Message mes;
+	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
 
-	mes.Init(data, sizeof(data));
+	//mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(mes.data);
+	ret = mNetwork->dreamSock_GetPacket(message->data);
 
 	if(ret <= 0)
 		return 0;
 
-	mes.SetSize(ret);
+	message->SetSize(ret);
 
 	// Parse system messages
-	ParsePacket(&mes);
+	ParsePacket(message);
 
 	return ret;
 }

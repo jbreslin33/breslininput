@@ -173,7 +173,7 @@ void Game::moveGhostShapes(DynamicShape* shape)
 }
 void Game::ReadPackets(void)
 {
-	char data[1400];
+//	char data[1400];
 
 	int type;
 	int ind;
@@ -189,30 +189,32 @@ DynamicShape* shape;
 
 	char name[50];
 
-	Message mes;
-	mes.Init(data, sizeof(data));
+	//Message mes;
+	//message->Init(data, sizeof(data));
+	Message* message = new Message(mClient->mMessage->outgoingData,
+		sizeof(mClient->mMessage->outgoingData));
 
-	while(ret = mClient->GetPacket(mes.data))
+	while(ret = mClient->GetPacket(message->data))
 	{
-		mes.SetSize(ret);
-		mes.BeginReading();
+		message->SetSize(ret);
+		message->BeginReading();
 
-		type = mes.ReadByte();
+		type = message->ReadByte();
 
 		switch(type)
 		{
 		case mClient->mMessageAddShape:
-			local	= mes.ReadByte();
-			ind		= mes.ReadByte();
-			strcpy(name, mes.ReadString());
-			origin.x = mes.ReadFloat();
-			origin.y = mes.ReadFloat();
-			origin.z = mes.ReadFloat();
-			velocity.x = mes.ReadFloat();
-			velocity.y = mes.ReadFloat();
-			velocity.z = mes.ReadFloat();
-			rotation.x = mes.ReadFloat();
-			rotation.z = mes.ReadFloat();
+			local	= message->ReadByte();
+			ind		= message->ReadByte();
+			strcpy(name, message->ReadString());
+			origin.x = message->ReadFloat();
+			origin.y = message->ReadFloat();
+			origin.z = message->ReadFloat();
+			velocity.x = message->ReadFloat();
+			velocity.y = message->ReadFloat();
+			velocity.z = message->ReadFloat();
+			rotation.x = message->ReadFloat();
+			rotation.z = message->ReadFloat();
 			shape = AddShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
 			//now add to vectors....
@@ -222,28 +224,28 @@ DynamicShape* shape;
 			break;
 
 		case mClient->mMessageRemoveShape:
-			ind = mes.ReadByte();
+			ind = message->ReadByte();
 			RemoveShape(ind);
 
 			break;
 
 		case USER_MES_FRAME:
 			// Skip sequences
-			mes.ReadShort();
-			mes.ReadShort();
+			message->ReadShort();
+			message->ReadShort();
 
 			newTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
 			//for (unsigned int i = 0; i < mShapeVector.size(); i++)
-			while (mes.getReadCount() <= mes.GetSize())
+			while (message->getReadCount() <= message->GetSize())
 			{
 				if (mNetworkShutdown)
 				{
 					return;
 				}
-				ReadDeltaMoveCommand(&mes);
+				ReadDeltaMoveCommand(message);
 			}
 			break;
 
@@ -260,21 +262,24 @@ void Game::SendCommand(void)
 	if(mClient->mConnectionState != mClient->mMessageConnected)
 		return;
 
-	Message message;
-	char data[1400];
+	//Message message;
+	//char data[1400];
 
 	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
-	message.Init(data, sizeof(data));
-	message.WriteByte(USER_MES_FRAME);						// type
-	message.WriteShort(mClient->mOutgoingSequence);
-	message.WriteShort(mClient->mIncomingSequence);
+//	message.Init(data, sizeof(data));
+	Message* message = new Message(mClient->mMessage->outgoingData,
+		sizeof(mClient->mMessage->outgoingData));
+
+	message->WriteByte(USER_MES_FRAME);						// type
+	message->WriteShort(mClient->mOutgoingSequence);
+	message->WriteShort(mClient->mIncomingSequence);
 
 	// Build delta-compressed move command
-	BuildDeltaMoveCommand(&message);
+	BuildDeltaMoveCommand(message);
 
 	// Send the packet
-	mClient->SendPacket(&message);
+	mClient->SendPacket(message);
 
 	// Store the command to the input client's history
 	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));

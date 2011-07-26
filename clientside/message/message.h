@@ -7,6 +7,7 @@ class Message
 {
 public:
 	Message();
+	Message(char *d, int length);
 	~Message();
 
 private:
@@ -18,7 +19,7 @@ private:
 	char			*GetNewPoint(int length);
 
 public:
-	void			Init(char *d, int length);
+	//void			Init(char *d, int length);
 	void			Clear(void);
 	void			Write(const void *d, int length);
 
