@@ -11,7 +11,7 @@
 #endif
 
 //client side client constructor, one on each client machine, i.e. one instance per machine.
-Client::Client(const char *localIP, const char *remoteIP, int port)
+Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
 	mShape = NULL; //to be filled when we actually create the shape
 
@@ -24,20 +24,22 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	mLastMessageTime		= 0;
 
 	// Save server's address information for later use
-	mServerPort = port;
-	
+	mServerPort = serverPort;
+	/*
 	#ifdef WIN32
 	size_t t = 256;
 	strcpy_s(mServerIP,t, remoteIP);
 #else
 	strcpy(serverIP,remoteIP);
 #endif
-	LogString("Server's information: IP address: %s, port: %d", mServerIP, mServerPort);
+	*/
+	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
-	mNetwork = new Network(this,localIP, 0);
+	mNetwork = new Network(this,localIP, 0, remoteIP, serverPort);
 
 	// Check that the address is not empty
+	/*
 	u_long inetAddr = inet_addr(mServerIP);
 
 	if(inetAddr == INADDR_NONE)
@@ -49,6 +51,7 @@ Client::Client(const char *localIP, const char *remoteIP, int port)
 	{
 		LogString("DREAMSOCK_CLIENT_ERROR");
 	}
+	*/
 }
 
 Client::~Client()
@@ -196,17 +199,7 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	//this used to ask whether serverPort was null but not needed now that this function is on clientside.
-	struct sockaddr_in sendToAddress;
-	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
-
-	u_long inetAddr = inet_addr(mServerIP);
-	sendToAddress.sin_port = htons((u_short) mServerPort);
-	sendToAddress.sin_family = AF_INET;
-	sendToAddress.sin_addr.s_addr = inetAddr;
-
-	mNetwork->dreamSock_SendPacket(mNetwork->mSocket, theMes->GetSize(), theMes->data,
-			*(struct sockaddr *) &sendToAddress);
+	mNetwork->sendPacket(theMes);
 
 	// Check if the packet is sequenced
 	theMes->BeginReading();

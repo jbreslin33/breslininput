@@ -63,7 +63,6 @@ Client(const char *localIP, const char *remoteIP, int port);
 	unsigned short	mDroppedPackets;			// Dropped packets
 
 	int				mServerPort;				// Port
-	char			mServerIP[32];			// IP address
 
 	struct sockaddr	mMyaddress;				// Socket address
 
