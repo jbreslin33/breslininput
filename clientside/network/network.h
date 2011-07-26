@@ -70,17 +70,18 @@ Client* mClient;
 void dreamSock_Shutdown(void);
 
 SOCKET dreamSock_Socket(int protocol);
-int dreamSock_SetNonBlocking(SOCKET sock, u_long setMode);
-int dreamSock_SetBroadcasting(SOCKET sock, int mode);
+int dreamSock_SetNonBlocking(u_long setMode);
+int dreamSock_SetBroadcasting(int mode);
 int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr);
 SOCKET dreamSock_OpenUDPSocket(const char netInterface[32], int port);
-void dreamSock_CloseSocket(SOCKET sock);
+void dreamSock_CloseSocket();
 
-int dreamSock_GetPacket(SOCKET sock, char *data);
+int dreamSock_GetPacket(char *data);
 
-void dreamSock_SendPacket(SOCKET sock, int length, char *data, struct sockaddr addr);
 
-void dreamSock_Broadcast(SOCKET sock, int length, char *data, int port);
+void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
+
+void dreamSock_Broadcast(int length, char *data, int port);
 
 #ifndef WIN32
 int dreamSock_Linux_GetCurrentSystemTime(void);

@@ -34,7 +34,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 Client::~Client()
 {
-	mNetwork->dreamSock_CloseSocket(mNetwork->mSocket);
+	mNetwork->dreamSock_CloseSocket();
 	delete mNetwork;
 }
 
@@ -55,7 +55,7 @@ void Client::DumpBuffer(void)
 	char data[1400];
 	int ret;
 
-	while((ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, data)) > 0)
+	while((ret = mNetwork->dreamSock_GetPacket(data)) > 0)
 	{
 	}
 }
@@ -148,7 +148,7 @@ int Client::GetPacket(char *data)
 
 	mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(mNetwork->mSocket, mes.data);
+	ret = mNetwork->dreamSock_GetPacket(mes.data);
 
 	if(ret <= 0)
 		return 0;
