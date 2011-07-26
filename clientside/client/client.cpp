@@ -25,33 +25,11 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 	// Save server's address information for later use
 	mServerPort = serverPort;
-	/*
-	#ifdef WIN32
-	size_t t = 256;
-	strcpy_s(mServerIP,t, remoteIP);
-#else
-	strcpy(serverIP,remoteIP);
-#endif
-	*/
+
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
 	mNetwork = new Network(this,localIP, 0, remoteIP, serverPort);
-
-	// Check that the address is not empty
-	/*
-	u_long inetAddr = inet_addr(mServerIP);
-
-	if(inetAddr == INADDR_NONE)
-	{
-		LogString("DREAMSOCK_CLIENT_ERROR");
-	}
-
-	if(mNetwork->mSocket == DREAMSOCK_INVALID_SOCKET)
-	{
-		LogString("DREAMSOCK_CLIENT_ERROR");
-	}
-	*/
 }
 
 Client::~Client()
