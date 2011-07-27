@@ -6,9 +6,8 @@ DatagramPacket::DatagramPacket(char buffer[32], int length, const char address[3
 	mLength     = length;
 	mAddress    = address;
 	mPort       = port;
-	
-
 }
+
 DatagramPacket::DatagramPacket(char buffer[32], int length)
 {
 	mDataBuffer = buffer;
