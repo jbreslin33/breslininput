@@ -45,14 +45,12 @@ class DreamWinSock;
 class DreamLinuxSock;
 #endif
 
-class Client;
 class Message;
 
 class Network 
 {
 public:
-Network(Client* client,const char localIP[32], int port, const char serverIP[32], int serverPort);
-Network(const char netInterface[32], int port);
+Network(const char serverIP[32], int serverPort);
 ~Network();
 
 #ifdef WIN32
@@ -63,7 +61,6 @@ DreamLinuxSock* mDreamLinuxSock;
 
 SOCKET mSocket;
 struct sockaddr_in sendToAddress;
-Client* mClient;
 
 // Function prototypes
 
@@ -73,7 +70,7 @@ SOCKET dreamSock_Socket(int protocol);
 int dreamSock_SetNonBlocking(u_long setMode);
 int dreamSock_SetBroadcasting(int mode);
 int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr);
-SOCKET dreamSock_OpenUDPSocket(const char netInterface[32], int port);
+SOCKET dreamSock_OpenUDPSocket();
 void dreamSock_CloseSocket();
 
 int dreamSock_GetPacket(char *data);
