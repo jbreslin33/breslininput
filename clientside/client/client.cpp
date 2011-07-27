@@ -60,7 +60,7 @@ void Client::SendConnect(const char *name)
 
 	mConnectionState = mMessageConnecting;
 
-	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
+	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
 	//mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
 	message->WriteByte(mMessageConnect);
 	message->WriteString(name);
@@ -70,7 +70,7 @@ void Client::SendConnect(const char *name)
 
 void Client::SendDisconnect(void)
 {
-	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
+	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
 	//mMessage.Init(mMessage.outgoingData, sizeof(mMessage.outgoingData));
 	message->WriteByte(mMessageDisconnect);
 
