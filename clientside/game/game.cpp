@@ -269,7 +269,7 @@ void Game::SendCommand(void)
 	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
 //	message.Init(data, sizeof(data));
-	Message* message = new Message(mClient->mTempDataBuffer,
+	Message* message = new Message(mClient->mMessage->outgoingData,
 		sizeof(mClient->mMessage->outgoingData));
 
 	message->WriteByte(USER_MES_FRAME);						// type
