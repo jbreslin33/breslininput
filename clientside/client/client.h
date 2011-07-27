@@ -18,6 +18,8 @@ Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 
 	Message*	mMessage;
+//message stuff temp
+	char			mTempDataBuffer[1400];
 
 	//used to direct messages to correct functions, the message header,
 	//not to confused with packet header which deals with with networking.

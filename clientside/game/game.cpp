@@ -191,6 +191,7 @@ DynamicShape* shape;
 
 	//Message mes;
 	//message->Init(data, sizeof(data));
+	char temp[1400];
 	Message* message = new Message(mClient->mMessage->outgoingData,
 		sizeof(mClient->mMessage->outgoingData));
 
@@ -268,7 +269,7 @@ void Game::SendCommand(void)
 	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
 //	message.Init(data, sizeof(data));
-	Message* message = new Message(mClient->mMessage->outgoingData,
+	Message* message = new Message(mClient->mTempDataBuffer,
 		sizeof(mClient->mMessage->outgoingData));
 
 	message->WriteByte(USER_MES_FRAME);						// type
