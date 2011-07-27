@@ -23,7 +23,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
-	mNetwork = new Network(this,localIP, 0, remoteIP, serverPort);
+	mNetwork = new Network(remoteIP, serverPort);
 }
 
 Client::~Client()

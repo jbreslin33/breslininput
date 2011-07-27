@@ -26,16 +26,16 @@
 
 #include "../../clientside/client/client.h"
 
-Network::Network(Client* client, const char localIP[32], int localPort, const char serverIP[32], int serverPort )
+Network::Network(const char serverIP[32], int serverPort )
 {
-	mClient = client;
+
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #else
 	mDreamLinuxSock = new DreamLinuxSock();
 #endif
 
-	mSocket = dreamSock_OpenUDPSocket(localIP, localPort);
+	mSocket = dreamSock_OpenUDPSocket();
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
@@ -163,7 +163,7 @@ int Network::dreamSock_StringToSockaddr(const char *addressString, struct sockad
 	else return 1;
 }
 
-SOCKET Network::dreamSock_OpenUDPSocket(const char *netInterface, int port)
+SOCKET Network::dreamSock_OpenUDPSocket()
 {
 	SOCKET sock;
 
@@ -177,28 +177,11 @@ SOCKET Network::dreamSock_OpenUDPSocket(const char *netInterface, int port)
 	dreamSock_SetNonBlocking(1);
 	dreamSock_SetBroadcasting(1);
 
-	// If no address string provided, use any interface available
-	if(!netInterface || !netInterface[0] || !strcmp(netInterface, "localhost"))
-	{
-		LogString("No net interface given, using any interface available");
-		address.sin_addr.s_addr = htonl(INADDR_ANY);
-	}
-	else
-	{
-		LogString("Using net interface = '%s'", netInterface);
-		dreamSock_StringToSockaddr(netInterface, (struct sockaddr *) &address);
-	}
+	LogString("No net interface given, using any interface available");
+	address.sin_addr.s_addr = htonl(INADDR_ANY);
 
-	// If no port number provided, use any port number available
-	if(port == 0)
-	{
-		LogString("No port defined, picking one for you");
-		address.sin_port = 0;
-	}
-	else
-	{
-		address.sin_port = htons((short) port);
-	}
+	LogString("No port defined, picking one for you");
+	address.sin_port = 0;
 
 	address.sin_family = AF_INET;
 
@@ -260,8 +243,8 @@ int Network::dreamSock_GetPacket(char *data)
 			return ret;
 		}
 		size_t t = 256;
-if (mClient)
-	if (mClient->mConnectionState == 1)
+//if (mClient)
+//	if (mClient->mConnectionState == 1)
 		LogString("Error code %d: recvfrom() : %s", errno, strerror_s("error",t,errno));
 #else
 		// Silently handle wouldblock
@@ -273,6 +256,8 @@ if (mClient)
 
 		return ret;
 	}
+
+
 
 	return ret;
 }
