@@ -63,7 +63,6 @@ int dreamSock_GetPacket(char *data);
 
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 
-
 void sendPacket(Message *theMes);
 };
 #endif
