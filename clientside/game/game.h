@@ -5,6 +5,13 @@
 
 #include "../../clientside/shape/ogreDynamicShape.h"
 
+#ifdef WIN32
+
+class DreamWinSock;
+#else
+class DreamLinuxSock;
+#endif
+
 #define VK_ESCAPE 0x1B
 #define VK_UP 0x26
 #define VK_DOWN 0x28
@@ -117,10 +124,20 @@ public:
 	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
 #ifdef WIN32
-	DreamWinSock* mDreamWinSock;
+DreamWinSock* mDreamWinSock;
+#else
+DreamLinuxSock* mDreamLinuxSock;
 #endif
 
 	void gameLoop();
+
+	//time
+#ifndef WIN32
+int dreamSock_Linux_GetCurrentSystemTime(void);
+#endif
+
+int dreamSock_GetCurrentSystemTime(void);
+
 };
 
 #endif

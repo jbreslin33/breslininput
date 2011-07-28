@@ -4,7 +4,7 @@
 #include "../../tdreamsock/dreamSockLog.h"
 
 #ifdef WIN32
-#include "../../tdreamsock/dreamWinSock.h"
+//do nothing
 #else
 #include <stdio.h>
 #include <memory.h>
@@ -21,19 +21,12 @@
 #include <pthread.h>
 #include <signal.h>
 
-#include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
 #include "../../clientside/client/client.h"
 
 Network::Network(const char serverIP[32], int serverPort )
 {
-
-#ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
-#else
-	mDreamLinuxSock = new DreamLinuxSock();
-#endif
 
 	mSocket = dreamSock_OpenUDPSocket();
 
@@ -227,16 +220,6 @@ void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
 #endif
 	}
 }
-
-int Network::dreamSock_GetCurrentSystemTime(void)
-{
-#ifndef WIN32
-	return mDreamLinuxSock->dreamSock_Linux_GetCurrentSystemTime();
-#else
-	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
-#endif
-}
-
 
 void Network::sendPacket(Message *theMes)
 {

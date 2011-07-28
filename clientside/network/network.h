@@ -39,12 +39,6 @@
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
 
-#ifdef WIN32
-class DreamWinSock;
-#else
-class DreamLinuxSock;
-#endif
-
 class Message;
 
 class Network 
@@ -52,12 +46,6 @@ class Network
 public:
 Network(const char serverIP[32], int serverPort);
 ~Network();
-
-#ifdef WIN32
-DreamWinSock* mDreamWinSock;
-#else
-DreamLinuxSock* mDreamLinuxSock;
-#endif
 
 SOCKET mSocket;
 struct sockaddr_in sendToAddress;
@@ -75,11 +63,6 @@ int dreamSock_GetPacket(char *data);
 
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 
-#ifndef WIN32
-int dreamSock_Linux_GetCurrentSystemTime(void);
-#endif
-
-int dreamSock_GetCurrentSystemTime(void);
 
 void sendPacket(Message *theMes);
 };

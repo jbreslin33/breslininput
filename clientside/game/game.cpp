@@ -11,6 +11,13 @@
 
 #include "../message/message.h"
 
+#ifdef WIN32
+#include "../../tdreamsock/dreamWinSock.h"
+#else
+#include "../tdreamsock/dreamLinuxSock.h"
+#endif
+
+
 Game* game;
 bool keys[256];
 
@@ -19,7 +26,14 @@ Game::Game(const char* serverIP)
 	StartLog();
 
 	mServerIP = serverIP;
- 	mClient	= new Client("", mServerIP, 30004);
+ 
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
+	mClient	= new Client("", mServerIP, 30004);
 
 	mFrameTime		 = 0.0f;
  	mRenderTime		 = 0.0f;
@@ -235,7 +249,7 @@ DynamicShape* shape;
 			message->ReadShort();
 			message->ReadShort();
 
-			newTime = mClient->mNetwork->dreamSock_GetCurrentSystemTime();
+			newTime = dreamSock_GetCurrentSystemTime();
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
@@ -575,6 +589,16 @@ bool Game::runGraphics()
 		return true;
 	}
 }
+
+int Game::dreamSock_GetCurrentSystemTime(void)
+{
+#ifndef WIN32
+	return mDreamLinuxSock->dreamSock_Linux_GetCurrentSystemTime();
+#else
+	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
+#endif
+}
+
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
