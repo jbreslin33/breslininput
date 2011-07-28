@@ -172,21 +172,6 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	//mDatagramSocket->sendPacket(theMes);
-	//mDatagramSocket->dreamSock_SendPacket(theMes->GetSize(),theMes->data,
-	//we need to replace above line...
-	/*
-	DatagramSocket* socket = new DatagramSocket();
-
-	DatagramPacket* packet = new DatagramPacket(theMes, theMes->data,theMes->GetSize(),mServerIP,mServerPort);
-
-	socket->send(packet);
-*/
-	//DatagramSocket* datagramSocket = new DatagramSocket(mServerIP,mServerPort);
-	//datagramSocket->sendPacket(theMes);
-
-	// Check if the packet is sequenced
-	
 	DatagramPacket* packet = new DatagramPacket(theMes,theMes->data,sizeof(theMes->data),mServerIP,mServerPort);
 	mDatagramSocket->send(packet);
 
