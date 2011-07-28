@@ -39,24 +39,26 @@
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
 
-
-class DatagramPacket;
-class Network;
+class Message;
 
 class DatagramSocket 
 {
 public:
-SOCKET mSocket;
-
-DatagramSocket(int serverPort);
-DatagramSocket();
+DatagramSocket(const char serverIP[32], int serverPort);
 ~DatagramSocket();
 
-void send(DatagramPacket* packet);
-void receive(DatagramPacket* packet);
-int setNonBlocking(u_long setMode);
-void openSocket();
-void sendPacket(int length, char *data, struct sockaddr addr);
+SOCKET mSocket;
+struct sockaddr_in sendToAddress;
 
+// Function prototypes
+SOCKET dreamSock_Socket(int protocol);
+int dreamSock_SetNonBlocking(u_long setMode);
+SOCKET dreamSock_OpenUDPSocket();
+void dreamSock_CloseSocket();
+
+int dreamSock_GetPacket(char *data);
+void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
+
+void sendPacket(Message *theMes);
 };
 #endif
