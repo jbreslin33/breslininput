@@ -2,6 +2,7 @@
 #include "../../tdreamsock/dreamSockLog.h"
 #include "../../clientside/network/network.h"
 #include "../../clientside/network/datagramPacket.h"
+#include "../../clientside/message/message.h"
 
 DatagramSocket::DatagramSocket(int port)
 {
@@ -75,14 +76,6 @@ void DatagramSocket::openSocket()
 
 void DatagramSocket::send(DatagramPacket* packet)
 {
-	int	ret;
-
-	//ret = sendto(mSocket, data             , length         , 0, &addr           , sizeof(addr));
-
-//do address stuff here with packet->mAddress....
-
-	//ripped from client, since we only have one client on this side let's do it here.
-
 	struct sockaddr_in sendToAddress;
 	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
@@ -93,10 +86,31 @@ void DatagramSocket::send(DatagramPacket* packet)
 	sendToAddress.sin_family      = AF_INET;
 	sendToAddress.sin_addr.s_addr = inetAddr;
 
+	sendPacket(packet->mMessage->GetSize(), packet->mMessage->data, *(struct sockaddr *) &sendToAddress);
+}
+void DatagramSocket::receive(DatagramPacket* packet)
+{
+	//Network* network = new Network(packet->mAddress,packet->mPort);
+	//network->dreamSock_GetPacket(packet->getData());
+}
 
-//
+int DatagramSocket::setNonBlocking(u_long setMode)
+{
+	u_long set = setMode;
 
-	ret = sendto  (mSocket, packet->getData(), packet->mLength, 0, (sockaddr*)&sendToAddress, sizeof(sendToAddress));
+	// Set the socket option
+#ifdef WIN32
+	return ioctlsocket(mSocket, FIONBIO, &set);
+#else
+	return ioctl(mSocket, FIONBIO, &set);
+#endif
+}
+
+void DatagramSocket::sendPacket(int length, char *data, struct sockaddr addr)
+{
+	int	ret;
+
+	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
 
 	if(ret == -1)
 	{
@@ -116,21 +130,4 @@ void DatagramSocket::send(DatagramPacket* packet)
 		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
 #endif
 	}
-}
-void DatagramSocket::receive(DatagramPacket* packet)
-{
-	//Network* network = new Network(packet->mAddress,packet->mPort);
-	//network->dreamSock_GetPacket(packet->getData());
-}
-
-int DatagramSocket::setNonBlocking(u_long setMode)
-{
-	u_long set = setMode;
-
-	// Set the socket option
-#ifdef WIN32
-	return ioctlsocket(mSocket, FIONBIO, &set);
-#else
-	return ioctl(mSocket, FIONBIO, &set);
-#endif
 }

@@ -56,6 +56,7 @@ void send(DatagramPacket* packet);
 void receive(DatagramPacket* packet);
 int setNonBlocking(u_long setMode);
 void openSocket();
+void sendPacket(int length, char *data, struct sockaddr addr);
 
 };
 #endif
