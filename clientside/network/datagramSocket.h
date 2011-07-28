@@ -40,6 +40,7 @@
 #endif
 
 class Message;
+class DatagramPacket;
 
 class DatagramSocket 
 {
@@ -63,6 +64,9 @@ void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 void sendPacket(Message *theMes);
 
 void setSendToAddress(const char* serverIP, int serverPort);
+
+void send(DatagramPacket* packet);
+
 
 };
 #endif
