@@ -45,6 +45,7 @@ class DatagramSocket
 {
 public:
 DatagramSocket(const char serverIP[32], int serverPort);
+DatagramSocket();
 ~DatagramSocket();
 
 SOCKET mSocket;
@@ -60,5 +61,8 @@ int dreamSock_GetPacket(char *data);
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 
 void sendPacket(Message *theMes);
+
+void setSendToAddress(const char* serverIP, int serverPort);
+
 };
 #endif

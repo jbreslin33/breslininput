@@ -43,6 +43,11 @@ DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 	sendToAddress.sin_addr.s_addr = inetAddr;
 }
 
+DatagramSocket::DatagramSocket()
+{
+
+}
+
 DatagramSocket::~DatagramSocket()
 {
 }
@@ -242,4 +247,15 @@ void DatagramSocket::sendPacket(Message *theMes)
 {
 	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
+}
+
+void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
+{
+	//ripped from client, since we only have one client on this side let's do it here.
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
+
+	u_long inetAddr               = inet_addr(serverIP);
+	sendToAddress.sin_port        = htons((u_short) serverPort);
+	sendToAddress.sin_family      = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
 }

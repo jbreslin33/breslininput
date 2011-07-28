@@ -240,3 +240,4 @@ void Network::sendPacket(Message *theMes)
 	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
 }
+
