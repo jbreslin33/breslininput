@@ -2,6 +2,7 @@
 
 #include "../message/message.h"
 #include "../../tdreamsock/dreamSockLog.h"
+#include "datagramPacket.h"
 
 #ifdef WIN32
 //do nothing
@@ -45,6 +46,7 @@ DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 
 DatagramSocket::DatagramSocket()
 {
+	mSocket = dreamSock_OpenUDPSocket();
 
 }
 
@@ -258,4 +260,15 @@ void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
 	sendToAddress.sin_port        = htons((u_short) serverPort);
 	sendToAddress.sin_family      = AF_INET;
 	sendToAddress.sin_addr.s_addr = inetAddr;
+}
+
+void DatagramSocket::send(DatagramPacket* packet)
+{
+	setSendToAddress(packet->mAddress,packet->mPort);
+
+//	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
+//			*(struct sockaddr *) &sendToAddress);
+	dreamSock_SendPacket(packet->mMessage->GetSize(), packet->mMessage->data,
+			*(struct sockaddr *) &sendToAddress);
+
 }
