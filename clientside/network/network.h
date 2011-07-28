@@ -64,12 +64,9 @@ struct sockaddr_in sendToAddress;
 
 // Function prototypes
 
-void dreamSock_Shutdown(void);
-
 SOCKET dreamSock_Socket(int protocol);
 int dreamSock_SetNonBlocking(u_long setMode);
-int dreamSock_SetBroadcasting(int mode);
-int dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr);
+
 SOCKET dreamSock_OpenUDPSocket();
 void dreamSock_CloseSocket();
 

@@ -56,19 +56,6 @@ Network::~Network()
 {
 }
 
-void Network::dreamSock_Shutdown(void)
-{
-	LogString("Shutting down dreamSock");
-
-#ifdef WIN32
-	WSACleanup();
-#endif
-}
-
-//-----------------------------------------------------------------------------
-// Name: empty()
-// Desc: 
-//-----------------------------------------------------------------------------
 SOCKET Network::dreamSock_Socket(int protocol)
 {
 	int type;
@@ -117,52 +104,6 @@ int Network::dreamSock_SetNonBlocking(u_long setMode)
 #endif
 }
 
-int Network::dreamSock_SetBroadcasting(int mode)
-{
-	// make it broadcast capable
-	if(setsockopt(mSocket, SOL_SOCKET, SO_BROADCAST, (char *) &mode, sizeof(int)) == -1)
-	{
-		LogString("DreamSock_SetBroadcasting failed");
-
-#ifdef WIN32
-		int err = WSAGetLastError();
-		size_t t = 256;
-		LogString("Error code %d: setsockopt() : %s", err, strerror_s("error",t,err));
-#else
-		LogString("Error code %d: setsockopt() : %s", errno, strerror(errno));
-#endif
-
-		return DREAMSOCK_INVALID_SOCKET;
-	}
-
-	return 0;
-}
-
-int Network::dreamSock_StringToSockaddr(const char *addressString, struct sockaddr *sadr)
-{
-	char copy[128];
-
-	memset(sadr, 0, sizeof(struct sockaddr));
-
-	struct sockaddr_in *addressPtr = (struct sockaddr_in *) sadr;
-
-	addressPtr->sin_family = AF_INET;
-	addressPtr->sin_port = htons(0);
-#ifdef WIN32
-	size_t t = 256;
-	strcpy_s(copy,t, addressString);
-#else
-	strcpy(copy,addressString);
-#endif
-	// If the address string begins with a number, assume an IP address
-	if(copy[0] >= '0' && copy[0] <= '9')
-	{
-		*(int *) &addressPtr->sin_addr = inet_addr(copy);
-		return 0;
-	}
-	else return 1;
-}
-
 SOCKET Network::dreamSock_OpenUDPSocket()
 {
 	SOCKET sock;
@@ -175,7 +116,6 @@ SOCKET Network::dreamSock_OpenUDPSocket()
 		return sock;
 
 	dreamSock_SetNonBlocking(1);
-	dreamSock_SetBroadcasting(1);
 
 	LogString("No net interface given, using any interface available");
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
