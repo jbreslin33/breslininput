@@ -27,21 +27,19 @@
 
 Network::Network(const char serverIP[32], int serverPort )
 {
-
 	mSocket = dreamSock_OpenUDPSocket();
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
-		//return DREAMSOCK_SERVER_ERROR;
 		LogString("ERROR IN CONSTRUCTOR OF SERVER, INVALID SOCKET");
 	}
 
 	//ripped from client, since we only have one client on this side let's do it here.
 	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
 
-	u_long inetAddr = inet_addr(serverIP);
-	sendToAddress.sin_port = htons((u_short) serverPort);
-	sendToAddress.sin_family = AF_INET;
+	u_long inetAddr               = inet_addr(serverIP);
+	sendToAddress.sin_port        = htons((u_short) serverPort);
+	sendToAddress.sin_family      = AF_INET;
 	sendToAddress.sin_addr.s_addr = inetAddr;
 }
 
@@ -244,5 +242,4 @@ void Network::sendPacket(Message *theMes)
 {
 	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
 			*(struct sockaddr *) &sendToAddress);
-
 }

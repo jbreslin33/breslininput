@@ -2,6 +2,8 @@
 #include "../../tdreamsock/dreamSockLog.h"
 
 #include "../../clientside/network/network.h"
+#include "../../clientside/network/datagramSocket.h"
+#include "../../clientside/network/datagramPacket.h"
 
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
@@ -18,6 +20,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	mDroppedPackets			= 0;
 
 	// Save server's address information for later use
+	mServerIP = remoteIP;
 	mServerPort = serverPort;
 
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
@@ -171,7 +174,14 @@ void Client::SendPacket(Message *theMes)
 	}
 
 	mNetwork->sendPacket(theMes);
+	//we need to replace above line...
+	/*
+	DatagramSocket* socket = new DatagramSocket();
 
+	DatagramPacket* packet = new DatagramPacket(theMes->data,theMes->GetSize(),mServerIP,mServerPort);
+
+	socket->send(packet);
+*/
 	// Check if the packet is sequenced
 	theMes->BeginReading();
 	int type = theMes->ReadByte();
