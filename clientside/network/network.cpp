@@ -288,45 +288,6 @@ void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
 	}
 }
 
-void Network::dreamSock_Broadcast(int length, char *data, int port)
-{
-	struct sockaddr_in servaddr;
-	socklen_t len;
-
-	// Use broadcast address
-	u_long inetAddr = inet_addr("255.255.255.255");
-
-	// Fill address information structure
-	memset(&servaddr, 0, sizeof(struct sockaddr_in));
-	servaddr.sin_family		= AF_INET;
-	servaddr.sin_port		= htons(port);	
-	servaddr.sin_addr.s_addr = inetAddr;
-
-	len = sizeof(servaddr);
-
-	// Broadcast!
-	int ret = sendto(mSocket, data, length, 0, (struct sockaddr *) &servaddr, len);
-
-	if(ret == -1)
-	{
-#ifdef WIN32
-		errno = WSAGetLastError();
-
-		// Silently handle wouldblock
-		if(errno == WSAEWOULDBLOCK)
-			return;
-		size_t t = 256;
-		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
-#else
-		// Silently handle wouldblock
-		if(errno == EWOULDBLOCK)
-			return;
-
-		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
-#endif
-	}
-}
-
 int Network::dreamSock_GetCurrentSystemTime(void)
 {
 #ifndef WIN32

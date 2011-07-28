@@ -10,8 +10,7 @@ Message::Message()
 }
 Message::Message(char *d, int length)
 {
-	char tempy[1400];
-//your char array is going out of scope i think.... that is why when your 
+	//your char array is going out of scope i think.... that is why when your 
 	data		= d;
 	//data = tempy;
 	maxSize		= length;

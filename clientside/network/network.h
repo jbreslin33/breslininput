@@ -78,8 +78,6 @@ int dreamSock_GetPacket(char *data);
 
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 
-void dreamSock_Broadcast(int length, char *data, int port);
-
 #ifndef WIN32
 int dreamSock_Linux_GetCurrentSystemTime(void);
 #endif
