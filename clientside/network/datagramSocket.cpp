@@ -75,12 +75,52 @@ void DatagramSocket::openSocket()
 
 void DatagramSocket::send(DatagramPacket* packet)
 {
-	
+	int	ret;
+
+	//ret = sendto(mSocket, data             , length         , 0, &addr           , sizeof(addr));
+
+//do address stuff here with packet->mAddress....
+
+	//ripped from client, since we only have one client on this side let's do it here.
+
+	struct sockaddr_in sendToAddress;
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
+
+	//u_long inetAddr               = inet_addr(serverIP);
+	u_long inetAddr               = inet_addr(packet->mAddress);
+	//sendToAddress.sin_port        = htons((u_short) serverPort);
+	sendToAddress.sin_port        = htons((u_short) packet->mPort);
+	sendToAddress.sin_family      = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
+
+
+//
+
+	ret = sendto  (mSocket, packet->getData(), packet->mLength, 0, (sockaddr*)&sendToAddress, sizeof(sendToAddress));
+
+	if(ret == -1)
+	{
+#ifdef WIN32
+		errno = WSAGetLastError();
+
+		// Silently handle wouldblock
+		if(errno == WSAEWOULDBLOCK)
+			return;
+		size_t t = 256;
+		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
+#else
+		// Silently handle wouldblock
+		if(errno == EWOULDBLOCK)
+			return;
+
+		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
+#endif
+	}
 }
 void DatagramSocket::receive(DatagramPacket* packet)
 {
-	Network* network = new Network(packet->mAddress,packet->mPort);
-	network->dreamSock_GetPacket(packet->getData());
+	//Network* network = new Network(packet->mAddress,packet->mPort);
+	//network->dreamSock_GetPacket(packet->getData());
 }
 
 int DatagramSocket::setNonBlocking(u_long setMode)
