@@ -1,7 +1,6 @@
 #include "client.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../clientside/network/network.h"
 #include "../../clientside/network/datagramSocket.h"
 #include "../../clientside/network/datagramPacket.h"
 
@@ -26,13 +25,13 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
-	mNetwork = new Network(remoteIP, serverPort);
+	mDatagramSocket = new DatagramSocket(remoteIP, serverPort);
 }
 
 Client::~Client()
 {
-	mNetwork->dreamSock_CloseSocket();
-	delete mNetwork;
+	mDatagramSocket->dreamSock_CloseSocket();
+	delete mDatagramSocket;
 }
 
 void Client::Reset(void)
@@ -51,7 +50,7 @@ void Client::DumpBuffer(void)
 	char data[1400];
 	int ret;
 
-	while((ret = mNetwork->dreamSock_GetPacket(data)) > 0)
+	while((ret = mDatagramSocket->dreamSock_GetPacket(data)) > 0)
 	{
 	}
 }
@@ -135,7 +134,7 @@ void Client::ParsePacket(Message *mes)
 int Client::GetPacket(char *data)
 {
 	// Check if the client is set up or if it is disconnecting
-	if(!mNetwork->mSocket)
+	if(!mDatagramSocket->mSocket)
 		return 0;
 
 	int ret;
@@ -144,7 +143,7 @@ int Client::GetPacket(char *data)
 
 	//mes.Init(data, sizeof(data));
 
-	ret = mNetwork->dreamSock_GetPacket(message->data);
+	ret = mDatagramSocket->dreamSock_GetPacket(message->data);
 
 	if(ret <= 0)
 		return 0;
@@ -160,7 +159,7 @@ int Client::GetPacket(char *data)
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
-	if(!mNetwork->mSocket || mConnectionState == mMessageDisconnected)
+	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
 	{
 		LogString("SendPacket error: Could not send because the client is disconnected");
 		return;
@@ -173,8 +172,8 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	mNetwork->sendPacket(theMes);
-	//mNetwork->dreamSock_SendPacket(theMes->GetSize(),theMes->data,
+	mDatagramSocket->sendPacket(theMes);
+	//mDatagramSocket->dreamSock_SendPacket(theMes->GetSize(),theMes->data,
 	//we need to replace above line...
 	/*
 	DatagramSocket* socket = new DatagramSocket();
@@ -183,6 +182,8 @@ void Client::SendPacket(Message *theMes)
 
 	socket->send(packet);
 */
+	//DatagramSocket* datagramSocket = new DatagramSocket(mServerIP,mServerPort);
+	//datagramSocket->sendPacket(theMes);
 
 	// Check if the packet is sequenced
 	theMes->BeginReading();
