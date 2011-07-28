@@ -179,10 +179,11 @@ void Client::SendPacket(Message *theMes)
 	/*
 	DatagramSocket* socket = new DatagramSocket();
 
-	DatagramPacket* packet = new DatagramPacket(theMes->data,theMes->GetSize(),mServerIP,mServerPort);
+	DatagramPacket* packet = new DatagramPacket(theMes, theMes->data,theMes->GetSize(),mServerIP,mServerPort);
 
 	socket->send(packet);
 */
+
 	// Check if the packet is sequenced
 	theMes->BeginReading();
 	int type = theMes->ReadByte();
