@@ -49,54 +49,9 @@ Network::~Network()
 {
 }
 
-SOCKET Network::dreamSock_Socket(int protocol)
-{
-	int type;
-	int proto;
-
-	// Check which protocol to use
-	if(protocol == DREAMSOCK_TCP)
-	{
-		type = SOCK_STREAM;
-		proto = IPPROTO_TCP;
-	}
-	else
-	{
-		type = SOCK_DGRAM;
-		proto = IPPROTO_UDP;
-	}
-
-	// Create the socket
-	if((mSocket = socket(AF_INET, type, proto)) == -1)
-	{
-		LogString("dreamSock_Socket - socket() failed");
-
-#ifdef WIN32
-		errno = WSAGetLastError();
-		size_t t = 256;
-		LogString("Error: socket() code %d : %s", errno, strerror_s("error",t,errno));
-#else
-		LogString("Error: socket() : %s", strerror(errno));
-#endif
-
-		return DREAMSOCK_INVALID_SOCKET;
-	}
-
-	return mSocket;
-}
-
-int Network::dreamSock_SetNonBlocking(u_long setMode)
-{
-	u_long set = setMode;
-
-	// Set the socket option
-#ifdef WIN32
-	return ioctlsocket(mSocket, FIONBIO, &set);
-#else
-	return ioctl(mSocket, FIONBIO, &set);
-#endif
-}
-
+/*
+called from constructor only
+*/
 SOCKET Network::dreamSock_OpenUDPSocket()
 {
 	SOCKET sock;
@@ -141,6 +96,61 @@ SOCKET Network::dreamSock_OpenUDPSocket()
 	return sock;
 }
 
+
+/*
+called from constructor only
+*/
+SOCKET Network::dreamSock_Socket(int protocol)
+{
+	int type;
+	int proto;
+
+	// Check which protocol to use
+	if(protocol == DREAMSOCK_TCP)
+	{
+		type = SOCK_STREAM;
+		proto = IPPROTO_TCP;
+	}
+	else
+	{
+		type = SOCK_DGRAM;
+		proto = IPPROTO_UDP;
+	}
+
+	// Create the socket
+	if((mSocket = socket(AF_INET, type, proto)) == -1)
+	{
+		LogString("dreamSock_Socket - socket() failed");
+
+#ifdef WIN32
+		errno = WSAGetLastError();
+		size_t t = 256;
+		LogString("Error: socket() code %d : %s", errno, strerror_s("error",t,errno));
+#else
+		LogString("Error: socket() : %s", strerror(errno));
+#endif
+
+		return DREAMSOCK_INVALID_SOCKET;
+	}
+
+	return mSocket;
+}
+
+/*
+called from constructor only
+*/
+int Network::dreamSock_SetNonBlocking(u_long setMode)
+{
+	u_long set = setMode;
+
+	// Set the socket option
+#ifdef WIN32
+	return ioctlsocket(mSocket, FIONBIO, &set);
+#else
+	return ioctl(mSocket, FIONBIO, &set);
+#endif
+}
+
 void Network::dreamSock_CloseSocket()
 {
 #ifdef WIN32
@@ -150,6 +160,9 @@ void Network::dreamSock_CloseSocket()
 #endif
 }
 
+/*
+autonomous
+*/
 int Network::dreamSock_GetPacket(char *data)
 {
 	int ret;
@@ -195,6 +208,9 @@ int Network::dreamSock_GetPacket(char *data)
 	return ret;
 }
 
+/*
+autonomous
+*/
 void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
 {
 	int	ret;
@@ -221,6 +237,9 @@ void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
 	}
 }
 
+/*
+added by me
+*/
 void Network::sendPacket(Message *theMes)
 {
 	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
