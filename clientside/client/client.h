@@ -45,6 +45,8 @@ Client(const char *localIP, const char *remoteIP, int port);
 	//allows communication to server, sending and recieving packtes
 	Network* mNetwork;
 	int				mServerPort;				// Port
+	const char*  mServerIP;
+
 	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
 	unsigned short	mIncomingSequence;		// Incoming packet sequence
 	unsigned short	mIncomingAcknowledged;	// Last packet acknowledged by other end
