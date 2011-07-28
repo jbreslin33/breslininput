@@ -25,7 +25,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
-	mDatagramSocket = new DatagramSocket(remoteIP, serverPort);
+	mDatagramSocket = new DatagramSocket();
 }
 
 Client::~Client()
@@ -172,7 +172,7 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-	mDatagramSocket->sendPacket(theMes);
+	//mDatagramSocket->sendPacket(theMes);
 	//mDatagramSocket->dreamSock_SendPacket(theMes->GetSize(),theMes->data,
 	//we need to replace above line...
 	/*
@@ -186,6 +186,10 @@ void Client::SendPacket(Message *theMes)
 	//datagramSocket->sendPacket(theMes);
 
 	// Check if the packet is sequenced
+	
+	DatagramPacket* packet = new DatagramPacket(theMes,theMes->data,sizeof(theMes->data),mServerIP,mServerPort);
+	mDatagramSocket->send(packet);
+
 	theMes->BeginReading();
 	int type = theMes->ReadByte();
 
