@@ -103,7 +103,7 @@ public:
 
 	//initialize
 	bool mInit;
-	bool mNetworkShutdown;
+	bool mDatagramSocketShutdown;
 	bool mJoinGame;
 	bool mPlayingGame;
 	bool mInitializeGui;

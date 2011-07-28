@@ -39,7 +39,7 @@ Game::Game(const char* serverIP)
  	mRenderTime		 = 0.0f;
 	mOldTime         = 0;
  	mInit			 = false;
-	mNetworkShutdown = false;
+	mDatagramSocketShutdown = false;
 
 	mInit = true;
 
@@ -143,7 +143,7 @@ void Game::CheckKeys(void)
 		mClient->mClientCommandToServer.mKey = 0;
  		if(keys[VK_ESCAPE])
  		{
-			mNetworkShutdown = true;
+			mDatagramSocketShutdown = true;
  		}
 	
  		if(keys[VK_DOWN])
@@ -256,7 +256,7 @@ DynamicShape* shape;
 			//for (unsigned int i = 0; i < mShapeVector.size(); i++)
 			while (message->getReadCount() <= message->GetSize())
 			{
-				if (mNetworkShutdown)
+				if (mDatagramSocketShutdown)
 				{
 					return;
 				}
@@ -569,7 +569,7 @@ void Game::interpolateFrame()
 
 void Game::checkForShutdown()
 {
-	if (mNetworkShutdown == true)
+	if (mDatagramSocketShutdown == true)
 	{
 		mShutDown = true;
 	}

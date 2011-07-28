@@ -7,7 +7,7 @@
 #include "../../command/command.h"
 
 // Introduce classes
-class Network;
+class DatagramSocket;
 class DynamicShape;
 
 class Client
@@ -43,7 +43,7 @@ Client(const char *localIP, const char *remoteIP, int port);
 	Command	mClientCommandToServer; //for the human moves to be sent off to server
 
 	//allows communication to server, sending and recieving packtes
-	Network* mNetwork;
+	DatagramSocket* mDatagramSocket;
 	int				mServerPort;				// Port
 	const char*  mServerIP;
 

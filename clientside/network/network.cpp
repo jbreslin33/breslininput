@@ -200,9 +200,6 @@ int Network::dreamSock_GetPacket(char *data)
 
 		return ret;
 	}
-
-
-
 	return ret;
 }
 
