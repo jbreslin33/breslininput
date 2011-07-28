@@ -174,6 +174,7 @@ void Client::SendPacket(Message *theMes)
 	}
 
 	mNetwork->sendPacket(theMes);
+	//mNetwork->dreamSock_SendPacket(theMes->GetSize(),theMes->data,
 	//we need to replace above line...
 	/*
 	DatagramSocket* socket = new DatagramSocket();
