@@ -41,7 +41,7 @@ public:
 	int				GetSize(void)		{ return size; }
 	void			SetSize(int s)		{ size = s; }
 
-	char			*data;
+	char*			data;
 	char			outgoingData[1400];
 
 	int             getReadCount() { return readCount; }
