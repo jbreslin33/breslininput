@@ -203,9 +203,6 @@ DynamicShape* shape;
 
 	char name[50];
 
-	//Message mes;
-	//message->Init(data, sizeof(data));
-	char temp[1400];
 	Message* message = new Message(mClient->mMessage->outgoingData,
 		sizeof(mClient->mMessage->outgoingData));
 
