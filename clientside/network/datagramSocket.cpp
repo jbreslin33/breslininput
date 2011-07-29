@@ -261,15 +261,7 @@ void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
 	sendToAddress.sin_family      = AF_INET;
 	sendToAddress.sin_addr.s_addr = inetAddr;
 }
-/*
-void DatagramSocket::send(DatagramPacket* packet)
-{
-	setSendToAddress(packet->mAddress,packet->mPort);
 
-	dreamSock_SendPacket(packet->mMessage->GetSize(), packet->mMessage->data,
-			*(struct sockaddr *) &sendToAddress);
-}
-*/
 void DatagramSocket::send(DatagramPacket* packet)
 {
 	setSendToAddress(packet->mAddress,packet->mPort);
