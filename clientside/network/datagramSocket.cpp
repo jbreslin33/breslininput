@@ -268,5 +268,13 @@ void DatagramSocket::send(DatagramPacket* packet)
 
 	dreamSock_SendPacket(packet->mMessage->GetSize(), packet->mMessage->data,
 			*(struct sockaddr *) &sendToAddress);
-
 }
+/*
+void DatagramSocket::send(DatagramPacket* packet)
+{
+	setSendToAddress(packet->mAddress,packet->mPort);
+
+	dreamSock_SendPacket(sizeof(packet->mDataBuffer), packet->mDataBuffer,
+			*(struct sockaddr *) &sendToAddress);
+}
+*/
