@@ -172,8 +172,7 @@ void Client::SendPacket(Message *theMes)
 		return;
 	}
 
-   //DatagramPacket* packet = new DatagramPacket(theMes,theMes->data,theMes->GetSize(),mServerIP,mServerPort);
-	 DatagramPacket* packet = new DatagramPacket(       theMes->data,theMes->GetSize(),mServerIP,mServerPort);
+    DatagramPacket* packet = new DatagramPacket(       theMes->data,theMes->GetSize(),mServerIP,mServerPort);
 	
 	mDatagramSocket->send(packet);
 
