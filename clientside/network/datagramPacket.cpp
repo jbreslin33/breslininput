@@ -1,6 +1,6 @@
 #include "datagramPacket.h"
 
-DatagramPacket::DatagramPacket(Message* message, char buffer[32], int length, const char address[32], int port)
+DatagramPacket::DatagramPacket(Message* message, char buffer[1400], int length, const char address[32], int port)
 {
 	mMessage    = message;
 	mDataBuffer = buffer;
@@ -9,7 +9,7 @@ DatagramPacket::DatagramPacket(Message* message, char buffer[32], int length, co
 	mPort       = port;
 }
 
-DatagramPacket::DatagramPacket(char buffer[32], int length, const char address[32], int port)
+DatagramPacket::DatagramPacket(char buffer[1400], int length, const char address[32], int port)
 {
 	//mMessage    = Null;
 	mDataBuffer = buffer;
@@ -18,7 +18,7 @@ DatagramPacket::DatagramPacket(char buffer[32], int length, const char address[3
 	mPort       = port;
 }
 
-DatagramPacket::DatagramPacket(Message* message, char buffer[32], int length)
+DatagramPacket::DatagramPacket(Message* message, char buffer[1400], int length)
 {
 	mMessage    = message;
 	mDataBuffer = buffer;
