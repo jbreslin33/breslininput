@@ -1,29 +1,29 @@
 #include "datagramPacket.h"
 
-DatagramPacket::DatagramPacket(Message* message, char buffer[1400], int length, const char address[32], int port)
+DatagramPacket::DatagramPacket(Message* message, char* dataBuffer, int length, const char address[32], int port)
 {
 	mMessage    = message;
 
-	mDataBuffer = buffer;
+	mDataBuffer = dataBuffer;
 	mLength     = length;
 	mAddress    = address;
 	mPort       = port;
 }
-
-DatagramPacket::DatagramPacket(                  char buffer[1400], int length, const char address[32], int port)
+//void DatagramSocket::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
+DatagramPacket::DatagramPacket(                  char* dataBuffer, int length, const char address[32], int port)
 {
 	//mMessage    = Null;
 
-	mDataBuffer = buffer;
+	mDataBuffer = dataBuffer;
 	mLength     = length;
 	mAddress    = address;
 	mPort       = port;
 }
 
-DatagramPacket::DatagramPacket(Message* message, char buffer[1400], int length)
+DatagramPacket::DatagramPacket(Message* message, char* dataBuffer, int length)
 {
 	mMessage    = message;
-	mDataBuffer = buffer;
+	mDataBuffer = dataBuffer;
 	mLength     = length;
 }
 DatagramPacket::~DatagramPacket()
