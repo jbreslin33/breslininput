@@ -269,3 +269,48 @@ void DatagramSocket::send(DatagramPacket* packet)
 	dreamSock_SendPacket(packet->mLength, packet->mDataBuffer,
 			*(struct sockaddr *) &sendToAddress);
 }
+
+
+void DatagramSocket::receive(DatagramPacket* packet)
+{
+	int ret;
+	struct sockaddr tempFrom;
+	socklen_t fromlen;
+
+	fromlen = sizeof(tempFrom);
+
+//	ret = recvfrom(mSocket, data, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
+	ret = recvfrom(mSocket, packet->mDataBuffer, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
+	if(ret == -1)
+	{
+#ifdef WIN32
+		errno = WSAGetLastError();
+
+		// Silently handle wouldblock
+		if(errno == WSAEWOULDBLOCK)
+		{
+			LogString("receive error:%d",errno);
+		}
+		if(errno == WSAEMSGSIZE)
+		{
+			LogString("receive error:%d",errno);
+		}
+		size_t t = 256;
+//if (mClient)
+//	if (mClient->mConnectionState == 1)
+		LogString("Error code %d: recvfrom() : %s", errno, strerror_s("error",t,errno));
+#else
+		// Silently handle wouldblock
+		if(errno == EWOULDBLOCK || errno == ECONNREFUSED)
+			return ret;
+
+		LogString("Error code %d: recvfrom() : %s", errno, strerror(errno));
+#endif
+
+			LogString("receive ret:%d",ret);
+	}
+
+
+
+	//return ret;
+}
