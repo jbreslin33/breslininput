@@ -3,15 +3,17 @@
 DatagramPacket::DatagramPacket(Message* message, char buffer[1400], int length, const char address[32], int port)
 {
 	mMessage    = message;
+
 	mDataBuffer = buffer;
 	mLength     = length;
 	mAddress    = address;
 	mPort       = port;
 }
 
-DatagramPacket::DatagramPacket(char buffer[1400], int length, const char address[32], int port)
+DatagramPacket::DatagramPacket(                  char buffer[1400], int length, const char address[32], int port)
 {
 	//mMessage    = Null;
+
 	mDataBuffer = buffer;
 	mLength     = length;
 	mAddress    = address;
