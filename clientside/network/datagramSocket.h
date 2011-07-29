@@ -66,6 +66,7 @@ void sendPacket(Message *theMes);
 void setSendToAddress(const char* serverIP, int serverPort);
 
 void send(DatagramPacket* packet);
+void receive(DatagramPacket* packet);
 
 
 };
