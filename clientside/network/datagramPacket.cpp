@@ -38,5 +38,5 @@ char* DatagramPacket::getData()
 
 int DatagramPacket::getLength()
 {
-	return sizeof(mDataBuffer);
+	return mLength;
 }
