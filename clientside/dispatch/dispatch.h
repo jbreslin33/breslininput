@@ -9,19 +9,18 @@ public:
 	Dispatch();
 	~Dispatch();
 
-	bool			overFlow;
+	bool			mOverFlow;
 	int				mMaxSize;
 	int				mSize;
 	int				mReadCount;
 	char*			mCharArray;
-	//char			mDataArray[1400];
 
 	//admin
 	int             getReadCount() { return mReadCount; }
 	void			BeginReading();
 	char			*GetNewPoint(int length);
 	void			Clear();
-	bool			GetOverFlow()	{ return overFlow; }
+	bool			GetOverFlow()	{ return mOverFlow; }
 	int				GetSize()		{ return mSize; }
 	void			SetSize(int s)		{ mSize = s; }
 
