@@ -17,31 +17,11 @@ Dispatch::Dispatch()
 	readCount	= 0;
 	overFlow	= false;
 }
-Dispatch::Dispatch(char *d, int length)
-{
-	//your char array is going out of scope i think.... that is why when your 
-	data		= d;
-	//data = tempy;
-	maxSize		= length;
-	//maxSize = sizeof(tempy);
-	size		= 0;
-	readCount	= 0;
-	overFlow	= false;
-}
 
 Dispatch::~Dispatch()
 {
 }
-/*
-void Dispatch::Init(char *d, int length)
-{
-	data		= d;
-	maxSize		= length;
-	size		= 0;
-	readCount	= 0;
-	overFlow	= false;
-}
-*/
+
 void Dispatch::Clear(void)
 {
 	size		= 0;

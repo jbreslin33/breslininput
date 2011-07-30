@@ -7,7 +7,6 @@ class Dispatch
 {
 public:
 	Dispatch();
-	Dispatch(char *d, int length);
 	~Dispatch();
 
 private:
