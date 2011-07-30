@@ -22,6 +22,14 @@ Dispatch::~Dispatch()
 {
 }
 
+/**********************************************
+				ADMIN
+************************************************/
+void Dispatch::BeginReading()
+{
+	readCount = 0;
+}
+
 void Dispatch::Clear()
 {
 	size		= 0;
@@ -47,7 +55,9 @@ char *Dispatch::GetNewPoint(int length)
 }
 
 
-
+/**********************************************
+				WRITE
+************************************************/
 void Dispatch::Write(const void *d, int length)
 {
 	memcpy(GetNewPoint(length), d, length);		
@@ -99,17 +109,9 @@ void Dispatch::WriteString(const char *s)
 		Write(s, strlen(s) + 1);
 }
 
-void Dispatch::BeginReading()
-{
-	readCount = 0;
-}
-
-void Dispatch::BeginReading(int s)
-{
-	size = s;
-	readCount = 0;
-}
-
+/**********************************************
+				READ
+************************************************/
 char *Dispatch::Read(int s)
 {
 	static char c[2048];
