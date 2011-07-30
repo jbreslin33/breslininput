@@ -3,6 +3,7 @@
 
 #include "../../clientside/network/datagramSocket.h"
 #include "../../clientside/network/datagramPacket.h"
+#include "../../clientside/dispatch/dispatch.h"
 
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
@@ -62,11 +63,12 @@ void Client::SendConnect(const char *name)
 
 	mConnectionState = mMessageConnecting;
 
-	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
-	message->WriteByte(mMessageConnect);
-	message->WriteString(name);
+	//Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
+	Dispatch* dispatch = new Dispatch();
+	dispatch->WriteByte(mMessageConnect);
+	dispatch->WriteString(name);
 
-	SendPacket(message);
+	SendPacket(dispatch);
 }
 
 void Client::SendDisconnect(void)
@@ -131,31 +133,6 @@ void Client::ParsePacket(Message *mes)
 	}
 }
 
-int Client::GetPacket(char *data)
-{
-	// Check if the client is set up or if it is disconnecting
-	if(!mDatagramSocket->mSocket)
-		return 0;
-
-	int ret;
-
-	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
-
-	//mes.Init(data, sizeof(data));
-
-	ret = mDatagramSocket->dreamSock_GetPacket(message->data);
-
-	if(ret <= 0)
-		return 0;
-
-	message->SetSize(ret);
-
-	// Parse system messages
-	ParsePacket(message);
-
-	return ret;
-}
-
 int Client::GetPacket(Message* message)
 {
 	// Check if the client is set up or if it is disconnecting
@@ -207,3 +184,31 @@ void Client::SendPacket(Message *theMes)
 }
 
 
+void Client::SendPacket(Dispatch *theMes)
+{
+	// Check that everything is set up
+	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
+	{
+		LogString("SendPacket error: Could not send because the client is disconnected");
+		return;
+	}
+
+	// If the message overflowed do not send it
+	if(theMes->GetOverFlow())
+	{
+		LogString("SendPacket error: Could not send because the buffer overflowed");
+		return;
+	}
+
+    DatagramPacket* packet = new DatagramPacket(       theMes->data,theMes->GetSize(),mServerIP,mServerPort);
+	
+	mDatagramSocket->send(packet);
+
+	theMes->BeginReading();
+	int type = theMes->ReadByte();
+
+	if(type > 0)
+	{
+		mOutgoingSequence++;
+	}
+}

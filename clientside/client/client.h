@@ -9,6 +9,7 @@
 // Introduce classes
 class DatagramSocket;
 class DynamicShape;
+class Dispatch;
 
 class Client
 {
@@ -54,9 +55,9 @@ Client(const char *localIP, const char *remoteIP, int port);
 	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
 	//packets
-	int				GetPacket(char *data);
 	int				GetPacket(Message* message);
 	void			SendPacket(Message *message);
+	void			SendPacket(Dispatch* dispatch);
 	void			DumpBuffer(void);
 	void			ParsePacket(Message *mes);
 	void            Reset();
