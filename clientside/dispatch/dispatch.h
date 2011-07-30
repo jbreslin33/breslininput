@@ -12,12 +12,12 @@ public:
 	bool			overFlow;
 	int				mMaxSize;
 	int				mSize;
-	int				readCount;
+	int				mReadCount;
 	char*			mCharArray;
 	//char			mDataArray[1400];
 
 	//admin
-	int             getReadCount() { return readCount; }
+	int             getReadCount() { return mReadCount; }
 	void			BeginReading();
 	char			*GetNewPoint(int length);
 	void			Clear();
