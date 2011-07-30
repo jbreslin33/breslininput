@@ -292,7 +292,7 @@ void Game::SendCommand(void)
 	BuildDeltaMoveCommand(message);
 
 	// Send the packet
-	mClient->SendPacket(message);
+	mClient->sendPacket(message);
 
 	// Store the command to the input client's history
 	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));

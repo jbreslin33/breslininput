@@ -51,7 +51,7 @@ void Client::SendDisconnect(void)
 	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
 	message->WriteByte(mMessageDisconnect);
 
-	SendPacket(message);
+	sendPacket(message);
 	Reset();
 
 	mConnectionState = mMessageDisconnecting;
@@ -129,7 +129,7 @@ int Client::GetPacket(Message* message)
 	return ret;
 }
 
-void Client::SendPacket(Message *theMes)
+void Client::sendPacket(Message *theMes)
 {
 	// Check that everything is set up
 	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
@@ -166,10 +166,10 @@ void Client::SendConnect(const char *name)
 	dispatch->WriteByte(mMessageConnect);
 	dispatch->WriteString(name);
 
-	SendPacket(dispatch);
+	sendPacket(dispatch);
 }
 
-void Client::SendPacket(Dispatch *dispatch)
+void Client::sendPacket(Dispatch *dispatch)
 {
     DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
 	
