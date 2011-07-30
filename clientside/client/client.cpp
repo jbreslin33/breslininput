@@ -164,10 +164,6 @@ int Client::GetPacket(Message* message)
 
 	int ret;
 
-//	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
-
-	//mes.Init(data, sizeof(data));
-
 	ret = mDatagramSocket->dreamSock_GetPacket(message->data);
 
 	if(ret <= 0)
