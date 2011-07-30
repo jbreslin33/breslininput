@@ -170,9 +170,6 @@ void Client::DumpBuffer(void)
 
 void Client::SendConnect(const char *name)
 {
-	// Dump buffer so there won't be any old packets to process
-	DumpBuffer();
-
 	mConnectionState = mMessageConnecting;
 
 	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
