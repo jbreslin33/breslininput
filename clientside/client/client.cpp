@@ -8,6 +8,7 @@
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
+	mSizeOfDispatch = 1400;
 	mShape = NULL; //to be filled when we actually create the shape
 
 	mMessage = new Message();
@@ -64,7 +65,7 @@ void Client::SendConnect(const char *name)
 	mConnectionState = mMessageConnecting;
 
 	//Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
-	Dispatch* dispatch = new Dispatch();
+	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
 	dispatch->WriteByte(mMessageConnect);
 	dispatch->WriteString(name);
 

@@ -18,6 +18,8 @@ public:
 Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 
+	int mSizeOfDispatch;
+
 	Message*	mMessage;
 //message stuff temp
 	char			mTempDataBuffer[1400];
