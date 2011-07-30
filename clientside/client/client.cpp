@@ -156,6 +156,31 @@ int Client::GetPacket(char *data)
 	return ret;
 }
 
+int Client::GetPacket(Message* message)
+{
+	// Check if the client is set up or if it is disconnecting
+	if(!mDatagramSocket->mSocket)
+		return 0;
+
+	int ret;
+
+//	Message* message = new Message(mMessage->outgoingData, sizeof(mMessage->outgoingData));
+
+	//mes.Init(data, sizeof(data));
+
+	ret = mDatagramSocket->dreamSock_GetPacket(message->data);
+
+	if(ret <= 0)
+		return 0;
+
+	message->SetSize(ret);
+
+	// Parse system messages
+	ParsePacket(message);
+
+	return ret;
+}
+
 void Client::SendPacket(Message *theMes)
 {
 	// Check that everything is set up
