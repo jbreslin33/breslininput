@@ -7,12 +7,8 @@
 
 Dispatch::Dispatch()
 {
-	//your char array is going out of scope i think.... that is why when your 
-
-	data		= outgoingData;
-	//data = tempy;
-	maxSize		= sizeof(outgoingData);
-	//maxSize = sizeof(tempy);
+	dataPointer	= dataBuffer;
+	maxSize		= sizeof(dataBuffer);
 	size		= 0;
 	readCount	= 0;
 	overFlow	= false;
@@ -48,7 +44,7 @@ char *Dispatch::GetNewPoint(int length)
 		overFlow = true;
 	}
 
-	tempData = data + size;
+	tempData = dataPointer + size;
 	size += length;
 
 	return tempData;
@@ -119,7 +115,7 @@ char *Dispatch::Read(int s)
 	if(readCount+s > size)
 		return NULL;
 	else
-		memcpy(&c, &data[readCount], s);
+		memcpy(&c, &dataPointer[readCount], s);
 
 	readCount += s;
 
@@ -133,7 +129,7 @@ char Dispatch::ReadByte()
 	if(readCount+1 > size)
 		c = -1;
 	else
-		memcpy(&c, &data[readCount], 1);
+		memcpy(&c, &dataPointer[readCount], 1);
 
 	readCount++;
 
@@ -147,7 +143,7 @@ short Dispatch::ReadShort()
 	if(readCount+2 > size)
 		c = -1;
 	else		
-		memcpy(&c, &data[readCount], 2);
+		memcpy(&c, &dataPointer[readCount], 2);
 
 	readCount += 2;
 
@@ -161,7 +157,7 @@ long Dispatch::ReadLong()
 	if(readCount+4 > size)
 		c = -1;
 	else
-		memcpy(&c, &data[readCount], 4);
+		memcpy(&c, &dataPointer[readCount], 4);
 
 	readCount += 4;
 
@@ -175,7 +171,7 @@ float Dispatch::ReadFloat()
 	if(readCount+4 > size)
 		c = -1;
 	else
-		memcpy(&c, &data[readCount], 4);
+		memcpy(&c, &dataPointer[readCount], 4);
 
 	readCount += 4;
 
