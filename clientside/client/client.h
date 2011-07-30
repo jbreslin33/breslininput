@@ -1,8 +1,6 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "../../clientside/message/message.h"
-
 //command
 #include "../../command/command.h"
 
@@ -19,10 +17,6 @@ Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 
 	int mSizeOfDispatch;
-
-	//Message*	mMessage;
-//message stuff temp
-	char			mTempDataBuffer[1400];
 
 	//used to direct messages to correct functions, the message header,
 	//not to confused with packet header which deals with with networking.
@@ -57,10 +51,9 @@ Client(const char *localIP, const char *remoteIP, int port);
 	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
 	//packets
-	int				GetPacket(Dispatch* message);
-	void			sendPacket(Message *message);
+	int				GetPacket(Dispatch* dispatch);
 	void			sendPacket(Dispatch* dispatch);
-	void			ParsePacket(Dispatch* mes);
+	void			ParsePacket(Dispatch* dispatch);
 	void            Reset();
 
 	//connection. why it needs it's own method i don't know i'll look into it

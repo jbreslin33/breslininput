@@ -1,6 +1,5 @@
 #include "datagramSocket.h"
 
-#include "../message/message.h"
 #include "../../tdreamsock/dreamSockLog.h"
 #include "datagramPacket.h"
 
@@ -245,11 +244,6 @@ void DatagramSocket::dreamSock_SendPacket(int length, char *data, struct sockadd
 /*
 added by me
 */
-void DatagramSocket::sendPacket(Message *theMes)
-{
-	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
-			*(struct sockaddr *) &sendToAddress);
-}
 
 void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
 {

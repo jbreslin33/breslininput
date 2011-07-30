@@ -9,8 +9,6 @@
 
 #include "../../math/vector3D.h"
 
-#include "../message/message.h"
-
 #include "../dispatch/dispatch.h"
 
 #ifdef WIN32
@@ -205,31 +203,29 @@ DynamicShape* shape;
 
 	char name[50];
 
-	//Message* message = new Message(mClient->mMessage->outgoingData,
-	//	sizeof(mClient->mMessage->outgoingData));
-	Dispatch* message = new Dispatch(mClient->mSizeOfDispatch);
-	//while(ret = mClient->GetPacket(message->data))
-while(ret = mClient->GetPacket(message))
-	{
-		message->SetSize(ret);
-		message->BeginReading();
+	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
 
-		type = message->ReadByte();
+	while(ret = mClient->GetPacket(dispatch))
+	{
+		dispatch->SetSize(ret);
+		dispatch->BeginReading();
+
+		type = dispatch->ReadByte();
 
 		switch(type)
 		{
 		case mClient->mMessageAddShape:
-			local	= message->ReadByte();
-			ind		= message->ReadByte();
-			strcpy(name, message->ReadString());
-			origin.x = message->ReadFloat();
-			origin.y = message->ReadFloat();
-			origin.z = message->ReadFloat();
-			velocity.x = message->ReadFloat();
-			velocity.y = message->ReadFloat();
-			velocity.z = message->ReadFloat();
-			rotation.x = message->ReadFloat();
-			rotation.z = message->ReadFloat();
+			local	= dispatch->ReadByte();
+			ind		= dispatch->ReadByte();
+			strcpy(name, dispatch->ReadString());
+			origin.x = dispatch->ReadFloat();
+			origin.y = dispatch->ReadFloat();
+			origin.z = dispatch->ReadFloat();
+			velocity.x = dispatch->ReadFloat();
+			velocity.y = dispatch->ReadFloat();
+			velocity.z = dispatch->ReadFloat();
+			rotation.x = dispatch->ReadFloat();
+			rotation.z = dispatch->ReadFloat();
 			shape = AddShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
 			//now add to vectors....
@@ -239,28 +235,28 @@ while(ret = mClient->GetPacket(message))
 			break;
 
 		case mClient->mMessageRemoveShape:
-			ind = message->ReadByte();
+			ind = dispatch->ReadByte();
 			RemoveShape(ind);
 
 			break;
 
 		case USER_MES_FRAME:
 			// Skip sequences
-			message->ReadShort();
-			message->ReadShort();
+			dispatch->ReadShort();
+			dispatch->ReadShort();
 
 			newTime = dreamSock_GetCurrentSystemTime();
 			time = newTime - mOldTime;
             mOldTime = newTime;
 
 			//for (unsigned int i = 0; i < mShapeVector.size(); i++)
-			while (message->getReadCount() <= message->GetSize())
+			while (dispatch->getReadCount() <= dispatch->GetSize())
 			{
 				if (mDatagramSocketShutdown)
 				{
 					return;
 				}
-				ReadDeltaMoveCommand(message);
+				ReadDeltaMoveCommand(dispatch);
 			}
 			break;
 
@@ -278,9 +274,6 @@ void Game::SendCommand(void)
 		return;
 
 	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
-
-//	Message* message = new Message(mClient->mTempDataBuffer,
-//		sizeof(mClient->mMessage->outgoingData));
 
 	Dispatch* dispatch = new Dispatch(1400);
 
