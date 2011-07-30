@@ -58,7 +58,7 @@ void Client::SendDisconnect(void)
 	mConnectionState = mMessageDisconnecting;
 }
 
-void Client::ParsePacket(Message *mes)
+void Client::ParsePacket(Dispatch *mes)
 {
 	mes->BeginReading();
 	int type = mes->ReadByte();
@@ -109,7 +109,7 @@ void Client::ParsePacket(Message *mes)
 	}
 }
 
-int Client::GetPacket(Message* message)
+int Client::GetPacket(Dispatch* message)
 {
 	// Check if the client is set up or if it is disconnecting
 	if(!mDatagramSocket->mSocket)
@@ -117,8 +117,8 @@ int Client::GetPacket(Message* message)
 
 	int ret;
 
-	ret = mDatagramSocket->dreamSock_GetPacket(message->data);
-
+	//ret = mDatagramSocket->dreamSock_GetPacket(message->data);
+	ret = mDatagramSocket->dreamSock_GetPacket(message->mCharArray);
 	if(ret <= 0)
 		return 0;
 

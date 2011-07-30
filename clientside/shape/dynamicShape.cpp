@@ -9,6 +9,7 @@
 #include "../states/dynamicShapeRotationStates.h"
 #include "../states/dynamicShapeAnimationStates.h"
 
+#include "../dispatch/dispatch.h"
 
 #include "../../billboard/objectTitle.h"
 
@@ -221,7 +222,7 @@ void DynamicShape::calculateDeltaPosition()
 //should a shape be responsible to read it's own command?????
 //once we determine it's about him shouldn't we pass it off to
 //shape object to handle?
-void DynamicShape::readDeltaMoveCommand(Message *mes)
+void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 {
 	//DynamicShape* shape = NULL;
 

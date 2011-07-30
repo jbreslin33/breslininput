@@ -2,7 +2,6 @@
 #define DYNAMICSHAPE_H
 
 #include "shape.h"
-#include "../message/message.h"
 
 //command
 #include "../../command/command.h"
@@ -14,6 +13,7 @@
 class Game;
 class DynamicShapeStateMachine;
 class DynamicShapeState;
+class Dispatch;
 
 class DynamicShape : public Shape //, public OgreAnimation
 {
@@ -111,7 +111,7 @@ void  calculateServerRotationSpeed();
 void calculateDeltaPosition();
 
 //messaging
-void readDeltaMoveCommand(Message *mes);
+void readDeltaMoveCommand(Dispatch *mes);
 
 
 };
