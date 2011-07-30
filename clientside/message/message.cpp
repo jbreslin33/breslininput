@@ -8,6 +8,7 @@
 Message::Message()
 {
 }
+
 Message::Message(char *d, int length)
 {
 	//your char array is going out of scope i think.... that is why when your 
