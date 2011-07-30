@@ -22,7 +22,7 @@ Dispatch::~Dispatch()
 {
 }
 
-void Dispatch::Clear(void)
+void Dispatch::Clear()
 {
 	size		= 0;
 	readCount	= 0;
@@ -99,7 +99,7 @@ void Dispatch::WriteString(const char *s)
 		Write(s, strlen(s) + 1);
 }
 
-void Dispatch::BeginReading(void)
+void Dispatch::BeginReading()
 {
 	readCount = 0;
 }
@@ -124,7 +124,7 @@ char *Dispatch::Read(int s)
 	return c;
 }
 
-char Dispatch::ReadByte(void)
+char Dispatch::ReadByte()
 {
 	char c;
 
@@ -138,7 +138,7 @@ char Dispatch::ReadByte(void)
 	return c;
 }
 
-short Dispatch::ReadShort(void)
+short Dispatch::ReadShort()
 {
 	short c;
 
@@ -152,7 +152,7 @@ short Dispatch::ReadShort(void)
 	return c;
 }
 
-long Dispatch::ReadLong(void)
+long Dispatch::ReadLong()
 {
 	long c;
 
@@ -166,7 +166,7 @@ long Dispatch::ReadLong(void)
 	return c;
 }
 
-float Dispatch::ReadFloat(void)
+float Dispatch::ReadFloat()
 {
 	float c;
 
@@ -180,7 +180,7 @@ float Dispatch::ReadFloat(void)
 	return c;
 }
 
-char *Dispatch::ReadString(void)
+char *Dispatch::ReadString()
 {
 	static char string[2048];
 	int	l, c;
