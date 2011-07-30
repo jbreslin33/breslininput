@@ -20,7 +20,7 @@ Client(const char *localIP, const char *remoteIP, int port);
 
 	int mSizeOfDispatch;
 
-	Message*	mMessage;
+	//Message*	mMessage;
 //message stuff temp
 	char			mTempDataBuffer[1400];
 

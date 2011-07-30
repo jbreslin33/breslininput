@@ -11,7 +11,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	mSizeOfDispatch = 1400;
 	mShape = NULL; //to be filled when we actually create the shape
 
-	mMessage = new Message();
+	//mMessage = new Message();
 
 	mConnectionState	= mMessageDisconnected;
 
