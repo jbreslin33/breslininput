@@ -7,8 +7,8 @@
 
 Dispatch::Dispatch()
 {
-	dataPointer	= dataBuffer;
-	maxSize		= sizeof(dataBuffer);
+	mDataPointer	= mDataArray;
+	maxSize		= sizeof(mDataArray);
 	size		= 0;
 	readCount	= 0;
 	overFlow	= false;
@@ -44,7 +44,7 @@ char *Dispatch::GetNewPoint(int length)
 		overFlow = true;
 	}
 
-	tempData = dataPointer + size;
+	tempData = mDataPointer + size;
 	size += length;
 
 	return tempData;
@@ -115,7 +115,7 @@ char *Dispatch::Read(int s)
 	if(readCount+s > size)
 		return NULL;
 	else
-		memcpy(&c, &dataPointer[readCount], s);
+		memcpy(&c, &mDataPointer[readCount], s);
 
 	readCount += s;
 
@@ -129,7 +129,7 @@ char Dispatch::ReadByte()
 	if(readCount+1 > size)
 		c = -1;
 	else
-		memcpy(&c, &dataPointer[readCount], 1);
+		memcpy(&c, &mDataPointer[readCount], 1);
 
 	readCount++;
 
@@ -143,7 +143,7 @@ short Dispatch::ReadShort()
 	if(readCount+2 > size)
 		c = -1;
 	else		
-		memcpy(&c, &dataPointer[readCount], 2);
+		memcpy(&c, &mDataPointer[readCount], 2);
 
 	readCount += 2;
 
@@ -157,7 +157,7 @@ long Dispatch::ReadLong()
 	if(readCount+4 > size)
 		c = -1;
 	else
-		memcpy(&c, &dataPointer[readCount], 4);
+		memcpy(&c, &mDataPointer[readCount], 4);
 
 	readCount += 4;
 
@@ -171,7 +171,7 @@ float Dispatch::ReadFloat()
 	if(readCount+4 > size)
 		c = -1;
 	else
-		memcpy(&c, &dataPointer[readCount], 4);
+		memcpy(&c, &mDataPointer[readCount], 4);
 
 	readCount += 4;
 

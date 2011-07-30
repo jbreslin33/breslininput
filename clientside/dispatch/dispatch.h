@@ -13,8 +13,8 @@ public:
 	int				maxSize;
 	int				size;
 	int				readCount;
-	char*			dataPointer;
-	char			dataBuffer[1400];
+	char*			mDataPointer;
+	char			mDataArray[1400];
 
 	//admin
 	int             getReadCount() { return readCount; }
