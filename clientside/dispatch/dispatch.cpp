@@ -7,6 +7,15 @@
 
 Dispatch::Dispatch()
 {
+	//your char array is going out of scope i think.... that is why when your 
+
+	data		= outgoingData;
+	//data = tempy;
+	maxSize		= sizeof(outgoingData);
+	//maxSize = sizeof(tempy);
+	size		= 0;
+	readCount	= 0;
+	overFlow	= false;
 }
 Dispatch::Dispatch(char *d, int length)
 {
