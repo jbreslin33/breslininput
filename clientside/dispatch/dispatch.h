@@ -19,7 +19,6 @@ public:
 	//admin
 	int             getReadCount() { return readCount; }
 	void			BeginReading();
-	void			BeginReading(int s);
 	char			*GetNewPoint(int length);
 	void			Clear();
 	bool			GetOverFlow()	{ return overFlow; }
