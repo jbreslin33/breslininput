@@ -10,7 +10,7 @@ Dispatch::Dispatch()
 	mMaxSize = 1400;
 	mCharArray = new char[mMaxSize];
 	mSize		= 0;
-	readCount	= 0;
+	mReadCount	= 0;
 	overFlow	= false;
 }
 
@@ -23,13 +23,13 @@ Dispatch::~Dispatch()
 ************************************************/
 void Dispatch::BeginReading()
 {
-	readCount = 0;
+	mReadCount = 0;
 }
 
 void Dispatch::Clear()
 {
 	mSize		= 0;
-	readCount	= 0;
+	mReadCount	= 0;
 	overFlow	= false;
 }
 
@@ -112,12 +112,12 @@ char *Dispatch::Read(int s)
 {
 	static char c[2048];
 
-	if(readCount+s > mSize)
+	if(mReadCount+s > mSize)
 		return NULL;
 	else
-		memcpy(&c, &mCharArray[readCount], s);
+		memcpy(&c, &mCharArray[mReadCount], s);
 
-	readCount += s;
+	mReadCount += s;
 
 	return c;
 }
@@ -126,12 +126,12 @@ char Dispatch::ReadByte()
 {
 	char c;
 
-	if(readCount+1 > mSize)
+	if(mReadCount+1 > mSize)
 		c = -1;
 	else
-		memcpy(&c, &mCharArray[readCount], 1);
+		memcpy(&c, &mCharArray[mReadCount], 1);
 
-	readCount++;
+	mReadCount++;
 
 	return c;
 }
@@ -140,12 +140,12 @@ short Dispatch::ReadShort()
 {
 	short c;
 
-	if(readCount+2 > mSize)
+	if(mReadCount+2 > mSize)
 		c = -1;
 	else		
-		memcpy(&c, &mCharArray[readCount], 2);
+		memcpy(&c, &mCharArray[mReadCount], 2);
 
-	readCount += 2;
+	mReadCount += 2;
 
 	return c;
 }
@@ -154,12 +154,12 @@ long Dispatch::ReadLong()
 {
 	long c;
 
-	if(readCount+4 > mSize)
+	if(mReadCount+4 > mSize)
 		c = -1;
 	else
-		memcpy(&c, &mCharArray[readCount], 4);
+		memcpy(&c, &mCharArray[mReadCount], 4);
 
-	readCount += 4;
+	mReadCount += 4;
 
 	return c;
 }
@@ -168,12 +168,12 @@ float Dispatch::ReadFloat()
 {
 	float c;
 
-	if(readCount+4 > mSize)
+	if(mReadCount+4 > mSize)
 		c = -1;
 	else
-		memcpy(&c, &mCharArray[readCount], 4);
+		memcpy(&c, &mCharArray[mReadCount], 4);
 
-	readCount += 4;
+	mReadCount += 4;
 
 	return c;
 }
