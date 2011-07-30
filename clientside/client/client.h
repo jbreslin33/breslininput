@@ -58,8 +58,8 @@ Client(const char *localIP, const char *remoteIP, int port);
 
 	//packets
 	int				GetPacket(Message* message);
-	void			SendPacket(Message *message);
-	void			SendPacket(Dispatch* dispatch);
+	void			sendPacket(Message *message);
+	void			sendPacket(Dispatch* dispatch);
 	void			ParsePacket(Message *mes);
 	void            Reset();
 
