@@ -158,16 +158,6 @@ void Client::SendPacket(Message *theMes)
 	}
 }
 
-void Client::DumpBuffer(void)
-{
-	char data[1400];
-	int ret;
-
-	while((ret = mDatagramSocket->dreamSock_GetPacket(data)) > 0)
-	{
-	}
-}
-
 void Client::SendConnect(const char *name)
 {
 	mConnectionState = mMessageConnecting;
