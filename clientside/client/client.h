@@ -55,6 +55,7 @@ Client(const char *localIP, const char *remoteIP, int port);
 
 	//packets
 	int				GetPacket(char *data);
+	int				GetPacket(Message* message);
 	void			SendPacket(Message *message);
 	void			DumpBuffer(void);
 	void			ParsePacket(Message *mes);
