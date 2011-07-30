@@ -264,6 +264,28 @@ void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
 
 void DatagramSocket::send(DatagramPacket* packet)
 {
+/****
+error check...
+***/
+
+	// Check that everything is set up
+	//if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
+	if(!mSocket)
+	{
+		LogString("SendPacket error: Could not send because the client is disconnected");
+		return;
+	}
+
+	// If the message overflowed do not send it
+	//if(dispatch->GetOverFlow())
+	//packet->;
+	//{
+	//	LogString("SendPacket error: Could not send because the buffer overflowed");
+	//	return;
+	//}
+/****
+actual send...
+***/
 	setSendToAddress(packet->mAddress,packet->mPort);
 
 	dreamSock_SendPacket(packet->mLength, packet->mDataBuffer,
