@@ -207,7 +207,7 @@ DynamicShape* shape;
 		sizeof(mClient->mMessage->outgoingData));
 
 	//while(ret = mClient->GetPacket(message->data))
-while(ret = mClient->GetPacket(message->data))
+while(ret = mClient->GetPacket(message))
 	{
 		message->SetSize(ret);
 		message->BeginReading();
