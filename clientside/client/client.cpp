@@ -57,21 +57,6 @@ void Client::DumpBuffer(void)
 	}
 }
 
-void Client::SendConnect(const char *name)
-{
-	// Dump buffer so there won't be any old packets to process
-	DumpBuffer();
-
-	mConnectionState = mMessageConnecting;
-
-	//Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
-	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
-	dispatch->WriteByte(mMessageConnect);
-	dispatch->WriteString(name);
-
-	SendPacket(dispatch);
-}
-
 void Client::SendDisconnect(void)
 {
 	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
@@ -184,8 +169,21 @@ void Client::SendPacket(Message *theMes)
 	}
 }
 
+void Client::SendConnect(const char *name)
+{
+	// Dump buffer so there won't be any old packets to process
+	DumpBuffer();
 
-void Client::SendPacket(Dispatch *theMes)
+	mConnectionState = mMessageConnecting;
+
+	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
+	dispatch->WriteByte(mMessageConnect);
+	dispatch->WriteString(name);
+
+	SendPacket(dispatch);
+}
+
+void Client::SendPacket(Dispatch *dispatch)
 {
 	// Check that everything is set up
 	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
@@ -195,18 +193,18 @@ void Client::SendPacket(Dispatch *theMes)
 	}
 
 	// If the message overflowed do not send it
-	if(theMes->GetOverFlow())
+	if(dispatch->GetOverFlow())
 	{
 		LogString("SendPacket error: Could not send because the buffer overflowed");
 		return;
 	}
 
-    DatagramPacket* packet = new DatagramPacket(       theMes->mCharArray,theMes->GetSize(),mServerIP,mServerPort);
+    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
 	
 	mDatagramSocket->send(packet);
 
-	theMes->BeginReading();
-	int type = theMes->ReadByte();
+	dispatch->BeginReading();
+	int type = dispatch->ReadByte();
 
 	if(type > 0)
 	{
