@@ -48,10 +48,12 @@ void Client::Reset(void)
 
 void Client::SendDisconnect(void)
 {
-	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
-	message->WriteByte(mMessageDisconnect);
+//	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
+	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
 
-	sendPacket(message);
+	dispatch->WriteByte(mMessageDisconnect);
+
+	sendPacket(dispatch);
 	Reset();
 
 	mConnectionState = mMessageDisconnecting;
