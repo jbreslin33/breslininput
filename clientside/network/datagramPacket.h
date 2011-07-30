@@ -18,7 +18,7 @@ const char*  mAddress;
 int          mPort;
 
 int   mLength;
-
+void setData(char data[]);
 char* getData();
 int   getLength();
 

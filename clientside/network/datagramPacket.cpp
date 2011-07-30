@@ -16,6 +16,11 @@ DatagramPacket::~DatagramPacket()
 {
 }
 
+void DatagramPacket::setData(char data[])
+{
+	mDataBuffer = data;
+}
+
 char* DatagramPacket::getData()
 {
 	return mDataBuffer;
