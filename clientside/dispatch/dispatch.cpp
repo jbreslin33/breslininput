@@ -11,7 +11,7 @@ Dispatch::Dispatch()
 	mCharArray = new char[mMaxSize];
 	mSize		= 0;
 	mReadCount	= 0;
-	overFlow	= false;
+	mOverFlow	= false;
 }
 
 Dispatch::~Dispatch()
@@ -30,7 +30,7 @@ void Dispatch::Clear()
 {
 	mSize		= 0;
 	mReadCount	= 0;
-	overFlow	= false;
+	mOverFlow	= false;
 }
 
 char *Dispatch::GetNewPoint(int length)
@@ -41,7 +41,7 @@ char *Dispatch::GetNewPoint(int length)
 	if(mSize + length > mMaxSize)
 	{
 		Clear(); 
-		overFlow = true;
+		mOverFlow = true;
 	}
 
 	tempData = mCharArray + mSize;
