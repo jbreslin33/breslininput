@@ -1,7 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
-#include "../message/message.h"
+#include "../../clientside/message/message.h"
 
 //command
 #include "../../command/command.h"
