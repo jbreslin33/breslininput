@@ -11,6 +11,8 @@
 
 #include "../message/message.h"
 
+#include "../dispatch/dispatch.h"
+
 #ifdef WIN32
 #include "../../tdreamsock/dreamWinSock.h"
 #else
@@ -275,24 +277,22 @@ void Game::SendCommand(void)
 	if(mClient->mConnectionState != mClient->mMessageConnected)
 		return;
 
-	//Message message;
-	//char data[1400];
-
 	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
-//	message.Init(data, sizeof(data));
-	Message* message = new Message(mClient->mTempDataBuffer,
-		sizeof(mClient->mMessage->outgoingData));
+//	Message* message = new Message(mClient->mTempDataBuffer,
+//		sizeof(mClient->mMessage->outgoingData));
 
-	message->WriteByte(USER_MES_FRAME);						// type
-	message->WriteShort(mClient->mOutgoingSequence);
-	message->WriteShort(mClient->mIncomingSequence);
+	Dispatch* dispatch = new Dispatch(1400);
+
+	dispatch->WriteByte(USER_MES_FRAME);						// type
+	dispatch->WriteShort(mClient->mOutgoingSequence);
+	dispatch->WriteShort(mClient->mIncomingSequence);
 
 	// Build delta-compressed move command
-	BuildDeltaMoveCommand(message);
+	BuildDeltaMoveCommand(dispatch);
 
 	// Send the packet
-	mClient->sendPacket(message);
+	mClient->sendPacket(dispatch);
 
 	// Store the command to the input client's history
 	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));
@@ -361,7 +361,7 @@ DynamicShape* Game::getDynamicShape(int id)
 
 
 
-void Game::BuildDeltaMoveCommand(Message *mes)
+void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
 {
 	int flags = 0;
 	int last = (mClient->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
@@ -380,17 +380,17 @@ void Game::BuildDeltaMoveCommand(Message *mes)
 	// Add to the message
 	
 	//Flags
-	mes->WriteByte(flags);
+	dispatch->WriteByte(flags);
 
 	// Key
 	if(flags & CMD_KEY)
 	{
-		mes->WriteByte(mClient->mClientCommandToServer.mKey);
+		dispatch->WriteByte(mClient->mClientCommandToServer.mKey);
 	}
 
 	if(flags & CMD_MILLISECONDS)
 	{
-		mes->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
+		dispatch->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
 	}
 }
 

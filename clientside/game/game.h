@@ -45,7 +45,7 @@ class Network;
 class Message;
 class Client;
 class MovableTextOverlay;
-
+class Dispatch;
 
 class Game : public BaseApplication
 {
@@ -77,7 +77,7 @@ public:
 	void	ReadPackets             (void);
 	void	SendCommand             (void);
 	void	ReadDeltaMoveCommand    (Message *mes);
-	void	BuildDeltaMoveCommand   (Message *mes);
+	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
 	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
