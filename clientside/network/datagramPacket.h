@@ -9,10 +9,9 @@ public:
 
 char* mDataBuffer;	
 	
-//DatagramPacket(char* dataBuffer, int length, const char serverIP[32], int serverPort);
-DatagramPacket(char dataBuffer[], int length, const char serverIP[32], int serverPort);
+DatagramPacket(char buf[], int length, const char serverIP[32], int serverPort);
+DatagramPacket(char buf[], int length);
 
-DatagramPacket(char* dataBuffer, int length);
 ~DatagramPacket();
 
 const char*  mAddress;
