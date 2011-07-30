@@ -48,7 +48,6 @@ void Client::Reset(void)
 
 void Client::SendDisconnect(void)
 {
-//	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
 	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
 
 	dispatch->WriteByte(mMessageDisconnect);
