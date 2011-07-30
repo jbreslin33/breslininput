@@ -7,8 +7,9 @@
 
 Dispatch::Dispatch()
 {
-	mDataPointer	= mDataArray;
-	maxSize		= sizeof(mDataArray);
+//	mDataPointer	= mDataArray;
+	mDataPointer = new char[1400];
+	maxSize		= 1400;
 	size		= 0;
 	readCount	= 0;
 	overFlow	= false;
