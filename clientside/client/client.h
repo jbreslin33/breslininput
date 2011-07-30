@@ -57,10 +57,10 @@ Client(const char *localIP, const char *remoteIP, int port);
 	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
 	//packets
-	int				GetPacket(Message* message);
+	int				GetPacket(Dispatch* message);
 	void			sendPacket(Message *message);
 	void			sendPacket(Dispatch* dispatch);
-	void			ParsePacket(Message *mes);
+	void			ParsePacket(Dispatch* mes);
 	void            Reset();
 
 	//connection. why it needs it's own method i don't know i'll look into it

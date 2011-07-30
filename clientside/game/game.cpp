@@ -205,9 +205,9 @@ DynamicShape* shape;
 
 	char name[50];
 
-	Message* message = new Message(mClient->mMessage->outgoingData,
-		sizeof(mClient->mMessage->outgoingData));
-
+	//Message* message = new Message(mClient->mMessage->outgoingData,
+	//	sizeof(mClient->mMessage->outgoingData));
+	Dispatch* message = new Dispatch(mClient->mSizeOfDispatch);
 	//while(ret = mClient->GetPacket(message->data))
 while(ret = mClient->GetPacket(message))
 	{
@@ -316,7 +316,7 @@ void Game::Disconnect(void)
 //should a shape be responsible to read it's own command?????
 //once we determine it's about him shouldn't we pass it off to
 //shape object to handle?
-void Game::ReadDeltaMoveCommand(Message *mes)
+void Game::ReadDeltaMoveCommand(Dispatch* mes)
 {
 	DynamicShape* shape = NULL;
 
