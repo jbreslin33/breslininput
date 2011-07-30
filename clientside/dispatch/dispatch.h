@@ -13,7 +13,7 @@ public:
 	int				maxSize;
 	int				size;
 	int				readCount;
-	char*			mDataPointer;
+	char*			mCharArray;
 	//char			mDataArray[1400];
 
 	//admin
