@@ -46,17 +46,6 @@ void Client::Reset(void)
     mDroppedPackets                  = 0;
 }
 
-
-void Client::DumpBuffer(void)
-{
-	char data[1400];
-	int ret;
-
-	while((ret = mDatagramSocket->dreamSock_GetPacket(data)) > 0)
-	{
-	}
-}
-
 void Client::SendDisconnect(void)
 {
 	Message* message = new Message(mTempDataBuffer, sizeof(mMessage->outgoingData));
@@ -169,6 +158,16 @@ void Client::SendPacket(Message *theMes)
 	}
 }
 
+void Client::DumpBuffer(void)
+{
+	char data[1400];
+	int ret;
+
+	while((ret = mDatagramSocket->dreamSock_GetPacket(data)) > 0)
+	{
+	}
+}
+
 void Client::SendConnect(const char *name)
 {
 	// Dump buffer so there won't be any old packets to process
@@ -185,20 +184,6 @@ void Client::SendConnect(const char *name)
 
 void Client::SendPacket(Dispatch *dispatch)
 {
-	// Check that everything is set up
-	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
-	{
-		LogString("SendPacket error: Could not send because the client is disconnected");
-		return;
-	}
-
-	// If the message overflowed do not send it
-	if(dispatch->GetOverFlow())
-	{
-		LogString("SendPacket error: Could not send because the buffer overflowed");
-		return;
-	}
-
     DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
 	
 	mDatagramSocket->send(packet);
