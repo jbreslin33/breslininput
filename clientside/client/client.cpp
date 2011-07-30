@@ -11,8 +11,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	mSizeOfDispatch = 1400;
 	mShape = NULL; //to be filled when we actually create the shape
 
-	//mMessage = new Message();
-
 	mConnectionState	= mMessageDisconnected;
 
 	mOutgoingSequence		= 1;
@@ -109,7 +107,7 @@ void Client::ParsePacket(Dispatch *mes)
 	}
 }
 
-int Client::GetPacket(Dispatch* message)
+int Client::GetPacket(Dispatch* dispatch)
 {
 	// Check if the client is set up or if it is disconnecting
 	if(!mDatagramSocket->mSocket)
@@ -118,45 +116,16 @@ int Client::GetPacket(Dispatch* message)
 	int ret;
 
 	//ret = mDatagramSocket->dreamSock_GetPacket(message->data);
-	ret = mDatagramSocket->dreamSock_GetPacket(message->mCharArray);
+	ret = mDatagramSocket->dreamSock_GetPacket(dispatch->mCharArray);
 	if(ret <= 0)
 		return 0;
 
-	message->SetSize(ret);
+	dispatch->SetSize(ret);
 
 	// Parse system messages
-	ParsePacket(message);
+	ParsePacket(dispatch);
 
 	return ret;
-}
-
-void Client::sendPacket(Message *theMes)
-{
-	// Check that everything is set up
-	if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
-	{
-		LogString("SendPacket error: Could not send because the client is disconnected");
-		return;
-	}
-
-	// If the message overflowed do not send it
-	if(theMes->GetOverFlow())
-	{
-		LogString("SendPacket error: Could not send because the buffer overflowed");
-		return;
-	}
-
-    DatagramPacket* packet = new DatagramPacket(       theMes->data,theMes->GetSize(),mServerIP,mServerPort);
-	
-	mDatagramSocket->send(packet);
-
-	theMes->BeginReading();
-	int type = theMes->ReadByte();
-
-	if(type > 0)
-	{
-		mOutgoingSequence++;
-	}
 }
 
 void Client::SendConnect(const char *name)

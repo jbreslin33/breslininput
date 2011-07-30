@@ -61,8 +61,6 @@ void dreamSock_CloseSocket();
 int dreamSock_GetPacket(char *data);
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
 
-void sendPacket(Message *theMes);
-
 void setSendToAddress(const char* serverIP, int serverPort);
 
 void send(DatagramPacket* packet);
