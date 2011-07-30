@@ -10,8 +10,8 @@ public:
 	~Dispatch();
 
 	bool			overFlow;
-	int				maxSize;
-	int				size;
+	int				mMaxSize;
+	int				mSize;
 	int				readCount;
 	char*			mCharArray;
 	//char			mDataArray[1400];
@@ -22,8 +22,8 @@ public:
 	char			*GetNewPoint(int length);
 	void			Clear();
 	bool			GetOverFlow()	{ return overFlow; }
-	int				GetSize()		{ return size; }
-	void			SetSize(int s)		{ size = s; }
+	int				GetSize()		{ return mSize; }
+	void			SetSize(int s)		{ mSize = s; }
 
 	//write
 	void			Write      (const void *d, int length);
