@@ -302,7 +302,7 @@ void Game::Disconnect(void)
 
 	mInit = false;
 
-	mClient->SendDisconnect();
+	mClient->sendDisconnect();
 }
 
 //this is all shapes coming to client game from server
@@ -441,7 +441,7 @@ void Game::buttonHit(OgreBites::Button *button)
 		mJoinGame = true;
 		if (mJoinGame && !mPlayingGame)
 		{
-			mClient->SendConnect("myname");
+			mClient->sendConnect("myname");
 			LogString("sent connect to server");
 			mPlayingGame = true;
 		}

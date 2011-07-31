@@ -44,7 +44,7 @@ void Client::reset(void)
     mDroppedPackets                  = 0;
 }
 
-void Client::SendDisconnect(void)
+void Client::sendDisconnect(void)
 {
 	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
 
@@ -127,7 +127,7 @@ int Client::getPacket(Dispatch* dispatch)
 	return ret;
 }
 
-void Client::SendConnect(const char *name)
+void Client::sendConnect(const char *name)
 {
 	mConnectionState = mMessageConnecting;
 
