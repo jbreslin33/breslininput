@@ -69,6 +69,5 @@ void setSendToAddress(const char* serverIP, int serverPort);
 void receive(DatagramPacket* packet);
 int  getPacket(char *data);
 
-
 };
 #endif
