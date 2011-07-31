@@ -33,15 +33,31 @@ Client::~Client()
 	mDatagramSocket->close();
 	delete mDatagramSocket;
 }
-
-void Client::reset(void)
+/**********  SENDS  ****/
+void Client::sendConnect(const char *name)
 {
-	mConnectionState = mMessageDisconnected;
+	mConnectionState = mMessageConnecting;
 
-    mOutgoingSequence                = 1;
-    mIncomingSequence                = 0;
-    mIncomingAcknowledged			 = 0;
-    mDroppedPackets                  = 0;
+	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
+	dispatch->WriteByte(mMessageConnect);
+	dispatch->WriteString(name);
+
+	sendPacket(dispatch);
+}
+
+void Client::sendPacket(Dispatch *dispatch)
+{
+    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
+	
+	mDatagramSocket->send(packet);
+
+	dispatch->BeginReading();
+	int type = dispatch->ReadByte();
+
+	if(type > 0)
+	{
+		mOutgoingSequence++;
+	}
 }
 
 void Client::sendDisconnect(void)
@@ -54,6 +70,37 @@ void Client::sendDisconnect(void)
 	reset();
 
 	mConnectionState = mMessageDisconnecting;
+}
+
+void Client::reset(void)
+{
+	mConnectionState = mMessageDisconnected;
+
+    mOutgoingSequence                = 1;
+    mIncomingSequence                = 0;
+    mIncomingAcknowledged			 = 0;
+    mDroppedPackets                  = 0;
+}
+
+/**********  GETS ****/
+int Client::getPacket(Dispatch* dispatch)
+{
+	// Check if the client is set up or if it is disconnecting
+	if(!mDatagramSocket->mSocket)
+		return 0;
+
+	int ret;
+
+	ret = mDatagramSocket->dreamSock_GetPacket(dispatch->mCharArray);
+	if(ret <= 0)
+		return 0;
+
+	dispatch->SetSize(ret);
+
+	// Parse system messages
+	parsePacket(dispatch);
+
+	return ret;
 }
 
 void Client::parsePacket(Dispatch *mes)
@@ -107,48 +154,3 @@ void Client::parsePacket(Dispatch *mes)
 	}
 }
 
-int Client::getPacket(Dispatch* dispatch)
-{
-	// Check if the client is set up or if it is disconnecting
-	if(!mDatagramSocket->mSocket)
-		return 0;
-
-	int ret;
-
-	ret = mDatagramSocket->dreamSock_GetPacket(dispatch->mCharArray);
-	if(ret <= 0)
-		return 0;
-
-	dispatch->SetSize(ret);
-
-	// Parse system messages
-	parsePacket(dispatch);
-
-	return ret;
-}
-
-void Client::sendConnect(const char *name)
-{
-	mConnectionState = mMessageConnecting;
-
-	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
-	dispatch->WriteByte(mMessageConnect);
-	dispatch->WriteString(name);
-
-	sendPacket(dispatch);
-}
-
-void Client::sendPacket(Dispatch *dispatch)
-{
-    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
-	
-	mDatagramSocket->send(packet);
-
-	dispatch->BeginReading();
-	int type = dispatch->ReadByte();
-
-	if(type > 0)
-	{
-		mOutgoingSequence++;
-	}
-}
