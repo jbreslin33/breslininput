@@ -46,7 +46,6 @@ DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 DatagramSocket::DatagramSocket()
 {
 	mSocket = open();
-
 }
 
 DatagramSocket::~DatagramSocket()
