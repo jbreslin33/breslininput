@@ -87,9 +87,10 @@ void Client::sendPacket(Dispatch *dispatch)
 int Client::getPacket(Dispatch* dispatch)
 {
 	// Check if the client is set up or if it is disconnecting
-	if(!mDatagramSocket->mSocket)
+	if(!mDatagramSocket)
+	{
 		return 0;
-
+	}
 	int ret;
 
 	ret = mDatagramSocket->getPacket(dispatch->mCharArray);

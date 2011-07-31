@@ -49,24 +49,33 @@ DatagramSocket(const char serverIP[32], int serverPort);
 DatagramSocket();
 ~DatagramSocket();
 
+//
+private:
 SOCKET mSocket;
 struct sockaddr_in sendToAddress;
 
 //open
+private:
 SOCKET createSocket(int protocol);
 SOCKET open();
 int    setNonBlocking(u_long setMode);
 
 //close
+public:
 void close();
 
 //send
-void send(DatagramPacket* packet);
-void send(int length, char *data, struct sockaddr addr);
+public:
+void send			 (DatagramPacket* packet);
+private:
+void send			 (int length, char *data, struct sockaddr addr);
 void setSendToAddress(const char* serverIP, int serverPort);
 
+
 //receive
+public:
 void receive(DatagramPacket* packet);
+//private:
 int  getPacket(char *data);
 
 };
