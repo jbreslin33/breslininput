@@ -215,7 +215,7 @@ int DatagramSocket::dreamSock_GetPacket(char *data)
 /*
 autonomous
 */
-void DatagramSocket::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
+void DatagramSocket::send(int length, char *data, struct sockaddr addr)
 {
 	int	ret;
 
@@ -282,7 +282,7 @@ actual send...
 ***/
 	setSendToAddress(packet->mAddress,packet->mPort);
 
-	dreamSock_SendPacket(packet->mLength, packet->mDataBuffer,
+	send(packet->mLength, packet->mDataBuffer,
 			*(struct sockaddr *) &sendToAddress);
 }
 
