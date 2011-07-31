@@ -52,19 +52,22 @@ DatagramSocket();
 SOCKET mSocket;
 struct sockaddr_in sendToAddress;
 
-// Function prototypes
-SOCKET dreamSock_Socket(int protocol);
-int dreamSock_SetNonBlocking(u_long setMode);
-SOCKET dreamSock_OpenUDPSocket();
+//open
+SOCKET createSocket(int protocol);
+SOCKET open();
+int    setNonBlocking(u_long setMode);
+
+//close
 void close();
 
-int dreamSock_GetPacket(char *data);
+//send
+void send(DatagramPacket* packet);
 void send(int length, char *data, struct sockaddr addr);
-
 void setSendToAddress(const char* serverIP, int serverPort);
 
-void send(DatagramPacket* packet);
+//receive
 void receive(DatagramPacket* packet);
+int  getPacket(char *data);
 
 
 };

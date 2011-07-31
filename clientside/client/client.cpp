@@ -92,7 +92,7 @@ int Client::getPacket(Dispatch* dispatch)
 
 	int ret;
 
-	ret = mDatagramSocket->dreamSock_GetPacket(dispatch->mCharArray);
+	ret = mDatagramSocket->getPacket(dispatch->mCharArray);
 	if(ret <= 0)
 		return 0;
 

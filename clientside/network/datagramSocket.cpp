@@ -27,7 +27,7 @@
 
 DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 {
-	mSocket = dreamSock_OpenUDPSocket();
+	mSocket = open();
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
@@ -45,7 +45,7 @@ DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 
 DatagramSocket::DatagramSocket()
 {
-	mSocket = dreamSock_OpenUDPSocket();
+	mSocket = open();
 
 }
 
@@ -56,18 +56,18 @@ DatagramSocket::~DatagramSocket()
 /*
 called from constructor only
 */
-SOCKET DatagramSocket::dreamSock_OpenUDPSocket()
+SOCKET DatagramSocket::open()
 {
 	SOCKET sock;
 
 	struct sockaddr_in address;
 
-	sock = dreamSock_Socket(DREAMSOCK_UDP);
+	sock = createSocket(DREAMSOCK_UDP);
 
 	if(sock == DREAMSOCK_INVALID_SOCKET)
 		return sock;
 
-	dreamSock_SetNonBlocking(1);
+	setNonBlocking(1);
 
 	LogString("No net interface given, using any interface available");
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -104,7 +104,7 @@ SOCKET DatagramSocket::dreamSock_OpenUDPSocket()
 /*
 called from constructor only
 */
-SOCKET DatagramSocket::dreamSock_Socket(int protocol)
+SOCKET DatagramSocket::createSocket(int protocol)
 {
 	int type;
 	int proto;
@@ -124,7 +124,7 @@ SOCKET DatagramSocket::dreamSock_Socket(int protocol)
 	// Create the socket
 	if((mSocket = socket(AF_INET, type, proto)) == -1)
 	{
-		LogString("dreamSock_Socket - socket() failed");
+		LogString("createSocket - socket() failed");
 
 #ifdef WIN32
 		errno = WSAGetLastError();
@@ -143,7 +143,7 @@ SOCKET DatagramSocket::dreamSock_Socket(int protocol)
 /*
 called from constructor only
 */
-int DatagramSocket::dreamSock_SetNonBlocking(u_long setMode)
+int DatagramSocket::setNonBlocking(u_long setMode)
 {
 	u_long set = setMode;
 
@@ -167,7 +167,7 @@ void DatagramSocket::close()
 /*
 autonomous
 */
-int DatagramSocket::dreamSock_GetPacket(char *data)
+int DatagramSocket::getPacket(char *data)
 {
 	int ret;
 	struct sockaddr tempFrom;
