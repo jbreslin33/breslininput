@@ -34,7 +34,7 @@ Client::~Client()
 	delete mDatagramSocket;
 }
 
-void Client::Reset(void)
+void Client::reset(void)
 {
 	mConnectionState = mMessageDisconnected;
 
@@ -51,12 +51,12 @@ void Client::SendDisconnect(void)
 	dispatch->WriteByte(mMessageDisconnect);
 
 	sendPacket(dispatch);
-	Reset();
+	reset();
 
 	mConnectionState = mMessageDisconnecting;
 }
 
-void Client::ParsePacket(Dispatch *mes)
+void Client::parsePacket(Dispatch *mes)
 {
 	mes->BeginReading();
 	int type = mes->ReadByte();
@@ -107,7 +107,7 @@ void Client::ParsePacket(Dispatch *mes)
 	}
 }
 
-int Client::GetPacket(Dispatch* dispatch)
+int Client::getPacket(Dispatch* dispatch)
 {
 	// Check if the client is set up or if it is disconnecting
 	if(!mDatagramSocket->mSocket)
@@ -123,7 +123,7 @@ int Client::GetPacket(Dispatch* dispatch)
 	dispatch->SetSize(ret);
 
 	// Parse system messages
-	ParsePacket(dispatch);
+	parsePacket(dispatch);
 
 	return ret;
 }
