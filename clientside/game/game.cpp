@@ -205,7 +205,7 @@ DynamicShape* shape;
 
 	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
 
-	while(ret = mClient->GetPacket(dispatch))
+	while(ret = mClient->getPacket(dispatch))
 	{
 		dispatch->SetSize(ret);
 		dispatch->BeginReading();
