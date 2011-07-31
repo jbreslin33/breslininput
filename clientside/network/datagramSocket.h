@@ -56,7 +56,7 @@ struct sockaddr_in sendToAddress;
 SOCKET dreamSock_Socket(int protocol);
 int dreamSock_SetNonBlocking(u_long setMode);
 SOCKET dreamSock_OpenUDPSocket();
-void dreamSock_CloseSocket();
+void close();
 
 int dreamSock_GetPacket(char *data);
 void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);

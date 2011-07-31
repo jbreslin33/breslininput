@@ -30,7 +30,7 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 Client::~Client()
 {
-	mDatagramSocket->dreamSock_CloseSocket();
+	mDatagramSocket->close();
 	delete mDatagramSocket;
 }
 
@@ -115,7 +115,6 @@ int Client::getPacket(Dispatch* dispatch)
 
 	int ret;
 
-	//ret = mDatagramSocket->dreamSock_GetPacket(message->data);
 	ret = mDatagramSocket->dreamSock_GetPacket(dispatch->mCharArray);
 	if(ret <= 0)
 		return 0;

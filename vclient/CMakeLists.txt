@@ -266,9 +266,6 @@ set(SRCS
 	#billboard
 	../billboard/objectTitle.cpp
 	
-	#message
-	../message/message.cpp
-	
 	#client
 	../clientside/client/client.cpp
 	

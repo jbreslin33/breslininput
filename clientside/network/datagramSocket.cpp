@@ -155,7 +155,7 @@ int DatagramSocket::dreamSock_SetNonBlocking(u_long setMode)
 #endif
 }
 
-void DatagramSocket::dreamSock_CloseSocket()
+void DatagramSocket::close()
 {
 #ifdef WIN32
 		closesocket(mSocket);
