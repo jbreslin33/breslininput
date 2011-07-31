@@ -57,7 +57,7 @@ Client(const char *localIP, const char *remoteIP, int port);
 	void            reset();
 
 	//connection. why it needs it's own method i don't know i'll look into it
-	void			SendConnect(const char *name);
-	void			SendDisconnect(void);
+	void			sendConnect(const char *name);
+	void			sendDisconnect(void);
 };
 #endif
