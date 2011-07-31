@@ -53,9 +53,7 @@ DatagramSocket::~DatagramSocket()
 {
 }
 
-/*
-called from constructor only
-*/
+//open
 SOCKET DatagramSocket::open()
 {
 	SOCKET sock;
@@ -101,9 +99,6 @@ SOCKET DatagramSocket::open()
 }
 
 
-/*
-called from constructor only
-*/
 SOCKET DatagramSocket::createSocket(int protocol)
 {
 	int type;
@@ -140,9 +135,6 @@ SOCKET DatagramSocket::createSocket(int protocol)
 	return mSocket;
 }
 
-/*
-called from constructor only
-*/
 int DatagramSocket::setNonBlocking(u_long setMode)
 {
 	u_long set = setMode;
@@ -155,6 +147,7 @@ int DatagramSocket::setNonBlocking(u_long setMode)
 #endif
 }
 
+//close
 void DatagramSocket::close()
 {
 #ifdef WIN32
@@ -164,9 +157,76 @@ void DatagramSocket::close()
 #endif
 }
 
-/*
-autonomous
-*/
+//send
+void DatagramSocket::send(int length, char *data, struct sockaddr addr)
+{
+	int	ret;
+
+	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
+
+	if(ret == -1)
+	{
+#ifdef WIN32
+		errno = WSAGetLastError();
+
+		// Silently handle wouldblock
+		if(errno == WSAEWOULDBLOCK)
+			return;
+		size_t t = 256;
+		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
+#else
+		// Silently handle wouldblock
+		if(errno == EWOULDBLOCK)
+			return;
+
+		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
+#endif
+	}
+}
+
+void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
+{
+	//ripped from client, since we only have one client on this side let's do it here.
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
+
+	u_long inetAddr               = inet_addr(serverIP);
+	sendToAddress.sin_port        = htons((u_short) serverPort);
+	sendToAddress.sin_family      = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
+}
+
+void DatagramSocket::send(DatagramPacket* packet)
+{
+/****
+error check...
+***/
+
+	// Check that everything is set up
+	//if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
+	if(!mSocket)
+	{
+		LogString("SendPacket error: Could not send because the client is disconnected");
+		return;
+	}
+
+	// If the message overflowed do not send it
+	//if(dispatch->GetOverFlow())
+	//packet->;
+	//{
+	//	LogString("SendPacket error: Could not send because the buffer overflowed");
+	//	return;
+	//}
+/****
+actual send...
+***/
+	setSendToAddress(packet->mAddress,packet->mPort);
+
+	send(packet->mLength, packet->mDataBuffer,
+			*(struct sockaddr *) &sendToAddress);
+}
+
+
+//receive
 int DatagramSocket::getPacket(char *data)
 {
 	int ret;
@@ -210,80 +270,6 @@ int DatagramSocket::getPacket(char *data)
 
 
 	return ret;
-}
-
-/*
-autonomous
-*/
-void DatagramSocket::send(int length, char *data, struct sockaddr addr)
-{
-	int	ret;
-
-	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
-
-	if(ret == -1)
-	{
-#ifdef WIN32
-		errno = WSAGetLastError();
-
-		// Silently handle wouldblock
-		if(errno == WSAEWOULDBLOCK)
-			return;
-		size_t t = 256;
-		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
-#else
-		// Silently handle wouldblock
-		if(errno == EWOULDBLOCK)
-			return;
-
-		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
-#endif
-	}
-}
-
-/*
-added by me
-*/
-
-void DatagramSocket::setSendToAddress(const char* serverIP, int serverPort)
-{
-	//ripped from client, since we only have one client on this side let's do it here.
-	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
-
-	u_long inetAddr               = inet_addr(serverIP);
-	sendToAddress.sin_port        = htons((u_short) serverPort);
-	sendToAddress.sin_family      = AF_INET;
-	sendToAddress.sin_addr.s_addr = inetAddr;
-}
-
-void DatagramSocket::send(DatagramPacket* packet)
-{
-/****
-error check...
-***/
-
-	// Check that everything is set up
-	//if(!mDatagramSocket->mSocket || mConnectionState == mMessageDisconnected)
-	if(!mSocket)
-	{
-		LogString("SendPacket error: Could not send because the client is disconnected");
-		return;
-	}
-
-	// If the message overflowed do not send it
-	//if(dispatch->GetOverFlow())
-	//packet->;
-	//{
-	//	LogString("SendPacket error: Could not send because the buffer overflowed");
-	//	return;
-	//}
-/****
-actual send...
-***/
-	setSendToAddress(packet->mAddress,packet->mPort);
-
-	send(packet->mLength, packet->mDataBuffer,
-			*(struct sockaddr *) &sendToAddress);
 }
 
 
