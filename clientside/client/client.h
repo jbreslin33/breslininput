@@ -51,8 +51,8 @@ Client(const char *localIP, const char *remoteIP, int port);
 	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
 
 	//packets
-	int				getPacket(Dispatch* dispatch);
-	void			sendPacket(Dispatch* dispatch);
+	int				getPacket  (Dispatch* dispatch);
+	void			sendPacket (Dispatch* dispatch);
 	void			parsePacket(Dispatch* dispatch);
 	void            reset();
 
