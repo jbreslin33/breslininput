@@ -59,7 +59,7 @@ SOCKET dreamSock_OpenUDPSocket();
 void close();
 
 int dreamSock_GetPacket(char *data);
-void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
+void send(int length, char *data, struct sockaddr addr);
 
 void setSendToAddress(const char* serverIP, int serverPort);
 
