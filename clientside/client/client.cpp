@@ -45,21 +45,6 @@ void Client::sendConnect(const char *name)
 	sendPacket(dispatch);
 }
 
-void Client::sendPacket(Dispatch *dispatch)
-{
-    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
-	
-	mDatagramSocket->send(packet);
-
-	dispatch->BeginReading();
-	int type = dispatch->ReadByte();
-
-	if(type > 0)
-	{
-		mOutgoingSequence++;
-	}
-}
-
 void Client::sendDisconnect(void)
 {
 	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
@@ -81,6 +66,22 @@ void Client::reset(void)
     mIncomingAcknowledged			 = 0;
     mDroppedPackets                  = 0;
 }
+
+void Client::sendPacket(Dispatch *dispatch)
+{
+    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
+	
+	mDatagramSocket->send(packet);
+
+	dispatch->BeginReading();
+	int type = dispatch->ReadByte();
+
+	if(type > 0)
+	{
+		mOutgoingSequence++;
+	}
+}
+
 
 /**********  GETS ****/
 int Client::getPacket(Dispatch* dispatch)
