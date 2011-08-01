@@ -100,6 +100,9 @@ set(HDRS
 	../clientside/network/datagramPacket.h
 	../clientside/network/datagramSocket.h
 	
+	#thread
+	../clientside/thread/threadClass.h
+	
 	#command
 	../command/command.h
 	
@@ -145,6 +148,9 @@ set(SRCS
 	#../clientside/network/network.cpp
 	../clientside/network/datagramPacket.cpp
 	../clientside/network/datagramSocket.cpp
+	
+	#thread
+	../clientside/thread/threadClass.cpp
 	
 	#command
 	../command/command.cpp
@@ -192,6 +198,9 @@ set(HDRS
 	../clientside/network/datagramPacket.h
 	../clientside/network/datagramSocket.h
 	
+	#thread
+	../clientside/thread/threadClass.h
+	
 	#command
 	../command/command.h
 
@@ -237,6 +246,9 @@ set(SRCS
 	#../clientside/network/network.cpp
 	../clientside/network/datagramPacket.cpp
 	../clientside/network/datagramSocket.cpp
+	
+	#thread
+	../clientside/thread/threadClass.cpp
 	
 	#command
 	../command/command.cpp
