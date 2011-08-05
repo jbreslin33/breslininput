@@ -23,7 +23,7 @@ void Global_ProcessTick_Move::enter(Move* move)
 }
 void Global_ProcessTick_Move::execute(Move* move)
 {
-	//move->mObjectTitleString.append(StringConverter::toString(move->mIndex));
+	move->mObjectTitleString.append(StringConverter::toString(move->mIndex));
 	move->calculateDeltaPosition();
 }
 void Global_ProcessTick_Move::exit(Move* move)
