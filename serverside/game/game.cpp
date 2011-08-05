@@ -1,11 +1,11 @@
 #include "game.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../server/server.h"
-#include "../../serverside/network/network.h"
+#include "../server/server.h"
+#include "../network/network.h"
 
-#include "../../serverside/client/client.h"
-#include "../../serverside/shape/shape.h"
+#include "../client/client.h"
+#include "../shape/shape.h"
 #include "../../command/command.h"
 
 Game::Game()

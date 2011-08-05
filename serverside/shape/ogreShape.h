@@ -2,13 +2,13 @@
 #define OGRESHAPE_H
 
 //messages
-#include "../../message/message.h"
+#include "../message/message.h"
 
 //command
 #include "../../command/command.h"
 
 //game
-#include "../../serverside/game/game.h"
+#include "../game/game.h"
 
 //Ogre headers
 #include "Ogre.h"

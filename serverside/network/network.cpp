@@ -1,12 +1,12 @@
 #include "network.h"
 
 #include "../message/message.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
 
 
 #ifdef WIN32
-#include "../tdreamsock/dreamWinSock.h"
+#include "../../tdreamsock/dreamWinSock.h"
 #else
 #include <stdio.h>
 #include <memory.h>
@@ -26,7 +26,7 @@
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif
 
-#include "../serverside/client/client.h"
+#include "../client/client.h"
 
 
 Network::Network()

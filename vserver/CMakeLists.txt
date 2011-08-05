@@ -145,10 +145,10 @@ set(HDRS
 	../command/command.h
 	
 	#message
-	../message/message.h
+	../serverside/message/message.h
 	
 	#server
-	../server/server.h
+	../serverside/server/server.h
 	
 	#client
 	../serverside/client/client.h
@@ -208,10 +208,10 @@ set(SRCS
 	../command/command.cpp
 	
 	#message
-	../message/message.cpp
+	../serverside/message/message.cpp
 	
 	#server
-	../server/server.cpp
+	../serverside/server/server.cpp
 	
 	#client
 	../serverside/client/client.cpp
@@ -283,10 +283,10 @@ set(HDRS
 	../command/command.h
 	
 	#message
-	../message/message.h
+	../serverside/message/message.h
 	
 	#server
-	../server/server.h
+	../serverside/server/server.h
 	
 	#client
 	../serverside/client/client.h
@@ -345,10 +345,10 @@ set(SRCS
 	../command/command.cpp
 	
 	#message
-	../message/message.cpp
+	../serverside/message/message.cpp
 	
 	#server
-	../server/server.cpp
+	../serverside/server/server.cpp
 	
 	#client
 	../serverside/client/client.cpp
