@@ -23,7 +23,7 @@
 #include <pthread.h>
 #include <signal.h>
 
-#include "../tdreamsock/dreamLinuxSock.h"
+#include "../../tdreamsock/dreamLinuxSock.h"
 #endif
 
 #include "../client/client.h"
