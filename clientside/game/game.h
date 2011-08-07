@@ -1,7 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "../../game/BaseApplication.h"
+#include "BaseApplication.h"
 
 #include "../../clientside/shape/ogreDynamicShape.h"
 
