@@ -88,7 +88,7 @@ endif()
 set(HDRS
 	
 	#game
-	../game/BaseApplication.h
+	../clientside/game/BaseApplication.h
 	../clientside/game/game.h
 
 	#dreamsock
@@ -96,12 +96,8 @@ set(HDRS
 	../tdreamsock/dreamWinSock.h
 	
 	#network
-	#../clientside/network/network.h
 	../clientside/network/datagramPacket.h
 	../clientside/network/datagramSocket.h
-	
-	#thread
-	../clientside/thread/threadClass.h
 	
 	#command
 	../command/command.h
@@ -111,11 +107,8 @@ set(HDRS
 	
 	#shape
 	../clientside/shape/shape.h
-	#../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
-	../clientside/shape/staticShape.h
 	../clientside/shape/ogreDynamicShape.h
-	../clientside/shape/ogreStaticShape.h
 
 	#states
 	../clientside/states/dynamicShapeState.h
@@ -131,13 +124,13 @@ set(HDRS
 	../clientside/client/client.h
 
 	#billboard
-	../billboard/objectTitle.h
+	../clientside/billboard/objectTitle.h
 )
  
 set(SRCS
 
 	#game
-	../game/BaseApplication.cpp
+	../clientside/game/BaseApplication.cpp
 	../clientside/game/game.cpp
 	
 	#dreamsock
@@ -145,12 +138,8 @@ set(SRCS
 	../tdreamsock/dreamWinSock.cpp
 
 	#network
-	#../clientside/network/network.cpp
 	../clientside/network/datagramPacket.cpp
 	../clientside/network/datagramSocket.cpp
-	
-	#thread
-	../clientside/thread/threadClass.cpp
 	
 	#command
 	../command/command.cpp
@@ -160,11 +149,8 @@ set(SRCS
 	
 	#shape
 	../clientside/shape/shape.cpp
-	#../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
-	../clientside/shape/staticShape.cpp
 	../clientside/shape/ogreDynamicShape.cpp
-	../clientside/shape/ogreStaticShape.cpp
 	
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp
@@ -178,7 +164,7 @@ set(SRCS
 	../clientside/client/client.cpp
 	
 	#billboard
-	../billboard/objectTitle.cpp
+	../clientside/billboard/objectTitle.cpp
 
 )
 endif (WIN32)
@@ -187,19 +173,15 @@ if (UNIX)
 set(HDRS
 
 	#game
-	../game/BaseApplication.h
+	../clientside/game/BaseApplication.h
 	../clientside/game/game.h
 	
 	#dreamsock
 	../tdreamsock/dreamSockLog.h
 	
 	#network
-	#../clientside/network/network.h
 	../clientside/network/datagramPacket.h
 	../clientside/network/datagramSocket.h
-	
-	#thread
-	../clientside/thread/threadClass.h
 	
 	#command
 	../command/command.h
@@ -209,11 +191,8 @@ set(HDRS
 	
 	#shape
 	../clientside/shape/shape.h
-	#../clientside/shape/ogreShape.h
 	../clientside/shape/dynamicShape.h
-	../clientside/shape/staticShape.h
 	../clientside/shape/ogreDynamicShape.h
-	../clientside/shape/ogreStaticShape.h
 	
 	#states
 	../clientside/states/dynamicShapeState.h
@@ -229,7 +208,7 @@ set(HDRS
 	../clientside/client/client.h
 		
 	#billboard
-	../billboard/objectTitle.h
+	../clientside/billboard/objectTitle.h
 )
  
 set(SRCS
@@ -243,12 +222,8 @@ set(SRCS
 	../tdreamsock/dreamLinuxSock.cpp
 
 	#network
-	#../clientside/network/network.cpp
 	../clientside/network/datagramPacket.cpp
 	../clientside/network/datagramSocket.cpp
-	
-	#thread
-	../clientside/thread/threadClass.cpp
 	
 	#command
 	../command/command.cpp
@@ -258,31 +233,23 @@ set(SRCS
 	
 	#shape
 	../clientside/shape/shape.cpp
-	#../clientside/shape/ogreShape.cpp
 	../clientside/shape/dynamicShape.cpp
-	../clientside/shape/staticShape.cpp
 	../clientside/shape/ogreDynamicShape.cpp
-	../clientside/shape/ogreStaticShape.cpp
 	
 	#states
 	../clientside/states/dynamicShapeMoveStates.cpp
 	../clientside/states/dynamicShapeRotationStates.cpp
 	../clientside/states/dynamicShapeAnimationStates.cpp
 	
-	#client
-	../clientside/client/client.cpp
-	
 	#dispatch
 	../clientside/dispatch/dispatch.cpp
 	
 	#billboard
-	../billboard/objectTitle.cpp
+	../clientside/billboard/objectTitle.cpp
 	
 	#client
 	../clientside/client/client.cpp
-	
-	#billboard
-	../billboard/objectTitle.cpp
+
 	
 )
 endif (UNIX)
