@@ -6,7 +6,7 @@
 
 #include "../game/game.h"
 
-#include "../../billboard/objectTitle.h"
+#include "../billboard/objectTitle.h"
 
 #include <string.h>
 

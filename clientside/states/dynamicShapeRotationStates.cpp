@@ -1,9 +1,9 @@
 #include "dynamicShapeRotationStates.h"
 #include "dynamicShapeStateMachine.h"
 
-#include "../../clientside/shape/dynamicShape.h"
+#include "../shape/dynamicShape.h"
 
-#include "../../billboard/objectTitle.h"
+#include "../billboard/objectTitle.h"
 
 /******************** Global_ProcessTick_Rotation *****************/
 Global_ProcessTick_Rotation* Global_ProcessTick_Rotation::Instance()

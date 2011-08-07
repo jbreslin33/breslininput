@@ -11,7 +11,7 @@
 
 #include "../dispatch/dispatch.h"
 
-#include "../../billboard/objectTitle.h"
+#include "../billboard/objectTitle.h"
 
 #include <string.h>
 

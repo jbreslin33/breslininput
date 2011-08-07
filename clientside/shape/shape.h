@@ -39,9 +39,8 @@ virtual void     appendToTitle        (int appendage             ) = 0;
 virtual void     clearTitle           (                          ) = 0;
 
 //id
-int			 mIndex;
+int                      mIndex;
 
 };
 
 #endif
-

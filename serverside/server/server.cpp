@@ -1,13 +1,13 @@
 
 #include "server.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../../tdreamsock/dreamSockLog.h"
 
-#include "../serverside/network/network.h"
-#include "../serverside/client/client.h"
+#include "../network/network.h"
+#include "../client/client.h"
 #include "../message/message.h"
-#include "../serverside/shape/shape.h"
-#include "../serverside/game/game.h"
-#include "../serverside/shape/shape.h"
+#include "../shape/shape.h"
+#include "../game/game.h"
+
 
 Server::Server(Game* serverSideGame,const char *localIP, int serverPort)
 {
