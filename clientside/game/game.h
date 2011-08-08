@@ -19,7 +19,7 @@ class DreamLinuxSock;
 #define VK_RIGHT 0x27
 #define VK_SPACE 0x20
 
-extern bool keys[256];
+//extern bool keys[256];
 
 
 
@@ -106,6 +106,8 @@ public:
 	void unloadOtherScreens();
 	void initializeGui();
 
+	//keys
+	bool keys[256];
 	int mKeyUp;
 	int mKeyDown;
 	int mKeyLeft;
