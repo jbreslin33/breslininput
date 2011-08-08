@@ -125,8 +125,10 @@ DynamicShape* Game::addGhostShape(Game* game, int ind,Vector3D* position, Vector
 	return shape;
 }
 
-void Game::removeShape(int index)
+void Game::removeShape(Dispatch* dispatch)
 {
+	int index = dispatch->ReadByte();
+	
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
 		if (mShapeVector.at(i)->mIndex == index)
@@ -179,7 +181,6 @@ void Game::moveGhostShapes(DynamicShape* shape)
 void Game::readPackets()
 {
 	int type;
-	int ind;
 	int ret;
 	int newTime;
 	int time;
@@ -196,15 +197,11 @@ void Game::readPackets()
 		switch(type)
 		{
 		case mClient->mMessageAddShape:
-
 			addShape(dispatch);
-
 			break;
 
 		case mClient->mMessageRemoveShape:
-			ind = dispatch->ReadByte();
-			removeShape(ind);
-
+			removeShape(dispatch);
 			break;
 
 		case mMessageFrame:

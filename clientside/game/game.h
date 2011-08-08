@@ -88,7 +88,7 @@ public:
 	DynamicShape* addGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	DynamicShape* getDynamicShape(int id);
 	void moveGhostShapes(DynamicShape* shape);
-	void    removeShape(int index);
+	void    removeShape(Dispatch* dispatch);
 	void    interpolateFrame();
 	void	readDeltaMoveCommand    (Dispatch* mes);
 
