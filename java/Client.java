@@ -94,28 +94,15 @@ class Client {
          int i = 1;  int j = 1;
 
          // send and read concurrently, but do not block on read:
-         while (j < 50)
+         while (true)
          {
-            long start = System.currentTimeMillis();
-			System.out.println("j:" + j);
-			if ( j == 10 || j == 20 || j == 30 || j == 40)
-			{
-   		          theDatagramChannel.send( theSendDataByteBuffer, theInetSocketAddress );
-                  System.out.println("sent Datagram " + j);
-			}
+			// read the datagram from the DatagramChannel,
+			System.out.println("ret should not be always null:"+ theDatagramChannel.receive( theReceiveDataByteBuffer ));
 
-               // read the datagram from the DatagramChannel,
-               theDatagramChannel.receive( theReceiveDataByteBuffer );
-               System.out.println("theDatagramChannel.receive " + i++);
-               // datagram would be processed here
-
-               // Get an iterator over the set of selected keys
-               Iterator it = theSelector.selectedKeys().iterator( );
-
-               j++;
+	       	j++;
 
          }
-         theSelector.close();
+         //theSelector.close();
       }
       catch (Exception e)
       {
