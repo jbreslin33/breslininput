@@ -65,15 +65,10 @@ class Server {
    byte[] sendData = new byte[ datagramSize ];
    ByteBuffer theSendDataByteBuffer = ByteBuffer.wrap( sendData );
 
-   // array of bytes for receiving datagrams
-   byte[] receiveData = new byte[ datagramSize ];
-   ByteBuffer theReceiveDataByteBuffer = ByteBuffer.wrap( receiveData );
-
    Server()
    {
       try
       {
-         Random theRandom = new Random();
          InetSocketAddress theInetSocketAddress = new InetSocketAddress( host, port);
 
          // make a DatagramChannel
@@ -84,38 +79,25 @@ class Server {
          theDatagramChannel.configureBlocking( false );
 
          // instantiate a selector
-         Selector theSelector = Selector.open();
+         //Selector theSelector = Selector.open();
 
          // register the selector on the channel to monitor reading
          // datagrams on the DatagramChannel
-         theDatagramChannel.register( theSelector, SelectionKey.OP_READ );
+         //theDatagramChannel.register( theSelector, SelectionKey.OP_READ );
 
-         long millisecsUntilSendNextDatagram = 0;
-         int i = 1;  int j = 1;
+         //long millisecsUntilSendNextDatagram = 0;
+        // int i = 1;  int j = 1;
 
          // send and read concurrently, but do not block on read:
-         while (j < 50)
+         while (true)
          {
-            long start = System.currentTimeMillis();
-			System.out.println("j:" + j);
-			if ( j == 10 || j == 20 || j == 30 || j == 40)
-			{
-   		          theDatagramChannel.send( theSendDataByteBuffer, theInetSocketAddress );
-                  System.out.println("sent Datagram " + j);
-			}
+        //    long start = System.currentTimeMillis();
 
-               // read the datagram from the DatagramChannel,
-               theDatagramChannel.receive( theReceiveDataByteBuffer );
-               System.out.println("theDatagramChannel.receive " + i++);
-               // datagram would be processed here
-
-               // Get an iterator over the set of selected keys
-               Iterator it = theSelector.selectedKeys().iterator( );
-
-               j++;
+   	        theDatagramChannel.send( theSendDataByteBuffer, theInetSocketAddress );
+            System.out.println("sent Datagram ");
 
          }
-         theSelector.close();
+         //theSelector.close();
       }
       catch (Exception e)
       {
