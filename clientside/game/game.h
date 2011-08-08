@@ -19,9 +19,6 @@ class DreamLinuxSock;
 #define VK_RIGHT 0x27
 #define VK_SPACE 0x20
 
-//extern bool keys[256];
-
-
 
 #ifdef WIN32
 class DreamWinSock;
