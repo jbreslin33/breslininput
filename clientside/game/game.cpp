@@ -234,7 +234,7 @@ DynamicShape* shape;
 				{
 					return;
 				}
-				ReadDeltaMoveCommand(dispatch);
+				readDeltaMoveCommand(dispatch);
 			}
 			break;
 
@@ -250,7 +250,7 @@ DynamicShape* shape;
 //should a shape be responsible to read it's own command?????
 //once we determine it's about him shouldn't we pass it off to
 //shape object to handle?
-void Game::ReadDeltaMoveCommand(Dispatch* mes)
+void Game::readDeltaMoveCommand(Dispatch* mes)
 {
 	DynamicShape* shape = NULL;
 
