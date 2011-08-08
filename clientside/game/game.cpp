@@ -61,7 +61,36 @@ Game::~Game()
 	delete mClient;
 }
 
+DynamicShape* Game::addShape(Dispatch* dispatch)
+{
+	DynamicShape* shape;
+	int ind;
+	int local;
+	Vector3D origin;
+	Vector3D velocity; 
+	Vector3D rotation;
 
+	char name[50];
+
+			local	=    dispatch->ReadByte();
+			ind		=    dispatch->ReadByte();
+			strcpy(name, dispatch->ReadString());
+			origin.x =   dispatch->ReadFloat();
+			origin.y =   dispatch->ReadFloat();
+			origin.z =   dispatch->ReadFloat();
+			velocity.x = dispatch->ReadFloat();
+			velocity.y = dispatch->ReadFloat();
+			velocity.z = dispatch->ReadFloat();
+			rotation.x = dispatch->ReadFloat();
+			rotation.z = dispatch->ReadFloat();
+			shape = addShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
+
+			//now add to vectors....
+			mShapeVector.push_back(shape);
+			mShapeGhostVector.push_back(shape->mGhost);
+
+	return shape;
+}
 
 DynamicShape* Game::addShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
@@ -167,17 +196,9 @@ void Game::readPackets()
 {
 	int type;
 	int ind;
-	int local;
-	Vector3D origin;
-	Vector3D velocity; 
-	Vector3D rotation;
 	int ret;
 	int newTime;
 	int time;
-
-	DynamicShape* shape;
-
-	char name[50];
 
 	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
 
@@ -191,22 +212,8 @@ void Game::readPackets()
 		switch(type)
 		{
 		case mClient->mMessageAddShape:
-			local	= dispatch->ReadByte();
-			ind		= dispatch->ReadByte();
-			strcpy(name, dispatch->ReadString());
-			origin.x = dispatch->ReadFloat();
-			origin.y = dispatch->ReadFloat();
-			origin.z = dispatch->ReadFloat();
-			velocity.x = dispatch->ReadFloat();
-			velocity.y = dispatch->ReadFloat();
-			velocity.z = dispatch->ReadFloat();
-			rotation.x = dispatch->ReadFloat();
-			rotation.z = dispatch->ReadFloat();
-			shape = addShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
-			//now add to vectors....
-			mShapeVector.push_back(shape);
-			mShapeGhostVector.push_back(shape->mGhost);
+			addShape(dispatch);
 
 			break;
 
