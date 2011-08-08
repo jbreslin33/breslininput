@@ -141,7 +141,14 @@ void Game::createScene(void)
 
  void Game::Shutdown(void)
  {
- 	Disconnect();
+	if(!mInit)
+		return;
+
+	LogString("Game::Disconnect");
+
+	mInit = false;
+
+	mClient->sendDisconnect();
  }
 
 //this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
@@ -235,7 +242,7 @@ DynamicShape* shape;
 			break;
 
 		case mMessageServerExit:
-			Disconnect();
+			Shutdown();
 			break;
 
 		}
@@ -264,19 +271,6 @@ void Game::SendCommand(void)
 	// Store the command to the input client's history
 	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));
 
-}
-
-void Game::Disconnect(void)
-{
-
-	if(!mInit)
-		return;
-
-	LogString("Game::Disconnect");
-
-	mInit = false;
-
-	mClient->sendDisconnect();
 }
 
 //this is all shapes coming to client game from server
@@ -325,8 +319,6 @@ DynamicShape* Game::getDynamicShape(int id)
 
 //this the client's (in this case we are on clientside so there is only one client instance) move being built
 //to send to the server, all we are sending is a key(maybe) and always milliseconds.
-
-
 
 void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
 {
