@@ -28,6 +28,12 @@ public:
 	Game(const char* serverIP);
 	~Game();
 
+	#ifdef WIN32
+	DreamWinSock* mDreamWinSock;
+	#else
+	DreamLinuxSock* mDreamLinuxSock;
+	#endif
+
 	// Network variables
 	Client* mClient;
 	const char*  mServerIP;
@@ -76,19 +82,20 @@ public:
 	static const char mMessageKeepAlive = 12;
 
 	
-
 	//Game
+	void	Shutdown    (void);
+	void	RunNetwork  (int msec);
+	bool    runGraphics();
+	void    interpolateFrame();
+	void gameLoop();
+
+	//shape
 	DynamicShape* AddShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
 					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
 	DynamicShape* AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	DynamicShape* getDynamicShape(int id);
 	void moveGhostShapes(DynamicShape* shape);
 	void    RemoveShape(int index);
-	void	Shutdown    (void);
-	void	RunNetwork  (int msec);
-	bool    runGraphics();
-	void    interpolateFrame();
-
 
 	// Network
 	void	ReadPackets             (void);
@@ -107,25 +114,14 @@ public:
 	void hideJoinScreen();
 	void unloadOtherScreens();
 	void initializeGui();
-
-
 	
 	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
-#ifdef WIN32
-DreamWinSock* mDreamWinSock;
-#else
-DreamLinuxSock* mDreamLinuxSock;
-#endif
-
-	void gameLoop();
-
 	//time
-#ifndef WIN32
-int dreamSock_Linux_GetCurrentSystemTime(void);
-#endif
-
-int dreamSock_GetCurrentSystemTime(void);
+	#ifndef WIN32
+	int dreamSock_Linux_GetCurrentSystemTime(void);
+	#endif
+	int dreamSock_GetCurrentSystemTime(void);
 
 };
 
