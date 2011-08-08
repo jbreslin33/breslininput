@@ -39,7 +39,6 @@ public:
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
 	void	RunNetwork  (int msec);
-	void    checkForShutdown();
 	bool    runGraphics();
 	void    interpolateFrame();
 
