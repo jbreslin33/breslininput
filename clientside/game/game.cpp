@@ -63,55 +63,34 @@ Game::~Game()
 
 DynamicShape* Game::addShape(Dispatch* dispatch)
 {
-	DynamicShape* shape;
 	int ind;
 	int local;
-	Vector3D origin;
-	Vector3D velocity; 
-	Vector3D rotation;
+	Vector3D* origin   = new Vector3D();
+	Vector3D* velocity = new Vector3D(); 
+	Vector3D* rotation = new Vector3D();
 
 	char name[50];
 
 			local	=    dispatch->ReadByte();
 			ind		=    dispatch->ReadByte();
 			strcpy(name, dispatch->ReadString());
-			origin.x =   dispatch->ReadFloat();
-			origin.y =   dispatch->ReadFloat();
-			origin.z =   dispatch->ReadFloat();
-			velocity.x = dispatch->ReadFloat();
-			velocity.y = dispatch->ReadFloat();
-			velocity.z = dispatch->ReadFloat();
-			rotation.x = dispatch->ReadFloat();
-			rotation.z = dispatch->ReadFloat();
-			shape = addShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
+			origin->x =   dispatch->ReadFloat();
+			origin->y =   dispatch->ReadFloat();
+			origin->z =   dispatch->ReadFloat();
+			velocity->x = dispatch->ReadFloat();
+			velocity->y = dispatch->ReadFloat();
+			velocity->z = dispatch->ReadFloat();
+			rotation->x = dispatch->ReadFloat();
+			rotation->z = dispatch->ReadFloat();
+			//shape = addShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
+
+
+	DynamicShape* shape = new OgreDynamicShape(this,ind, origin,velocity,rotation,"sinbad.mesh");
 			//now add to vectors....
 			mShapeVector.push_back(shape);
 			mShapeGhostVector.push_back(shape->mGhost);
 
-	return shape;
-}
-
-DynamicShape* Game::addShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
-					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
-{
-	Vector3D* position = new Vector3D();
-	position->x = originX;
-	position->y = originY;
-	position->z = originZ;
-
-	Vector3D* velocity = new Vector3D();
-	velocity->x = velocityX;
-	velocity->y = velocityY;
-	velocity->z = velocityZ;
-
-	Vector3D* rotation = new Vector3D();
-	rotation->x = rotationX;
-	rotation->y = 0;
-	rotation->z = rotationZ;
-
-
-	DynamicShape* shape = new OgreDynamicShape(this,ind, position,velocity,rotation,"sinbad.mesh");
 	Vector3D v;
 	v.x = 30;
 	v.y = 30;
@@ -125,7 +104,7 @@ DynamicShape* Game::addShape(Game* game,int local, int ind, char *name, float or
 	}
 
 	shape->mGame = this;
-	shape->mGhost = addGhostShape(game,ind,position,velocity,rotation);
+	shape->mGhost = addGhostShape(game,ind,origin,velocity,rotation);
 	return shape;
 }
 
