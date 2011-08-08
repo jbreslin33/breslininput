@@ -28,33 +28,6 @@ public:
 	Game(const char* serverIP);
 	~Game();
 
-	//Server player 
-	void moveGhostShapes(DynamicShape* shape);
-	
-	//Game
-	DynamicShape* AddShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
-					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
-	DynamicShape* AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
-	DynamicShape* getDynamicShape(int id);
-	void    RemoveShape(int index);
-	void	Shutdown    (void);
-	void	RunNetwork  (int msec);
-	bool    runGraphics();
-	void    interpolateFrame();
-
-
-	// Network
-	void	ReadPackets             (void);
-	void	SendCommand             (void);
-	void	ReadDeltaMoveCommand    (Dispatch* mes);
-	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
-	void	SendStartGame           (void);
-
-	//Ogre
-	void         processUnbufferedInput();
-    virtual void createScene           (void);
-    virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
-
 	// Network variables
 	Client* mClient;
 	const char*  mServerIP;
@@ -80,15 +53,10 @@ public:
 	//gui
 	OgreBites::Button* mJoinButton;
 
+	//gui
 	void buttonHit(OgreBites::Button *button);
 	bool mouseMoved( const OIS::MouseEvent &arg );
 
-	
-	void hideGui();
-	void loadJoinScreen();
-	void hideJoinScreen();
-	void unloadOtherScreens();
-	void initializeGui();
 
 	//keys
 	bool keys[256];
@@ -106,6 +74,41 @@ public:
 	static const char mMessageNonDeltaFrame = 2;
 	static const char mMessageServerExit = 3;
 	static const char mMessageKeepAlive = 12;
+
+	
+
+	//Game
+	DynamicShape* AddShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
+					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
+	DynamicShape* AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
+	DynamicShape* getDynamicShape(int id);
+	void moveGhostShapes(DynamicShape* shape);
+	void    RemoveShape(int index);
+	void	Shutdown    (void);
+	void	RunNetwork  (int msec);
+	bool    runGraphics();
+	void    interpolateFrame();
+
+
+	// Network
+	void	ReadPackets             (void);
+	void	SendCommand             (void);
+	void	ReadDeltaMoveCommand    (Dispatch* mes);
+	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
+
+	//Ogre
+	void         processUnbufferedInput();
+    virtual void createScene           (void);
+    virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
+
+	//gui	
+	void hideGui();
+	void loadJoinScreen();
+	void hideJoinScreen();
+	void unloadOtherScreens();
+	void initializeGui();
+
+
 	
 	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
