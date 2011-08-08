@@ -63,7 +63,7 @@ Game::~Game()
 
 
 
-DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
+DynamicShape* Game::addShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
@@ -96,11 +96,11 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 	}
 
 	shape->mGame = this;
-	shape->mGhost = AddGhostShape(game,ind,position,velocity,rotation);
+	shape->mGhost = addGhostShape(game,ind,position,velocity,rotation);
 	return shape;
 }
 
-DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
+DynamicShape* Game::addGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
 	DynamicShape* shape = new OgreDynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
 	Vector3D v;
@@ -112,7 +112,7 @@ DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector
 	return shape;
 }
 
-void Game::RemoveShape(int index)
+void Game::removeShape(int index)
 {
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
@@ -136,7 +136,7 @@ void Game::createScene(void)
 
 }
 
- void Game::Shutdown(void)
+ void Game::shutdown(void)
  {
 	if(!mInit)
 		return;
@@ -163,10 +163,8 @@ void Game::moveGhostShapes(DynamicShape* shape)
 		shape->mGhost->setPosition(transVector);
 	}
 }
-void Game::ReadPackets(void)
+void Game::readPackets(void)
 {
-//	char data[1400];
-
 	int type;
 	int ind;
 	int local;
@@ -177,7 +175,7 @@ void Game::ReadPackets(void)
 	int newTime;
 	int time;
 
-DynamicShape* shape;
+	DynamicShape* shape;
 
 	char name[50];
 
@@ -204,7 +202,7 @@ DynamicShape* shape;
 			velocity.z = dispatch->ReadFloat();
 			rotation.x = dispatch->ReadFloat();
 			rotation.z = dispatch->ReadFloat();
-			shape = AddShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
+			shape = addShape(this,local, ind, name,origin.x,origin.y,origin.z,velocity.x,velocity.y,velocity.z,rotation.x,rotation.z);
 
 			//now add to vectors....
 			mShapeVector.push_back(shape);
@@ -214,7 +212,7 @@ DynamicShape* shape;
 
 		case mClient->mMessageRemoveShape:
 			ind = dispatch->ReadByte();
-			RemoveShape(ind);
+			removeShape(ind);
 
 			break;
 
@@ -239,7 +237,7 @@ DynamicShape* shape;
 			break;
 
 		case mMessageServerExit:
-			Shutdown();
+			shutdown();
 			break;
 
 		}
@@ -368,12 +366,12 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	return ret;
 }
 
-void Game::RunNetwork(int msec)
+void Game::runNetwork(int msec)
 {
 	static int time = 0;
 	time += msec;
 
-	ReadPackets();
+	readPackets();
 	
 	// Framerate is too high
 	if(time > (1000 / 60))
@@ -393,7 +391,7 @@ void Game::gameLoop()
 
 		if(game != NULL)
 		{
-			game->RunNetwork(mRenderTime * 1000);
+			game->runNetwork(mRenderTime * 1000);
 		}
 
 		interpolateFrame();
