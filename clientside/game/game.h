@@ -38,7 +38,6 @@ public:
 	DynamicShape* getDynamicShape(int id);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
-	void	Frame       (void);
 	void	RunNetwork  (int msec);
 	void    checkForShutdown();
 	bool    runGraphics();
@@ -50,7 +49,6 @@ public:
 	void	SendCommand             (void);
 	void	ReadDeltaMoveCommand    (Dispatch* mes);
 	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
-	void	Disconnect              (void);
 	void	SendStartGame           (void);
 
 	//Ogre
