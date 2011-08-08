@@ -82,12 +82,9 @@ public:
 	static const char mMessageKeepAlive = 12;
 
 	
-	//Game
-	void	Shutdown    (void);
-	void	RunNetwork  (int msec);
-	bool    runGraphics();
-	void    interpolateFrame();
-	void gameLoop();
+	//Admin
+	void	Shutdown    ();
+	void	gameLoop();
 
 	//shape
 	DynamicShape* AddShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
@@ -96,17 +93,22 @@ public:
 	DynamicShape* getDynamicShape(int id);
 	void moveGhostShapes(DynamicShape* shape);
 	void    RemoveShape(int index);
-
-	// Network
-	void	ReadPackets             (void);
-	void	SendCommand             (void);
+	void    interpolateFrame();
 	void	ReadDeltaMoveCommand    (Dispatch* mes);
 	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
 
-	//Ogre
+	// Network
+	void	RunNetwork  (int msec);
+	void	ReadPackets             ();
+	void	SendCommand             ();
+
+	//input
 	void         processUnbufferedInput();
-    virtual void createScene           (void);
+
+	//graphics
+    virtual void createScene           ();
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
+	bool    runGraphics();
 
 	//gui	
 	void hideGui();
@@ -121,7 +123,7 @@ public:
 	#ifndef WIN32
 	int dreamSock_Linux_GetCurrentSystemTime(void);
 	#endif
-	int dreamSock_GetCurrentSystemTime(void);
+	int dreamSock_GetCurrentSystemTime();
 
 };
 
