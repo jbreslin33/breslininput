@@ -236,7 +236,7 @@ void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 	flags = mes->ReadByte();
 
 	// Origin
-	if(flags & CMD_ORIGIN_X)
+	if(flags & mCommandOriginX)
 	{
 		mServerFrame.mOriginOld.x = mServerFrame.mOrigin.x;
 		mServerFrame.mOrigin.x = mes->ReadFloat();		
@@ -246,7 +246,7 @@ void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 		x = false;
 	}
 
-	if(flags & CMD_ORIGIN_Y)
+	if(flags & mCommandOriginY)
 	{
 		mServerFrame.mOriginOld.y = mServerFrame.mOrigin.y;
 		mServerFrame.mOrigin.y = mes->ReadFloat();
@@ -256,7 +256,7 @@ void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 		y = false;
 	}
 
-	if(flags & CMD_ORIGIN_Z)
+	if(flags & mCommandOriginZ)
 	{
 		mServerFrame.mOriginOld.z = mServerFrame.mOrigin.z;
 		mServerFrame.mOrigin.z = mes->ReadFloat();	
@@ -271,18 +271,18 @@ void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 	mServerFrame.mRotOld.z = mServerFrame.mRot.z;
 
 	//rotation
-	if(flags & CMD_ROTATION_X)
+	if(flags & mCommandRotationX)
 	{
 		mServerFrame.mRot.x = mes->ReadFloat();
 	}
 
-	if(flags & CMD_ROTATION_Z)
+	if(flags & mCommandRotationZ)
 	{
 		mServerFrame.mRot.z = mes->ReadFloat();
 	}
 
 	//milliseconds
-	if (flags & CMD_MILLISECONDS)
+	if (flags & mCommandMilliseconds)
 	{
 		mServerFrame.mMilliseconds = mes->ReadByte();
 		mCommandToRunOnShape.mMilliseconds = mServerFrame.mMilliseconds;

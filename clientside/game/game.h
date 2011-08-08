@@ -72,9 +72,6 @@ public:
 	int mKeyRight;
 	int mKeySpace;
 
-	//commands
-	int mCommandHistorySize;
-
 	//messages
 	static const char mMessageFrame = 1;
 	static const char mMessageNonDeltaFrame = 2;
@@ -95,12 +92,10 @@ public:
 	void    RemoveShape(int index);
 	void    interpolateFrame();
 	void	ReadDeltaMoveCommand    (Dispatch* mes);
-	void	BuildDeltaMoveCommand   (Dispatch* dispatch);
 
 	// Network
 	void	RunNetwork  (int msec);
 	void	ReadPackets             ();
-	void	SendCommand             ();
 
 	//input
 	void         processUnbufferedInput();
