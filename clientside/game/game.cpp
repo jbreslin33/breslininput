@@ -163,7 +163,7 @@ void Game::moveGhostShapes(DynamicShape* shape)
 		shape->mGhost->setPosition(transVector);
 	}
 }
-void Game::readPackets(void)
+void Game::readPackets()
 {
 	int type;
 	int ind;
