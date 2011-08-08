@@ -21,7 +21,7 @@ public class NonBlockingServer
     {
 		System.out.println("Inside default ctor");
     }
-    
+
 	public NonBlockingServer(int port)
     {
 		System.out.println("Inside the other ctor");
@@ -38,24 +38,24 @@ public class NonBlockingServer
 		InetSocketAddress isa = new InetSocketAddress(ia,port);
 		server.socket().bind(isa);
     }
-    
+
 	public void startServer() throws IOException
     {
 		System.out.println("Inside startserver");
         initializeOperations();
 		System.out.println("Abt to block on select()");
-		SelectionKey acceptKey = server.register(sel, SelectionKey.OP_ACCEPT );	
-	
+		SelectionKey acceptKey = server.register(sel, SelectionKey.OP_ACCEPT );
+
 		while (acceptKey.selector().select() > 0 )
-		{	
-	    
+		{
+
 			Set readyKeys = sel.selectedKeys();
 			Iterator it = readyKeys.iterator();
 
 			while (it.hasNext()) {
 				SelectionKey key = (SelectionKey)it.next();
 				it.remove();
-                
+
 				if (key.isAcceptable()) {
 					System.out.println("Key is Acceptable");
 					ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
@@ -92,13 +92,13 @@ public class NonBlockingServer
 		File file = new File(ret);
 		try
 		{
-		
-			RandomAccessFile rdm = new RandomAccessFile(file,"r");
+
+			RandomAccessFile rdm = new RandomAccessFile(file,"Server.java");
 			FileChannel fc = rdm.getChannel();
 			ByteBuffer buffer = ByteBuffer.allocate(1024);
 			fc.read(buffer);
 			buffer.flip();
-    
+
 			Charset set = Charset.forName("us-ascii");
 			CharsetDecoder dec = set.newDecoder();
 			CharBuffer charBuf = dec.decode(buffer);
@@ -114,7 +114,7 @@ public class NonBlockingServer
 		}
 
     }
-  
+
     public String readMessage(SelectionKey key)
     {
 		int nBytes = 0;
@@ -128,7 +128,7 @@ public class NonBlockingServer
 			CharsetDecoder decoder = charset.newDecoder();
 			CharBuffer charBuffer = decoder.decode(buf);
 			result = charBuffer.toString();
-	    
+
         }
 		catch(IOException e)
 		{
@@ -149,7 +149,7 @@ public class NonBlockingServer
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		
+
 	}
 }
 
