@@ -1,4 +1,4 @@
-#include "game.h"
+#include "ogreGame.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
 #include "../../clientside/network/network.h"
@@ -18,10 +18,10 @@
 #endif
 
 
-Game* game;
-bool keys[256];
+OgreGame* game;
+//bool keys[256];
 
-Game::Game(const char* serverIP)
+OgreGame::OgreGame(const char* serverIP) : Game(serverIP)
 {
 	StartLog();
 
@@ -47,26 +47,17 @@ Game::Game(const char* serverIP)
 	mPlayingGame = false;
 	mInitializeGui = false;
 
-	//keys
-	mKeyUp = 1;
-	mKeyDown = 2;
-	mKeyLeft = 4;
-	mKeyRight = 8;
-	mKeySpace = 16;
+	
+ }
 
-	//commmands
-	mCommandHistorySize = 64;
-
-}
-
-Game::~Game()
+OgreGame::~OgreGame()
 {
 	delete mClient;
 }
 
 
 
-DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
+DynamicShape* OgreGame::AddShape(Game* game,int local, int ind, char *name, float originX, float originY, float originZ,
 					float velocityX, float velocityY, float velocityZ, float rotationX, float rotationZ)
 {
 	Vector3D* position = new Vector3D();
@@ -103,7 +94,7 @@ DynamicShape* Game::AddShape(Game* game,int local, int ind, char *name, float or
 	return shape;
 }
 
-DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
+DynamicShape* OgreGame::AddGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
 {
 	DynamicShape* shape = new OgreDynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
 	Vector3D v;
@@ -115,7 +106,7 @@ DynamicShape* Game::AddGhostShape(Game* game, int ind,Vector3D* position, Vector
 	return shape;
 }
 
-void Game::RemoveShape(int index)
+void OgreGame::RemoveShape(int index)
 {
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
@@ -127,7 +118,7 @@ void Game::RemoveShape(int index)
 	}
 }
 
-void Game::createScene(void)
+void OgreGame::createScene(void)
 {
     mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
 
@@ -139,12 +130,12 @@ void Game::createScene(void)
 
 }
 
- void Game::Shutdown(void)
+ void OgreGame::Shutdown(void)
  {
  	Disconnect();
  }
 
-void Game::CheckKeys(void)
+void OgreGame::CheckKeys(void)
 {
 
 	if (mClient->mShape) 
@@ -157,23 +148,23 @@ void Game::CheckKeys(void)
 	
  		if(keys[VK_DOWN])
  		{
- 			mClient->mClientCommandToServer.mKey |= mKeyDown;
+ 			mClient->mClientCommandToServer.mKey |= KEY_DOWN;
  		}
  		if(keys[VK_UP])
  		{
- 			mClient->mClientCommandToServer.mKey |= mKeyUp;
+ 			mClient->mClientCommandToServer.mKey |= KEY_UP;
  		}
  		if(keys[VK_LEFT])
  		{
- 			mClient->mClientCommandToServer.mKey |= mKeyLeft;
+ 			mClient->mClientCommandToServer.mKey |= KEY_LEFT;
  		}
  		if(keys[VK_RIGHT])
  		{
- 			mClient->mClientCommandToServer.mKey |= mKeyRight;
+ 			mClient->mClientCommandToServer.mKey |= KEY_RIGHT;
  		}
 		if(keys[VK_SPACE])
 		{
-	 		//mClient->mClientCommandToServer.mKey |= mKeySpace;
+	 		//mClient->mClientCommandToServer.mKey |= KEY_SPACE;
 	 	}
 	 	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
 	}
@@ -181,7 +172,7 @@ void Game::CheckKeys(void)
 
 //this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
 //unless it did not change on server in which case it should contain same value.
-void Game::moveGhostShapes(DynamicShape* shape)
+void OgreGame::moveGhostShapes(DynamicShape* shape)
 {
 	Vector3D transVector;
 
@@ -194,7 +185,7 @@ void Game::moveGhostShapes(DynamicShape* shape)
 		shape->mGhost->setPosition(transVector);
 	}
 }
-void Game::ReadPackets(void)
+void OgreGame::ReadPackets(void)
 {
 //	char data[1400];
 
@@ -249,7 +240,7 @@ DynamicShape* shape;
 
 			break;
 
-		case mMessageFrame:
+		case USER_MES_FRAME:
 			// Skip sequences
 			dispatch->ReadShort();
 			dispatch->ReadShort();
@@ -269,7 +260,7 @@ DynamicShape* shape;
 			}
 			break;
 
-		case mMessageServerExit:
+		case USER_MES_SERVEREXIT:
 			Disconnect();
 			break;
 
@@ -277,16 +268,16 @@ DynamicShape* shape;
 	}
 }
 
-void Game::SendCommand(void)
+void OgreGame::SendCommand(void)
 {
 	if(mClient->mConnectionState != mClient->mMessageConnected)
 		return;
 
-	int outgoingSequence = mClient->mOutgoingSequence & (mCommandHistorySize-1);
+	int outgoingSequence = mClient->mOutgoingSequence & (COMMAND_HISTORY_SIZE-1);
 
 	Dispatch* dispatch = new Dispatch(1400);
 
-	dispatch->WriteByte(mMessageFrame);						// type
+	dispatch->WriteByte(USER_MES_FRAME);						// type
 	dispatch->WriteShort(mClient->mOutgoingSequence);
 	dispatch->WriteShort(mClient->mIncomingSequence);
 
@@ -301,13 +292,13 @@ void Game::SendCommand(void)
 
 }
 
-void Game::Disconnect(void)
+void OgreGame::Disconnect(void)
 {
 
 	if(!mInit)
 		return;
 
-	LogString("Game::Disconnect");
+	LogString("OgreGame::Disconnect");
 
 	mInit = false;
 
@@ -318,7 +309,7 @@ void Game::Disconnect(void)
 //should a shape be responsible to read it's own command?????
 //once we determine it's about him shouldn't we pass it off to
 //shape object to handle?
-void Game::ReadDeltaMoveCommand(Dispatch* mes)
+void OgreGame::ReadDeltaMoveCommand(Dispatch* mes)
 {
 	DynamicShape* shape = NULL;
 
@@ -335,7 +326,7 @@ void Game::ReadDeltaMoveCommand(Dispatch* mes)
 	}
 }
 
-DynamicShape* Game::getDynamicShape(int id)
+DynamicShape* OgreGame::getDynamicShape(int id)
 {
 	DynamicShape* shape = NULL;
 
@@ -363,10 +354,10 @@ DynamicShape* Game::getDynamicShape(int id)
 
 
 
-void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
+void OgreGame::BuildDeltaMoveCommand(Dispatch* dispatch)
 {
 	int flags = 0;
-	int last = (mClient->mOutgoingSequence - 1) & (mCommandHistorySize-1);
+	int last = (mClient->mOutgoingSequence - 1) & (COMMAND_HISTORY_SIZE-1);
 
 	// Check what needs to be updated
 	if(mClient->mClientCommandToServerArray[last].mKey != mClient->mClientCommandToServer.mKey)
@@ -398,7 +389,7 @@ void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
 
 
 
-void Game::processUnbufferedInput()
+void OgreGame::processUnbufferedInput()
 {
     if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
@@ -443,7 +434,7 @@ void Game::processUnbufferedInput()
 
 }
 
-void Game::buttonHit(OgreBites::Button *button)
+void OgreGame::buttonHit(OgreBites::Button *button)
 {
 	if (button == mJoinButton)
 	{
@@ -459,7 +450,7 @@ void Game::buttonHit(OgreBites::Button *button)
 	}
 }
 
-bool Game::mouseMoved( const OIS::MouseEvent &arg )
+bool OgreGame::mouseMoved( const OIS::MouseEvent &arg )
 {
     if (mTrayMgr->injectMouseMove(arg)) return true;
 	if (mPlayingGame)
@@ -469,7 +460,7 @@ bool Game::mouseMoved( const OIS::MouseEvent &arg )
     return true;
 }
 
-bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
+bool OgreGame::frameRenderingQueued(const Ogre::FrameEvent& evt)
 {
 	mRenderTime = evt.timeSinceLastFrame;
 
@@ -478,7 +469,7 @@ bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
 	return ret;
 }
 
-void Game::RunNetwork(int msec)
+void OgreGame::RunNetwork(int msec)
 {
 	static int time = 0;
 	time += msec;
@@ -496,7 +487,7 @@ void Game::RunNetwork(int msec)
 	}
 }
 
-void Game::gameLoop()
+void OgreGame::gameLoop()
 {
 	while(true)
     {
@@ -521,7 +512,7 @@ void Game::gameLoop()
 	}
 }
 
-void Game::initializeGui()
+void OgreGame::initializeGui()
 {
 	if (mInitializeGui == true)
 	{
@@ -534,7 +525,7 @@ void Game::initializeGui()
 	}
 }
 
-void Game::loadJoinScreen()
+void OgreGame::loadJoinScreen()
 {
 	unloadOtherScreens();
 	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "mJoinButton", "Join Game");
@@ -542,24 +533,24 @@ void Game::loadJoinScreen()
 	mTrayMgr->showCursor();
 }
 
-void Game::hideGui()
+void OgreGame::hideGui()
 {
 	hideJoinScreen();
 	mTrayMgr->hideCursor();
 }
 
-void Game::hideJoinScreen()
+void OgreGame::hideJoinScreen()
 {
 	mTrayMgr->removeWidgetFromTray(mJoinButton);
     mJoinButton->hide();
 }
 
-void Game::unloadOtherScreens()
+void OgreGame::unloadOtherScreens()
 {
 
 }
 
-void Game::interpolateFrame()
+void OgreGame::interpolateFrame()
 {
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
@@ -567,7 +558,7 @@ void Game::interpolateFrame()
 	}
 }
 
-void Game::checkForShutdown()
+void OgreGame::checkForShutdown()
 {
 	if (mDatagramSocketShutdown == true)
 	{
@@ -575,7 +566,7 @@ void Game::checkForShutdown()
 	}
 }
 
-bool Game::runGraphics()
+bool OgreGame::runGraphics()
 {
 	//Pump messages in all registered RenderWindow windows
 	WindowEventUtilities::messagePump();
@@ -590,7 +581,7 @@ bool Game::runGraphics()
 	}
 }
 
-int Game::dreamSock_GetCurrentSystemTime(void)
+int OgreGame::dreamSock_GetCurrentSystemTime(void)
 {
 #ifndef WIN32
 	return mDreamLinuxSock->dreamSock_Linux_GetCurrentSystemTime();
@@ -617,9 +608,9 @@ extern "C" {
     {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 		StartLogConsole();
-        game = new Game(strCmdLine);
+        game = new OgreGame(strCmdLine);
 #else
-        game = new Game(argv[1]);
+        game = new OgreGame(argv[1]);
 #endif
         try {
             game->go();

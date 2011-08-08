@@ -5,7 +5,6 @@
 
 //command
 #include "../../command/command.h"
-#define COMMAND_HISTORY_SIZE		64
 
 #include <string>
 

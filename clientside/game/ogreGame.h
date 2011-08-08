@@ -1,5 +1,5 @@
-#ifndef GAME_H
-#define GAME_H
+#ifndef OGREGAME_H
+#define OGREGAME_H
 
 #include "BaseApplication.h"
 
@@ -19,9 +19,22 @@ class DreamLinuxSock;
 #define VK_RIGHT 0x27
 #define VK_SPACE 0x20
 
-extern bool keys[256];
+#define COMMAND_HISTORY_SIZE	64
+
+#define KEY_UP					1
+#define KEY_DOWN				2
+#define KEY_LEFT				4
+#define KEY_RIGHT				8
+#define KEY_SPACE				16
 
 
+//skip next guy???
+
+#define USER_MES_FRAME			1
+#define USER_MES_NONDELTAFRAME	2
+#define USER_MES_SERVEREXIT		3
+
+#define USER_MES_KEEPALIVE		12
 
 #ifdef WIN32
 class DreamWinSock;
@@ -32,12 +45,12 @@ class Client;
 class MovableTextOverlay;
 class Dispatch;
 
-class Game : public BaseApplication
+class OgreGame : public BaseApplication
 {
 public:
 	
-	Game(const char* serverIP);
-	~Game();
+	OgreGame(const char* serverIP);
+	~OgreGame();
 
 	//Server player 
 	//void	MoveServerPlayer(void); //for debugging and still some actual functionality
@@ -106,21 +119,6 @@ public:
 	void unloadOtherScreens();
 	void initializeGui();
 
-	int mKeyUp;
-	int mKeyDown;
-	int mKeyLeft;
-	int mKeyRight;
-	int mKeySpace;
-
-	//commands
-	int mCommandHistorySize;
-
-	//messages
-	static const char mMessageFrame = 1;
-	static const char mMessageNonDeltaFrame = 2;
-	static const char mMessageServerExit = 3;
-	static const char mMessageKeepAlive = 12;
-	
 	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
 #ifdef WIN32
