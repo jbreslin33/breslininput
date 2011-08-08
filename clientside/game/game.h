@@ -47,7 +47,6 @@ public:
 	DynamicShape* getDynamicShape(int id);
 	void    RemoveShape(int index);
 	void	Shutdown    (void);
-	void	CheckKeys   (void);
 	void	Frame       (void);
 	void	RunNetwork  (int msec);
 	void    checkForShutdown();
