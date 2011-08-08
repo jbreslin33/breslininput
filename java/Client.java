@@ -17,18 +17,18 @@ public class Client
     public Client()
     {
     }
-    
+
 	public void makeConnection()
     {
 		int result = 0;
 		try
 		{
-			
+
 			client = SocketChannel.open();
-				isa = new InetSocketAddress("nicholson",4900);
+				isa = new InetSocketAddress("192.168.1.103",4900);
 			client.connect(isa);
 			client.configureBlocking(false);
-			receiveMessage();    
+			receiveMessage();
 		}
 		catch(UnknownHostException e)
 		{
@@ -52,7 +52,7 @@ public class Client
 			e.printStackTrace();
 		}
     }
-    
+
 	public int sendMessage()
     {
 		System.out.println("Inside SendMessage");
@@ -81,7 +81,7 @@ public class Client
 				client.close();
 				return -1;
 			}
-	    
+
 		}
         catch(IOException e)
 		{
@@ -113,13 +113,13 @@ public class Client
     {
 		public SocketChannel sc = null;
 		public boolean val = true;
-	
+
 		public RecvThread(String str,SocketChannel client)
 		{
 			super(str);
 			sc = client;
 		}
-	
+
 		public void run() {
 
 			System.out.println("Inside receivemsg");
@@ -137,17 +137,17 @@ public class Client
 						String result = charBuffer.toString();
 									System.out.println(result);
 						buf.flip();
-						
+
 					}
 				}
-			
+
 			}
 			catch(IOException e)
 			{
 				e.printStackTrace();
-			
+
 			}
-            
+
 
 		}
     }
