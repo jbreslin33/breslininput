@@ -456,7 +456,6 @@ void Game::gameLoop()
 			game->RunNetwork(mRenderTime * 1000);
 		}
 
-		checkForShutdown();
 		interpolateFrame();
 
 		if (!runGraphics())
@@ -511,14 +510,6 @@ void Game::interpolateFrame()
 	for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	{
 		mShapeVector.at(i)->interpolateTick(mRenderTime);
-	}
-}
-
-void Game::checkForShutdown()
-{
-	if (mDatagramSocketShutdown == true)
-	{
-		mShutDown = true;
 	}
 }
 
