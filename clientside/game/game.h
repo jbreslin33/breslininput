@@ -91,7 +91,7 @@ public:
 	void moveGhostShapes(DynamicShape* shape);
 	void    RemoveShape(int index);
 	void    interpolateFrame();
-	void	ReadDeltaMoveCommand    (Dispatch* mes);
+	void	readDeltaMoveCommand    (Dispatch* mes);
 
 	// Network
 	void	RunNetwork  (int msec);
