@@ -8,6 +8,9 @@
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
+	//commmands
+	mCommandHistorySize = 64;
+
 	mSizeOfDispatch = 1400;
 	mShape = NULL; //to be filled when we actually create the shape
 
@@ -156,3 +159,58 @@ void Client::parsePacket(Dispatch *mes)
 	}
 }
 
+void Client::sendCommand(void)
+{
+	if(mConnectionState != mMessageConnected)
+		return;
+
+	int outgoingSequence = mOutgoingSequence & (mCommandHistorySize-1);
+
+	Dispatch* dispatch = new Dispatch(1400);
+
+	dispatch->WriteByte(mMessageFrame);						// type
+	dispatch->WriteShort(mOutgoingSequence);
+	dispatch->WriteShort(mIncomingSequence);
+
+	// Build delta-compressed move command
+	buildDeltaMoveCommand(dispatch);
+
+	// Send the packet
+	sendPacket(dispatch);
+
+	// Store the command to the input client's history
+	memcpy(&mClientCommandToServerArray[outgoingSequence], &mClientCommandToServer, sizeof(Command));
+}
+
+void Client::buildDeltaMoveCommand(Dispatch* dispatch)
+{
+	int flags = 0;
+	int last = (mOutgoingSequence - 1) & (mCommandHistorySize-1);
+
+	// Check what needs to be updated
+	if(mClientCommandToServerArray[last].mKey != mClientCommandToServer.mKey)
+	{
+		flags |= mCommandKey;
+	}
+
+	if(mClientCommandToServerArray[last].mMilliseconds != mClientCommandToServer.mMilliseconds)
+	{
+		flags |= mCommandMilliseconds;
+	}
+
+	// Add to the message
+	
+	//Flags
+	dispatch->WriteByte(flags);
+
+	// Key
+	if(flags & mCommandKey)
+	{
+		dispatch->WriteByte(mClientCommandToServer.mKey);
+	}
+
+	if(flags & mCommandMilliseconds)
+	{
+		dispatch->WriteByte(mClientCommandToServer.mMilliseconds);
+	}
+}

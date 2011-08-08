@@ -26,15 +26,6 @@ Game* mGame;
 
 //network
 //flag
-#define CMD_KEY						1
-#define CMD_MILLISECONDS            2
-#define CMD_ORIGIN_X                4
-#define CMD_ORIGIN_Y                8
-#define CMD_ORIGIN_Z               16 
-#define CMD_ROTATION_X             32
-#define CMD_ROTATION_Z             64
-
-static const char mCommandKey          = 1;
 static const char mCommandMilliseconds = 2;
 static const char mCommandOriginX      = 4;
 static const char mCommandOriginY      = 8;

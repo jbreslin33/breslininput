@@ -54,9 +54,6 @@ Game::Game(const char* serverIP)
 	mKeyRight = 8;
 	mKeySpace = 16;
 
-	//commmands
-	mCommandHistorySize = 64;
-
 }
 
 Game::~Game()
@@ -249,30 +246,6 @@ DynamicShape* shape;
 	}
 }
 
-void Game::SendCommand(void)
-{
-	if(mClient->mConnectionState != mClient->mMessageConnected)
-		return;
-
-	int outgoingSequence = mClient->mOutgoingSequence & (mCommandHistorySize-1);
-
-	Dispatch* dispatch = new Dispatch(1400);
-
-	dispatch->WriteByte(mMessageFrame);						// type
-	dispatch->WriteShort(mClient->mOutgoingSequence);
-	dispatch->WriteShort(mClient->mIncomingSequence);
-
-	// Build delta-compressed move command
-	BuildDeltaMoveCommand(dispatch);
-
-	// Send the packet
-	mClient->sendPacket(dispatch);
-
-	// Store the command to the input client's history
-	memcpy(&mClient->mClientCommandToServerArray[outgoingSequence], &mClient->mClientCommandToServer, sizeof(Command));
-
-}
-
 //this is all shapes coming to client game from server
 //should a shape be responsible to read it's own command?????
 //once we determine it's about him shouldn't we pass it off to
@@ -320,38 +293,7 @@ DynamicShape* Game::getDynamicShape(int id)
 //this the client's (in this case we are on clientside so there is only one client instance) move being built
 //to send to the server, all we are sending is a key(maybe) and always milliseconds.
 
-void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
-{
-	int flags = 0;
-	int last = (mClient->mOutgoingSequence - 1) & (mCommandHistorySize-1);
 
-	// Check what needs to be updated
-	if(mClient->mClientCommandToServerArray[last].mKey != mClient->mClientCommandToServer.mKey)
-	{
-		flags |= CMD_KEY;
-	}
-
-	if(mClient->mClientCommandToServerArray[last].mMilliseconds != mClient->mClientCommandToServer.mMilliseconds)
-	{
-		flags |= CMD_MILLISECONDS;
-	}
-
-	// Add to the message
-	
-	//Flags
-	dispatch->WriteByte(flags);
-
-	// Key
-	if(flags & CMD_KEY)
-	{
-		dispatch->WriteByte(mClient->mClientCommandToServer.mKey);
-	}
-
-	if(flags & CMD_MILLISECONDS)
-	{
-		dispatch->WriteByte(mClient->mClientCommandToServer.mMilliseconds);
-	}
-}
 
 
 
@@ -434,11 +376,9 @@ void Game::RunNetwork(int msec)
 	ReadPackets();
 	
 	// Framerate is too high
-	if(time > (1000 / 60)) {
-
-		//I think i want to official grab the key tally here along with the milliseconds tally.
-
-		SendCommand();
+	if(time > (1000 / 60))
+	{
+		mClient->sendCommand();
 		mFrameTime = time / 1000.0f;
 		time = 0;
 	}
