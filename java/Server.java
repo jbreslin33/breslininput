@@ -55,15 +55,18 @@ whenever either
 class Server {
 
    // set input parameters
-   String host = "localhost";   // "slinky.cs.nyu.edu";
-   int port = 10000;
+   String host = "192.168.1.104";   // "slinky.cs.nyu.edu";
+   int port = 22222;
    int datagramSize = 512;
    int datagramInterval = 1000;
    int numMsgs = 24;
 
    // array of bytes for  a datagram to send
    byte[] sendData = new byte[ datagramSize ];
-   ByteBuffer theSendDataByteBuffer = ByteBuffer.wrap( sendData );
+
+   ByteBuffer out = ByteBuffer.allocate(8);
+
+
 
    Server()
    {
@@ -78,22 +81,19 @@ class Server {
          // before it can be registered with a selector
          theDatagramChannel.configureBlocking( false );
 
-         // instantiate a selector
-         //Selector theSelector = Selector.open();
-
-         // register the selector on the channel to monitor reading
-         // datagrams on the DatagramChannel
-         //theDatagramChannel.register( theSelector, SelectionKey.OP_READ );
-
-         //long millisecsUntilSendNextDatagram = 0;
-        // int i = 1;  int j = 1;
-
          // send and read concurrently, but do not block on read:
          while (true)
          {
-        //    long start = System.currentTimeMillis();
 
-   	        theDatagramChannel.send( theSendDataByteBuffer, theInetSocketAddress );
+				out.clear();
+   				long secondsSince1970 = System.currentTimeMillis();
+   			     out.putLong(secondsSince1970);
+   			     out.flip();
+
+   			     out.position(4);
+   			     //channel.send(out, client);
+
+   	        theDatagramChannel.send( out, theInetSocketAddress );
             System.out.println("sent Datagram ");
 
          }
