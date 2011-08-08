@@ -144,41 +144,6 @@ void Game::createScene(void)
  	Disconnect();
  }
 
-void Game::CheckKeys(void)
-{
-
-	if (mClient->mShape) 
-	{
-		mClient->mClientCommandToServer.mKey = 0;
- 		if(keys[VK_ESCAPE])
- 		{
-			mDatagramSocketShutdown = true;
- 		}
-	
- 		if(keys[VK_DOWN])
- 		{
- 			mClient->mClientCommandToServer.mKey |= mKeyDown;
- 		}
- 		if(keys[VK_UP])
- 		{
- 			mClient->mClientCommandToServer.mKey |= mKeyUp;
- 		}
- 		if(keys[VK_LEFT])
- 		{
- 			mClient->mClientCommandToServer.mKey |= mKeyLeft;
- 		}
- 		if(keys[VK_RIGHT])
- 		{
- 			mClient->mClientCommandToServer.mKey |= mKeyRight;
- 		}
-		if(keys[VK_SPACE])
-		{
-	 		//mClient->mClientCommandToServer.mKey |= mKeySpace;
-	 	}
-	 	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
-	}
-}
-
 //this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
 //unless it did not change on server in which case it should contain same value.
 void Game::moveGhostShapes(DynamicShape* shape)
@@ -400,48 +365,109 @@ void Game::BuildDeltaMoveCommand(Dispatch* dispatch)
 
 void Game::processUnbufferedInput()
 {
+mClient->mClientCommandToServer.mKey = 0;
     if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
-		keys[VK_ESCAPE] = TRUE;
+		//keys[VK_ESCAPE] = TRUE;
+		 			//mClient->mClientCommandToServer.mKey |= mKeyDown;
+					mDatagramSocketShutdown = true;
     }
 	else
 	{
-		keys[VK_ESCAPE] = FALSE;
+			mDatagramSocketShutdown = false;
+		 			//mClient->mClientCommandToServer.mKey |= mKeyUp;
+		//keys[VK_ESCAPE] = FALSE;
 	}
-    if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
+    
+	
+	
+	if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
-		keys[VK_UP] = TRUE;
+		//keys[VK_UP] = TRUE;
+			mClient->mClientCommandToServer.mKey |= mKeyUp;
     }
 	else
 	{
-        keys[VK_UP] = FALSE;
+        //keys[VK_UP] = FALSE;
+			//mClient->mClientCommandToServer.mKey |= mKeyUp;
 	}
+
+
+
     if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
     {
-		keys[VK_DOWN] = TRUE;
+		//keys[VK_DOWN] = TRUE;
+			mClient->mClientCommandToServer.mKey |= mKeyDown;
     }
 	else
 	{
-        keys[VK_DOWN] = FALSE;
+       // keys[VK_DOWN] = FALSE;
 	}
     if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
     {
-		keys[VK_LEFT] = TRUE;
+		//keys[VK_LEFT] = TRUE;
+			mClient->mClientCommandToServer.mKey |= mKeyLeft;
     }
 	else
 	{
-        keys[VK_LEFT] = FALSE;
+        //keys[VK_LEFT] = FALSE;
 	}
     if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
     {
-		keys[VK_RIGHT] = TRUE;
+		//keys[VK_RIGHT] = TRUE;
+				mClient->mClientCommandToServer.mKey |= mKeyRight;
     }
 	else
 	{
-        keys[VK_RIGHT] = FALSE;
+       // keys[VK_RIGHT] = FALSE;
 	}
-
 }
+
+void Game::CheckKeys(void)
+{
+
+	if (mClient->mShape) 
+	{
+		//mClient->mClientCommandToServer.mKey = 0;
+		/*
+ 		if(keys[VK_ESCAPE])
+ 		{
+			mDatagramSocketShutdown = true;
+ 		}
+	*/
+		/*
+ 		if(keys[VK_DOWN])
+ 		{
+ 			mClient->mClientCommandToServer.mKey |= mKeyDown;
+ 		}
+		*/
+
+/*
+ 		if(keys[VK_UP])
+ 		{
+ 			mClient->mClientCommandToServer.mKey |= mKeyUp;
+ 		}
+*/		
+		/*
+ 		if(keys[VK_LEFT])
+ 		{
+ 			mClient->mClientCommandToServer.mKey |= mKeyLeft;
+ 		}
+		*/
+		/*
+ 		if(keys[VK_RIGHT])
+ 		{
+ 			mClient->mClientCommandToServer.mKey |= mKeyRight;
+ 		}
+		*/
+		if(keys[VK_SPACE])
+		{
+	 		//mClient->mClientCommandToServer.mKey |= mKeySpace;
+	 	}
+	 	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
+	}
+}
+
 
 void Game::buttonHit(OgreBites::Button *button)
 {
