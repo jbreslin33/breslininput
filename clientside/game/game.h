@@ -86,6 +86,7 @@ public:
 	//shape
 	DynamicShape* addShape(Game* game, int local, int ind, char *name, float originX, float originZ, float originY,
 					float velocityX, float velocityZ, float velocityY, float rotationX, float rotationZ);
+	DynamicShape* addShape(Dispatch* dispatch);
 	DynamicShape* addGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 	DynamicShape* getDynamicShape(int id);
 	void moveGhostShapes(DynamicShape* shape);
