@@ -55,7 +55,7 @@ whenever either
 class Server {
 
    // set input parameters
-   String host = "192.168.1.104";   // "slinky.cs.nyu.edu";
+   String host = "192.168.1.103";   // "slinky.cs.nyu.edu";
    int port = 22222;
    int datagramSize = 512;
    int datagramInterval = 1000;
