@@ -182,8 +182,6 @@ void Game::readPackets()
 {
 	int type;
 	int ret;
-	int newTime;
-	int time;
 
 	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
 
@@ -196,39 +194,47 @@ void Game::readPackets()
 
 		switch(type)
 		{
-		case mClient->mMessageAddShape:
-			addShape(dispatch);
+			case mClient->mMessageAddShape:
+				addShape(dispatch);
 			break;
 
-		case mClient->mMessageRemoveShape:
-			removeShape(dispatch);
+			case mClient->mMessageRemoveShape:
+				removeShape(dispatch);
 			break;
 
-		case mMessageFrame:
-			// Skip sequences
-			dispatch->ReadShort();
-			dispatch->ReadShort();
-
-			newTime = dreamSock_GetCurrentSystemTime();
-			time = newTime - mOldTime;
-            mOldTime = newTime;
-
-			//for (unsigned int i = 0; i < mShapeVector.size(); i++)
-			while (dispatch->getReadCount() <= dispatch->GetSize())
-			{
-				if (mDatagramSocketShutdown)
-				{
-					return;
-				}
-				readDeltaMoveCommand(dispatch);
-			}
+			case mMessageFrame:
+				frame(dispatch);
 			break;
 
-		case mMessageServerExit:
-			shutdown();
+			case mMessageServerExit:
+				shutdown();
 			break;
-
 		}
+	}
+}
+
+void Game::frame(Dispatch* dispatch)
+{
+
+	int newTime;
+	int time;
+
+	// Skip sequences
+	dispatch->ReadShort();
+	dispatch->ReadShort();
+
+	newTime = dreamSock_GetCurrentSystemTime();
+	time = newTime - mOldTime;
+    mOldTime = newTime;
+
+	//for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	while (dispatch->getReadCount() <= dispatch->GetSize())
+	{
+		if (mDatagramSocketShutdown)
+		{
+			return;
+		}
+		readDeltaMoveCommand(dispatch);
 	}
 }
 
