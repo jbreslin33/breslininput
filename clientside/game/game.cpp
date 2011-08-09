@@ -305,7 +305,7 @@ void Game::readPackets()
 	int type;
 	int ret;
 
-	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
+	Dispatch* dispatch = new Dispatch();
 
 	while(ret = mClient->getPacket(dispatch))
 	{
