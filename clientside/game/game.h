@@ -59,11 +59,6 @@ public:
 	//gui
 	OgreBites::Button* mJoinButton;
 
-	//gui
-	void buttonHit(OgreBites::Button *button);
-	bool mouseMoved( const OIS::MouseEvent &arg );
-
-
 	//keys
 	int mKeyUp;
 	int mKeyDown;
@@ -87,23 +82,25 @@ public:
 	void          removeShape          (Dispatch* dispatch);
 
 	DynamicShape* getDynamicShape      (  int id);
-	void          moveGhostShapes      (DynamicShape* shape);
 
+	void          moveGhostShapes      (DynamicShape* shape);
+	void		  frame                (Dispatch* dispatch);
 	void          interpolateFrame     ();
-	void	      readDeltaMoveCommand    (Dispatch* mes);
 
 	// Network
 	void	runNetwork  (int msec);
 	void	readPackets             ();
 
 	//input
-	void         processUnbufferedInput();
+	void processUnbufferedInput();
+	void buttonHit             (OgreBites::Button *button);
+	bool mouseMoved            ( const OIS::MouseEvent &arg );
 
 	//graphics
-    virtual void createScene           ();
-    virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
-	bool    runGraphics();
-	void frame(Dispatch* dispatch);
+	Ogre::SceneManager* getSceneManager      () { return mSceneMgr; }
+    virtual void        createScene          ();
+    virtual bool        frameRenderingQueued (const Ogre::FrameEvent& evt);
+	bool                runGraphics          ();
 
 	//gui	
 	void hideGui();
@@ -111,8 +108,6 @@ public:
 	void hideJoinScreen();
 	void unloadOtherScreens();
 	void initializeGui();
-	
-	Ogre::SceneManager* getSceneManager() { return mSceneMgr; }
 
 	//time
 	#ifndef WIN32
