@@ -19,7 +19,6 @@
 
 
 Game* game;
-bool keys[256];
 
 Game::Game(const char* serverIP)
 {

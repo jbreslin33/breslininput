@@ -65,7 +65,6 @@ public:
 
 
 	//keys
-	bool keys[256];
 	int mKeyUp;
 	int mKeyDown;
 	int mKeyLeft;
