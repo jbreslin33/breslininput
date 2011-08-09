@@ -39,6 +39,11 @@
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
 
+#ifdef WIN32
+class DreamWinSock;
+#else
+class DreamLinuxSock;
+#endif
 class Message;
 class DatagramPacket;
 
@@ -48,6 +53,12 @@ public:
 DatagramSocket(const char serverIP[32], int serverPort);
 DatagramSocket();
 ~DatagramSocket();
+
+	#ifdef WIN32
+	DreamWinSock* mDreamWinSock;
+	#else
+	DreamLinuxSock* mDreamLinuxSock;
+	#endif
 
 //
 private:
