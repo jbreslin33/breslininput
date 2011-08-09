@@ -77,7 +77,7 @@ void setSendToAddress(const char* serverIP, int serverPort);
 void send(Dispatch* dispatch);
 
 //receive
-int  getPacket(char *data);
+int  getPacket(Dispatch* dispatch);
 
 };
 #endif

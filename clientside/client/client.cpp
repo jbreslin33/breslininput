@@ -85,7 +85,6 @@ void Client::sendPacket(Dispatch *dispatch)
 	}
 }
 
-
 /**********  GETS ****/
 int Client::getPacket(Dispatch* dispatch)
 {
@@ -96,7 +95,7 @@ int Client::getPacket(Dispatch* dispatch)
 	}
 	int ret;
 
-	ret = mNetwork->getPacket(dispatch->mCharArray);
+	ret = mNetwork->getPacket(dispatch);
 	if(ret <= 0)
 		return 0;
 

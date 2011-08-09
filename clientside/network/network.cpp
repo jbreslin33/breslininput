@@ -203,8 +203,10 @@ void Network::setSendToAddress(const char* serverIP, int serverPort)
 }
 
 //receive
-int Network::getPacket(char *data)
+int Network::getPacket(Dispatch* dispatch)
 {
+	char* data = dispatch->mCharArray;
+
 	int ret;
 	struct sockaddr tempFrom;
 	socklen_t fromlen;
