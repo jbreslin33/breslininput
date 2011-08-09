@@ -53,31 +53,44 @@ public:
 Network(const char serverIP[32], int serverPort);
 ~Network();
 
-	#ifdef WIN32
-	DreamWinSock* mDreamWinSock;
-	#else
-	DreamLinuxSock* mDreamLinuxSock;
-	#endif
-
-//
-SOCKET mSocket;
-struct sockaddr_in sendToAddress;
-
-//open
-SOCKET createSocket(int protocol);
-SOCKET open();
-int    setNonBlocking(u_long setMode);
-
-//close
-void close();
-
 //send
-void send			 (int length, char *data, struct sockaddr addr);
-void setSendToAddress(const char* serverIP, int serverPort);
 void send(Dispatch* dispatch);
 
 //receive
 int  getPacket(Dispatch* dispatch);
+
+//close
+void close();
+
+private:
+
+#ifdef WIN32
+DreamWinSock* mDreamWinSock;
+#else
+DreamLinuxSock* mDreamLinuxSock;
+#endif
+
+//socket
+SOCKET mSocket;
+
+//address
+struct sockaddr_in sendToAddress;
+
+//create
+SOCKET createSocket(int protocol);
+void setSendToAddress(const char* serverIP, int serverPort);
+
+//open
+SOCKET open();
+
+//block
+int    setNonBlocking(u_long setMode);
+
+
+
+//send
+void send			 (int length, char *data, struct sockaddr addr);
+
 
 };
 #endif
