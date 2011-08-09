@@ -14,7 +14,7 @@ public:
 	#endif
 	int dreamSock_GetCurrentSystemTime();
 
-	int dreamSock_Win_GetCurrentSystemTime();
+	int getCurrentSystemTime();
 };
 
 #endif
