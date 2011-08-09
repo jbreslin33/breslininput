@@ -3,8 +3,6 @@
 
 #include "BaseApplication.h"
 
-class Network;
-class Message;
 class Client;
 class MovableTextOverlay;
 class Dispatch;
@@ -18,8 +16,10 @@ public:
 	Game(const char* serverIP);
 	~Game();
 
-	// Network variables
+	// Client
 	Client* mClient;
+
+	//Server
 	const char*  mServerIP;
 
 	//Shapes
