@@ -1,7 +1,14 @@
 #include "network.h"
 
-#include "../message/message.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
+
+#ifdef WIN32
+#include "../tdreamsock/dreamWinSock.h"
+#else
+#include "../tdreamsock/dreamLinuxSock.h"
+#endif
+
+#include "../dispatch/dispatch.h"
 
 #ifdef WIN32
 //do nothing
@@ -23,11 +30,17 @@
 
 #endif
 
-#include "../../clientside/client/client.h"
+#include "../client/client.h"
 
 Network::Network(const char serverIP[32], int serverPort )
 {
-	mSocket = dreamSock_OpenUDPSocket();
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
+	mSocket = open();
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
 	{
@@ -43,25 +56,34 @@ Network::Network(const char serverIP[32], int serverPort )
 	sendToAddress.sin_addr.s_addr = inetAddr;
 }
 
+Network::Network()
+{
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
+	mSocket = open();
+}
+
 Network::~Network()
 {
 }
 
-/*
-called from constructor only
-*/
-SOCKET Network::dreamSock_OpenUDPSocket()
+//open
+SOCKET Network::open()
 {
 	SOCKET sock;
 
 	struct sockaddr_in address;
 
-	sock = dreamSock_Socket(DREAMSOCK_UDP);
+	sock = createSocket(DREAMSOCK_UDP);
 
 	if(sock == DREAMSOCK_INVALID_SOCKET)
 		return sock;
 
-	dreamSock_SetNonBlocking(1);
+	setNonBlocking(1);
 
 	LogString("No net interface given, using any interface available");
 	address.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -95,10 +117,7 @@ SOCKET Network::dreamSock_OpenUDPSocket()
 }
 
 
-/*
-called from constructor only
-*/
-SOCKET Network::dreamSock_Socket(int protocol)
+SOCKET Network::createSocket(int protocol)
 {
 	int type;
 	int proto;
@@ -118,7 +137,7 @@ SOCKET Network::dreamSock_Socket(int protocol)
 	// Create the socket
 	if((mSocket = socket(AF_INET, type, proto)) == -1)
 	{
-		LogString("dreamSock_Socket - socket() failed");
+		LogString("createSocket - socket() failed");
 
 #ifdef WIN32
 		errno = WSAGetLastError();
@@ -134,10 +153,7 @@ SOCKET Network::dreamSock_Socket(int protocol)
 	return mSocket;
 }
 
-/*
-called from constructor only
-*/
-int Network::dreamSock_SetNonBlocking(u_long setMode)
+int Network::setNonBlocking(u_long setMode)
 {
 	u_long set = setMode;
 
@@ -149,7 +165,8 @@ int Network::dreamSock_SetNonBlocking(u_long setMode)
 #endif
 }
 
-void Network::dreamSock_CloseSocket()
+//close
+void Network::close()
 {
 #ifdef WIN32
 		closesocket(mSocket);
@@ -158,10 +175,52 @@ void Network::dreamSock_CloseSocket()
 #endif
 }
 
-/*
-autonomous
-*/
-int Network::dreamSock_GetPacket(char *data)
+//send
+
+void Network::send(Dispatch* dispatch)
+{
+	send(dispatch->mSize,dispatch->mCharArray,*(struct sockaddr *) &sendToAddress);
+}
+
+void Network::send(int length, char *data,  struct sockaddr addr)
+{
+	int	ret;
+
+	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
+
+	if(ret == -1)
+	{
+#ifdef WIN32
+		errno = WSAGetLastError();
+
+		// Silently handle wouldblock
+		if(errno == WSAEWOULDBLOCK)
+			return;
+		size_t t = 256;
+		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
+#else
+		// Silently handle wouldblock
+		if(errno == EWOULDBLOCK)
+			return;
+
+		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
+#endif
+	}
+}
+
+void Network::setSendToAddress(const char* serverIP, int serverPort)
+{
+	//ripped from client, since we only have one client on this side let's do it here.
+	memset((char *) &sendToAddress, 0, sizeof(sendToAddress));
+
+	u_long inetAddr               = inet_addr(serverIP);
+	sendToAddress.sin_port        = htons((u_short) serverPort);
+	sendToAddress.sin_family      = AF_INET;
+	sendToAddress.sin_addr.s_addr = inetAddr;
+}
+
+//receive
+int Network::getPacket(char *data)
 {
 	int ret;
 	struct sockaddr tempFrom;
@@ -202,42 +261,3 @@ int Network::dreamSock_GetPacket(char *data)
 	}
 	return ret;
 }
-
-/*
-autonomous
-*/
-void Network::dreamSock_SendPacket(int length, char *data, struct sockaddr addr)
-{
-	int	ret;
-
-	ret = sendto(mSocket, data, length, 0, &addr, sizeof(addr));
-
-	if(ret == -1)
-	{
-#ifdef WIN32
-		errno = WSAGetLastError();
-
-		// Silently handle wouldblock
-		if(errno == WSAEWOULDBLOCK)
-			return;
-		size_t t = 256;
-		LogString("Error code %d: sendto() : %s", errno, strerror_s("error",t,errno));
-#else
-		// Silently handle wouldblock
-		if(errno == EWOULDBLOCK)
-			return;
-
-		LogString("Error code %d: sendto() : %s", errno, strerror(errno));
-#endif
-	}
-}
-
-/*
-added by me
-*/
-void Network::sendPacket(Message *theMes)
-{
-	dreamSock_SendPacket(theMes->GetSize(), theMes->data,
-			*(struct sockaddr *) &sendToAddress);
-}
-

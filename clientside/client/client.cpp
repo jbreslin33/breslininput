@@ -1,9 +1,8 @@
 #include "client.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-#include "../../clientside/network/datagramSocket.h"
-#include "../../clientside/network/datagramPacket.h"
-#include "../../clientside/dispatch/dispatch.h"
+#include "../network/network.h"
+#include "../dispatch/dispatch.h"
 
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
@@ -28,13 +27,13 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	LogString("Server's information: IP address: %s, port: %d", remoteIP, mServerPort);
 
 	// Create client socket
-	mDatagramSocket = new DatagramSocket();
+	mNetwork = new Network(remoteIP,serverPort);
 }
 
 Client::~Client()
 {
-	mDatagramSocket->close();
-	delete mDatagramSocket;
+	mNetwork->close();
+	delete mNetwork;
 }
 /**********  SENDS  ****/
 void Client::sendConnect(const char *name)
@@ -72,9 +71,10 @@ void Client::reset(void)
 
 void Client::sendPacket(Dispatch *dispatch)
 {
-    DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
+    //DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
 	
-	mDatagramSocket->send(packet);
+	//mNetwork->send(packet);
+	mNetwork->send(dispatch);
 
 	dispatch->BeginReading();
 	int type = dispatch->ReadByte();
@@ -90,13 +90,13 @@ void Client::sendPacket(Dispatch *dispatch)
 int Client::getPacket(Dispatch* dispatch)
 {
 	// Check if the client is set up or if it is disconnecting
-	if(!mDatagramSocket)
+	if(!mNetwork)
 	{
 		return 0;
 	}
 	int ret;
 
-	ret = mDatagramSocket->getPacket(dispatch->mCharArray);
+	ret = mNetwork->getPacket(dispatch->mCharArray);
 	if(ret <= 0)
 		return 0;
 
