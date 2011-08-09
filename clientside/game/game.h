@@ -3,8 +3,6 @@
 
 #include "BaseApplication.h"
 
-//#include "../../clientside/shape/ogreDynamicShape.h"
-
 #ifdef WIN32
 
 class DreamWinSock;
@@ -21,6 +19,7 @@ class Client;
 class MovableTextOverlay;
 class Dispatch;
 class DynamicShape;
+class Time;
 
 class Game : public BaseApplication
 {
@@ -46,9 +45,11 @@ public:
 	std::vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 	
 	//time
+	Time* mTime;
 	float mFrameTime;
 	float mRenderTime;
 	int   mOldTime;
+	
 
 	//initialize
 	bool mInit;
@@ -110,11 +111,7 @@ public:
 	void unloadOtherScreens();
 	void initializeGui();
 
-	//time
-	#ifndef WIN32
-	int dreamSock_Linux_GetCurrentSystemTime(void);
-	#endif
-	int dreamSock_GetCurrentSystemTime();
+	
 
 };
 
