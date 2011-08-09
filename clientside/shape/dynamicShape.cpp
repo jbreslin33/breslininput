@@ -21,7 +21,8 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	Shape         (ind,position,rotation)
 {
 	mGame = game;
-//dynamic
+
+	//dynamic
 	mRenderTime = 0.0;
 
 	//run speed
