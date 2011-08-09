@@ -44,7 +44,6 @@ class DreamWinSock;
 #else
 class DreamLinuxSock;
 #endif
-class Message;
 class DatagramPacket;
 
 class DatagramSocket 
