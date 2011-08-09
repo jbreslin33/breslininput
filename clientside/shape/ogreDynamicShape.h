@@ -45,6 +45,7 @@ OgreDynamicShape(Game* game, Dispatch* dispatch);
 //ogre scene stuff
 std::string         mMeshName;
 std::string         mName;
+Entity*             mEntity;
 
 //this is your pointer to move shape, really all you need.
 SceneNode*          mSceneNode;
@@ -60,6 +61,9 @@ Ogre::AnimationState  *mAnimationState;
 //billboard
 ObjectTitle* mObjectTitle;
 std::string  mObjectTitleString;
+
+//shape
+void createShape(int numberOfTimes);
 
 //debugging
 void checkExtents(Vector3D min);
@@ -84,12 +88,14 @@ void enterAnimationState(DynamicShapeState* animationState);
 void fadeAnimations   (Real deltaTime);
 void setTopAnimation  (AnimID id, bool reset);
 void setBaseAnimation (AnimID id, bool reset);
+void setupAnimations();
 
 //title
 void drawTitle    ();
 void appendToTitle(std::string appendage);
 void appendToTitle(int appendage);
 void clearTitle   ();
+void setupTitle(int numberOfTimes);
 
 //name
 std::string getName() { return mName; } 
