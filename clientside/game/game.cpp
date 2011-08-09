@@ -60,6 +60,35 @@ Game::~Game()
 	delete mClient;
 }
 
+
+//Admin
+void Game::gameLoop()
+{
+	while(true)
+    {
+		processUnbufferedInput();
+		if(game != NULL)
+		{
+			game->runNetwork(mRenderTime * 1000);
+			interpolateFrame();
+		}
+		if (!runGraphics())
+		{
+			break;
+		}
+		initializeGui();
+	}
+}
+
+void Game::shutdown(void)
+{
+	if(!mInit)
+		return;
+	mInit = false;
+	mClient->sendDisconnect();
+}
+
+//Shape
 void Game::addShape(Dispatch* dispatch)
 {
 	int index;
@@ -131,32 +160,6 @@ void Game::removeShape(Dispatch* dispatch)
 	}
 }
 
-void Game::createScene(void)
-{
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
-
-    Ogre::Light* pointLight = mSceneMgr->createLight("pointLight");
-    pointLight->setType(Ogre::Light::LT_POINT);
-    pointLight->setPosition(Ogre::Vector3(250, 150, 250));
-    pointLight->setDiffuseColour(Ogre::ColourValue::White);
-    pointLight->setSpecularColour(Ogre::ColourValue::White);
-
-}
-
- void Game::shutdown(void)
- {
-	if(!mInit)
-		return;
-
-	LogString("Game::Disconnect");
-
-	mInit = false;
-
-	mClient->sendDisconnect();
- }
-
-//this function should simply move ghost directly to latest server info, in this case mServerFrame is set in ReadDeltaMove
-//unless it did not change on server in which case it should contain same value.
 void Game::moveGhostShapes(DynamicShape* shape)
 {
 	Vector3D transVector;
@@ -168,40 +171,6 @@ void Game::moveGhostShapes(DynamicShape* shape)
 	if (shape->mGhost)
 	{
 		shape->mGhost->setPosition(transVector);
-	}
-}
-void Game::readPackets()
-{
-	int type;
-	int ret;
-
-	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
-
-	while(ret = mClient->getPacket(dispatch))
-	{
-		dispatch->SetSize(ret);
-		dispatch->BeginReading();
-
-		type = dispatch->ReadByte();
-
-		switch(type)
-		{
-			case mClient->mMessageAddShape:
-				addShape(dispatch);
-			break;
-
-			case mClient->mMessageRemoveShape:
-				removeShape(dispatch);
-			break;
-
-			case mMessageFrame:
-				frame(dispatch);
-			break;
-
-			case mMessageServerExit:
-				shutdown();
-			break;
-		}
 	}
 }
 
@@ -242,27 +211,6 @@ void Game::frame(Dispatch* dispatch)
 	}
 }
 
-//this is all shapes coming to client game from server
-//should a shape be responsible to read it's own command?????
-//once we determine it's about him shouldn't we pass it off to
-//shape object to handle?
-void Game::readDeltaMoveCommand(Dispatch* mes)
-{
-	DynamicShape* shape = NULL;
-
-	mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(mes->GetSize()));
-
-	//index
-	int id = mes->ReadByte();
-
-	shape = getDynamicShape(id);
-
-	if (shape)
-	{
-		shape->readDeltaMoveCommand(mes);
-	}
-}
-
 DynamicShape* Game::getDynamicShape(int id)
 {
 	DynamicShape* shape = NULL;
@@ -286,13 +234,15 @@ DynamicShape* Game::getDynamicShape(int id)
 	}
 }
 
-//this the client's (in this case we are on clientside so there is only one client instance) move being built
-//to send to the server, all we are sending is a key(maybe) and always milliseconds.
+void Game::interpolateFrame()
+{
+	for (unsigned int i = 0; i < mShapeVector.size(); i++)
+	{
+		mShapeVector.at(i)->interpolateTick(mRenderTime);
+	}
+}
 
-
-
-
-
+//INPUT
 void Game::processUnbufferedInput()
 {
 	mClient->mClientCommandToServer.mKey = 0;
@@ -355,15 +305,7 @@ bool Game::mouseMoved( const OIS::MouseEvent &arg )
     return true;
 }
 
-bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-	mRenderTime = evt.timeSinceLastFrame;
-
-    bool ret = BaseApplication::frameRenderingQueued(evt);
-	
-	return ret;
-}
-
+//Network
 void Game::runNetwork(int msec)
 {
 	static int time = 0;
@@ -380,30 +322,79 @@ void Game::runNetwork(int msec)
 	}
 }
 
-void Game::gameLoop()
+void Game::readPackets()
 {
-	while(true)
-    {
+	int type;
+	int ret;
 
-		processUnbufferedInput();
+	Dispatch* dispatch = new Dispatch(mClient->mSizeOfDispatch);
 
-		if(game != NULL)
+	while(ret = mClient->getPacket(dispatch))
+	{
+		dispatch->SetSize(ret);
+		dispatch->BeginReading();
+
+		type = dispatch->ReadByte();
+
+		switch(type)
 		{
-			game->runNetwork(mRenderTime * 1000);
-			interpolateFrame();
-		}
+			case mClient->mMessageAddShape:
+				addShape(dispatch);
+			break;
 
+			case mClient->mMessageRemoveShape:
+				removeShape(dispatch);
+			break;
 
+			case mMessageFrame:
+				frame(dispatch);
+			break;
 
-		if (!runGraphics())
-		{
+			case mMessageServerExit:
+				shutdown();
 			break;
 		}
-
-		initializeGui();
 	}
 }
 
+//Graphics
+void Game::createScene(void)
+{
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
+
+    Ogre::Light* pointLight = mSceneMgr->createLight("pointLight");
+    pointLight->setType(Ogre::Light::LT_POINT);
+    pointLight->setPosition(Ogre::Vector3(250, 150, 250));
+    pointLight->setDiffuseColour(Ogre::ColourValue::White);
+    pointLight->setSpecularColour(Ogre::ColourValue::White);
+
+}
+
+bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+	mRenderTime = evt.timeSinceLastFrame;
+
+    bool ret = BaseApplication::frameRenderingQueued(evt);
+	
+	return ret;
+}
+
+bool Game::runGraphics()
+{
+	//Pump messages in all registered RenderWindow windows
+	WindowEventUtilities::messagePump();
+
+	if (!mRoot->renderOneFrame())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+//GUI
 void Game::initializeGui()
 {
 	if (mInitializeGui == true)
@@ -442,29 +433,8 @@ void Game::unloadOtherScreens()
 
 }
 
-void Game::interpolateFrame()
-{
-	for (unsigned int i = 0; i < mShapeVector.size(); i++)
-	{
-		mShapeVector.at(i)->interpolateTick(mRenderTime);
-	}
-}
 
-bool Game::runGraphics()
-{
-	//Pump messages in all registered RenderWindow windows
-	WindowEventUtilities::messagePump();
-
-	if (!mRoot->renderOneFrame())
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
+//TIME
 int Game::dreamSock_GetCurrentSystemTime(void)
 {
 #ifndef WIN32
