@@ -15,26 +15,7 @@
 
 #include <string.h>
 
-DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* velocity,
-						   Vector3D* rotation)
-:
-	Shape         (ind,position,rotation)
-{
-
-	mGame = game;
-
-	mPosition = new Vector3D();
-	mVelocity = new Vector3D();
-	mRotation = new Vector3D();
-
-	initializeVariables();
-
-	initializeCommands(position,rotation);
-
-	createStateMachines();
-}
-
-	DynamicShape::DynamicShape(Game* game, Dispatch* dispatch)
+DynamicShape::DynamicShape(Game* game, Dispatch* dispatch)
 :
 	Shape         ()
 {
