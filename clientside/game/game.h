@@ -83,12 +83,12 @@ public:
 	void	gameLoop();
 
 	//shape
-	void addShape(Dispatch* dispatch);
-	DynamicShape* getDynamicShape(int id);
-	void moveGhostShapes(DynamicShape* shape);
-	void    removeShape(Dispatch* dispatch);
-	void    interpolateFrame();
-	void	readDeltaMoveCommand    (Dispatch* mes);
+	void          addShape             (Dispatch* dispatch);
+	DynamicShape* getDynamicShape      (  int id);
+	void          moveGhostShapes      (DynamicShape* shape);
+	void          removeShape          (Dispatch* dispatch);
+	void          interpolateFrame     ();
+	void	      readDeltaMoveCommand    (Dispatch* mes);
 
 	// Network
 	void	runNetwork  (int msec);
