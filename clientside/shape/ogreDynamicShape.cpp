@@ -24,8 +24,6 @@
 	number_of_times++;
 }
 
-
-
 OgreDynamicShape::~OgreDynamicShape()
 {
 	delete mObjectTitle;
@@ -50,6 +48,13 @@ void OgreDynamicShape::createShape(int numberOfTimes)
 
 	//attache mesh to scenenode, henceforward we will use mSceneNode to control shape.
     mSceneNode->attachObject(mEntity);
+
+	//for scale, won't be needed in future hopefully...
+	Vector3D v;
+	v.x = 30;
+	v.y = 30;
+	v.z = 30;
+	scale(v);
 }
 
 void OgreDynamicShape::setupAnimations()
