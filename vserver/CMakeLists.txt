@@ -94,8 +94,8 @@ set(HDRS
 	../serverside/game/game.h
 	
 	#tdreamsock
-	../tdreamsock/dreamSockLog.h
-	../tdreamsock/dreamWinSock.h
+	../serverside/tdreamsock/dreamSockLog.h
+	../serverside/tdreamsock/dreamWinSock.h
 	
 	#network
 	../serverside/network/network.h
@@ -167,8 +167,8 @@ set(SRCS
 	../serverside/game/game.cpp
 	
 	#dreamsock
-	../tdreamsock/dreamSockLog.cpp
-	../tdreamsock/dreamWinSock.cpp
+	../serverside/tdreamsock/dreamSockLog.cpp
+	../serverside/tdreamsock/dreamWinSock.cpp
 	
 	#network
 	../serverside/network/network.cpp
@@ -235,8 +235,8 @@ set(HDRS
 	../serverside/network/network.h
 	
 	#tdreamsock
-	../tdreamsock/dreamSockLog.h
-	../tdreamsock/dreamLinuxSock.h
+	../serverside/tdreamsock/dreamSockLog.h
+	../serverside/tdreamsock/dreamLinuxSock.h
 	
 	#shape
 	../serverside/shape/shape.h
@@ -304,8 +304,8 @@ set(SRCS
 	../serverside/game/game.cpp
 
 	#dreamsock
-	../tdreamsock/dreamSockLog.cpp
-	../tdreamsock/dreamLinuxSock.cpp
+	../serverside/tdreamsock/dreamSockLog.cpp
+	../serverside/tdreamsock/dreamLinuxSock.cpp
 
 	#network
 	../serverside/network/network.cpp

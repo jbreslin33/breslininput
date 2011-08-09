@@ -1,15 +1,15 @@
 #include "game.h"
 #include "../../tdreamsock/dreamSockLog.h"
 
-#include "../../clientside/network/network.h"
+#include "../shape/ogreDynamicShape.h"
 
-#include "../../clientside/shape/ogreDynamicShape.h"
-
-#include "../../clientside/client/client.h"
+#include "../client/client.h"
 
 #include "../../math/vector3D.h"
 
 #include "../dispatch/dispatch.h"
+
+#include "../time/time.h"
 
 #ifdef WIN32
 #include "../../tdreamsock/dreamWinSock.h"
@@ -33,7 +33,7 @@ Game::Game(const char* serverIP)
 #endif
 
 	mClient	= new Client("", mServerIP, 30004);
-
+	mTime = new Time();
 	mFrameTime		 = 0.0f;
  	mRenderTime		 = 0.0f;
 	mOldTime         = 0;
@@ -183,7 +183,7 @@ void Game::frame(Dispatch* dispatch)
 	dispatch->ReadShort();
 	dispatch->ReadShort();
 
-	newTime = dreamSock_GetCurrentSystemTime();
+	newTime = mTime->dreamSock_GetCurrentSystemTime();
 	time = newTime - mOldTime;
     mOldTime = newTime;
 
@@ -430,18 +430,6 @@ void Game::hideJoinScreen()
 
 void Game::unloadOtherScreens()
 {
-
-}
-
-
-//TIME
-int Game::dreamSock_GetCurrentSystemTime(void)
-{
-#ifndef WIN32
-	return mDreamLinuxSock->dreamSock_Linux_GetCurrentSystemTime();
-#else
-	return mDreamWinSock->dreamSock_Win_GetCurrentSystemTime();
-#endif
 }
 
 

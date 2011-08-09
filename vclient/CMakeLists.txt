@@ -125,6 +125,9 @@ set(HDRS
 
 	#billboard
 	../clientside/billboard/objectTitle.h
+	
+	#time
+	../clientside/time/time.h
 )
  
 set(SRCS
@@ -165,6 +168,9 @@ set(SRCS
 	
 	#billboard
 	../clientside/billboard/objectTitle.cpp
+	
+	#time
+	../clientside/time/time.cpp
 
 )
 endif (WIN32)
@@ -209,6 +215,9 @@ set(HDRS
 		
 	#billboard
 	../clientside/billboard/objectTitle.h
+	
+	#time
+	../clientside/time/time.h
 )
  
 set(SRCS
@@ -249,6 +258,9 @@ set(SRCS
 	
 	#client
 	../clientside/client/client.cpp
+	
+	#time
+	../clientside/time/time.cpp
 
 	
 )
