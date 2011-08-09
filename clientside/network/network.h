@@ -39,26 +39,46 @@
 	#define DREAMSOCK_INVALID_SOCKET	-1
 #endif
 
-class Message;
+#ifdef WIN32
+class DreamWinSock;
+#else
+class DreamLinuxSock;
+#endif
 
-class Network 
+class Dispatch;
+
+class Network
 {
 public:
 Network(const char serverIP[32], int serverPort);
+Network();
 ~Network();
 
+	#ifdef WIN32
+	DreamWinSock* mDreamWinSock;
+	#else
+	DreamLinuxSock* mDreamLinuxSock;
+	#endif
+
+//
 SOCKET mSocket;
 struct sockaddr_in sendToAddress;
 
-// Function prototypes
-SOCKET dreamSock_Socket(int protocol);
-int dreamSock_SetNonBlocking(u_long setMode);
-SOCKET dreamSock_OpenUDPSocket();
-void dreamSock_CloseSocket();
+//open
+SOCKET createSocket(int protocol);
+SOCKET open();
+int    setNonBlocking(u_long setMode);
 
-int dreamSock_GetPacket(char *data);
-void dreamSock_SendPacket(int length, char *data, struct sockaddr addr);
+//close
+void close();
 
-void sendPacket(Message *theMes);
+//send
+void send			 (int length, char *data, struct sockaddr addr);
+void setSendToAddress(const char* serverIP, int serverPort);
+void send(Dispatch* dispatch);
+
+//receive
+int  getPacket(char *data);
+
 };
 #endif

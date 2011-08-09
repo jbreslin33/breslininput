@@ -19,7 +19,7 @@ Game::Game(const char* serverIP)
  	mRenderTime		 = 0.0f;
 	mOldTime         = 0;
  	mInit			 = false;
-	mDatagramSocketShutdown = false;
+	mNetworkShutdown = false;
 
 	mInit = true;
 
@@ -168,7 +168,7 @@ void Game::frame(Dispatch* dispatch)
 	//for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	while (dispatch->getReadCount() <= dispatch->GetSize())
 	{
-		if (mDatagramSocketShutdown)
+		if (mNetworkShutdown)
 		{
 			return;
 		}
@@ -227,11 +227,11 @@ void Game::processUnbufferedInput()
     
 	if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
-		mDatagramSocketShutdown = true;
+		mNetworkShutdown = true;
     }
 	else
 	{
-		mDatagramSocketShutdown = false;
+		mNetworkShutdown = false;
 	}
     	
 	if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
