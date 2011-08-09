@@ -207,7 +207,6 @@ void Game::readPackets()
 
 void Game::frame(Dispatch* dispatch)
 {
-
 	int newTime;
 	int time;
 
@@ -226,7 +225,20 @@ void Game::frame(Dispatch* dispatch)
 		{
 			return;
 		}
-		readDeltaMoveCommand(dispatch);
+		//readDeltaMoveCommand(dispatch);
+		DynamicShape* shape = NULL;
+
+		mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(dispatch->GetSize()));
+
+		//index
+		int id = dispatch->ReadByte();
+
+		shape = getDynamicShape(id);
+
+		if (shape)
+		{
+			shape->readDeltaMoveCommand(dispatch);
+		}
 	}
 }
 
