@@ -15,11 +15,11 @@ int Time::dreamSock_GetCurrentSystemTime(void)
 	#ifndef WIN32
 		return dreamSock_Linux_GetCurrentSystemTime();
 	#else
-		return dreamSock_Win_GetCurrentSystemTime();
+		return getCurrentSystemTime();
 	#endif
 }
 
-int Time::dreamSock_Win_GetCurrentSystemTime(void)
+int Time::getCurrentSystemTime(void)
 {
 	int curtime;
 	static int base;
