@@ -63,7 +63,6 @@ public:
 	void	gameLoop();
 
 	//shape
-	void          addShape             (Dispatch* dispatch);
 	void		  addShape             (bool b, Dispatch* dispatch);
 	void          removeShape          (Dispatch* dispatch);
 
