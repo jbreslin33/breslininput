@@ -1,7 +1,6 @@
 #include "time.h"
 #include "windows.h"
 
-
 Time::Time()
 {
 }
@@ -9,7 +8,6 @@ Time::Time()
 Time::~Time()
 {
 }
-
 
 //TIME
 int Time::dreamSock_GetCurrentSystemTime(void)
