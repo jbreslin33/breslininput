@@ -19,7 +19,6 @@ void Global_ProcessTick_Rotation::execute(DynamicShape* dynamicShape)
 	dynamicShape->calculateServerRotationSpeed();
 
 	//shape_replace
-    //->mGhost->getSceneNode()->yaw(Degree(->mServerRotSpeed), true);
 	dynamicShape->mGhost->yaw(dynamicShape->mServerRotSpeed,true);	
 
 }

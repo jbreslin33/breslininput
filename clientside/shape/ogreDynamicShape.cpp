@@ -100,7 +100,6 @@ void OgreDynamicShape::yaw(float amountToYaw, bool convertToDegree)
 	if (convertToDegree)
 	{
 		getSceneNode()->yaw(Degree(amountToYaw));
-		//rotation->mGhost->yaw(rotation->mServerRotSpeed,true);	
 	}
 }
 float OgreDynamicShape::getDegreesToSomething(Vector3D vectorOfSomething)
