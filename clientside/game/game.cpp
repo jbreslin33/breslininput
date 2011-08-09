@@ -79,7 +79,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	shape->scale(v);
 	
 	//are this the avatar?
-//	if(local)
 	if(shape->mLocal)
 	{
 		mClient->mShape = shape;	
@@ -90,8 +89,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	shape->mGame = this;
 
 	//ghost
-	//DynamicShape* ghostShape = new OgreDynamicShape(this,shape->mIndex,
-	//	shape->mPosition,shape->mVelocity,shape->mRotation,"sinbad.mesh");
 	dispatch->BeginReading();
 	dispatch->ReadByte();
 	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch);
