@@ -1,14 +1,9 @@
 #include "game.h"
 #include "../tdreamsock/dreamSockLog.h"
-
 #include "../shape/ogreDynamicShape.h"
-
 #include "../client/client.h"
-
 #include "../../math/vector3D.h"
-
 #include "../dispatch/dispatch.h"
-
 #include "../time/time.h"
 
 Game* game;
