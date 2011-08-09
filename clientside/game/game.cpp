@@ -68,7 +68,43 @@ void Game::shutdown(void)
 
 void Game::addShape(bool b, Dispatch* dispatch)
 {
+	//actuall create shape
+	DynamicShape* shape = new OgreDynamicShape(this,dispatch);
 
+	//for scale
+	Vector3D v;
+	v.x = 30;
+	v.y = 30;
+	v.z = 30;
+	shape->scale(v);
+	
+	//are this the avatar?
+//	if(local)
+	if(shape->mLocal)
+	{
+		mClient->mShape = shape;	
+		LogString("call SendReq");
+	}
+
+	//need to know about world
+	shape->mGame = this;
+
+	//ghost
+	//DynamicShape* ghostShape = new OgreDynamicShape(this,shape->mIndex,
+	//	shape->mPosition,shape->mVelocity,shape->mRotation,"sinbad.mesh");
+	dispatch->BeginReading();
+	dispatch->ReadByte();
+	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch);
+
+	shape->mGhost = ghostShape;
+
+	//scale ghost set visible
+	ghostShape->scale(v);
+	ghostShape->setVisible(true);
+
+	//now add to vectors....
+	mShapeVector.push_back(shape);
+	mShapeGhostVector.push_back(shape->mGhost);
 }
 //Shape
 void Game::addShape(Dispatch* dispatch)
@@ -320,7 +356,7 @@ void Game::readPackets()
 		switch(type)
 		{
 			case mClient->mMessageAddShape:
-				addShape(dispatch);
+				addShape(true,dispatch);
 			break;
 
 			case mClient->mMessageRemoveShape:
