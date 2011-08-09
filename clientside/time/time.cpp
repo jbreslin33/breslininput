@@ -1,19 +1,9 @@
 #include "time.h"
+#include "windows.h"
 
-#ifdef WIN32
-#include "../tdreamsock/dreamWinSock.h"
-#include <windows.h>
-#else
-#include "../tdreamsock/dreamLinuxSock.h"
-#endif
 
 Time::Time()
 {
-	#ifdef WIN32
-		mDreamWinSock = new DreamWinSock();
-	#else
-		mDreamLinuxSock = new DreamLinuxSock();
-	#endif
 }
 
 Time::~Time()
