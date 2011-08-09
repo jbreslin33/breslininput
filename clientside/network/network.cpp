@@ -56,17 +56,6 @@ Network::Network(const char serverIP[32], int serverPort )
 	sendToAddress.sin_addr.s_addr = inetAddr;
 }
 
-Network::Network()
-{
-#ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
-#else
-	mDreamLinuxSock = new DreamLinuxSock();
-#endif
-
-	mSocket = open();
-}
-
 Network::~Network()
 {
 }

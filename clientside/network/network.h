@@ -51,7 +51,6 @@ class Network
 {
 public:
 Network(const char serverIP[32], int serverPort);
-Network();
 ~Network();
 
 	#ifdef WIN32
