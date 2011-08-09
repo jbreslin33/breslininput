@@ -103,6 +103,7 @@ public:
     virtual void createScene           ();
     virtual bool frameRenderingQueued  (const Ogre::FrameEvent& evt);
 	bool    runGraphics();
+	void frame(Dispatch* dispatch);
 
 	//gui	
 	void hideGui();
