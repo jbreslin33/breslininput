@@ -5,9 +5,9 @@
 #include <stdio.h>
 #include <string.h>
 
-Dispatch::Dispatch(int size)
+Dispatch::Dispatch()
 {
-	mMaxSize = size;
+	mMaxSize = 1400;
 	mCharArray = new char[mMaxSize];
 	mSize		= 0;
 	mReadCount	= 0;

@@ -6,7 +6,7 @@ class Client;
 class Dispatch
 {
 public:
-	Dispatch(int size);
+	Dispatch();
 	~Dispatch();
 
 	bool			mOverFlow;

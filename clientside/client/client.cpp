@@ -10,7 +10,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	//commmands
 	mCommandHistorySize = 64;
 
-	mSizeOfDispatch = 1400;
 	mShape = NULL; //to be filled when we actually create the shape
 
 	mConnectionState	= mMessageDisconnected;
@@ -40,7 +39,7 @@ void Client::sendConnect(const char *name)
 {
 	mConnectionState = mMessageConnecting;
 
-	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
+	Dispatch* dispatch = new Dispatch();
 	dispatch->WriteByte(mMessageConnect);
 	dispatch->WriteString(name);
 
@@ -49,7 +48,7 @@ void Client::sendConnect(const char *name)
 
 void Client::sendDisconnect(void)
 {
-	Dispatch* dispatch = new Dispatch(mSizeOfDispatch);
+	Dispatch* dispatch = new Dispatch();
 
 	dispatch->WriteByte(mMessageDisconnect);
 
@@ -165,7 +164,7 @@ void Client::sendCommand(void)
 
 	int outgoingSequence = mOutgoingSequence & (mCommandHistorySize-1);
 
-	Dispatch* dispatch = new Dispatch(1400);
+	Dispatch* dispatch = new Dispatch();
 
 	dispatch->WriteByte(mMessageFrame);						// type
 	dispatch->WriteShort(mOutgoingSequence);

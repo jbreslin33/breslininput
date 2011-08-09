@@ -16,9 +16,6 @@ public:
 Client(const char *localIP, const char *remoteIP, int port);
 ~Client();
 
-public:
-	int mSizeOfDispatch;
-
 private:
 	//commands
 	int mCommandHistorySize;
