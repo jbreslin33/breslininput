@@ -34,7 +34,6 @@ public:
 	float mRenderTime;
 	int   mOldTime;
 	
-
 	//initialize
 	bool mInit;
 	bool mDatagramSocketShutdown;
