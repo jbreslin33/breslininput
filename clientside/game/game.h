@@ -84,9 +84,11 @@ public:
 
 	//shape
 	void          addShape             (Dispatch* dispatch);
+	void          removeShape          (Dispatch* dispatch);
+
 	DynamicShape* getDynamicShape      (  int id);
 	void          moveGhostShapes      (DynamicShape* shape);
-	void          removeShape          (Dispatch* dispatch);
+
 	void          interpolateFrame     ();
 	void	      readDeltaMoveCommand    (Dispatch* mes);
 
