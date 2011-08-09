@@ -18,7 +18,6 @@ class DynamicShape : public Shape //, public OgreAnimation
 {
 
 public:
-DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation);
 DynamicShape(Game* game, Dispatch* dispatch);
 ~DynamicShape();
 
