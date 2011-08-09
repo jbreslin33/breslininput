@@ -3,7 +3,7 @@
 
 #include "ai.h"
 
-#include "../../tdreamsock/dreamSockLog.h" //log
+#include "../tdreamsock/dreamSockLog.h" //log
 
 #include "../../command/command.h"
 

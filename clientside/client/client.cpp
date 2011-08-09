@@ -1,5 +1,5 @@
 #include "client.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 #include "../../clientside/network/datagramSocket.h"
 #include "../../clientside/network/datagramPacket.h"

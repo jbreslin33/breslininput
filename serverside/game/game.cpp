@@ -1,5 +1,5 @@
 #include "game.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 #include "../server/server.h"
 #include "../network/network.h"

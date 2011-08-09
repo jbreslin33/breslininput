@@ -25,7 +25,7 @@
 #include "../serverside/game/game.h"
 #include "../serverside/server/server.h"
 #include "../serverside/network/network.h"
-#include "../tdreamsock/dreamSockLog.h"
+#include "../serverside/tdreamsock/dreamSockLog.h"
 
 #include <string.h>
 #include <stdlib.h>

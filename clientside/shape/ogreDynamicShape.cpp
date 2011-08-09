@@ -1,5 +1,5 @@
 #include "ogreDynamicShape.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 //animation states for enter method
 #include "../states/dynamicShapeAnimationStates.h"
