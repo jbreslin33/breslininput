@@ -91,18 +91,6 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mDeltaZ        = 0.0;
 	mDeltaPosition = 0.0;
 
-	//move processTick states
-	mMoveProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mMoveProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
-	mMoveProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
-	mMoveProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
-
-	//move interpolateTick states
-	mMoveInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
-	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_InterpolateTick_Move::Instance());
-	//mMoveInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Move::Instance());
-	mMoveInterpolateTickStateMachine->setGlobalState       (NULL);
 
 	//////rotation
     //vars
@@ -117,6 +105,30 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mServerRotOld.zero();
 	mServerRotNew.zero();
 	mDegreesToServer = 0.0;
+
+	createStateMachines();
+}
+
+DynamicShape::~DynamicShape()
+{
+
+}
+
+void DynamicShape::createStateMachines()
+{
+	//move processTick states
+	mMoveProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mMoveProcessTickStateMachine->setCurrentState      (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setPreviousState     (Normal_ProcessTick_Move::Instance());
+	mMoveProcessTickStateMachine->setGlobalState       (Global_ProcessTick_Move::Instance());
+
+	//move interpolateTick states
+	mMoveInterpolateTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
+	mMoveInterpolateTickStateMachine->setCurrentState      (Normal_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setPreviousState     (Normal_InterpolateTick_Move::Instance());
+	//mMoveInterpolateTickStateMachine->setGlobalState       (Global_InterpolateTick_Move::Instance());
+	mMoveInterpolateTickStateMachine->setGlobalState       (NULL);
+
 
 	//process tick rotation states
 	mRotationProcessTickStateMachine = new DynamicShapeStateMachine(this);    //setup the state machine
@@ -135,11 +147,6 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
     mAnimationInterpolateTickStateMachine->setCurrentState (Idle_InterpolateTick_Animation::Instance());
     mAnimationInterpolateTickStateMachine->setPreviousState(Idle_InterpolateTick_Animation::Instance());
     mAnimationInterpolateTickStateMachine->setGlobalState  (Global_InterpolateTick_Animation::Instance());  
-
-}
-
-DynamicShape::~DynamicShape()
-{
 
 }
 

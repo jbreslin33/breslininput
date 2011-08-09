@@ -103,6 +103,9 @@ void calculateDeltaPosition();
 //messaging
 void readDeltaMoveCommand(Dispatch *mes);
 
+//statemachines
+void createStateMachines();
+
 
 };
 
