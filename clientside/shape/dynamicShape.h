@@ -49,6 +49,7 @@ DynamicShape* mGhost;
 Vector3D* mPosition;
 Vector3D* mVelocity;
 Vector3D* mRotation;
+int mLocal;
 
 //commands
 Command	mServerFrame;					// the latest frame from server

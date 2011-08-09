@@ -40,6 +40,7 @@ class OgreDynamicShape : public DynamicShape //, public OgreAnimation
 
 public:
 OgreDynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity, Vector3D* rotation, std::string mesh);
+OgreDynamicShape(Game* game, Dispatch* dispatch);
 ~OgreDynamicShape();
 
 //ogre scene stuff

@@ -46,17 +46,12 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mRotation = new Vector3D();
 
 /**dispatch**/
-	int index;
-	int local;
-	//Vector3D* origin   = new Vector3D();
-	//Vector3D* velocity = new Vector3D(); 
-	//Vector3D* rotation = new Vector3D();
 
 	char name[50];
 
 	//read dispatch
-	local	=    dispatch->ReadByte();
-	index		=    dispatch->ReadByte();
+	mLocal	=    dispatch->ReadByte();
+	mIndex		=    dispatch->ReadByte();
 	strcpy(name, dispatch->ReadString());
 	mPosition->x =   dispatch->ReadFloat();
 	mPosition->y =   dispatch->ReadFloat();
