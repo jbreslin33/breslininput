@@ -28,14 +28,14 @@ DreamLinuxSock::DreamLinuxSock()
 DreamLinuxSock::~DreamLinuxSock()
 {
 }
-int DreamLinuxSock::dreamSock_Linux_GetCurrentSystemTime(void)
+int DreamLinuxSock::getCurrentSystemTime(void)
 {
 	struct timeval tp;
 	struct timezone tzp;
 	static int basetime;
 
 	gettimeofday(&tp, &tzp);
-	
+
 	if(!basetime)
 	{
 		basetime = tp.tv_sec;
