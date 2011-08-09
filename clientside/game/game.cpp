@@ -71,8 +71,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	//actuall create shape
 	DynamicShape* shape = new OgreDynamicShape(this,dispatch);
 
-
-	
 	//are this the avatar?
 	if(shape->mLocal)
 	{
@@ -89,10 +87,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch);
 
 	shape->mGhost = ghostShape;
-
-	//scale ghost set visible
-	//ghostShape->scale(v);
-	//ghostShape->setVisible(true);
 
 	//now add to vectors....
 	mShapeVector.push_back(shape);
