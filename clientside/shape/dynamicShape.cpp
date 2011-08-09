@@ -34,6 +34,47 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	createStateMachines();
 }
 
+	DynamicShape::DynamicShape(Game* game, Dispatch* dispatch)
+:
+	Shape         ()
+{
+
+	mGame = game;
+
+	mPosition = new Vector3D();
+	mVelocity = new Vector3D();
+	mRotation = new Vector3D();
+
+/**dispatch**/
+	int index;
+	int local;
+	//Vector3D* origin   = new Vector3D();
+	//Vector3D* velocity = new Vector3D(); 
+	//Vector3D* rotation = new Vector3D();
+
+	char name[50];
+
+	//read dispatch
+	local	=    dispatch->ReadByte();
+	index		=    dispatch->ReadByte();
+	strcpy(name, dispatch->ReadString());
+	mPosition->x =   dispatch->ReadFloat();
+	mPosition->y =   dispatch->ReadFloat();
+	mPosition->z =   dispatch->ReadFloat();
+	mVelocity->x = dispatch->ReadFloat();
+	mVelocity->y = dispatch->ReadFloat();
+	mVelocity->z = dispatch->ReadFloat();
+	mRotation->x = dispatch->ReadFloat();
+	mRotation->z = dispatch->ReadFloat();
+
+/***end dispatch**/
+	initializeVariables();
+
+	initializeCommands(mPosition,mRotation);
+
+	createStateMachines();
+}
+
 DynamicShape::~DynamicShape()
 {
 

@@ -66,6 +66,10 @@ void Game::shutdown(void)
 	mClient->sendDisconnect();
 }
 
+void Game::addShape(bool b, Dispatch* dispatch)
+{
+
+}
 //Shape
 void Game::addShape(Dispatch* dispatch)
 {

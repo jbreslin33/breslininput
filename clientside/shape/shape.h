@@ -12,6 +12,7 @@ class Shape
 public:
 
 Shape(int ind, Vector3D* position, Vector3D* rotation);
+Shape();
 ~Shape();
 
 //virtual functions..
