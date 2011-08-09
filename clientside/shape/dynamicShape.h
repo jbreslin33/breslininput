@@ -118,6 +118,9 @@ void initializeCommands(Vector3D* position, Vector3D* rotation);
 //variables
 void initializeVariables();
 
+//dispatch
+void parseDispatch(Dispatch* dispatch);
+
 
 };
 
