@@ -44,6 +44,11 @@ DynamicShapeStateMachine* mAnimationInterpolateTickStateMachine;
 //this is used to rotate to and for debugging. it goes right to lates serverFrame from net.
 DynamicShape* mGhost;
 
+//basic
+Vector3D* mPosition;
+Vector3D* mVelocity;
+Vector3D* mRotation;
+
 //commands
 Command	mServerFrame;					// the latest frame from server
 Command mCommandToRunOnShape;
@@ -105,6 +110,12 @@ void readDeltaMoveCommand(Dispatch *mes);
 
 //statemachines
 void createStateMachines();
+
+//commands
+void initializeCommands(Vector3D* position, Vector3D* rotation);
+
+//variables
+void initializeVariables();
 
 
 };

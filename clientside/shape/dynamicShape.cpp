@@ -20,8 +20,27 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 :
 	Shape         (ind,position,rotation)
 {
+
 	mGame = game;
 
+	mPosition = new Vector3D();
+	mVelocity = new Vector3D();
+	mRotation = new Vector3D();
+
+	initializeVariables();
+
+	initializeCommands(position,rotation);
+
+	createStateMachines();
+}
+
+DynamicShape::~DynamicShape()
+{
+
+}
+
+void DynamicShape::initializeVariables()
+{
 	//dynamic
 	mRenderTime = 0.0;
 
@@ -29,6 +48,35 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 	mRunSpeed     = 0.0;
 	mRunSpeedMax  = 200.0;
 
+	mGhost = NULL;
+
+    //thresholds
+    mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
+    mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
+    mPosInterpFactor    = 4.0;
+
+	//deltas
+	mDeltaX        = 0.0; 
+	mDeltaY		   = 0.0;
+	mDeltaZ        = 0.0;
+	mDeltaPosition = 0.0;
+
+	//////rotation
+    mTurnSpeed = 250.0;
+
+    mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
+    mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
+    mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
+    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
+
+	//rotation
+	mServerRotOld.zero();
+	mServerRotNew.zero();
+	mDegreesToServer = 0.0;
+}
+
+void DynamicShape::initializeCommands(Vector3D* position, Vector3D* rotation)
+{
 	//let's set the serverframe...for inititialize purposeses
 	mServerFrame.mOrigin.x = position->x;
 	mServerFrame.mOrigin.y = position->y;
@@ -74,43 +122,6 @@ DynamicShape::DynamicShape(Game* game,int ind, Vector3D* position, Vector3D* vel
 
 	mCommandToRunOnShape.mKey = 0;
 	mCommandToRunOnShape.mRotSpeed = 0;
-
-	mGhost = NULL;
-
-	/////move
-    //thresholds
-
-    mPosInterpLimitHigh = 8.0; //how far away from server till we try to catch up
-    mPosInterpLimitLow  = 2.0; //how close to server till we are in sync
-    mPosInterpFactor    = 4.0;
-
-
-	//deltas
-	mDeltaX        = 0.0; 
-	mDeltaY		   = 0.0;
-	mDeltaZ        = 0.0;
-	mDeltaPosition = 0.0;
-
-
-	//////rotation
-    //vars
-    mTurnSpeed = 250.0;
-
-    mRotInterpLimitHigh = 6.0; //how far away from server till we try to catch up
-    mRotInterpLimitLow  = 4.0; //how close to server till we are in sync
-    mRotInterpIncrease  = 1.20f; //rot factor used to catchup to server
-    mRotInterpDecrease  = 0.80f; //rot factor used to allow server to catchup to client
-
-	//rotation
-	mServerRotOld.zero();
-	mServerRotNew.zero();
-	mDegreesToServer = 0.0;
-
-	createStateMachines();
-}
-
-DynamicShape::~DynamicShape()
-{
 
 }
 
