@@ -13,7 +13,7 @@ Time::~Time()
 int Time::dreamSock_GetCurrentSystemTime(void)
 {
 	#ifndef WIN32
-		return dreamSock_Linux_GetCurrentSystemTime();
+		return getCurrentSystemTime();
 	#else
 		return getCurrentSystemTime();
 	#endif
