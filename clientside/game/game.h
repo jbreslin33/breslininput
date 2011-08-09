@@ -3,16 +3,6 @@
 
 #include "BaseApplication.h"
 
-#ifdef WIN32
-
-class DreamWinSock;
-#else
-class DreamLinuxSock;
-#endif
-
-#ifdef WIN32
-class DreamWinSock;
-#endif
 class Network;
 class Message;
 class Client;
@@ -27,12 +17,6 @@ public:
 	
 	Game(const char* serverIP);
 	~Game();
-
-	#ifdef WIN32
-	DreamWinSock* mDreamWinSock;
-	#else
-	DreamLinuxSock* mDreamLinuxSock;
-	#endif
 
 	// Network variables
 	Client* mClient;

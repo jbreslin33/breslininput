@@ -11,13 +11,6 @@
 
 #include "../time/time.h"
 
-#ifdef WIN32
-#include "../tdreamsock/dreamWinSock.h"
-#else
-#include "../tdreamsock/dreamLinuxSock.h"
-#endif
-
-
 Game* game;
 
 Game::Game(const char* serverIP)
@@ -26,12 +19,6 @@ Game::Game(const char* serverIP)
 
 	mServerIP = serverIP;
  
-#ifdef WIN32
-	mDreamWinSock = new DreamWinSock();
-#else
-	mDreamLinuxSock = new DreamLinuxSock();
-#endif
-
 	mClient	= new Client("", mServerIP, 30004);
 	mTime = new Time();
 	mFrameTime		 = 0.0f;

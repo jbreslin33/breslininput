@@ -5,9 +5,22 @@
 #include "../../clientside/network/datagramPacket.h"
 #include "../../clientside/dispatch/dispatch.h"
 
+#ifdef WIN32
+#include "../tdreamsock/dreamWinSock.h"
+#else
+#include "../tdreamsock/dreamLinuxSock.h"
+#endif
+
 //client side client constructor, one on each client machine, i.e. one instance per machine.
 Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 {
+
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
 	//commmands
 	mCommandHistorySize = 64;
 

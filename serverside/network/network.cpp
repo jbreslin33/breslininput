@@ -3,8 +3,6 @@
 #include "../message/message.h"
 #include "../tdreamsock/dreamSockLog.h"
 
-
-
 #ifdef WIN32
 #include "../tdreamsock/dreamWinSock.h"
 #else
