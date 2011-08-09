@@ -4,6 +4,12 @@
 #include "datagramPacket.h"
 
 #ifdef WIN32
+#include "../tdreamsock/dreamWinSock.h"
+#else
+#include "../tdreamsock/dreamLinuxSock.h"
+#endif
+
+#ifdef WIN32
 //do nothing
 #else
 #include <stdio.h>
@@ -27,6 +33,12 @@
 
 DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 {
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
 	mSocket = open();
 
 	if(mSocket == DREAMSOCK_INVALID_SOCKET)
@@ -45,6 +57,12 @@ DatagramSocket::DatagramSocket(const char serverIP[32], int serverPort )
 
 DatagramSocket::DatagramSocket()
 {
+#ifdef WIN32
+	mDreamWinSock = new DreamWinSock();
+#else
+	mDreamLinuxSock = new DreamLinuxSock();
+#endif
+
 	mSocket = open();
 }
 
