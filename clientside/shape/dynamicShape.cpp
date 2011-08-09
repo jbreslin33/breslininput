@@ -38,6 +38,8 @@ DynamicShape::~DynamicShape()
 
 void DynamicShape::parseDispatch(Dispatch* dispatch)
 {
+	dispatch->BeginReading();
+	dispatch->ReadByte(); //should read -103 to add a shape..
 	mLocal	=    dispatch->ReadByte();
 	mIndex		=    dispatch->ReadByte();
 	dispatch->ReadString(); //strcpy(name, dispatch->ReadString()); //name
