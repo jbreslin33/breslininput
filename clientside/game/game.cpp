@@ -309,7 +309,6 @@ void Game::readPackets()
 
 	while(ret = mClient->getPacket(dispatch))
 	{
-		dispatch->SetSize(ret);
 		dispatch->BeginReading();
 
 		type = dispatch->ReadByte();
