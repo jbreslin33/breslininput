@@ -1,5 +1,5 @@
 #include "game.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 #include "../shape/ogreDynamicShape.h"
 
@@ -12,7 +12,7 @@
 #include "../time/time.h"
 
 #ifdef WIN32
-#include "../../tdreamsock/dreamWinSock.h"
+#include "../tdreamsock/dreamWinSock.h"
 #else
 #include "../tdreamsock/dreamLinuxSock.h"
 #endif

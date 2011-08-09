@@ -1,6 +1,6 @@
 #include "datagramSocket.h"
 
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 #include "datagramPacket.h"
 
 #ifdef WIN32

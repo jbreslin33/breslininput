@@ -1,5 +1,5 @@
 #include "dynamicShape.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 //game
 #include "../game/game.h"

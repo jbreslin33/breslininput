@@ -1,7 +1,7 @@
 #include "dynamicShapeMoveStates.h"
 #include "dynamicShapeStateMachine.h"
 
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 #include "../shape/dynamicShape.h"
 

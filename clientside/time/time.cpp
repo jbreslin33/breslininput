@@ -1,7 +1,7 @@
 #include "time.h"
 
 #ifdef WIN32
-#include "../../tdreamsock/dreamWinSock.h"
+#include "../tdreamsock/dreamWinSock.h"
 #include <windows.h>
 #else
 #include "../tdreamsock/dreamLinuxSock.h"

@@ -1,5 +1,5 @@
 #include "ogreShape.h"
-#include "../../tdreamsock/dreamSockLog.h"
+#include "../tdreamsock/dreamSockLog.h"
 
 //math
 #include "../../math/vector3D.h"
