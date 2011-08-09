@@ -10,63 +10,6 @@
 
 #include <string.h>
 
-OgreDynamicShape::OgreDynamicShape(Game* game, int ind, Vector3D* position, Vector3D* velocity,
-						   Vector3D* rotation, std::string mesh)
-:
-	DynamicShape         (game,ind,position,velocity,rotation)
-{
-	//we use this to name shape. as ogre is picky about same names. it also serves as a counter of sorts.
-	static int number_of_times = 0;
-	
-	/*********  create shape ***************/
-	mMeshName     = mesh;
-	mName         = StringConverter::toString(number_of_times);
-    mSceneNode    = mGame->getSceneManager()->getRootSceneNode()->createChildSceneNode();
-
-	//set Starting position of sceneNode, we will attach our mesh to this. this is all that's needed for static shapes. actually we need to add
-	//rotation for them
-	mSceneNode->setPosition(position->x,position->y,position->z);	
-	
-	//create mesh
-	Entity* mEntity = mGame->getSceneManager()->createEntity(mName, mMeshName);
-
-	//attache mesh to scenenode, henceforward we will use mSceneNode to control shape.
-    mSceneNode->attachObject(mEntity);
-
-	/*********  setup animations ***************/
-    // this is very important due to the nature of the exported animations
-    mEntity->getSkeleton()->setBlendMode(ANIMBLEND_CUMULATIVE);
-    String animNames[] =
-    {"IdleBase", "IdleTop", "RunBase", "RunTop", "HandsClosed", "HandsRelaxed", "DrawSwords",
-    "SliceVertical", "SliceHorizontal", "Dance", "JumpStart", "JumpLoop", "JumpEnd"};
-
-	// populate our animation list
-    for (int i = 0; i < NUM_ANIMS; i++)
-    {
-		mAnims[i] = mEntity->getAnimationState(animNames[i]);
-        mAnims[i]->setLoop(true);
-        mFadingIn[i] = false;
-        mFadingOut[i] = false;
-    }
-    // start off in the idle state (top and bottom together)
-    setBaseAnimation(ANIM_IDLE_BASE,false);
-    setTopAnimation(ANIM_IDLE_TOP,false);
-
-    // relax the hands since we're not holding anything
-    mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
-
-	/*********  setup title/billboard ***************/
-	const Ogre::String& titlename = "tn" + StringConverter::toString(number_of_times);
-	const Ogre::String& title = "ti" + StringConverter::toString(number_of_times);
-	const Ogre::String& fontName = "SdkTrays/Caption";
-	const Ogre::ColourValue& color = Ogre::ColourValue::White;
-	mObjectTitle = new ObjectTitle
-	(titlename, mEntity, mGame->getSceneManager()->getCamera("PlayerCam"), title,
-    fontName, color);
-
-	number_of_times++;
-}
-
 	OgreDynamicShape::OgreDynamicShape(Game* game, Dispatch* dispatch)
 :
 	DynamicShape         (game,dispatch)
