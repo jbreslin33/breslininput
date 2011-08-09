@@ -106,63 +106,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	mShapeVector.push_back(shape);
 	mShapeGhostVector.push_back(shape->mGhost);
 }
-//Shape
-void Game::addShape(Dispatch* dispatch)
-{
-	int index;
-	int local;
-	Vector3D* origin   = new Vector3D();
-	Vector3D* velocity = new Vector3D(); 
-	Vector3D* rotation = new Vector3D();
-
-	char name[50];
-
-	//read dispatch
-	local	=    dispatch->ReadByte();
-	index		=    dispatch->ReadByte();
-	strcpy(name, dispatch->ReadString());
-	origin->x =   dispatch->ReadFloat();
-	origin->y =   dispatch->ReadFloat();
-	origin->z =   dispatch->ReadFloat();
-	velocity->x = dispatch->ReadFloat();
-	velocity->y = dispatch->ReadFloat();
-	velocity->z = dispatch->ReadFloat();
-	rotation->x = dispatch->ReadFloat();
-	rotation->z = dispatch->ReadFloat();
-
-	//actuall create shape
-	DynamicShape* shape = new OgreDynamicShape(this,index, origin,velocity,rotation,"sinbad.mesh");
-
-	//for scale
-	Vector3D v;
-	v.x = 30;
-	v.y = 30;
-	v.z = 30;
-	shape->scale(v);
-	
-	//are this the avatar?
-	if(local)
-	{
-		mClient->mShape = shape;	
-		LogString("call SendReq");
-	}
-
-	//need to know about world
-	shape->mGame = this;
-
-	//ghost
-	DynamicShape* ghostShape = new OgreDynamicShape(this,index,origin,velocity,rotation,"sinbad.mesh");
-	
-	shape->mGhost = ghostShape;
-
-	//scale ghost set visible
-	ghostShape->scale(v);
-	ghostShape->setVisible(true);
-
-	//now add to vectors....
-	mShapeVector.push_back(shape);
-	mShapeGhostVector.push_back(shape->mGhost);
-}
 
 void Game::removeShape(Dispatch* dispatch)
 {
