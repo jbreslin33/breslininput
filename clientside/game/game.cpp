@@ -6,7 +6,6 @@
 #include "../dispatch/dispatch.h"
 #include "../time/time.h"
 
-Game* game;
 
 Game::Game(const char* serverIP)
 {
@@ -49,11 +48,8 @@ void Game::gameLoop()
 	while(true)
     {
 		processUnbufferedInput();
-		if(game != NULL)
-		{
-			game->runNetwork(mRenderTime * 1000);
-			interpolateFrame();
-		}
+		runNetwork(mRenderTime * 1000);
+		interpolateFrame();
 		if (!runGraphics())
 		{
 			break;
@@ -414,7 +410,6 @@ void Game::unloadOtherScreens()
 {
 }
 
-
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
@@ -432,9 +427,9 @@ extern "C" {
     {
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 		StartLogConsole();
-        game = new Game(strCmdLine);
+        Game* game = new Game(strCmdLine);
 #else
-        game = new Game(argv[1]);
+        Game* game = new Game(argv[1]);
 #endif
         try {
             game->go();
