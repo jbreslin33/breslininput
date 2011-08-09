@@ -4,15 +4,10 @@
 //command
 #include "../../command/command.h"
 
-
 #ifdef WIN32
 class DreamWinSock;
 #else
 class DreamLinuxSock;
-#endif
-
-#ifdef WIN32
-class DreamWinSock;
 #endif
 
 // Introduce classes
