@@ -61,9 +61,9 @@ Game::~Game()
 	delete mClient;
 }
 
-DynamicShape* Game::addShape(Dispatch* dispatch)
+void Game::addShape(Dispatch* dispatch)
 {
-	int ind;
+	int index;
 	int local;
 	Vector3D* origin   = new Vector3D();
 	Vector3D* velocity = new Vector3D(); 
@@ -73,7 +73,7 @@ DynamicShape* Game::addShape(Dispatch* dispatch)
 
 	//read dispatch
 	local	=    dispatch->ReadByte();
-	ind		=    dispatch->ReadByte();
+	index		=    dispatch->ReadByte();
 	strcpy(name, dispatch->ReadString());
 	origin->x =   dispatch->ReadFloat();
 	origin->y =   dispatch->ReadFloat();
@@ -85,11 +85,7 @@ DynamicShape* Game::addShape(Dispatch* dispatch)
 	rotation->z = dispatch->ReadFloat();
 
 	//actuall create shape
-	DynamicShape* shape = new OgreDynamicShape(this,ind, origin,velocity,rotation,"sinbad.mesh");
-
-	//now add to vectors....
-	mShapeVector.push_back(shape);
-	mShapeGhostVector.push_back(shape->mGhost);
+	DynamicShape* shape = new OgreDynamicShape(this,index, origin,velocity,rotation,"sinbad.mesh");
 
 	//for scale
 	Vector3D v;
@@ -109,20 +105,17 @@ DynamicShape* Game::addShape(Dispatch* dispatch)
 	shape->mGame = this;
 
 	//ghost
-	shape->mGhost = addGhostShape(game,ind,origin,velocity,rotation);
-	return shape;
-}
+	DynamicShape* ghostShape = new OgreDynamicShape(this,index,origin,velocity,rotation,"sinbad.mesh");
+	
+	shape->mGhost = ghostShape;
 
-DynamicShape* Game::addGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation)
-{
-	DynamicShape* shape = new OgreDynamicShape(game,ind,position,velocity,rotation,"sinbad.mesh");
-	Vector3D v;
-	v.x = 30;
-	v.y = 30;
-	v.z = 30;
-	shape->scale(v);
-	shape->setVisible(true);
-	return shape;
+	//scale ghost set visible
+	ghostShape->scale(v);
+	ghostShape->setVisible(true);
+
+	//now add to vectors....
+	mShapeVector.push_back(shape);
+	mShapeGhostVector.push_back(shape->mGhost);
 }
 
 void Game::removeShape(Dispatch* dispatch)
@@ -386,9 +379,10 @@ void Game::gameLoop()
 		if(game != NULL)
 		{
 			game->runNetwork(mRenderTime * 1000);
+			interpolateFrame();
 		}
 
-		interpolateFrame();
+
 
 		if (!runGraphics())
 		{

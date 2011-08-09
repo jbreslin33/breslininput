@@ -84,8 +84,7 @@ public:
 	void	gameLoop();
 
 	//shape
-	DynamicShape* addShape(Dispatch* dispatch);
-	DynamicShape* addGhostShape(Game* game, int ind,Vector3D* position, Vector3D* velocity, Vector3D* rotation);
+	void addShape(Dispatch* dispatch);
 	DynamicShape* getDynamicShape(int id);
 	void moveGhostShapes(DynamicShape* shape);
 	void    removeShape(Dispatch* dispatch);
