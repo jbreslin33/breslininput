@@ -165,18 +165,7 @@ void Server::sendRemoveShape(Shape* shape)
 		mClientVector.at(i)->mMessage.WriteByte(DREAMSOCK_MES_REMOVESHAPE);	// type
 		mClientVector.at(i)->mMessage.WriteByte(index);							// index
 	}
-
 	sendPackets();
-	
-	//do i need this next bit?
-/*
-	// Send disconnection confirmation
-	client->mMessage.Init(shape->mMessage.outgoingData,
-		sizeof(shape->mMessage.outgoingData));
-
-	client->mMessage.WriteByte(DREAMSOCK_MES_DISCONNECT);
-	client->SendPacket();
-*/
 }
 
 //called when internets client sends DREAMSOCK_MES_CONNECT message before it has a client, shape or anything.
