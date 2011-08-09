@@ -10,18 +10,22 @@
 
 #include <string.h>
 
-	OgreDynamicShape::OgreDynamicShape(Game* game, Dispatch* dispatch)
+	OgreDynamicShape::OgreDynamicShape(Game* game, Dispatch* dispatch, bool isGhost)
 :
 	DynamicShape         (game,dispatch)
 {
 	//we use this to name shape. as ogre is picky about same names. it also serves as a counter of sorts.
-	static int number_of_times = 0;
-	
-	createShape(number_of_times);
-	setupAnimations();
-	setupTitle(number_of_times);
+	mIsGhost = isGhost;
+	if (mIsGhost)
+	{
+		mIndex = mIndex * -1;
+	}
 
-	number_of_times++;
+	createShape(mIndex);
+	setupAnimations();
+	setupTitle(mIndex);
+
+	//call create ghost here..
 }
 
 OgreDynamicShape::~OgreDynamicShape()

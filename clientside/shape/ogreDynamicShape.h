@@ -39,8 +39,9 @@ class OgreDynamicShape : public DynamicShape //, public OgreAnimation
 {
 
 public:
-OgreDynamicShape(Game* game, Dispatch* dispatch);
+OgreDynamicShape(Game* game, Dispatch* dispatch, bool isGhost);
 ~OgreDynamicShape();
+
 
 //ogre scene stuff
 std::string         mMeshName;
@@ -64,6 +65,9 @@ std::string  mObjectTitleString;
 
 //shape
 void createShape(int numberOfTimes);
+
+//ghost
+bool mIsGhost;
 
 //debugging
 void checkExtents(Vector3D min);
