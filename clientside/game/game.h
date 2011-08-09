@@ -3,7 +3,7 @@
 
 #include "BaseApplication.h"
 
-#include "../../clientside/shape/ogreDynamicShape.h"
+//#include "../../clientside/shape/ogreDynamicShape.h"
 
 #ifdef WIN32
 
@@ -20,6 +20,7 @@ class Message;
 class Client;
 class MovableTextOverlay;
 class Dispatch;
+class DynamicShape;
 
 class Game : public BaseApplication
 {
