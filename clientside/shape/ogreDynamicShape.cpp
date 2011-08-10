@@ -45,12 +45,6 @@
 		mGame->mShapeVector.push_back(this);
 		mGame->mShapeGhostVector.push_back(mGhost);	
 	}
-
-	
-
-
-	
-
 }
 
 OgreDynamicShape::~OgreDynamicShape()
