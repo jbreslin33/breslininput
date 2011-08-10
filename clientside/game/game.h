@@ -59,10 +59,6 @@ public:
 	int			 mServerPort;				// Port
 	const char*  mServerIP;
 
-	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
-	unsigned short	mIncomingSequence;		// Incoming packet sequence
-
-
 	//commands
 	void	sendCommand             ();
 	void	buildDeltaMoveCommand   (Dispatch* dispatch);
@@ -111,7 +107,6 @@ public:
 	void	readPackets             ();
 	int				getPacket  (Dispatch* dispatch);
 	void			sendPacket (Dispatch* dispatch);
-	void            reset();
 	void			sendConnect(const char *name);
 	void			sendDisconnect(void);
 

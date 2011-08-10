@@ -53,6 +53,11 @@ public:
 Network(const char serverIP[32], int serverPort);
 ~Network();
 
+//sequences and packet loss stats
+	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
+	unsigned short	mIncomingSequence;		// Incoming packet sequence
+	unsigned short	mDroppedPackets;			// Dropped packets
+
 //send
 void send(Dispatch* dispatch);
 
@@ -61,6 +66,9 @@ int  getPacket(Dispatch* dispatch);
 
 //close
 void close();
+
+//reset
+void            reset();
 
 private:
 
@@ -94,7 +102,7 @@ void send			 (int length, char *data, struct sockaddr addr);
 //parse
 public:
 void parsePacket(Dispatch *mes);
-	unsigned short	mIncomingSequence;		// Incoming packet sequence
-		unsigned short	mDroppedPackets;			// Dropped packets
+
+
 };
 #endif

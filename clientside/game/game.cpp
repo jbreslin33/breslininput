@@ -19,9 +19,6 @@ Game::Game(const char* serverIP)
 	//commmands
 	mCommandHistorySize = 64;
 
-	mOutgoingSequence		= 1;
-	mIncomingSequence		= 0;
-
 	// Save server's address information for later use
 	mServerIP = serverIP;
 	mServerPort = 30004;
@@ -382,13 +379,7 @@ void Game::sendDisconnect(void)
 	dispatch->WriteByte(mMessageDisconnect);
 
 	sendPacket(dispatch);
-	reset();
-}
-
-void Game::reset(void)
-{
-    mOutgoingSequence                = 1;
-    mIncomingSequence                = 0;
+	mNetwork->reset();
 }
 
 void Game::sendPacket(Dispatch *dispatch)
@@ -400,7 +391,7 @@ void Game::sendPacket(Dispatch *dispatch)
 
 	if(type > 0)
 	{
-		mOutgoingSequence++;
+		mNetwork->mOutgoingSequence++;
 	}
 }
 
@@ -423,13 +414,13 @@ int Game::getPacket(Dispatch* dispatch)
 
 void Game::sendCommand(void)
 {
-	int outgoingSequence = mOutgoingSequence & (mCommandHistorySize-1);
+	int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
 
 	Dispatch* dispatch = new Dispatch();
 
 	dispatch->WriteByte(mMessageFrame);						// type
-	dispatch->WriteShort(mOutgoingSequence);
-	dispatch->WriteShort(mIncomingSequence);
+	dispatch->WriteShort(mNetwork->mOutgoingSequence);
+	dispatch->WriteShort(mNetwork->mIncomingSequence);
 
 	// Build delta-compressed move command
 	buildDeltaMoveCommand(dispatch);
@@ -444,7 +435,7 @@ void Game::sendCommand(void)
 void Game::buildDeltaMoveCommand(Dispatch* dispatch)
 {
 	int flags = 0;
-	int last = (mOutgoingSequence - 1) & (mCommandHistorySize-1);
+	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
 
 	// Check what needs to be updated
 	if(mClientCommandToServerArray[last].mKey != mClientCommandToServer.mKey)
