@@ -44,9 +44,6 @@ public:
 	static const char mMessageDisconnecting = 2;
 	static const char mMessageDisconnected  = 4;
 
-public:
-	//the avatar
-    DynamicShape* mShape;  //on server: everybody's got one ...same on clientside mShape is the clients personal avatar..
 private:
 	//handles telegraphing key presses etc to server for your client/avatar pair. not to be
 	//confused with Commands that come from server that deal with all dynamic shapes on this
