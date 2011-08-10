@@ -232,8 +232,8 @@ void Server::parsePacket(Message *mes, struct sockaddr *address)
 					}
 
 					mClientVector.at(i)->mDroppedPackets  = sequence - mClientVector.at(i)->mIncomingSequence - 1;
+					//set mIncomingSequence to current one that just came in for next time comparison...
 					mClientVector.at(i)->mIncomingSequence = sequence;
-
 				}
 
 				// Wait for one message before setting state to connected
