@@ -105,7 +105,6 @@ public:
 	// Network
 	void	runNetwork  (int msec);
 	void	readPackets             ();
-	void			sendPacket (Dispatch* dispatch);
 	void			sendConnect(const char *name);
 	void			sendDisconnect(void);
 

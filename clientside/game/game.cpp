@@ -364,23 +364,15 @@ void Game::sendConnect(const char *name)
 	Dispatch* dispatch = new Dispatch();
 	dispatch->WriteByte(mMessageConnect);
 	dispatch->WriteString(name);
-
-	sendPacket(dispatch);
+	mNetwork->send(dispatch);
 }
 
 void Game::sendDisconnect(void)
 {
 	Dispatch* dispatch = new Dispatch();
-
 	dispatch->WriteByte(mMessageDisconnect);
-
-	sendPacket(dispatch);
-	mNetwork->reset();
-}
-
-void Game::sendPacket(Dispatch *dispatch)
-{
 	mNetwork->send(dispatch);
+	mNetwork->reset();
 }
 
 /**********  SEND ****/
@@ -397,7 +389,7 @@ void Game::sendCommand(void)
 	buildDeltaMoveCommand(dispatch);
 
 	// Send the packet
-	sendPacket(dispatch);
+	mNetwork->send(dispatch);
 
 	// Store the command to the input client's history
 	memcpy(&mClientCommandToServerArray[outgoingSequence], &mClientCommandToServer, sizeof(Command));
