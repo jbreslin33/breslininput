@@ -64,7 +64,7 @@ ObjectTitle* mObjectTitle;
 std::string  mObjectTitleString;
 
 //shape
-void createShape(int numberOfTimes);
+void createShape();
 
 //ghost
 bool mIsGhost;
@@ -99,7 +99,7 @@ void drawTitle    ();
 void appendToTitle(std::string appendage);
 void appendToTitle(int appendage);
 void clearTitle   ();
-void setupTitle(int numberOfTimes);
+void setupTitle();
 
 //name
 std::string getName() { return mName; } 
