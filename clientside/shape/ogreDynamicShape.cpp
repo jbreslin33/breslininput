@@ -21,9 +21,9 @@
 		mIndex = mIndex * -1;
 	}
 
-	createShape(mIndex);
+	createShape();
 	setupAnimations();
-	setupTitle(mIndex);
+	setupTitle();
 
 	//call create ghost here..
 }
@@ -35,12 +35,12 @@ OgreDynamicShape::~OgreDynamicShape()
 	delete mSceneNode;
 }
 
-void OgreDynamicShape::createShape(int numberOfTimes)
+void OgreDynamicShape::createShape()
 {
 	/*********  create shape ***************/
 	//mMeshName     = mesh;
 	mMeshName = "sinbad.mesh";
-	mName         = StringConverter::toString(numberOfTimes);
+	mName         = StringConverter::toString(mIndex);
     mSceneNode    = mGame->getSceneManager()->getRootSceneNode()->createChildSceneNode();
 
 	//set Starting position of sceneNode, we will attach our mesh to this. this is all that's needed for static shapes. actually we need to add
@@ -86,11 +86,11 @@ void OgreDynamicShape::setupAnimations()
     mAnims[ANIM_HANDS_RELAXED]->setEnabled(true);
 }
 
-void OgreDynamicShape::setupTitle(int numberOfTimes)
+void OgreDynamicShape::setupTitle()
 {
 	/*********  setup title/billboard ***************/
-	const Ogre::String& titlename = "tn" + StringConverter::toString(numberOfTimes);
-	const Ogre::String& title = "ti" + StringConverter::toString(numberOfTimes);
+	const Ogre::String& titlename = "tn" + StringConverter::toString(mIndex);
+	const Ogre::String& title = "ti" + StringConverter::toString(mIndex);
 	const Ogre::String& fontName = "SdkTrays/Caption";
 	const Ogre::ColourValue& color = Ogre::ColourValue::White;
 	mObjectTitle = new ObjectTitle
