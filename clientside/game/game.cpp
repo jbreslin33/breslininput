@@ -222,7 +222,7 @@ void Game::buttonHit(OgreBites::Button *button)
 		if (mJoinGame && !mPlayingGame)
 		{
 			mClient->sendConnect("myname");
-			LogString("sent connect to server");
+			//LogString("sent connect to server");
 			mPlayingGame = true;
 		}
 

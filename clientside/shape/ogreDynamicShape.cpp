@@ -20,10 +20,8 @@
 
 	mIsGhost = isGhost;
 
-	//LogString("mIndex:%d",mIndex);
 	if (mIsGhost)
 	{
-	//	LogString("mIsGhost true");
 		mIndex = mIndex * -1;
 	}	
 
@@ -32,23 +30,20 @@
 	setupTitle();
 
 	//call create ghost here..
-
-	//LogString("about to check for isGhost");
-
 	if (!mIsGhost) 
 	{
-	
-		DynamicShape* ghostShape = new OgreDynamicShape(mGame,dispatch,true);
-		mGhost = ghostShape;
+		//create a ghost for this shape
+		mGhost = new OgreDynamicShape(mGame,dispatch,true);
 
+		//is this shape the avatar?
 		if (mLocal)
 		{
 			mGame->mClient->mShape = this;	
-	//		LogString("I am the avatar of this client");
 		}
 
+		//put shape and ghost in game vectors so they can be looped and game now knows of them.
 		mGame->mShapeVector.push_back(this);
-		mGame->mShapeGhostVector.push_back(ghostShape);	
+		mGame->mShapeGhostVector.push_back(mGhost);	
 	}
 
 	
