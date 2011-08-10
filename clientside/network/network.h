@@ -92,6 +92,7 @@ int    setNonBlocking(u_long setMode);
 void send			 (int length, char *data, struct sockaddr addr);
 
 //parse
+public:
 void parsePacket(Dispatch *mes);
 	unsigned short	mIncomingSequence;		// Incoming packet sequence
 		unsigned short	mDroppedPackets;			// Dropped packets
