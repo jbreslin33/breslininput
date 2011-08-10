@@ -1,6 +1,8 @@
 #include "ogreDynamicShape.h"
 #include "../tdreamsock/dreamSockLog.h"
 
+#include "../client/client.h"
+
 //animation states for enter method
 #include "../states/dynamicShapeAnimationStates.h"
 
@@ -19,6 +21,11 @@
 	if (mIsGhost)
 	{
 		mIndex = mIndex * -1;
+	}
+	else if (mLocal)
+	{
+		mGame->mClient->mShape = this;	
+		LogString("I am the avatar of this client");
 	}
 
 	createShape();

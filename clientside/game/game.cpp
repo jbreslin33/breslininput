@@ -72,13 +72,6 @@ void Game::addShape(bool b, Dispatch* dispatch)
 	DynamicShape* shape = new OgreDynamicShape(this,dispatch,false);  //you should just need to call this...
 	//all this crap underneath is unecessary complication....let's rid ourselves of it.
 
-	//are this the avatar?
-	if(shape->mLocal)
-	{
-		mClient->mShape = shape;	
-		LogString("call SendReq");
-	}
-
 	//ghost
 	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch,true);
 	shape->mGhost = ghostShape;
