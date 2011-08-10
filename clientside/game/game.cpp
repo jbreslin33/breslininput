@@ -389,11 +389,6 @@ void Game::sendPacket(Dispatch *dispatch)
 /**********  GETS ****/
 int Game::getPacket(Dispatch* dispatch)
 {
-	// Check if the client is set up or if it is disconnecting
-	if(!mNetwork)
-	{
-		return 0;
-	}
 	int ret;
 
 	ret = mNetwork->getPacket(dispatch);
