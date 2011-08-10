@@ -257,7 +257,7 @@ void Game::readPackets()
 
 	Dispatch* dispatch = new Dispatch();
 
-	while(ret = getPacket(dispatch))
+	while(ret = mNetwork->getPacket(dispatch))
 	{
 		dispatch->BeginReading();
 
@@ -390,11 +390,7 @@ void Game::sendPacket(Dispatch *dispatch)
 int Game::getPacket(Dispatch* dispatch)
 {
 	int ret;
-
 	ret = mNetwork->getPacket(dispatch);
-
-	//dispatch->SetSize(ret);
-
 	return ret;
 }
 
