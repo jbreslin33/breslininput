@@ -385,14 +385,6 @@ void Game::sendDisconnect(void)
 void Game::sendPacket(Dispatch *dispatch)
 {
 	mNetwork->send(dispatch);
-
-	dispatch->BeginReading();
-	int type = dispatch->ReadByte();
-
-	if(type > 0)
-	{
-		mNetwork->mOutgoingSequence++;
-	}
 }
 
 /**********  GETS ****/
