@@ -32,8 +32,8 @@ public:
 
 	//commands
 	int mCommandHistorySize;
-	Command mClientCommandToServerArray[64];
-	Command	mClientCommandToServer; //for the human moves to be sent off to server
+	Command mCommandToServerArray[64];
+	Command	mCommandToServer; //for the human moves to be sent off to server
 
 	// Dispatches
 	static const char mCommandKey          = 1;

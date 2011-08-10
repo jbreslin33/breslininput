@@ -170,7 +170,7 @@ void Game::interpolateFrame()
 //INPUT
 void Game::processUnbufferedInput()
 {
-	mClientCommandToServer.mKey = 0;
+	mCommandToServer.mKey = 0;
     
 	if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
@@ -183,25 +183,25 @@ void Game::processUnbufferedInput()
     	
 	if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
-		mClientCommandToServer.mKey |= mKeyUp;
+		mCommandToServer.mKey |= mKeyUp;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
     {
-		mClientCommandToServer.mKey |= mKeyDown;
+		mCommandToServer.mKey |= mKeyDown;
     }
 
 	if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
     {
-		mClientCommandToServer.mKey |= mKeyLeft;
+		mCommandToServer.mKey |= mKeyLeft;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
     {
-		mClientCommandToServer.mKey |= mKeyRight;
+		mCommandToServer.mKey |= mKeyRight;
     }
 
-	mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
+	mCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
 }
 
 void Game::buttonHit(OgreBites::Button *button)
@@ -389,12 +389,12 @@ void Game::sendCommand(void)
 	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
 	//LogString("last:%d",last);
 	// Check what needs to be updated
-	if(mClientCommandToServerArray[last].mKey != mClientCommandToServer.mKey)
+	if(mCommandToServerArray[last].mKey != mCommandToServer.mKey)
 	{
 		flags |= mCommandKey;
 	}
 
-	if(mClientCommandToServerArray[last].mMilliseconds != mClientCommandToServer.mMilliseconds)
+	if(mCommandToServerArray[last].mMilliseconds != mCommandToServer.mMilliseconds)
 	{
 		flags |= mCommandMilliseconds;
 	}
@@ -406,18 +406,18 @@ void Game::sendCommand(void)
 	// Key
 	if(flags & mCommandKey)
 	{
-		dispatch->WriteByte(mClientCommandToServer.mKey);
+		dispatch->WriteByte(mCommandToServer.mKey);
 	}
 
 	if(flags & mCommandMilliseconds)
 	{
-		dispatch->WriteByte(mClientCommandToServer.mMilliseconds);
+		dispatch->WriteByte(mCommandToServer.mMilliseconds);
 	}
 
 
 	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	memcpy(&mClientCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
-		&mClientCommandToServer, sizeof(Command));
+	memcpy(&mCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
+		&mCommandToServer, sizeof(Command));
 
 	// Send the packet
 	mNetwork->send(dispatch);
