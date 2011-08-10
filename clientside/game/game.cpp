@@ -393,7 +393,7 @@ int Game::getPacket(Dispatch* dispatch)
 
 	ret = mNetwork->getPacket(dispatch);
 
-	dispatch->SetSize(ret);
+	//dispatch->SetSize(ret);
 
 	return ret;
 }
