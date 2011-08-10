@@ -264,6 +264,9 @@ int Network::getPacket(Dispatch* dispatch)
 
 		return ret;
 	}
+
+	dispatch->SetSize(ret);
+
 	return ret;
 }
 
