@@ -372,11 +372,8 @@ void Game::sendDisconnect()
 void Game::sendCommand(void)
 {
 	Dispatch* dispatch = new Dispatch();
-
 	dispatch->WriteByte(mMessageFrame);					
 	dispatch->WriteShort(mNetwork->mOutgoingSequence);
-
-	//LogString("mOut:%d",mNetwork->mOutgoingSequence);
 
 	// Build delta-compressed move command
 	int flags = 0;
@@ -393,10 +390,8 @@ void Game::sendCommand(void)
 	}
 
 	// Add to the message
-	//Flags
 	dispatch->WriteByte(flags);
 
-	// Key
 	if(flags & mCommandKey)
 	{
 		dispatch->WriteByte(mCommandToServer.mKey);
