@@ -16,7 +16,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
-	mIncomingAcknowledged	= 0;
 	mDroppedPackets			= 0;
 
 	// Save server's address information for later use
@@ -64,7 +63,6 @@ void Client::reset(void)
 
     mOutgoingSequence                = 1;
     mIncomingSequence                = 0;
-    mIncomingAcknowledged			 = 0;
     mDroppedPackets                  = 0;
 }
 
@@ -116,7 +114,7 @@ void Client::parsePacket(Dispatch *mes)
 	if(type > 0)
 	{
 		unsigned short sequence		= mes->ReadShort();
-		unsigned short sequenceAck	= mes->ReadShort();
+		mes->ReadShort();
 
 		if(sequence <= mIncomingSequence)
 		{
@@ -129,7 +127,6 @@ void Client::parsePacket(Dispatch *mes)
 		mDroppedPackets = sequence - mIncomingSequence + 1;
 
 		mIncomingSequence = sequence;
-		mIncomingAcknowledged = sequenceAck;
 	}
 
 	// Parse trough the system messages
