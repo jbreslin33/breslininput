@@ -386,10 +386,11 @@ void Game::sendCommand(void)
 	// Build delta-compressed move command
 	buildDeltaMoveCommand(dispatch);
 
-	int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
+	//int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
 
 	// Store the command to the input client's history
-	memcpy(&mClientCommandToServerArray[outgoingSequence], &mClientCommandToServer, sizeof(Command));
+	memcpy(&mClientCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
+		&mClientCommandToServer, sizeof(Command));
 
 	// Send the packet
 	mNetwork->send(dispatch);
