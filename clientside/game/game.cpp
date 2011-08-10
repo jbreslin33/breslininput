@@ -379,14 +379,15 @@ void Game::sendCommand(void)
 {
 	Dispatch* dispatch = new Dispatch();
 
-	dispatch->WriteByte(mMessageFrame);						// type
+	dispatch->WriteByte(mMessageFrame);					
 	dispatch->WriteShort(mNetwork->mOutgoingSequence);
 
+	//LogString("mOut:%d",mNetwork->mOutgoingSequence);
+
 	// Build delta-compressed move command
-	//buildDeltaMoveCommand(dispatch);
 	int flags = 0;
 	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
-
+	//LogString("last:%d",last);
 	// Check what needs to be updated
 	if(mClientCommandToServerArray[last].mKey != mClientCommandToServer.mKey)
 	{
