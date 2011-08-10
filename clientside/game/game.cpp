@@ -85,20 +85,6 @@ void Game::removeShape(Dispatch* dispatch)
 	}
 }
 
-void Game::moveGhostShapes(DynamicShape* shape)
-{
-	Vector3D transVector;
-
-	transVector.x = shape->mServerFrame.mOrigin.x;
-	transVector.y = 0;
-	transVector.z = shape->mServerFrame.mOrigin.z;
-
-	if (shape->mGhost)
-	{
-		shape->mGhost->setPosition(transVector);
-	}
-}
-
 void Game::frame(Dispatch* dispatch)
 {
 	int newTime;

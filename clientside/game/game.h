@@ -68,7 +68,6 @@ public:
 
 	DynamicShape* getDynamicShape      (  int id);
 
-	void          moveGhostShapes      (DynamicShape* shape);
 	void		  frame                (Dispatch* dispatch);
 	void          interpolateFrame     ();
 
