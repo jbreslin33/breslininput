@@ -119,9 +119,6 @@ set(HDRS
 	#dispatch
 	../clientside/dispatch/dispatch.h
 	
-	#client
-	../clientside/client/client.h
-
 	#billboard
 	../clientside/billboard/objectTitle.h
 	
@@ -160,9 +157,6 @@ set(SRCS
 	
 	#dispatch
 	../clientside/dispatch/dispatch.cpp
-	
-	#client
-	../clientside/client/client.cpp
 	
 	#billboard
 	../clientside/billboard/objectTitle.cpp
@@ -207,9 +201,6 @@ set(HDRS
 	#dispatch
 	../clientside/dispatch/dispatch.h
 	
-	#client
-	../clientside/client/client.h
-		
 	#billboard
 	../clientside/billboard/objectTitle.h
 	
@@ -251,9 +242,6 @@ set(SRCS
 	
 	#billboard
 	../clientside/billboard/objectTitle.cpp
-	
-	#client
-	../clientside/client/client.cpp
 	
 	#time
 	../clientside/time/time.cpp
