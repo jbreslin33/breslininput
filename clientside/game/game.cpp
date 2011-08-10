@@ -393,9 +393,6 @@ void Game::reset(void)
 
 void Game::sendPacket(Dispatch *dispatch)
 {
-    //DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
-	
-	//mNetwork->send(packet);
 	mNetwork->send(dispatch);
 
 	dispatch->BeginReading();
