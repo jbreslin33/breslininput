@@ -219,6 +219,12 @@ int Network::getPacket(Dispatch* dispatch)
 
 	ret = recvfrom(mSocket, data, 1400, 0, (struct sockaddr *) &tempFrom, &fromlen);
 
+	if(ret <= 0)
+		return 0;
+
+	// Parse system messages
+	parsePacket(dispatch);
+
 	if(ret == -1)
 	{
 #ifdef WIN32
