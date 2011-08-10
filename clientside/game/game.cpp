@@ -5,7 +5,7 @@
 #include "../../math/vector3D.h"
 #include "../dispatch/dispatch.h"
 #include "../time/time.h"
-
+#include "../network/network.h"
 
 Game::Game(const char* serverIP)
 {
@@ -13,8 +13,25 @@ Game::Game(const char* serverIP)
 
 	mServerIP = serverIP;
  
-	mClient	= new Client("", mServerIP, 30004);
+	//mClient	= new Client("", mServerIP, 30004);
 //you need instantiate network from this spot instead of client which we will be jettising.
+	/***********************************************************/
+	//commmands
+	mCommandHistorySize = 64;
+
+	mOutgoingSequence		= 1;
+	mIncomingSequence		= 0;
+
+	// Save server's address information for later use
+	mServerIP = serverIP;
+	mServerPort = 30004;
+
+	LogString("Server's information: IP address: %s, port: %d", mServerIP, mServerPort);
+
+	// Create client socket
+	mNetwork = new Network(mServerIP,mServerPort);
+
+	/**********************************************************/
 
 	mTime = new Time();
 	mFrameTime		 = 0.0f;
@@ -40,7 +57,9 @@ Game::Game(const char* serverIP)
 
 Game::~Game()
 {
-	delete mClient;
+//	delete mClient;
+		mNetwork->close();
+	delete mNetwork;
 }
 
 
@@ -65,7 +84,7 @@ void Game::shutdown(void)
 	if(!mInit)
 		return;
 	mInit = false;
-	mClient->sendDisconnect();
+	sendDisconnect();
 }
 
 void Game::addShape(bool b, Dispatch* dispatch)
@@ -158,7 +177,7 @@ void Game::interpolateFrame()
 //INPUT
 void Game::processUnbufferedInput()
 {
-	mClient->mClientCommandToServer.mKey = 0;
+	mClientCommandToServer.mKey = 0;
     
 	if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
@@ -171,25 +190,25 @@ void Game::processUnbufferedInput()
     	
 	if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
-		mClient->mClientCommandToServer.mKey |= mKeyUp;
+		mClientCommandToServer.mKey |= mKeyUp;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
     {
-		mClient->mClientCommandToServer.mKey |= mKeyDown;
+		mClientCommandToServer.mKey |= mKeyDown;
     }
 
 	if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
     {
-		mClient->mClientCommandToServer.mKey |= mKeyLeft;
+		mClientCommandToServer.mKey |= mKeyLeft;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
     {
-		mClient->mClientCommandToServer.mKey |= mKeyRight;
+		mClientCommandToServer.mKey |= mKeyRight;
     }
 
-	mClient->mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
+	mClientCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
 }
 
 void Game::buttonHit(OgreBites::Button *button)
@@ -199,7 +218,7 @@ void Game::buttonHit(OgreBites::Button *button)
 		mJoinGame = true;
 		if (mJoinGame && !mPlayingGame)
 		{
-			mClient->sendConnect("myname");
+			sendConnect("myname");
 			//LogString("sent connect to server");
 			mPlayingGame = true;
 		}
@@ -229,7 +248,7 @@ void Game::runNetwork(int msec)
 	// Framerate is too high
 	if(time > (1000 / 60))
 	{
-		mClient->sendCommand();
+		sendCommand();
 		mFrameTime = time / 1000.0f;
 		time = 0;
 	}
@@ -242,7 +261,7 @@ void Game::readPackets()
 
 	Dispatch* dispatch = new Dispatch();
 
-	while(ret = mClient->getPacket(dispatch))
+	while(ret = getPacket(dispatch))
 	{
 		dispatch->BeginReading();
 
@@ -250,11 +269,11 @@ void Game::readPackets()
 
 		switch(type)
 		{
-			case mClient->mMessageAddShape:
+			case mMessageAddShape:
 				addShape(true,dispatch);
 			break;
 
-			case mClient->mMessageRemoveShape:
+			case mMessageRemoveShape:
 				removeShape(dispatch);
 			break;
 
@@ -344,6 +363,123 @@ void Game::unloadOtherScreens()
 {
 }
 
+
+/***************************/
+/**********  SENDS  ****/
+void Game::sendConnect(const char *name)
+{
+	Dispatch* dispatch = new Dispatch();
+	dispatch->WriteByte(mMessageConnect);
+	dispatch->WriteString(name);
+
+	sendPacket(dispatch);
+}
+
+void Game::sendDisconnect(void)
+{
+	Dispatch* dispatch = new Dispatch();
+
+	dispatch->WriteByte(mMessageDisconnect);
+
+	sendPacket(dispatch);
+	reset();
+}
+
+void Game::reset(void)
+{
+    mOutgoingSequence                = 1;
+    mIncomingSequence                = 0;
+}
+
+void Game::sendPacket(Dispatch *dispatch)
+{
+    //DatagramPacket* packet = new DatagramPacket(dispatch->mCharArray,dispatch->GetSize(),mServerIP,mServerPort);
+	
+	//mNetwork->send(packet);
+	mNetwork->send(dispatch);
+
+	dispatch->BeginReading();
+	int type = dispatch->ReadByte();
+
+	if(type > 0)
+	{
+		mOutgoingSequence++;
+	}
+}
+
+/**********  GETS ****/
+int Game::getPacket(Dispatch* dispatch)
+{
+	// Check if the client is set up or if it is disconnecting
+	if(!mNetwork)
+	{
+		return 0;
+	}
+	int ret;
+
+	ret = mNetwork->getPacket(dispatch);
+
+	dispatch->SetSize(ret);
+
+	return ret;
+}
+
+void Game::sendCommand(void)
+{
+	int outgoingSequence = mOutgoingSequence & (mCommandHistorySize-1);
+
+	Dispatch* dispatch = new Dispatch();
+
+	dispatch->WriteByte(mMessageFrame);						// type
+	dispatch->WriteShort(mOutgoingSequence);
+	dispatch->WriteShort(mIncomingSequence);
+
+	// Build delta-compressed move command
+	buildDeltaMoveCommand(dispatch);
+
+	// Send the packet
+	sendPacket(dispatch);
+
+	// Store the command to the input client's history
+	memcpy(&mClientCommandToServerArray[outgoingSequence], &mClientCommandToServer, sizeof(Command));
+}
+
+void Game::buildDeltaMoveCommand(Dispatch* dispatch)
+{
+	int flags = 0;
+	int last = (mOutgoingSequence - 1) & (mCommandHistorySize-1);
+
+	// Check what needs to be updated
+	if(mClientCommandToServerArray[last].mKey != mClientCommandToServer.mKey)
+	{
+		flags |= mCommandKey;
+	}
+
+	if(mClientCommandToServerArray[last].mMilliseconds != mClientCommandToServer.mMilliseconds)
+	{
+		flags |= mCommandMilliseconds;
+	}
+
+	// Add to the message
+	
+	//Flags
+	dispatch->WriteByte(flags);
+
+	// Key
+	if(flags & mCommandKey)
+	{
+		dispatch->WriteByte(mClientCommandToServer.mKey);
+	}
+
+	if(flags & mCommandMilliseconds)
+	{
+		dispatch->WriteByte(mClientCommandToServer.mMilliseconds);
+	}
+}
+
+
+
+/*******************************************/
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
