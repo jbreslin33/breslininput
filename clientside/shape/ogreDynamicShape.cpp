@@ -21,9 +21,11 @@
 	if (mIsGhost)
 	{
 		mIndex = mIndex * -1;
+		mGame->mShapeGhostVector.push_back(this);	
 	}
 	else if (mLocal)
 	{
+				mGame->mShapeVector.push_back(this);	
 		mGame->mClient->mShape = this;	
 		LogString("I am the avatar of this client");
 	}
@@ -32,6 +34,8 @@
 	setupAnimations();
 	setupTitle();
 
+
+	
 	//call create ghost here..
 }
 
