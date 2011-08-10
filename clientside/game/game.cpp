@@ -68,17 +68,7 @@ void Game::shutdown(void)
 
 void Game::addShape(bool b, Dispatch* dispatch)
 {
-	//actuall create shape
 	DynamicShape* shape = new OgreDynamicShape(this,dispatch,false);  //you should just need to call this...
-	//all this crap underneath is unecessary complication....let's rid ourselves of it.
-
-	//ghost
-	//DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch,true);
-	//shape->mGhost = ghostShape;
-
-	//now add to vectors....
-	//mShapeVector.push_back(shape);
-	//mShapeGhostVector.push_back(shape->mGhost);
 }
 
 void Game::removeShape(Dispatch* dispatch)
