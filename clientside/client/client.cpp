@@ -12,8 +12,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 	mShape = NULL; //to be filled when we actually create the shape
 
-	mConnectionState	= mMessageDisconnected;
-
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
 	mDroppedPackets			= 0;
@@ -36,8 +34,6 @@ Client::~Client()
 /**********  SENDS  ****/
 void Client::sendConnect(const char *name)
 {
-	mConnectionState = mMessageConnecting;
-
 	Dispatch* dispatch = new Dispatch();
 	dispatch->WriteByte(mMessageConnect);
 	dispatch->WriteString(name);
@@ -53,14 +49,10 @@ void Client::sendDisconnect(void)
 
 	sendPacket(dispatch);
 	reset();
-
-	mConnectionState = mMessageDisconnecting;
 }
 
 void Client::reset(void)
 {
-	mConnectionState = mMessageDisconnected;
-
     mOutgoingSequence                = 1;
     mIncomingSequence                = 0;
     mDroppedPackets                  = 0;
@@ -130,25 +122,10 @@ void Client::parsePacket(Dispatch *mes)
 
 		mIncomingSequence = sequence;
 	}
-
-	// Parse trough the system messages
-	switch(type)
-	{
-	case mMessageConnect:
-		mConnectionState = mMessageConnected;
-		break;
-
-	case mMessageDisconnect:
-		mConnectionState = mMessageDisconnected;
-		break;
-	}
 }
 
 void Client::sendCommand(void)
 {
-	if(mConnectionState != mMessageConnected)
-		return;
-
 	int outgoingSequence = mOutgoingSequence & (mCommandHistorySize-1);
 
 	Dispatch* dispatch = new Dispatch();
