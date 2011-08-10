@@ -178,8 +178,7 @@ void Server::addClient(struct sockaddr *address, char *name)
 	client->mConnectionState = DREAMSOCK_CONNECTING;
 	client->mOutgoingSequence = 1;
 	client->mIncomingSequence = 0;
-	client->mIncomingAcknowledged = 0;
-
+	
 	memcpy(&client->mMyaddress,client->GetSocketAddress(), sizeof(struct sockaddr));
 
 	mGame->createClientAvatar(client);
@@ -225,7 +224,6 @@ void Server::parsePacket(Message *mes, struct sockaddr *address)
 				if(type > 0)
 				{
 					unsigned short sequence         = mes->ReadShort();
-					unsigned short sequenceAck      = mes->ReadShort();
 
 					if(sequence <= mClientVector.at(i)->mIncomingSequence)
 					{
@@ -235,7 +233,7 @@ void Server::parsePacket(Message *mes, struct sockaddr *address)
 
 					mClientVector.at(i)->mDroppedPackets  = sequence - mClientVector.at(i)->mIncomingSequence - 1;
 					mClientVector.at(i)->mIncomingSequence = sequence;
-					mClientVector.at(i)->mIncomingAcknowledged = sequenceAck;
+
 				}
 
 				// Wait for one message before setting state to connected
@@ -406,8 +404,7 @@ void Server::readPackets(void)
 
 				// Skip sequences
 				mes.ReadShort();
-				mes.ReadShort();
-				
+							
 				//let's try this with shapes instead.....
 				for (unsigned int i = 0; i < mGame->mShapeVector.size(); i++)
 				{

@@ -21,7 +21,6 @@ Client::Client(Network* network)
 
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
-	mIncomingAcknowledged	= 0;
 	mDroppedPackets			= 0;
 
 	mLastMessageTime		= 0;
