@@ -17,26 +17,45 @@
 	DynamicShape         (game,dispatch)
 {
 	//we use this to name shape. as ogre is picky about same names. it also serves as a counter of sorts.
+
 	mIsGhost = isGhost;
+
+	//LogString("mIndex:%d",mIndex);
 	if (mIsGhost)
 	{
+	//	LogString("mIsGhost true");
 		mIndex = mIndex * -1;
-		mGame->mShapeGhostVector.push_back(this);	
-	}
-	else if (mLocal)
-	{
-				mGame->mShapeVector.push_back(this);	
-		mGame->mClient->mShape = this;	
-		LogString("I am the avatar of this client");
-	}
+	}	
 
 	createShape();
 	setupAnimations();
 	setupTitle();
 
+	//call create ghost here..
+
+	//LogString("about to check for isGhost");
+
+	if (!mIsGhost) 
+	{
+	
+		DynamicShape* ghostShape = new OgreDynamicShape(mGame,dispatch,true);
+		mGhost = ghostShape;
+
+		if (mLocal)
+		{
+			mGame->mClient->mShape = this;	
+	//		LogString("I am the avatar of this client");
+		}
+
+		mGame->mShapeVector.push_back(this);
+		mGame->mShapeGhostVector.push_back(ghostShape);	
+	}
 
 	
-	//call create ghost here..
+
+
+	
+
 }
 
 OgreDynamicShape::~OgreDynamicShape()
