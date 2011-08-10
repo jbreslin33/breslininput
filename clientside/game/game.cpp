@@ -378,8 +378,6 @@ void Game::sendDisconnect(void)
 /**********  SEND ****/
 void Game::sendCommand(void)
 {
-	int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
-
 	Dispatch* dispatch = new Dispatch();
 
 	dispatch->WriteByte(mMessageFrame);						// type
@@ -390,6 +388,9 @@ void Game::sendCommand(void)
 
 	// Send the packet
 	mNetwork->send(dispatch);
+
+
+	int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
 
 	// Store the command to the input client's history
 	memcpy(&mClientCommandToServerArray[outgoingSequence], &mClientCommandToServer, sizeof(Command));
