@@ -110,7 +110,6 @@ void Game::frame(Dispatch* dispatch)
 
 	// Skip sequences
 	dispatch->ReadShort();
-	dispatch->ReadShort();
 
 	newTime = mTime->dreamSock_GetCurrentSystemTime();
 	time = newTime - mOldTime;
@@ -412,7 +411,6 @@ void Game::sendCommand(void)
 
 	dispatch->WriteByte(mMessageFrame);						// type
 	dispatch->WriteShort(mNetwork->mOutgoingSequence);
-	dispatch->WriteShort(mNetwork->mIncomingSequence);
 
 	// Build delta-compressed move command
 	buildDeltaMoveCommand(dispatch);

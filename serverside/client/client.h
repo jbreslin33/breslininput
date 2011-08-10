@@ -71,7 +71,6 @@ public:
 
 	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
 	unsigned short	mIncomingSequence;		// Incoming packet sequence
-	unsigned short	mIncomingAcknowledged;	// Last packet acknowledged by other end
 	unsigned short	mDroppedPackets;			// Dropped packets
 
 	struct sockaddr	mMyaddress;				// Socket address

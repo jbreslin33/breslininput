@@ -278,7 +278,6 @@ void Network::parsePacket(Dispatch *mes)
 	if(type > 0)
 	{
 		unsigned short sequence		= mes->ReadShort();
-		mes->ReadShort();
 
 		if(sequence <= mIncomingSequence)
 		{

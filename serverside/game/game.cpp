@@ -234,7 +234,6 @@ void Game::sendCommand(void)
 		//start filling said mMessage that belongs to client
 		mServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_FRAME);			// type
 		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mOutgoingSequence);
-		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mIncomingSequence);
 
 		//this is where you need to actually loop thru the shapes not the clients but put write to client mMessage
 		for (unsigned int j = 0; j < mShapeVector.size(); j++)
@@ -269,7 +268,6 @@ void Game::sendExitNotification(void)
 
 		mServer->mClientVector.at(i)->mMessage.WriteByte(USER_MES_SERVEREXIT);	// type
 		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mOutgoingSequence);
-		mServer->mClientVector.at(i)->mMessage.WriteShort(mServer->mClientVector.at(i)->mIncomingSequence);
 	}
 
 	mServer->sendPackets();
