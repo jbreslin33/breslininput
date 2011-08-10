@@ -14,6 +14,8 @@ Game::Game(const char* serverIP)
 	mServerIP = serverIP;
  
 	mClient	= new Client("", mServerIP, 30004);
+//you need instantiate network from this spot instead of client which we will be jettising.
+
 	mTime = new Time();
 	mFrameTime		 = 0.0f;
  	mRenderTime		 = 0.0f;
