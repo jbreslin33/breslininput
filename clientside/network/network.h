@@ -53,10 +53,32 @@ public:
 Network(const char serverIP[32], int serverPort);
 ~Network();
 
+/**********************************
+*          VARIABLES
+**********************************/
+public:
 //sequences and packet loss stats
-	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
-	unsigned short	mIncomingSequence;		// Incoming packet sequence
-	unsigned short	mDroppedPackets;			// Dropped packets
+unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
+private:
+unsigned short	mIncomingSequence;		// Incoming packet sequence
+unsigned short	mDroppedPackets;			// Dropped packets
+
+//socket
+SOCKET mSocket;
+
+//address
+struct sockaddr_in sendToAddress;
+
+#ifdef WIN32
+DreamWinSock* mDreamWinSock;
+#else
+DreamLinuxSock* mDreamLinuxSock;
+#endif
+
+/**********************************
+*          METHODS
+**********************************/
+public:
 
 //send
 void send(Dispatch* dispatch);
@@ -72,18 +94,6 @@ void            reset();
 
 private:
 
-#ifdef WIN32
-DreamWinSock* mDreamWinSock;
-#else
-DreamLinuxSock* mDreamLinuxSock;
-#endif
-
-//socket
-SOCKET mSocket;
-
-//address
-struct sockaddr_in sendToAddress;
-
 //create
 SOCKET createSocket(int protocol);
 void setSendToAddress(const char* serverIP, int serverPort);
@@ -94,13 +104,10 @@ SOCKET open();
 //block
 int    setNonBlocking(u_long setMode);
 
-
-
 //send
 void send			 (int length, char *data, struct sockaddr addr);
 
 //parse
-public:
 void parsePacket(Dispatch *mes);
 
 

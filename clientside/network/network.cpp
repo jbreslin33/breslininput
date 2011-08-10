@@ -298,7 +298,6 @@ void Network::parsePacket(Dispatch *mes)
 
 void Network::reset(void)
 {
-
     mOutgoingSequence                = 1;
     mIncomingSequence                = 0;
 }

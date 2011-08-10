@@ -53,8 +53,9 @@ Game::~Game()
 	delete mNetwork;
 }
 
-
-//Admin
+/*********************************
+		START/LOOP/END
+**********************************/
 void Game::gameLoop()
 {
 	while(true)
@@ -78,6 +79,9 @@ void Game::shutdown(void)
 	sendDisconnect();
 }
 
+/*********************************
+		SHAPE
+**********************************/
 void Game::addShape(bool b, Dispatch* dispatch)
 {
 	DynamicShape* shape = new OgreDynamicShape(this,dispatch,false);  //you should just need to call this...
@@ -161,7 +165,196 @@ void Game::interpolateFrame()
 	}
 }
 
-//INPUT
+/*********************************
+		NETWORK
+**********************************/
+void Game::runNetwork(int msec)
+{
+	static int time = 0;
+	time += msec;
+
+	readPackets();
+	
+	// Framerate is too high
+	if(time > (1000 / 60))
+	{
+		sendCommand();
+		mFrameTime = time / 1000.0f;
+		time = 0;
+	}
+}
+
+void Game::readPackets()
+{
+	int type;
+	int ret;
+
+	Dispatch* dispatch = new Dispatch();
+
+	while(ret = mNetwork->checkForDispatch(dispatch))
+	{
+		dispatch->BeginReading();
+
+		type = dispatch->ReadByte();
+
+		switch(type)
+		{
+			case mMessageAddShape:
+				addShape(true,dispatch);
+			break;
+
+			case mMessageRemoveShape:
+				removeShape(dispatch);
+			break;
+
+			case mMessageFrame:
+				frame(dispatch);
+			break;
+
+			case mMessageServerExit:
+				shutdown();
+			break;
+		}
+	}
+}
+void Game::sendConnect(const char *name)
+{
+	Dispatch* dispatch = new Dispatch();
+	dispatch->WriteByte(mMessageConnect);
+	dispatch->WriteString(name);
+	mNetwork->send(dispatch);
+}
+
+void Game::sendDisconnect()
+{
+	Dispatch* dispatch = new Dispatch();
+	dispatch->WriteByte(mMessageDisconnect);
+	mNetwork->send(dispatch);
+	mNetwork->reset();
+}
+
+void Game::sendCommand(void)
+{
+	Dispatch* dispatch = new Dispatch();
+	dispatch->WriteByte(mMessageFrame);					
+	dispatch->WriteShort(mNetwork->mOutgoingSequence);
+
+	// Build delta-compressed move command
+	int flags = 0;
+
+	// Check what needs to be updated
+	if(mLastCommandToServerArray.mKey != mCommandToServer.mKey)
+	{
+		flags |= mCommandKey;
+	}
+
+	if(mLastCommandToServerArray.mMilliseconds != mCommandToServer.mMilliseconds)
+	{
+		flags |= mCommandMilliseconds;
+	}
+
+	// Add to the message
+	dispatch->WriteByte(flags);
+
+	if(flags & mCommandKey)
+	{
+		dispatch->WriteByte(mCommandToServer.mKey);
+	}
+
+	if(flags & mCommandMilliseconds)
+	{
+		dispatch->WriteByte(mCommandToServer.mMilliseconds);
+	}
+
+	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
+	memcpy(&mLastCommandToServerArray, &mCommandToServer, sizeof(Command));
+
+	// Send the packet
+	mNetwork->send(dispatch);
+}
+
+/*********************************
+		GRAPHICS
+**********************************/
+void Game::createScene(void)
+{
+    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
+
+    Ogre::Light* pointLight = mSceneMgr->createLight("pointLight");
+    pointLight->setType(Ogre::Light::LT_POINT);
+    pointLight->setPosition(Ogre::Vector3(250, 150, 250));
+    pointLight->setDiffuseColour(Ogre::ColourValue::White);
+    pointLight->setSpecularColour(Ogre::ColourValue::White);
+
+}
+
+bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
+{
+	mRenderTime = evt.timeSinceLastFrame;
+
+    bool ret = BaseApplication::frameRenderingQueued(evt);
+	
+	return ret;
+}
+
+bool Game::runGraphics()
+{
+	//Pump messages in all registered RenderWindow windows
+	WindowEventUtilities::messagePump();
+
+	if (!mRoot->renderOneFrame())
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+/*********************************
+		GUI
+**********************************/
+void Game::initializeGui()
+{
+	if (mInitializeGui == true)
+	{
+		return;
+	}
+	else
+	{
+		loadJoinScreen();
+		mInitializeGui = true;
+	}
+}
+
+void Game::loadJoinScreen()
+{
+	unloadOtherScreens();
+	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "mJoinButton", "Join Game");
+	mTrayMgr->moveWidgetToTray(mJoinButton,OgreBites::TL_CENTER);
+	mTrayMgr->showCursor();
+}
+
+void Game::hideGui()
+{
+	hideJoinScreen();
+	mTrayMgr->hideCursor();
+}
+
+void Game::hideJoinScreen()
+{
+	mTrayMgr->removeWidgetFromTray(mJoinButton);
+    mJoinButton->hide();
+}
+
+void Game::unloadOtherScreens()
+{
+}
+
+/*********************************
+		INPUT
+**********************************/
 void Game::processUnbufferedInput()
 {
 	mCommandToServer.mKey = 0;
@@ -224,193 +417,8 @@ bool Game::mouseMoved( const OIS::MouseEvent &arg )
     return true;
 }
 
-//Network
-void Game::runNetwork(int msec)
-{
-	static int time = 0;
-	time += msec;
 
-	readPackets();
-	
-	// Framerate is too high
-	if(time > (1000 / 60))
-	{
-		sendCommand();
-		mFrameTime = time / 1000.0f;
-		time = 0;
-	}
-}
-
-void Game::readPackets()
-{
-	int type;
-	int ret;
-
-	Dispatch* dispatch = new Dispatch();
-
-	while(ret = mNetwork->checkForDispatch(dispatch))
-	{
-		dispatch->BeginReading();
-
-		type = dispatch->ReadByte();
-
-		switch(type)
-		{
-			case mMessageAddShape:
-				addShape(true,dispatch);
-			break;
-
-			case mMessageRemoveShape:
-				removeShape(dispatch);
-			break;
-
-			case mMessageFrame:
-				frame(dispatch);
-			break;
-
-			case mMessageServerExit:
-				shutdown();
-			break;
-		}
-	}
-}
-
-//Graphics
-void Game::createScene(void)
-{
-    mSceneMgr->setAmbientLight(Ogre::ColourValue(0.75, 0.75, 0.75));
-
-    Ogre::Light* pointLight = mSceneMgr->createLight("pointLight");
-    pointLight->setType(Ogre::Light::LT_POINT);
-    pointLight->setPosition(Ogre::Vector3(250, 150, 250));
-    pointLight->setDiffuseColour(Ogre::ColourValue::White);
-    pointLight->setSpecularColour(Ogre::ColourValue::White);
-
-}
-
-bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
-{
-	mRenderTime = evt.timeSinceLastFrame;
-
-    bool ret = BaseApplication::frameRenderingQueued(evt);
-	
-	return ret;
-}
-
-bool Game::runGraphics()
-{
-	//Pump messages in all registered RenderWindow windows
-	WindowEventUtilities::messagePump();
-
-	if (!mRoot->renderOneFrame())
-	{
-		return false;
-	}
-	else
-	{
-		return true;
-	}
-}
-
-//GUI
-void Game::initializeGui()
-{
-	if (mInitializeGui == true)
-	{
-		return;
-	}
-	else
-	{
-		loadJoinScreen();
-		mInitializeGui = true;
-	}
-}
-
-void Game::loadJoinScreen()
-{
-	unloadOtherScreens();
-	mJoinButton = mTrayMgr->createButton(OgreBites::TL_CENTER, "mJoinButton", "Join Game");
-	mTrayMgr->moveWidgetToTray(mJoinButton,OgreBites::TL_CENTER);
-	mTrayMgr->showCursor();
-}
-
-void Game::hideGui()
-{
-	hideJoinScreen();
-	mTrayMgr->hideCursor();
-}
-
-void Game::hideJoinScreen()
-{
-	mTrayMgr->removeWidgetFromTray(mJoinButton);
-    mJoinButton->hide();
-}
-
-void Game::unloadOtherScreens()
-{
-}
-
-/***************************/
-/**********  SENDS  ****/
-void Game::sendConnect(const char *name)
-{
-	Dispatch* dispatch = new Dispatch();
-	dispatch->WriteByte(mMessageConnect);
-	dispatch->WriteString(name);
-	mNetwork->send(dispatch);
-}
-
-void Game::sendDisconnect()
-{
-	Dispatch* dispatch = new Dispatch();
-	dispatch->WriteByte(mMessageDisconnect);
-	mNetwork->send(dispatch);
-	mNetwork->reset();
-}
-
-/**********  SEND ****/
-void Game::sendCommand(void)
-{
-	Dispatch* dispatch = new Dispatch();
-	dispatch->WriteByte(mMessageFrame);					
-	dispatch->WriteShort(mNetwork->mOutgoingSequence);
-
-	// Build delta-compressed move command
-	int flags = 0;
-
-	// Check what needs to be updated
-	if(mLastCommandToServerArray.mKey != mCommandToServer.mKey)
-	{
-		flags |= mCommandKey;
-	}
-
-	if(mLastCommandToServerArray.mMilliseconds != mCommandToServer.mMilliseconds)
-	{
-		flags |= mCommandMilliseconds;
-	}
-
-	// Add to the message
-	dispatch->WriteByte(flags);
-
-	if(flags & mCommandKey)
-	{
-		dispatch->WriteByte(mCommandToServer.mKey);
-	}
-
-	if(flags & mCommandMilliseconds)
-	{
-		dispatch->WriteByte(mCommandToServer.mMilliseconds);
-	}
-
-	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	memcpy(&mLastCommandToServerArray, &mCommandToServer, sizeof(Command));
-
-	// Send the packet
-	mNetwork->send(dispatch);
-}
-
-
-/*******************************************/
+/******************** MAIN ***********************/
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #define WIN32_LEAN_AND_MEAN
 #include "windows.h"
