@@ -74,11 +74,11 @@ void Game::addShape(bool b, Dispatch* dispatch)
 
 	//ghost
 	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch,true);
-	shape->mGhost = ghostShape;
+	//shape->mGhost = ghostShape;
 
 	//now add to vectors....
-	mShapeVector.push_back(shape);
-	mShapeGhostVector.push_back(shape->mGhost);
+	//mShapeVector.push_back(shape);
+	//mShapeGhostVector.push_back(shape->mGhost);
 }
 
 void Game::removeShape(Dispatch* dispatch)
