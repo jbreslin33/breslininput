@@ -34,6 +34,10 @@
 
 Network::Network(const char serverIP[32], int serverPort )
 {
+	//sequences
+	mOutgoingSequence		= 1;
+	mIncomingSequence		= 0;
+
 #ifdef WIN32
 	mDreamWinSock = new DreamWinSock();
 #else
@@ -163,7 +167,6 @@ void Network::close()
 }
 
 //send
-
 void Network::send(Dispatch* dispatch)
 {
 	send(dispatch->mSize,dispatch->mCharArray,*(struct sockaddr *) &sendToAddress);
@@ -281,4 +284,11 @@ void Network::parsePacket(Dispatch *mes)
 
 		mIncomingSequence = sequence;
 	}
+}
+
+void Network::reset(void)
+{
+
+    mOutgoingSequence                = 1;
+    mIncomingSequence                = 0;
 }
