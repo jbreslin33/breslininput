@@ -35,11 +35,6 @@
 		//create a ghost for this shape
 		mGhost = new OgreDynamicShape(mGame,dispatch,true);
 		mGhost->setVisible(false);
-		//is this shape the avatar?
-		if (mLocal)
-		{
-			mGame->mClient->mShape = this;	
-		}
 
 		//put shape and ghost in game vectors so they can be looped and game now knows of them.
 		mGame->mShapeVector.push_back(this);

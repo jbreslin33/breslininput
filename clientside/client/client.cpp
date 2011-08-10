@@ -10,8 +10,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 	//commmands
 	mCommandHistorySize = 64;
 
-	mShape = NULL; //to be filled when we actually create the shape
-
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
 
