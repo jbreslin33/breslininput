@@ -62,7 +62,7 @@ Network(const char serverIP[32], int serverPort);
 void send(Dispatch* dispatch);
 
 //receive
-int  getPacket(Dispatch* dispatch);
+int  checkForDispatch(Dispatch* dispatch);
 
 //close
 void close();

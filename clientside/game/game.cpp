@@ -115,21 +115,18 @@ void Game::frame(Dispatch* dispatch)
 	time = newTime - mOldTime;
     mOldTime = newTime;
 
-	//for (unsigned int i = 0; i < mShapeVector.size(); i++)
 	while (dispatch->getReadCount() <= dispatch->GetSize())
 	{
 		if (mNetworkShutdown)
 		{
 			return;
 		}
-		//readDeltaMoveCommand(dispatch);
-		DynamicShape* shape = NULL;
 
 		mDetailsPanel->setParamValue(11, Ogre::StringConverter::toString(dispatch->GetSize()));
 
-		//index
 		int id = dispatch->ReadByte();
 
+		DynamicShape* shape = NULL;
 		shape = getDynamicShape(id);
 
 		if (shape)
@@ -257,7 +254,7 @@ void Game::readPackets()
 
 	Dispatch* dispatch = new Dispatch();
 
-	while(ret = mNetwork->getPacket(dispatch))
+	while(ret = mNetwork->checkForDispatch(dispatch))
 	{
 		dispatch->BeginReading();
 
@@ -386,14 +383,7 @@ void Game::sendPacket(Dispatch *dispatch)
 	mNetwork->send(dispatch);
 }
 
-/**********  GETS ****/
-int Game::getPacket(Dispatch* dispatch)
-{
-	int ret;
-	ret = mNetwork->getPacket(dispatch);
-	return ret;
-}
-
+/**********  SEND ****/
 void Game::sendCommand(void)
 {
 	int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
