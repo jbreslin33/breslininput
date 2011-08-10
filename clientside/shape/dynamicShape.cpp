@@ -184,7 +184,7 @@ void DynamicShape::processTick()
 	mRotationProcessTickStateMachine->update();
 		
 	//run billboard here for now.
-	drawTitle();
+	//drawTitle();
 }
 void DynamicShape::interpolateTick(float renderTime)
 {

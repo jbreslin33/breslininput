@@ -104,6 +104,8 @@ int Client::getPacket(Dispatch* dispatch)
 	return ret;
 }
 
+
+//i feel like network should handle out of sequence packet warnings...
 void Client::parsePacket(Dispatch *mes)
 {
 	mes->BeginReading();
@@ -134,22 +136,10 @@ void Client::parsePacket(Dispatch *mes)
 	{
 	case mMessageConnect:
 		mConnectionState = mMessageConnected;
-
-		//LogString("LIBRARY: Client: got connect confirmation");
 		break;
 
 	case mMessageDisconnect:
 		mConnectionState = mMessageDisconnected;
-
-		LogString("LIBRARY: Client: got disconnect confirmation");
-		break;
-
-	case mMessageAddShape:
-		//LogString("LIBRARY: Client: adding a shape");
-		break;
-
-	case mMessageRemoveShape:
-		LogString("LIBRARY: Client: removing a client");
 		break;
 	}
 }
