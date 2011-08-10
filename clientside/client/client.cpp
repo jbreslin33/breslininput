@@ -83,9 +83,7 @@ int Client::getPacket(Dispatch* dispatch)
 	int ret;
 
 	ret = mNetwork->getPacket(dispatch);
-	if(ret <= 0)
-		return 0;
-	//int size = sizeof(dispatch->mCharArray);
+
 	dispatch->SetSize(ret);
 
 	return ret;
