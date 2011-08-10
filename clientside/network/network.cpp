@@ -218,7 +218,7 @@ void Network::setSendToAddress(const char* serverIP, int serverPort)
 }
 
 //receive
-int Network::getPacket(Dispatch* dispatch)
+int Network::checkForDispatch(Dispatch* dispatch)
 {
 	char* data = dispatch->mCharArray;
 
