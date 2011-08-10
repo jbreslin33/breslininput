@@ -138,7 +138,7 @@ void Client::parsePacket(Dispatch *mes)
 	case mMessageConnect:
 		mConnectionState = mMessageConnected;
 
-		LogString("LIBRARY: Client: got connect confirmation");
+		//LogString("LIBRARY: Client: got connect confirmation");
 		break;
 
 	case mMessageDisconnect:
