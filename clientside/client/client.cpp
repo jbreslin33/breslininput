@@ -88,9 +88,6 @@ int Client::getPacket(Dispatch* dispatch)
 	//int size = sizeof(dispatch->mCharArray);
 	dispatch->SetSize(ret);
 
-	// Parse system messages
-	mNetwork->parsePacket(dispatch);
-
 	return ret;
 }
 
