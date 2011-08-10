@@ -63,14 +63,12 @@ private:
 
 	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
 	unsigned short	mIncomingSequence;		// Incoming packet sequence
-	unsigned short	mDroppedPackets;			// Dropped packets
 
 	//packets
 public:
 	int				getPacket  (Dispatch* dispatch);
 private:
 	void			sendPacket (Dispatch* dispatch);
-	void			parsePacket(Dispatch* dispatch);
 	void            reset();
 
 public:

@@ -14,7 +14,6 @@ Client::Client(const char *localIP, const char *remoteIP, int serverPort)
 
 	mOutgoingSequence		= 1;
 	mIncomingSequence		= 0;
-	mDroppedPackets			= 0;
 
 	// Save server's address information for later use
 	mServerIP = remoteIP;
@@ -55,7 +54,6 @@ void Client::reset(void)
 {
     mOutgoingSequence                = 1;
     mIncomingSequence                = 0;
-    mDroppedPackets                  = 0;
 }
 
 void Client::sendPacket(Dispatch *dispatch)
@@ -91,37 +89,9 @@ int Client::getPacket(Dispatch* dispatch)
 	dispatch->SetSize(ret);
 
 	// Parse system messages
-	parsePacket(dispatch);
+	mNetwork->parsePacket(dispatch);
 
 	return ret;
-}
-
-
-//i feel like network should handle out of sequence packet warnings...
-void Client::parsePacket(Dispatch *mes)
-{
-	mes->BeginReading();
-	int type = mes->ReadByte();
-
-	// Check if the type is a positive number
-	// = is the packet sequenced
-	if(type > 0)
-	{
-		unsigned short sequence		= mes->ReadShort();
-		mes->ReadShort();
-
-		if(sequence <= mIncomingSequence)
-		{
-			LogString("Client: (sequence: %d <= incoming seq: %d)",
-				sequence, mIncomingSequence);
-
-			LogString("Client: Sequence mismatch");
-		}
-
-		mDroppedPackets = sequence - mIncomingSequence + 1;
-
-		mIncomingSequence = sequence;
-	}
 }
 
 void Client::sendCommand(void)
