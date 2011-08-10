@@ -79,14 +79,8 @@ void Game::addShape(bool b, Dispatch* dispatch)
 		LogString("call SendReq");
 	}
 
-	//need to know about world
-	shape->mGame = this;
-
 	//ghost
-	dispatch->BeginReading();
-	dispatch->ReadByte();
 	DynamicShape* ghostShape = new OgreDynamicShape(this,dispatch,true);
-
 	shape->mGhost = ghostShape;
 
 	//now add to vectors....
