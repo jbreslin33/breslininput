@@ -412,7 +412,6 @@ void Game::buildDeltaMoveCommand(Dispatch* dispatch)
 	}
 
 	// Add to the message
-	
 	//Flags
 	dispatch->WriteByte(flags);
 

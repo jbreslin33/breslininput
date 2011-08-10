@@ -90,8 +90,8 @@ public:
 			          METHODS
 	***************************************/
 	//Admin
-	void	shutdown    ();
-	void	gameLoop();
+	void shutdown();
+	void gameLoop();
 
 	//shape
 	void addShape    (bool b, Dispatch* dispatch);
@@ -99,14 +99,14 @@ public:
 
 	DynamicShape* getDynamicShape      (  int id);
 
-	void		  frame                (Dispatch* dispatch);
-	void          interpolateFrame     ();
+	void frame           (Dispatch* dispatch);
+	void interpolateFrame();
 
 	// Network
-	void	runNetwork  (int msec);
-	void	readPackets             ();
-	void			sendConnect(const char *name);
-	void			sendDisconnect(void);
+	void runNetwork    (int msec);
+	void readPackets   ();
+	void sendConnect   (const char *name);
+	void sendDisconnect(void);
 
 	//input
 	void processUnbufferedInput();
