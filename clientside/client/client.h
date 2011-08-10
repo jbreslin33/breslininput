@@ -64,8 +64,6 @@ private:
 	unsigned short	mOutgoingSequence;		// OutFgoing packet sequence
 	unsigned short	mIncomingSequence;		// Incoming packet sequence
 	unsigned short	mDroppedPackets;			// Dropped packets
-	int				mConnectionState;		// Connecting, connected, disconnecting, disconnected
-
 
 	//packets
 public:

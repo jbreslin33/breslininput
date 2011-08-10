@@ -48,6 +48,10 @@ Network::Network(const char serverIP[32], int serverPort )
 	}
 
 	setSendToAddress(serverIP,serverPort);
+
+	//parse
+	mIncomingSequence = 0;
+	mDroppedPackets = 0;
 }
 
 Network::~Network()
@@ -244,4 +248,31 @@ int Network::getPacket(Dispatch* dispatch)
 		return ret;
 	}
 	return ret;
+}
+
+//i feel like network should handle out of sequence packet warnings...
+void Network::parsePacket(Dispatch *mes)
+{
+	mes->BeginReading();
+	int type = mes->ReadByte();
+
+	// Check if the type is a positive number
+	// = is the packet sequenced
+	if(type > 0)
+	{
+		unsigned short sequence		= mes->ReadShort();
+		mes->ReadShort();
+
+		if(sequence <= mIncomingSequence)
+		{
+			LogString("Client: (sequence: %d <= incoming seq: %d)",
+				sequence, mIncomingSequence);
+
+			LogString("Client: Sequence mismatch");
+		}
+
+		mDroppedPackets = sequence - mIncomingSequence + 1;
+
+		mIncomingSequence = sequence;
+	}
 }
