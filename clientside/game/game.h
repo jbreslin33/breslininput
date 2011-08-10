@@ -32,7 +32,7 @@ public:
 
 	//commands
 	int mCommandHistorySize;
-	Command mCommandToServerArray[64];
+	Command mLastCommandToServerArray;
 	Command	mCommandToServer; //for the human moves to be sent off to server
 
 	// Dispatches

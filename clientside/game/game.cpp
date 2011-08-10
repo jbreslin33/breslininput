@@ -389,12 +389,12 @@ void Game::sendCommand(void)
 	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
 	//LogString("last:%d",last);
 	// Check what needs to be updated
-	if(mCommandToServerArray[last].mKey != mCommandToServer.mKey)
+	if(mLastCommandToServerArray.mKey != mCommandToServer.mKey)
 	{
 		flags |= mCommandKey;
 	}
 
-	if(mCommandToServerArray[last].mMilliseconds != mCommandToServer.mMilliseconds)
+	if(mLastCommandToServerArray.mMilliseconds != mCommandToServer.mMilliseconds)
 	{
 		flags |= mCommandMilliseconds;
 	}
@@ -414,10 +414,8 @@ void Game::sendCommand(void)
 		dispatch->WriteByte(mCommandToServer.mMilliseconds);
 	}
 
-
 	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	memcpy(&mCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
-		&mCommandToServer, sizeof(Command));
+	memcpy(&mLastCommandToServerArray, &mCommandToServer, sizeof(Command));
 
 	// Send the packet
 	mNetwork->send(dispatch);
