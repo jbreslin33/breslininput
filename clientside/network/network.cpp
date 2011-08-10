@@ -170,6 +170,14 @@ void Network::close()
 void Network::send(Dispatch* dispatch)
 {
 	send(dispatch->mSize,dispatch->mCharArray,*(struct sockaddr *) &sendToAddress);
+	
+	dispatch->BeginReading();
+	int type = dispatch->ReadByte();
+
+	if(type > 0)
+	{
+		mOutgoingSequence++;
+	}
 }
 
 void Network::send(int length, char *data,  struct sockaddr addr)
