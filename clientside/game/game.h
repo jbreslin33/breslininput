@@ -59,10 +59,6 @@ public:
 	int			 mServerPort;				// Port
 	const char*  mServerIP;
 
-	//commands
-	void	sendCommand             ();
-	void	buildDeltaMoveCommand   (Dispatch* dispatch);
-
 	//time
 	Time* mTime;
 	float mFrameTime;
@@ -107,6 +103,7 @@ public:
 	void readPackets   ();
 	void sendConnect   (const char *name);
 	void sendDisconnect(void);
+	void sendCommand   ();
 
 	//input
 	void processUnbufferedInput();

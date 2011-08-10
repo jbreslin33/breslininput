@@ -356,7 +356,6 @@ void Game::unloadOtherScreens()
 {
 }
 
-
 /***************************/
 /**********  SENDS  ****/
 void Game::sendConnect(const char *name)
@@ -367,7 +366,7 @@ void Game::sendConnect(const char *name)
 	mNetwork->send(dispatch);
 }
 
-void Game::sendDisconnect(void)
+void Game::sendDisconnect()
 {
 	Dispatch* dispatch = new Dispatch();
 	dispatch->WriteByte(mMessageDisconnect);
@@ -384,23 +383,7 @@ void Game::sendCommand(void)
 	dispatch->WriteShort(mNetwork->mOutgoingSequence);
 
 	// Build delta-compressed move command
-	buildDeltaMoveCommand(dispatch);
-
-	//int outgoingSequence = mNetwork->mOutgoingSequence & (mCommandHistorySize-1);
-
-	// Store the command to the input client's history
-	memcpy(&mClientCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
-		&mClientCommandToServer, sizeof(Command));
-
-	// Send the packet
-	mNetwork->send(dispatch);
-
-
-
-}
-
-void Game::buildDeltaMoveCommand(Dispatch* dispatch)
-{
+	//buildDeltaMoveCommand(dispatch);
 	int flags = 0;
 	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
 
@@ -429,8 +412,15 @@ void Game::buildDeltaMoveCommand(Dispatch* dispatch)
 	{
 		dispatch->WriteByte(mClientCommandToServer.mMilliseconds);
 	}
-}
 
+
+	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
+	memcpy(&mClientCommandToServerArray[mNetwork->mOutgoingSequence & (mCommandHistorySize-1)],
+		&mClientCommandToServer, sizeof(Command));
+
+	// Send the packet
+	mNetwork->send(dispatch);
+}
 
 
 /*******************************************/
