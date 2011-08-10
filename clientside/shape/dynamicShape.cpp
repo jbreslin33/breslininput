@@ -337,6 +337,20 @@ void DynamicShape::readDeltaMoveCommand(Dispatch *mes)
 		}
 	}
 	processTick();
-	mGame->moveGhostShapes(this);
+	moveGhostShape();
 }
 
+
+void DynamicShape::moveGhostShape()
+{
+	Vector3D transVector;
+
+	transVector.x = mServerFrame.mOrigin.x;
+	transVector.y = 0;
+	transVector.z = mServerFrame.mOrigin.z;
+
+	if (mGhost)
+	{
+		mGhost->setPosition(transVector);
+	}
+}

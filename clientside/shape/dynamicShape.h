@@ -121,6 +121,9 @@ void initializeVariables();
 //dispatch
 void parseDispatch(Dispatch* dispatch);
 
+//ghost
+void moveGhostShape();
+
 
 };
 
