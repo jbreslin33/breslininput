@@ -13,12 +13,6 @@ Game::Game(const char* serverIP)
 
 	mServerIP = serverIP;
  
-	//mClient	= new Client("", mServerIP, 30004);
-//you need instantiate network from this spot instead of client which we will be jettising.
-	/***********************************************************/
-	//commmands
-	mCommandHistorySize = 64;
-
 	// Save server's address information for later use
 	mServerIP = serverIP;
 	mServerPort = 30004;
@@ -386,8 +380,7 @@ void Game::sendCommand(void)
 
 	// Build delta-compressed move command
 	int flags = 0;
-	int last = (mNetwork->mOutgoingSequence - 1) & (mCommandHistorySize-1);
-	//LogString("last:%d",last);
+
 	// Check what needs to be updated
 	if(mLastCommandToServerArray.mKey != mCommandToServer.mKey)
 	{
