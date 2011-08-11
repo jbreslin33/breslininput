@@ -267,9 +267,8 @@ void Game::sendCommand(void)
 	{
 		dispatch->WriteByte(mCommandToServer->mMilliseconds);
 	}
-
-	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	//memcpy(mLastCommandToServer, mCommandToServer, sizeof(Command));
+	
+	//set 'last' commands for diff
 	mLastCommandToServer->mKey = mCommandToServer->mKey;
 	mLastCommandToServer->mMilliseconds = mCommandToServer->mMilliseconds;
 
