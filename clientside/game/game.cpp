@@ -270,7 +270,6 @@ void Game::sendCommand(void)
 
 	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
 	memcpy(mLastCommandToServerArray, mCommandToServer, sizeof(Command));
-	//mLastCommandToServerArray = mCommandToServer;
 
 	// Send the packet
 	mNetwork->send(dispatch);
