@@ -288,7 +288,6 @@ void Game::createScene(void)
     pointLight->setPosition(Ogre::Vector3(250, 150, 250));
     pointLight->setDiffuseColour(Ogre::ColourValue::White);
     pointLight->setSpecularColour(Ogre::ColourValue::White);
-
 }
 
 bool Game::frameRenderingQueued(const Ogre::FrameEvent& evt)
