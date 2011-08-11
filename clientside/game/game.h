@@ -31,8 +31,8 @@ public:
 	std::vector<MovableTextOverlay*> myVect;  //for writing above shapes head
 
 	//commands
-	Command mLastCommandToServerArray;
-	Command	mCommandToServer; //for the human moves to be sent off to server
+	Command* mLastCommandToServerArray;
+	Command* mCommandToServer; //for the human moves to be sent off to server
 
 	// Dispatches
 	static const char mCommandKey          = 1;

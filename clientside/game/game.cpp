@@ -12,7 +12,11 @@ Game::Game(const char* serverIP)
 	StartLog();
 
 	mServerIP = serverIP;
- 
+
+	//command
+	mLastCommandToServerArray = new Command();
+	mCommandToServer = new Command(); 
+
 	// Save server's address information for later use
 	mServerIP = serverIP;
 	mServerPort = 30004;
@@ -21,8 +25,6 @@ Game::Game(const char* serverIP)
 
 	// Create client socket
 	mNetwork = new Network(mServerIP,mServerPort);
-
-	/**********************************************************/
 
 	mTime = new Time();
 	mFrameTime		 = 0.0f;
@@ -243,12 +245,12 @@ void Game::sendCommand(void)
 	int flags = 0;
 
 	// Check what needs to be updated
-	if(mLastCommandToServerArray.mKey != mCommandToServer.mKey)
+	if(mLastCommandToServerArray->mKey != mCommandToServer->mKey)
 	{
 		flags |= mCommandKey;
 	}
 
-	if(mLastCommandToServerArray.mMilliseconds != mCommandToServer.mMilliseconds)
+	if(mLastCommandToServerArray->mMilliseconds != mCommandToServer->mMilliseconds)
 	{
 		flags |= mCommandMilliseconds;
 	}
@@ -258,16 +260,17 @@ void Game::sendCommand(void)
 
 	if(flags & mCommandKey)
 	{
-		dispatch->WriteByte(mCommandToServer.mKey);
+		dispatch->WriteByte(mCommandToServer->mKey);
 	}
 
 	if(flags & mCommandMilliseconds)
 	{
-		dispatch->WriteByte(mCommandToServer.mMilliseconds);
+		dispatch->WriteByte(mCommandToServer->mMilliseconds);
 	}
 
 	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	memcpy(&mLastCommandToServerArray, &mCommandToServer, sizeof(Command));
+	memcpy(mLastCommandToServerArray, mCommandToServer, sizeof(Command));
+	//mLastCommandToServerArray = mCommandToServer;
 
 	// Send the packet
 	mNetwork->send(dispatch);
@@ -357,7 +360,7 @@ void Game::unloadOtherScreens()
 **********************************/
 void Game::processUnbufferedInput()
 {
-	mCommandToServer.mKey = 0;
+	mCommandToServer->mKey = 0;
     
 	if (mKeyboard->isKeyDown(OIS::KC_ESCAPE)) // ESCAPE
     {
@@ -370,25 +373,25 @@ void Game::processUnbufferedInput()
     	
 	if (mKeyboard->isKeyDown(OIS::KC_I)) // Forward
     {
-		mCommandToServer.mKey |= mKeyUp;
+		mCommandToServer->mKey |= mKeyUp;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_K)) // Backward
     {
-		mCommandToServer.mKey |= mKeyDown;
+		mCommandToServer->mKey |= mKeyDown;
     }
 
 	if (mKeyboard->isKeyDown(OIS::KC_J)) // Left - yaw or strafe
     {
-		mCommandToServer.mKey |= mKeyLeft;
+		mCommandToServer->mKey |= mKeyLeft;
     }
 
     if (mKeyboard->isKeyDown(OIS::KC_L)) // Right - yaw or strafe
     {
-		mCommandToServer.mKey |= mKeyRight;
+		mCommandToServer->mKey |= mKeyRight;
     }
 
-	mCommandToServer.mMilliseconds = (int) (mFrameTime * 1000);
+	mCommandToServer->mMilliseconds = (int) (mFrameTime * 1000);
 }
 
 void Game::buttonHit(OgreBites::Button *button)
