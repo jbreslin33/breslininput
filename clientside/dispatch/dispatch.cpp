@@ -1,5 +1,6 @@
 #include "dispatch.h"
-#include "../client/client.h"
+
+#include "../tdreamsock/dreamSockLog.h"
 
 // Common headers
 #include <stdio.h>
@@ -11,7 +12,6 @@ Dispatch::Dispatch()
 	mCharArray = new char[mMaxSize];
 	mSize		= 0;
 	mReadCount	= 0;
-	mOverFlow	= false;
 }
 
 Dispatch::~Dispatch()
@@ -30,7 +30,6 @@ void Dispatch::Clear()
 {
 	mSize		= 0;
 	mReadCount	= 0;
-	mOverFlow	= false;
 }
 
 char *Dispatch::GetNewPoint(int length)
@@ -41,9 +40,7 @@ char *Dispatch::GetNewPoint(int length)
 	if(mSize + length > mMaxSize)
 	{
 		Clear(); 
-		mOverFlow = true;
 	}
-
 	tempData = mCharArray + mSize;
 	mSize += length;
 
@@ -62,36 +59,28 @@ void Dispatch::Write(const void *d, int length)
 void Dispatch::WriteByte(char c)
 {
 	char *buf;
-
 	buf = GetNewPoint(1);
-
 	memcpy(buf, &c, 1);
 }
 
 void Dispatch::WriteShort(short c)
 {
 	char *buf;
-
 	buf = GetNewPoint(2);
-
 	memcpy(buf, &c, 2);
 }
 
 void Dispatch::WriteLong(long c)
 {
 	char *buf;
-	
 	buf = GetNewPoint(4);
-
 	memcpy(buf, &c, 4);
 }
 
 void Dispatch::WriteFloat(float c)
 {
 	char *buf;
-	
 	buf = GetNewPoint(4);
-
 	memcpy(buf, &c, 4);
 }
 
