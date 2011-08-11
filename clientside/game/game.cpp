@@ -14,7 +14,7 @@ Game::Game(const char* serverIP)
 	mServerIP = serverIP;
 
 	//command
-	mLastCommandToServerArray = new Command();
+	mLastCommandToServer = new Command();
 	mCommandToServer = new Command(); 
 
 	// Save server's address information for later use
@@ -245,12 +245,12 @@ void Game::sendCommand(void)
 	int flags = 0;
 
 	// Check what needs to be updated
-	if(mLastCommandToServerArray->mKey != mCommandToServer->mKey)
+	if(mLastCommandToServer->mKey != mCommandToServer->mKey)
 	{
 		flags |= mCommandKey;
 	}
 
-	if(mLastCommandToServerArray->mMilliseconds != mCommandToServer->mMilliseconds)
+	if(mLastCommandToServer->mMilliseconds != mCommandToServer->mMilliseconds)
 	{
 		flags |= mCommandMilliseconds;
 	}
@@ -269,7 +269,9 @@ void Game::sendCommand(void)
 	}
 
 	// Store the command to the input client's history !!! Before you increment mOutgoingSequence in send.
-	memcpy(mLastCommandToServerArray, mCommandToServer, sizeof(Command));
+	//memcpy(mLastCommandToServer, mCommandToServer, sizeof(Command));
+	mLastCommandToServer->mKey = mCommandToServer->mKey;
+	mLastCommandToServer->mMilliseconds = mCommandToServer->mMilliseconds;
 
 	// Send the packet
 	mNetwork->send(dispatch);
