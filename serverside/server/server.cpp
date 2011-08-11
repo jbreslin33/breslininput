@@ -208,7 +208,7 @@ void Server::parsePacket(Message *mes, struct sockaddr *address)
 	if (type == DREAMSOCK_MES_CONNECT)
 	{
 				addClient(address, mes->ReadString());
-				//LogString("LIBRARY: Server: a client connected succesfully");
+				LogString("LIBRARY: Server: a client connected succesfully");
 	}
 	else
 	{
