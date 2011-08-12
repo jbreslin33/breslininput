@@ -29,8 +29,16 @@ public class Game extends SimpleApplication
 
 	public static void main(String[] args)
 	{
-        Game app = new Game(args[0]);
-        app.start();
+		if (args.length > 0)
+		{
+			Game app = new Game(args[0]);
+        	app.start();
+		}
+		else
+		{
+			    Game app = new Game("192.168.1.104");
+        		app.start();
+		}
     }
 
 	//constructor

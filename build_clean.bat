@@ -1,2 +1,0 @@
-deleteAll.bat
-setup.bat
