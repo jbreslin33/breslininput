@@ -7,5 +7,13 @@ sudo apt-get install ant
 cd /home/USER/sandbox/Arduino/build
 ant
 ant run
+
+to install hardware
+dmesg tail
+ls -l /dev/ttyACM0 
+usermod -a -G dialout jbreslin
+sudo usermod -a -G dialout jbreslin
+ls -ld /run/lock
+sudo chmod o+rwx /run/lock/
  
 
